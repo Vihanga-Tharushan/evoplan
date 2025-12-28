@@ -1,0 +1,167 @@
+:root{
+  --accent: #7c3aed;
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --panel: #ececec;   /* outer grey area */
+  --border: #e5e7eb;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 10px 24px rgba(0,0,0,.06);
+
+  --frame-max: 1120px;
+}
+
+/* Page section */
+.cmp-page{
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: transparent;
+  padding: 8px 16px 40px;
+}
+.cmp-frame{
+  max-width: var(--frame-max);
+  margin: 0 auto;
+}
+.cmp-title{
+  margin: 10px 0 14px;
+  font-weight: 800;
+  font-size: clamp(20px, 2.6vw, 28px);
+  color: #5036a6;
+}
+
+/* Panel background */
+.cmp-panel{
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.02);
+}
+
+/* List */
+.cmp-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+/* Row card */
+.cmp-item{ margin: 0; }
+.cmp-hit{
+  display: grid;
+  grid-template-columns: 160px 1fr 280px 150px 110px; /* ID | subject | customer | time | status */
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+
+  padding: 10px 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .15s ease, transform .05s ease, box-shadow .15s ease;
+}
+.cmp-hit:hover{
+  background: #fafafa;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+.cmp-hit:focus-visible{
+  outline: 2px solid rgba(124,58,237,.35);
+  outline-offset: 2px;
+}
+
+/* ID tag */
+.cmp-id{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #f3f4f6;
+  border: 1px solid #e7e9ee;
+  font-weight: 700;
+  font-size: 13px;
+  color: #374151;
+}
+
+/* Subject */
+.cmp-subject{
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Customer */
+.cmp-customer{
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+.avatar{
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e5e7eb;
+}
+.name{
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.org{
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Time */
+.cmp-time{
+  font-size: 13px;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+/* Status pill */
+.pill{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pill--new{ background: #eae7ff; color: #4338ca; }
+.pill--inprogress{ background: #fef3c7; color: #b45309; }
+.pill--resolved{ background: #dcfce7; color: #15803d; }
+
+/* Responsive: stack customer/time/status on narrow screens */
+@media (max-width: 980px){
+  .cmp-hit{
+    grid-template-columns: 140px 1fr;
+    grid-template-areas:
+      "id subject"
+      "customer customer"
+      "time status";
+    row-gap: 8px;
+  }
+  .cmp-id{ grid-area: id; }
+  .cmp-subject{ grid-area: subject; }
+  .cmp-customer{ grid-area: customer; }
+  .cmp-time{ grid-area: time; }
+  .cmp-status{ grid-area: status; }
+}

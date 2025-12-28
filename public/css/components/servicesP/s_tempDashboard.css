@@ -1,0 +1,91 @@
+.dialog{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:70vh;
+    background: #ffffff;
+    padding: 20px;
+}
+
+.dialog-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 1000px;
+            width: 100%;
+        
+        }
+
+        .dialog-title {
+            color: #8b5cf6;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+        }
+
+        .dialog-message {
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0 0 15px 0;
+        }
+
+        .dialog-sub-message {
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0 0 30px 0;
+        }
+
+        .dialog-button {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            float: right;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .dialog-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .dialog-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        @media (max-width: 480px) {
+            .dialog-container {
+                margin: 20px;
+                padding: 25px 20px;
+            }
+            
+            .dialog-title {
+                font-size: 22px;
+            } 
+
+        }
+
+  .upcoming { 
+	width: min(1109px, 92vw); 
+	margin: 24px auto 40px; 
+}

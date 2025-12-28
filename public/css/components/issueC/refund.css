@@ -1,0 +1,647 @@
+/* Figma Styles of your File */
+
+/* Figma Color Variables of your File */
+[data-collection-1-mode="mode-1"] {
+  /* mode-1 */
+  --main: #7848f4;
+}
+
+[data-collection-1-mode="mode-2"] {
+  /* mode-2 */
+  --main: #7848f4;
+}
+.service-providers-list,
+.service-providers-list * {
+  box-sizing: border-box;
+}
+.service-providers-list {
+  background: #ffffff;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-46-default {
+  padding: 10px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  height: 441px;
+  position: absolute;
+  left: 33px;
+  top: 71px;
+}
+.frame-36 {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 165px;
+  height: 32px;
+  position: relative;
+}
+.phosphor-icons-squares-four {
+  flex-shrink: 0;
+  width: 35px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.dashboard {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+}
+.frame-48096317 {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.phosphor-icons-git-diff {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.replacements {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+  width: 136px;
+}
+.frame-48096278 {
+  background: #7848f4;
+  border-radius: 5px;
+  padding: 4px 0px 4px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 202px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-49 {
+  padding: 0px 10px 0px 10px;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 44px;
+  position: relative;
+}
+.payments-adjustments {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  position: absolute;
+  left: 61px;
+  top: 0px;
+}
+.frame-48096308 {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 8px;
+  top: 6.5px;
+}
+.phosphor-icons-cardholder {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+}
+.frame-48096318 {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 222px;
+  position: relative;
+}
+.fether-icons-bar-chart-2 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+}
+.reports {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+}
+.frame-48096319 {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.phosphor-icons-clipboard-text {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.reports-to-admin {
+  color: var(--black, #131315);
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+}
+.frame-48096285 {
+  background: #ffffff;
+  width: 1089px;
+  height: 353px;
+  position: absolute;
+  left: 304px;
+  top: 146px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.frame-48096287 {
+  background: #ffffff;
+  padding: 6px 18px 6px 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 58px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 2px;
+  top: 112px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.cmp-4256 {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  position: relative;
+}
+.one-album-is-missing {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  position: relative;
+}
+.product-defect {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+.avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+.rectangle-1 {
+  border-radius: 24px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 0%;
+  object-fit: cover;
+}
+.frame-9 {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 128px;
+  position: relative;
+}
+.maggie-johnson {
+  color: var(--black, #131313);
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 500;
+  position: relative;
+}
+.supermarket-villanova {
+  color: var(--dark-gray, #454545);
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+}
+._2-hours-ago {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-48096288 {
+  background: rgba(158, 176, 229, 0.84);
+  border-radius: 10px;
+  flex-shrink: 0;
+  width: 72px;
+  height: 23px;
+  position: relative;
+  overflow: hidden;
+}
+.urgent {
+  color: #0b2c75;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 3px;
+}
+.group-9287 {
+  position: absolute;
+  inset: 0;
+}
+.frame-48096286 {
+  background: #f1efef;
+  width: 1092px;
+  height: 38px;
+  position: absolute;
+  left: -3px;
+  top: 68px;
+  overflow: hidden;
+}
+.id {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 54px;
+  top: 7px;
+}
+.customer {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 190px;
+  top: 7px;
+}
+.amount {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 398px;
+  top: 7px;
+}
+.date {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 843px;
+  top: 7px;
+}
+.status {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 974px;
+  top: 7px;
+}
+.service-provider {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 608px;
+  top: 11px;
+}
+.frame-480962882 {
+  background: #ffffff;
+  padding: 6px 18px 6px 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 58px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 2px;
+  top: 164px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+._2-days-ago {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-480962883 {
+  background: rgba(255, 195, 62, 0.44);
+  border-radius: 10px;
+  flex-shrink: 0;
+  width: 102px;
+  height: 23px;
+  position: relative;
+  overflow: hidden;
+}
+.in-progress {
+  color: #fe8615;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: absolute;
+  left: 15px;
+  top: 3px;
+}
+.frame-48096289 {
+  background: #ffffff;
+  padding: 6px 18px 6px 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 68px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 1px;
+  top: 216px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.service {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+}
+._1-week-ago {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: relative;
+}
+.frame-480962884 {
+  background: rgba(101, 240, 147, 0.5);
+  border-radius: 10px;
+  flex-shrink: 0;
+  width: 92px;
+  height: 23px;
+  position: relative;
+  overflow: hidden;
+}
+.resolved {
+  color: #036222;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: absolute;
+  left: 16px;
+  top: 3px;
+}
+.frame-48096290 {
+  background: #ffffff;
+  padding: 5px 18px 5px 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 57px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 2px;
+  top: 268px;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.frame-480962892 {
+  background: rgba(255, 195, 62, 0.44);
+  border-radius: 10px;
+  flex-shrink: 0;
+  width: 102px;
+  height: 23px;
+  position: relative;
+  overflow: hidden;
+}
+.not-urgent {
+  color: #fe8615;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  position: absolute;
+  left: 15px;
+  top: 3px;
+}
+.div {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 503px;
+  top: 314px;
+}
+.refund-users-list {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  position: absolute;
+  left: 20px;
+  top: 18px;
+}
+.frame-480962852 {
+  background: #ffffff;
+  width: 1089px;
+  height: 353px;
+  position: absolute;
+  left: 307px;
+  top: 512px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.take-back-service-provider-pre-payments-list {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  position: absolute;
+  left: 13px;
+  top: 24px;
+}
+.frame-32 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.frame-280 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 87px;
+  height: 30px;
+  position: absolute;
+  left: 852px;
+  top: 25px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home {
+  color: #131313;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 144.19%;
+  font-weight: 400;
+  position: relative;
+  width: 45px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}

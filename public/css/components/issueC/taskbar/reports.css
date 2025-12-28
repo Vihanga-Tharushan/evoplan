@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-content {
+    margin-left: 270px;
+    padding: 32px;
+    margin-top: 100px;
+}
+
+.header {
+     
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #8b5cf6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+/* Report Sections */
+.report-section {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.view-all {
+    color: #8b5cf6;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* Complaints Table */
+.complaints-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.complaints-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.complaints-table td {
+    padding: 16px;
+    border-top: 1px solid #f3f4f6;
+    font-size: 14px;
+}
+
+.complaint-id {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.complaint-subject {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.category {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.category.system-failure {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.category.replacement-issue {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+
+.category.payment-adjustments {
+    background-color: #dbeafe;
+    color: #3b82f6;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.urgent {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status.in-progress {
+    background-color: #dbeafe;
+    color: #3b82f6;
+}
+
+.status.resolved {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.status.not-urgent {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* Issue Distribution */
+.distribution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.distribution-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.distribution-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.distribution-color.system-failure {
+    background-color: #ef4444;
+}
+
+.distribution-color.replacement-issue {
+    background-color: #ea580c;
+}
+
+.distribution-color.payment-adjustments {
+    background-color: #3b82f6;
+}
+
+.distribution-bar {
+    flex: 1;
+    height: 8px;
+    background-color: #f3f4f6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.distribution-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.distribution-fill.system-failure-fill {
+    background-color: #ef4444;
+}
+
+.distribution-fill.replacement-issue-fill {
+    background-color: #ea580c;
+}
+
+.distribution-fill.payment-adjustments-fill {
+    background-color: #3b82f6;
+}
+
+.distribution-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.distribution-type {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.distribution-percentage {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        width: 60%;
+        align-items: center;
+        margin-top: 100px;
+        padding-left: 100px;
+        padding: 16px;
+    }
+    
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}

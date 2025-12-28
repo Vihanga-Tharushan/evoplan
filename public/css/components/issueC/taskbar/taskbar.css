@@ -1,0 +1,289 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ffffff;
+}
+
+/* Taskbar container - FIXED */
+.taskbar {
+    z-index: 200;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* This helps with proper spacing */
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ensure taskbar uses flex and items are vertically centered */
+.taskbar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 8px;      /* small horizontal padding */
+    gap: 0;
+}
+
+/* Left section items */
+.bar-container {
+    position: relative;
+    width: 52px;
+    height: 37px;
+}
+
+.bar-frame {
+    position: relative;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    border-radius: 9px;
+    overflow: hidden;
+    border: 1px solid rgba(103, 103, 103, 0.08);
+    box-shadow: 0px 1px 4px 0px rgba(164, 163, 163, 0.72);
+}
+
+.bar-icon {
+    position: absolute;
+    width: 25px;
+    height: 18px;
+    left: 8px;
+    top: 7px;
+}
+
+.bar-container .bar-image {
+    width: 90%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* EvoPlan Logo */
+.evo-plan-logo {
+    position: relative;
+    width: 100px;
+    height: 30px;
+    top: -3px;
+}
+
+.evo-plan-image {
+    width: 130px;
+    height: 40px;
+}
+
+/* make logo sit at the left and push all following items to the right */
+.evo-plan-logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto;  /* pushes icons/profile to the far right */
+    padding-left: 12px;
+}
+
+/* Right section items - UPDATED */
+.chat-icon,
+.notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;       /* unchanged */
+    height: 36px;      /* unchanged */
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: background .12s ease, transform .08s ease;
+    flex: 0 0 auto;
+    margin: 0;         /* remove horizontal margin so gap controls spacing */
+}
+
+.chat-icon:hover,
+.notification-icon:hover {
+    background: rgba(0, 0, 0, 0.04);
+    transform: translateY(-1px);
+}
+
+.chat-image,
+.notification-image,
+.chat-icon img,
+.notification-icon img {
+    width: 20px;              /* icon visual size */
+    height: 20px;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;     /* ensure container handles clicks */
+}
+
+/* Profile picture */
+.profile-picture {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-left: 6px;
+}
+
+.profile-picture .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* If you need to group left and right items, add these: */
+.taskbar-left, .taskbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* smaller gap so icons sit closer together */
+}
+
+/* group spacing for icons/profile (keeps icons close together) */
+.taskbar > .chat-icon,
+.taskbar > .notification-icon,
+.taskbar > form {
+    margin-left: 6px;    /* small gap between each clickable item */
+}
+
+/* remove extra internal margins so icons sit closer to right edge */
+.chat-icon,
+.notification-icon {
+    margin: 0;
+    padding: 4px;               /* clickable area — keep small */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+}
+
+/* keep icon image natural size (do not reduce) but ensure they don't add extra space */
+.chat-image,
+.notification-image,
+.profile-image {
+    display: block;
+    height: auto;
+    max-height: 40px;    /* limit visually if an oversized asset is used */
+    width: auto;
+    object-fit: contain;
+    pointer-events: none; /* container handles clicks */
+}
+
+/* responsive smaller gaps (keep icon sizes) */
+@media (max-width: 768px) {
+    .taskbar-left, .taskbar-right { gap: 10px; }
+}
+
+@media (max-width: 480px) {
+    .taskbar-left, .taskbar-right { gap: 8px; }
+}
+
+/* Keep your existing responsive styles */
+@media (max-width: 768px) {
+    .taskbar {
+        padding: 0 10px;
+        height: 70px;
+    }
+    
+    .bar-container {
+        width: 40px;
+        height: 28px;
+    }
+    
+    .evo-plan-logo {
+        width: 80px;
+        height: 26px;
+    }
+    
+    .chat-icon,
+    .notification-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .profile-picture {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .taskbar-left, .taskbar-right {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .taskbar {
+        padding: 0 5px;
+        height: 50px;
+    }
+    
+    .bar-container {
+        width: 35px;
+        height: 25px;
+    }
+    
+    .evo-plan-logo {
+        width: 80px;
+        height: 22px;
+    }
+    
+    .chat-icon,
+    .notification-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .profile-picture {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .taskbar-left, .taskbar-right {
+        gap: 15px;
+    }
+}
+
+/* reduce right padding so content can sit closer to edge */
+.taskbar {
+    padding: 0 12px 0 20px; /* smaller right padding */
+}
+
+/* nudge the whole right cluster further right on wide screens */
+@media (min-width: 1200px) {
+    .taskbar { padding-right: 6px; }
+    .taskbar > .chat-icon,
+    .taskbar > .notification-icon,
+    .taskbar > form { margin-left: 4px; }
+}
+
+/* ensure right group hugs the right edge and use a very small gap */
+.taskbar-right {
+    margin-left: auto;    /* force group to the far right */
+    display: flex;
+    align-items: center;
+    gap: 6px;             /* make icons sit close together */
+}
+
+/* keep profile slightly separated from icons if you want a little breathing room */
+.profile-picture {
+    margin-left: 6px;
+}
+
+/* ensure icons have no extra margins that push them inward */
+.chat-icon,
+.notification-icon {
+    margin: 0;
+    padding: 0; /* keep clickable area but avoid extra spacing */
+}
+
+/* optional: if icons should sit flush to the right edge on very wide screens */
+@media (min-width: 1200px) {
+    .taskbar { padding-right: 8px; }
+    .taskbar-right { gap: 4px; }
+}

@@ -1,0 +1,211 @@
+/* Figma Styles of your File */
+
+/* Figma Color Variables of your File */
+[data-collection-1-mode="mode-1"] {
+  /* mode-1 */
+  --main: #7848f4;
+}
+
+[data-collection-1-mode="mode-2"] {
+  /* mode-2 */
+  --main: #7848f4;
+}
+.bank-reciets,
+.bank-reciets * {
+  box-sizing: border-box;
+}
+.bank-reciets {
+  background: #ffffff;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-32 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.frame-280 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 87px;
+  height: 30px;
+  position: absolute;
+  left: 852px;
+  top: 25px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home {
+  color: #131313;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 144.19%;
+  font-weight: 400;
+  position: relative;
+  width: 45px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.frame-48096277 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 87px;
+  height: 30px;
+  position: absolute;
+  left: 852px;
+  top: 25px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}
+.frame-48096276 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 87px;
+  height: 30px;
+  position: absolute;
+  left: 720px;
+  top: 25px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.back {
+  color: #131313;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 144.19%;
+  font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.frame-48096325 {
+  display: flex;
+  flex-direction: column;
+  gap: 115px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  width: 750px;
+  position: absolute;
+  left: 325px;
+  top: 155px;
+}
+.manage-refunds-1 {
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 609px;
+  position: relative;
+  object-fit: cover;
+  aspect-ratio: 750/609;
+}
+.frame-480962772 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 87px;
+  height: 30px;
+  position: relative;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.send {
+  color: #131313;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 144.19%;
+  font-weight: 400;
+  position: relative;
+  width: 45px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

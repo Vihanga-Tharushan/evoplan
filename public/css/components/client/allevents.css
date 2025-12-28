@@ -1,0 +1,161 @@
+
+        
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .highlight {
+            color: #8b5cf6;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, var(--bg-color), var(--bg-color-dark));
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Event-specific colors */
+        .birthday {
+            --bg-color: #7c3aed;
+            --bg-color-dark: #5b21b6;
+        }
+
+        .weddings {
+            --bg-color: #0891b2;
+            --bg-color-dark: #0e7490;
+        }
+
+        .university {
+            --bg-color: #64748b;
+            --bg-color-dark: #475569;
+        }
+
+        .musicals {
+            --bg-color: #1e1b4b;
+            --bg-color-dark: #312e81;
+        }
+
+        .family {
+            --bg-color: #9ca3af;
+            --bg-color-dark: #6b7280;
+        }
+
+        .promotional {
+            --bg-color: #0891b2;
+            --bg-color-dark: #0e7490;
+        }
+
+        .corporate {
+            --bg-color: #059669;
+            --bg-color-dark: #047857;
+        }
+
+        .cultural {
+            --bg-color: #92400e;
+            --bg-color-dark: #78350f;
+        }
+
+        .graduation {
+            --bg-color: #1e40af;
+            --bg-color-dark: #1e3a8a;
+        }
+
+        .other {
+            --bg-color: #7c2d12;
+            --bg-color-dark: #991b1b;
+        }
+
+        /* Decorative elements */
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .events-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .event-card {
+                padding: 1.5rem;
+                min-height: 150px;
+            }
+            
+            .event-card h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }

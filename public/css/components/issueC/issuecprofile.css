@@ -1,0 +1,243 @@
+/* Figma Styles of your File */
+
+/* Figma Color Variables of your File */
+[data-collection-1-mode="mode-1"] {
+  /* mode-1 */
+  --main: #7848f4;
+}
+
+[data-collection-1-mode="mode-2"] {
+  /* mode-2 */
+  --main: #7848f4;
+}
+.issue-coordinator-profile,
+.issue-coordinator-profile * {
+  box-sizing: border-box;
+}
+.issue-coordinator-profile {
+  background: #ffffff;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.frame {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 1364px;
+  top: 948px;
+  overflow: hidden;
+}
+.frame-48096324 {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 248px;
+  position: absolute;
+  left: 553px;
+  top: 154px;
+}
+.rectangle-23 {
+  border-radius: 41px;
+  flex-shrink: 0;
+  width: 183px;
+  height: 171px;
+  position: relative;
+  object-fit: cover;
+}
+.wade-warren {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 32px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.bio {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.social-links {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.email {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.contact-info {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.years-of-experience {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.licensing-info {
+  color: #000000;
+  text-align: left;
+  font-family: "Lato-Medium", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  align-self: stretch;
+}
+.frame-48096323 {
+  background: #d9d9d9;
+  padding: 10px 68px 10px 68px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 50px;
+  position: relative;
+}
+.edit-profile {
+  color: #000000;
+  text-align: left;
+  font-family: "Montserrat-Medium", sans-serif;
+  font-size: 20px;
+  line-height: 144.19%;
+  font-weight: 500;
+  position: relative;
+}
+.frame-32 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 18px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.frame-280 {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 87px;
+  height: 30px;
+  position: absolute;
+  left: 852px;
+  top: 25px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.home {
+  color: #131313;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 144.19%;
+  font-weight: 400;
+  position: relative;
+  width: 45px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}

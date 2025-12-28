@@ -1,0 +1,533 @@
+:root {
+    --accent: #7c3aed;
+    --accent-2: #8a7cfb;
+    --bg: #f7f7fb;
+    --panel: #ffffff;
+    --muted-surface: #f3f4f6;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 16px;
+    --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+    --header-h: 90px;
+    --frame: 1400px;
+    --primary: #6d28d9;
+    --primary-light: #8b5cf6;
+    --secondary: #4c1d95;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --light: #f8fafc;
+    --dark: #1e293b;
+    --gray: #64748b;
+    --border: #e2e8f0;
+    --available: #dbeafe;
+    --booked: #fecaca;
+    --unavailable: #f1f5f9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Layout to work with existing sidebar and navbar */
+.main-container {
+    margin-top: var(--header-h);
+    margin-left: 250px;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Main content area - adjusted for sidebar */
+.main-content {
+    flex: 1;
+    min-height: 100vh;
+}
+
+
+/* Page Header */
+.page-header {
+    padding: 2rem 2rem 1.5rem;
+    background-color: var(--panel);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.page-header-content {
+    max-width: var(--frame);
+    margin: 0 auto;
+}
+
+.page-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.page-header p {
+    color: var(--gray);
+    font-size: 1rem;
+}
+
+/* Main Content Area */
+.events-container {
+    max-width: var(--frame);
+    padding: 0 2rem 3rem;
+}
+
+/* Tabs */
+.events-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.tab-btn:hover {
+    color: var(--primary);
+    background-color: var(--muted-surface);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 3px 3px 0 0;
+}
+
+/* Events Grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 cards horizontally */
+    gap: 1.5rem;
+}
+
+.event-date {
+   
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+/* Responsive: 2 columns on medium screens, 1 column on small screens */
+@media (max-width: 1100px) {
+    .events-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 700px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Event Card */
+.event-card {
+    background-color: var(--panel);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+}
+
+.event-card.upcoming {
+    border-top: 4px solid var(--success);
+}
+
+.event-card.previous {
+    border-top: 4px solid var(--muted);
+}
+
+.event-card-header {
+    padding: 1.5rem 1.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.event-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.event-type.wedding {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.event-type.business {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.event-type.birthday {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+}
+
+.event-type.conference {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: var(--primary-light);
+}
+
+.event-type.party {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.event-type.anniversary {
+    background-color: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+}
+
+.event-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+}
+
+.status-upcoming {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.status-completed {
+    background-color: rgba(107, 114, 128, 0.1);
+    color: var(--muted);
+}
+
+.event-card-body {
+    padding: 0 1.5rem 1.5rem;
+    flex-grow: 1;
+}
+
+.event-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--dark);
+    line-height: 1.3;
+}
+
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.event-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+}
+
+.event-detail i {
+    color: var(--primary);
+    width: 20px;
+    margin-top: 2px;
+}
+
+.event-detail span {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.event-detail strong {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.event-card-footer {
+    padding: 1.5rem;
+    background-color: var(--muted-surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.event-actions {
+    display: flex;
+    gap: 0.7rem;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border);
+    background-color: var(--panel);
+    color: var(--dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.action-btn:hover {
+    background-color: var(--light);
+    border-color: var(--primary);
+}
+
+.action-btn.primary {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.action-btn.primary:hover {
+    background-color: var(--primary-light);
+}
+
+/* Create New Event Card */
+.create-event-card {
+    
+    background-color: var(--panel);
+    border-radius: var(--radius);
+    border: 2px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 300px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.create-event-card:hover {
+    border-color: var(--primary);
+    background-color: rgba(124, 58, 237, 0.03);
+    transform: translateY(-5px);
+}
+
+.create-event-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgba(124, 58, 237, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    font-size: 2rem;
+}
+.fa-plus-circle {
+    font-size: 3rem;
+}
+
+.fa-plus {
+    font-size: 2.5rem;
+    /* move middle */
+    position: relative;
+    top: -2px;
+}
+
+.create-event-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.create-event-card p {
+    color: var(--gray);
+    text-align: center;
+    max-width: 250px;
+    margin-bottom: 1.5rem;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--panel);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.empty-state-icon {
+    font-size: 3.5rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: var(--dark);
+}
+
+.empty-state p {
+    color: var(--gray);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 220px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+    }
+    
+    .top-navbar {
+        left: 220px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+        overflow: hidden;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+    }
+    
+    .top-navbar {
+        left: 70px;
+    }
+    
+    .events-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-card-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .event-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .action-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .events-tabs {
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .tab-btn {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .top-navbar {
+        left: 0;
+    }
+    
+    .page-header, .events-container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* Progress bar for event percentage */
+.precentagebar {
+    margin-top: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.precentagebar .progress {
+    flex: 1;
+    background-color: var(--muted-surface);
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.precentagebar .progress-fill {
+    height: 100%;
+    width: 0;
+    transition: width 0.4s ease;
+}
+.precentagebar .progress-label {
+    font-weight: 700;
+    color: var(--gray);
+    font-size: 0.95rem;
+    min-width: 44px;
+    text-align: right;
+}

@@ -1,0 +1,300 @@
+<?php require_once APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
+<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar4.php'; ?>
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_profile.css">
+
+
+<main class="sp-page" aria-label="Service provider profile">
+  <!-- HERO (cover) -->
+  <header class="sp-hero">
+    <div class="sp-cover">
+
+      <img class="sp-cover__img" src="<?php echo URLROOT;?>/public/img/coverPhotos/<?php echo $data['profile']->background_image; ?>" alt="">
+      <div class="sp-hero__content">
+        <h1 class="sp-studio"><br><?php echo $data['profile']->background_text; ?></h1>
+        
+      </div>
+    </div>
+
+    <!-- Profile bar -->
+    <div class="sp-profilebar">
+      <figure class="sp-avatar">
+        <img src="<?php echo URLROOT; ?>/public/img/profilePics/<?php echo $data['profile']->profile_pic; ?>" alt="Profile photo">
+        <!-- <a class="sp-avatar__edit" href="#edit-photo" aria-label="Change profile photo">✎</a> -->
+      </figure>
+
+      <div class="sp-id">
+        <div class="sp-name"><?php echo $_SESSION['service_name']?></div>
+      </div>
+
+      <div class="sp-actions">
+        <a href="<?php echo URLROOT; ?>/Service/editProfile" class="btn btn--light">Edit Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="sp-frame">
+    <!-- INTRO -->
+    <section class="card">
+      <header class="card__head">
+        <h2 class="card__title">Intro</h2>
+        <!-- <div class="row-actions">
+          <a class="btn btn--chip" >Edit Bio</a>
+        </div> -->
+      </header>
+
+      <div class="intro">
+        <p class="intro__bio">
+         <?php echo $data['profile']->intro;?>
+        </p>
+
+        <div class="intro__tags" aria-label="Tags">
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS (read-only) -->
+    <section class="card">
+      <header class="card__head">
+        <h2 class="card__title">Overall Reviews</h2>
+      </header>
+
+      <div class="reviews">
+        <div class="reviews__bars">
+          <!-- 1 to 5 bars -->
+          <div class="bar"><span class="bar__label">1</span><span class="bar__track"><span class="bar__fill" style="--w:<?php echo $data['rating']->one_star_percentage; ?>%"></span></span></div>
+          <div class="bar"><span class="bar__label">2</span><span class="bar__track"><span class="bar__fill" style="--w:<?php echo $data['rating']->two_star_percentage; ?>%"></span></span></div>
+          <div class="bar"><span class="bar__label">3</span><span class="bar__track"><span class="bar__fill" style="--w:<?php echo $data['rating']->three_star_percentage; ?>%"></span></span></div>
+          <div class="bar"><span class="bar__label">4</span><span class="bar__track"><span class="bar__fill" style="--w:<?php echo $data['rating']->four_star_percentage; ?>%"></span></span></div>
+          <div class="bar"><span class="bar__label">5</span><span class="bar__track"><span class="bar__fill" style="--w:<?php echo $data['rating']->five_star_percentage; ?>%"></span></span></div>
+        </div>
+
+        <div class="reviews__score">
+          Average Rating
+          <div class="score__big"><?php echo $data['rating']->average_rating; ?></div>
+          <!-- <div class="score__stars" aria-label="4 out of 5 stars">
+            <span class="star star--on">★</span><span class="star star--on">★</span><span class="star star--on">★</span><span class="star star--on">★</span><span class="star">★</span>
+          </div> -->
+          <div class="score__count"><?php echo $data['rating']->total_reviews; ?> reviews</div>
+        </div>
+      </div>
+      <p class="note">This section is client-controlled and cannot be edited by the provider.</p>
+    </section>
+
+      <!-- AVAILABILITY CALENDAR -->
+     <article class="card">
+                <header class="card__h">
+                  <div class="card__t">Available Days</div>
+                  <a href="<?php echo URLROOT; ?>/Service/availability" class="add_dates" aria-label="add-dates">Add Dates</a>
+           
+                </header>
+                <div class="card__body">
+                    <div class="cal">
+                        <div class="cal__header">
+                            <div class="cal__month">September 2025</div>
+                            <div class="cal__nav">
+                                <button class="cal__nav-btn" id="prev-month">←</button>
+                                <button class="cal__nav-btn" id="next-month">→</button>
+                            </div>
+                        </div>
+
+                        <div class="cal__dow">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+
+                        <div class="cal__grid" id="calendar-grid">
+                            <!-- Calendar days will be generated by JavaScript -->
+                        </div>
+                        
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color legend-available"></div>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-booked"></div>
+                                <span>Booked</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-unavailable"></div>
+                                <span>Unavailable</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-today"></div>
+                                <span>Today</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-range"></div>
+                                <span>Selected Range</span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+
+
+    <!-- UPLOAD SHORTCUTS -->
+    <section class="uploader">
+      <a href="<?php echo URLROOT; ?>/Posts/UploadEvent" class="chip chip--line"> upload Event</a>
+     
+    </section>
+
+    <!-- FEED POST 1 -->
+    <?php foreach($data['EventsPosts'] as $post): ?>
+    <article class="post card">
+      <header class="post__head">
+        <div class="post__author">
+          <img class="post__avatar" src="<?php echo URLROOT; ?>/public/img/profilePics/<?php echo $data['profile']->profile_pic; ?>" alt="">
+          <div>
+            <div class="post__name"><?php echo $_SESSION['service_name']; ?></div>
+            
+            <div class="post__meta"><?php echo date('j F Y \a\t H:i', strtotime($post->created_at)); ?></div>
+          </div>
+        </div>
+        <button class="btn btn--icon" aria-label="More"><b>...</b></button>
+      </header>
+
+      <h3 class="post__title"><?php echo $post->title; ?></h3>
+
+      <p class="post__description"><?php echo $post->description; ?></p>
+
+      <!--media carousel-->
+      <div class="post__media-wrapper">
+      <div class="post__media" data-event-id="<?php echo $post->event_id; ?>">
+        
+       
+        <?php 
+
+          $mediaCount = 0;
+          $mediaArray = [];
+            foreach($data['EventMedia'] as $media){
+                if($media->event_id == $post->event_id){
+                    $filePath = URLROOT . '/uploads/postsMedia/' . $media->file_path;
+                    $fileType = pathinfo($media->file_path, PATHINFO_EXTENSION);
+                    $mediaArray[] =[
+                      'path' => $filePath,
+                      'type' => $fileType
+                    ];
+                }
+            }
+
+            foreach($mediaArray as $index => $media){
+                $filePath = $media['path'];
+                $fileType = $media['type'];
+                    
+                    if(in_array(strtolower($fileType), ['jpg', 'jpeg', 'png', 'gif'])) {
+                        echo '<img src="' . $filePath . '" alt="Event Media" class="post__image">'; 
+                    } elseif(in_array(strtolower($fileType), ['mp4', 'mov'])) {
+                        echo '<video controls class="post__video">
+                                <source src="' . $filePath . '" type="video/' . strtolower($fileType) . '">
+                                Your browser does not support the video tag.
+                              </video>';
+                    }
+                }     
+        ?>
+         
+      </div>
+
+      <?php if(count($mediaArray) > 1): ?>
+          <!-- Left / Right nav -->
+          <button class="media__nav media__nav--left" aria-label="Previous media">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+
+          <button class="media__nav media__nav--right" aria-label="Next media">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </svg>
+          </button>
+        <?php endif; ?>
+
+      <!--media dots indicator-->
+      <?php if(count($mediaArray) > 1): ?>
+        <div class="media__dots">
+          <?php for($i = 0; $i < count($mediaArray); $i++): ?>
+            <button class="media__dot <?php echo $i === 0 ?'active' : ''; ?>"
+                data-index = "<?php echo $i; ?>"
+                aria-lable = "Go to media <?php echo $i + 1; ?>"
+                data-event-id="<?php echo $post->event_id; ?>"
+            >
+            </button>
+          <?php endfor; ?>
+        </div>
+      <?php endif; ?>
+    
+      <footer class="post__actions">
+        <!--like,comment-->
+        <a  class="action" onclick="changecolour(this.querySelector('.likeicon'));">
+            <img class="likeicon" src="<?php echo URLROOT; ?>/public/img/ServiceP/posts/like.svg" alt="Like Icon">
+            <span class="like-count"><?php echo $post->like_count ?></span>
+        </a>
+        <a class="action">
+            <img class="commenticon" src="<?php echo URLROOT; ?>/public/img/ServiceP/posts/comment.svg" alt="Comment Icon">
+            <span class="comment-count">0</span>
+        </a>
+      </footer>
+
+      <!-- Popup menu -->
+      <div class="popup-menu" id="popup-<?php echo $post->event_id; ?>" style="display: none;">
+        <div class="popup-menu__content">
+          <button class="popup-menu__item edit-btn" data-event-id="<?php echo $post->event_id; ?>">Edit post</button>
+          <button class="popup-menu__item delete-btn" data-event-id="<?php echo $post->event_id; ?>">Delete post</button>
+          <button class="popup-menu__item add-media-btn" data-event-id="<?php echo $post->event_id; ?>">Add media</button>
+          
+        </div>
+      </div>
+    </article>
+    <?php endforeach; ?>
+
+
+  <!--comment section -->
+
+  <!-- Comment section (side panel) -->
+<aside class="comments-panel" id="comments-panel">
+  <div class="comments-panel__header">
+    <h2>Comments</h2>
+    <button class="comments-panel__close" id="close-comments" aria-label="Close comments">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="comments-panel__body">
+    <div class="comments-container" id="comments-container">
+      <!-- Comments will be dynamically loaded here -->
+    </div>
+  </div>
+  <form class="comments-panel__footer" id="comment-form" style="display: none;">
+      <textarea 
+        id="comment-input" 
+        class="comment-input" 
+        placeholder="Write a comment..." 
+        rows="3"
+      ></textarea>
+      <button type="submit" class="btn btn--primary">Post Comment</button>
+    </form>
+  
+</aside>
+
+<!-- Overlay for side panel -->
+<div class="comments-overlay" id="comments-overlay"></div>
+</main>
+
+
+<script>
+
+    // Make PHP data available to JavaScript
+    const URLROOT = '<?php echo URLROOT; ?>';
+    const serverAvailabilityData = <?php echo json_encode($data['availability'] ?? []); ?>;
+
+    
+</script>
+<script src="<?php echo URLROOT; ?>/js/profile/profile.js"></script>
+
+<?php require_once APPROOT . '/views/inc/footer.php'; ?>

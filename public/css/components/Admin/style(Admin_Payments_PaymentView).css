@@ -1,0 +1,625 @@
+.dashboard-payments-payments-view,
+.dashboard-payments-payments-view * {
+  box-sizing: border-box;
+}
+.dashboard-payments-payments-view {
+  background: #ffffff;
+  height: 4197px;
+  position: relative;
+  overflow: hidden;
+}
+.group-3 {
+  position: absolute;
+  inset: 0;
+}
+.group-2 {
+  width: 901px;
+  height: 416px;
+  position: static;
+}
+.rectangle-10 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 400.5px;
+  position: absolute;
+  left: 246px;
+  top: 300.5px;
+}
+.rectangle-11 {
+  background: #ffffff;
+  width: 205px;
+  height: 29.8px;
+  position: absolute;
+  left: 288px;
+  top: 287.38px;
+}
+.event-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 307px;
+  top: 285px;
+  width: 170px;
+  height: 26.22px;
+}
+.name {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 346px;
+}
+.category {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 449px;
+}
+.location {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 309px;
+  top: 542px;
+}
+.galle {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 269px;
+  top: 579px;
+  width: 162px;
+}
+.total-cost {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 309px;
+  top: 622px;
+}
+.rs-100000-00 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 333px;
+  top: 659px;
+  width: 162px;
+}
+.event-id {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 280px;
+  top: 215px;
+}
+.group-4 {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-13 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 3301px;
+  position: absolute;
+  left: 246px;
+  top: 749px;
+}
+.rectangle-112 {
+  background: #ffffff;
+  width: 391px;
+  height: 32px;
+  position: absolute;
+  left: 288px;
+  top: 741.2px;
+}
+.group-9288 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-48096298 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 814px;
+}
+.rectangle-23 {
+  background: #fffdfd;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.11);
+  border-width: 2px;
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.rectangle-14 {
+  background: #d9d9d9;
+  border-radius: 15px;
+  width: 240px;
+  height: 74px;
+  position: absolute;
+  left: 175px;
+  top: 244px;
+}
+.service-providers-01 {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 36px;
+  top: 19px;
+}
+.name2 {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 57px;
+}
+.payment-amount {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 92px;
+}
+.bank {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 130px;
+}
+.branch {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 168px;
+}
+.account-number {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 206px;
+}
+.receipt {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 244px;
+}
+.mr-john-fernando {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 294px;
+  top: 62px;
+}
+.rs-10000-00 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 294px;
+  top: 97px;
+}
+.commercial-bank {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 294px;
+  top: 135px;
+}
+.galle2 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 294px;
+  top: 173px;
+}
+._20487429763 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 294px;
+  top: 211px;
+}
+.button {
+  width: 109px;
+  height: 33px;
+  position: absolute;
+  left: 440px;
+  top: 285px;
+}
+.rectangle-5 {
+  background: #7848f4;
+  border-radius: 15px;
+  width: 109px;
+  height: 33px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.done {
+  color: #fffbfb;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  position: absolute;
+  left: 30px;
+  top: 7px;
+  width: 48px;
+  height: 17px;
+}
+.upload-the-reciept-here {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  position: absolute;
+  left: 201px;
+  top: 295px;
+  width: 182px;
+}
+.pngwing-com-2025-08-10-t-200224-474-1 {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  left: 282px;
+  top: 262px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.group-9289 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962982 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 1172px;
+}
+.group-9290 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962983 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 1530px;
+}
+.group-9291 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962984 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 1888px;
+}
+.group-9292 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962985 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 2246px;
+}
+.group-9293 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962986 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 2604px;
+}
+.group-9294 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962987 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 2962px;
+}
+.group-9295 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962988 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 3320px;
+}
+.group-9296 {
+  width: 843px;
+  height: 342px;
+  position: static;
+}
+.frame-480962989 {
+  width: 843px;
+  height: 342px;
+  position: absolute;
+  left: 275px;
+  top: 3678px;
+}
+.service-providers-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #0b2c75, #0b2c75);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 306px;
+  top: 730.54px;
+  width: 372.87px;
+  height: 40px;
+  transform-origin: 0 0;
+  transform: rotate(-0.083deg) scale(1, 1);
+}
+.payment {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: absolute;
+  left: 700px;
+  translate: -50%;
+  top: 141px;
+  width: 765px;
+  height: 50px;
+}
+.mr-nishantha-fernando {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 333px;
+  top: 392px;
+}
+.evt-2031 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 381px;
+  top: 219px;
+}
+.nishantha-fernando-gmail-com {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 329px;
+  top: 495px;
+}
+.button2 {
+  width: 185px;
+  height: 54px;
+  position: absolute;
+  left: 962px;
+  top: 4076px;
+}
+.rectangle-52 {
+  background: #7848f4;
+  border-radius: 15px;
+  width: 185px;
+  height: 54px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.completed {
+  color: #fffbfb;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  left: 29px;
+  top: 9px;
+  width: 156px;
+  height: 39px;
+}
+.group-39 {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+.frame-31 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}

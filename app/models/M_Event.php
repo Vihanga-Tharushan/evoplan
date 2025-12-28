@@ -1,0 +1,178 @@
+<?php
+
+class M_Event {
+    private $db;
+
+    public function __construct() {
+        $this->db = new Database;
+    }
+
+    
+
+    public function createEvent($data) {
+        $this->db->query("INSERT INTO events (event_name, client_id, event_type,event_description, start_datetime, end_datetime, guest_count, venue_address, venue_type) VALUES (:event_name, :client_id, :event_type, :event_description, :start_datetime, :end_datetime, :guest_count, :venue_address, :venue_type)");
+        
+        // Bind values
+        $this->db->bind(':event_name', $data['event_name']);
+        $this->db->bind(':client_id', $data['client_id']);
+        $this->db->bind(':event_type', $data['event_type']);
+        $this->db->bind(':start_datetime', $data['start_datetime']);
+        $this->db->bind(':end_datetime', $data['end_datetime']);
+        $this->db->bind(':guest_count', $data['guest_count']);
+        $this->db->bind(':venue_address', $data['venue_address']);
+        $this->db->bind(':venue_type', $data['venue_type']);
+        $this->db->bind(':event_description', $data['event_description']);
+
+        
+        // Execute
+        if($this->db->execute()) {
+            return $this->db->lastInsertId(); // Return the ID of the newly created event
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getEventById($eventId) {
+        $this->db->query("SELECT * FROM events WHERE event_id = :eventId");
+        $this->db->bind(':eventId', $eventId);
+        return $this->db->single();
+    }
+
+    //check if client has an event at that moment
+    public function checkEventHasThisTime($data) {
+        $this->db->query("SELECT * FROM events WHERE client_id = :client_id AND ((start_datetime <= :start_datetime AND end_datetime >= :start_datetime) OR (start_datetime <= :end_datetime AND end_datetime >= :end_datetime) OR (start_datetime >= :start_datetime AND end_datetime <= :end_datetime))");
+        $this->db->bind(':client_id', $data['client_id']);
+        $this->db->bind(':start_datetime', $data['start_datetime']);
+        $this->db->bind(':end_datetime', $data['end_datetime']);
+        $result = $this->db->single();
+        return $result ? true : false;
+    }
+
+    public function addServiceNeedToEvent($eventId, $service_type_id) {
+        $this->db->query("INSERT INTO event_services(event_id, service_type_id) VALUES (:event_id, :service_type_id)");
+        $this->db->bind(':event_id', $eventId);
+        $this->db->bind(':service_type_id', $service_type_id);
+        
+        return $this->db->execute();
+    }
+
+
+    public function getUpcomingEventsByClientId($clientId) {
+        $this->db->query("SELECT * FROM events WHERE client_id = :clientId AND start_datetime >= NOW() ORDER BY start_datetime ASC");
+        $this->db->bind(':clientId', $clientId);
+        return $this->db->resultSet();
+    }
+
+    public function getAllEvents() {
+        $this->db->query("SELECT * FROM events ORDER BY start_datetime ASC");
+        return $this->db->resultSet();
+    }
+
+    public function getPreviousEventsByClientId($clientId) {
+        $this->db->query("SELECT * FROM events WHERE client_id = :clientId AND end_datetime < NOW() ORDER BY start_datetime DESC");
+        $this->db->bind(':clientId', $clientId);
+        return $this->db->resultSet();
+    }
+
+    public function getRequiredServicesByEventId($event_id) {
+        $this->db->query("SELECT st.name AS service_type FROM event_services es
+                                                            JOIN service_types st
+                                                            ON es.service_type_id = st.service_type_id
+                                                            WHERE es.event_id = :event_id");
+        $this->db->bind(':event_id', $event_id);
+        $result = $this->db->resultSet();
+        return $result;
+    }
+
+    public function addPackageToEvent($event_id, $package_id, $service_id, $client_id) {
+        $this->db->query("INSERT INTO event_packages(event_id, package_id, service_id, client_id) VALUES (:event_id, :package_id, :service_id, :client_id)");
+        $this->db->bind(':event_id', $event_id);
+        $this->db->bind(':package_id', $package_id);
+        $this->db->bind(':service_id', $service_id);
+        $this->db->bind(':client_id', $client_id);
+        
+        return $this->db->execute();
+    }
+
+    public function getPackagesByEventId($event_id) {
+        $this->db->query("SELECT * FROM event_packages WHERE event_id = :event_id");
+        $this->db->bind(':event_id', $event_id);
+        return $this->db->resultSet();
+    }
+
+    public function checkPackageInEvent($event_id, $package_id) {
+        $this->db->query("SELECT * FROM event_packages WHERE event_id = :event_id AND package_id = :package_id");
+        $this->db->bind(':event_id', $event_id);
+        $this->db->bind(':package_id', $package_id);
+        $result = $this->db->single();
+        return $result ? true : false;
+    }
+
+    public function checkEventProgress($event_id) {
+        $this->db->query("SELECT progress_precent FROM events WHERE event_id = :event_id");
+        $this->db->bind(':event_id', $event_id);
+        $result = $this->db->single();
+        return $result ? (int)$result->progress_precent : null;
+    }
+
+    public function updateEventProgress($event_id, $progress_precent, $progress_step) {
+        $this->db->query("UPDATE events SET progress_precent = :progress_precent, progress_step = :progress_step WHERE event_id = :event_id");
+        $this->db->bind(':event_id', $event_id);
+        $this->db->bind(':progress_precent', $progress_precent);
+        $this->db->bind(':progress_step', $progress_step);
+        
+        return $this->db->execute();
+    }
+
+    public function getSelectedPackages($eventId) {
+        $this->db->query("SELECT ep.event_package_id,
+
+                        -- package info
+                        p.package_id,
+                        p.title AS package_name,
+                        p.price AS package_price,
+
+                        -- service provider info
+                        sp.service_id,
+                        CONCAT(sp.fname, ' ', sp.lname) AS service_provider_name,
+
+                        -- event-package status
+                        ep.confirmation_status,
+                        ep.sent_status,
+                        ep.confirmed_at
+
+                    FROM event_packages ep
+                    JOIN packages p
+                        ON ep.package_id = p.package_id
+                    JOIN service_providers sp
+                        ON ep.service_id = sp.service_id
+
+                    WHERE ep.event_id = :event_id
+                    AND ep.status = 'ON';9");
+        $this->db->bind(':event_id', $eventId);
+        return $this->db->resultSet();
+    }
+    
+    public function getEventsByServiceProvider($service_id) {
+        $this->db->query("SELECT e.* FROM events e
+                          JOIN event_packages ep ON e.event_id = ep.event_id
+                          WHERE ep.service_id = :service_id
+                          GROUP BY e.event_id
+                          ORDER BY e.start_datetime ASC");
+        $this->db->bind(':service_id', $service_id);
+        return $this->db->resultSet();
+    }
+    
+
+    public function getPreviousEventsByServiceProvider($service_id) {
+        $this->db->query("SELECT e.* FROM events e
+                          JOIN event_packages ep ON e.event_id = ep.event_id
+                          WHERE ep.service_id = :service_id
+                          AND e.end_datetime < NOW()
+                          GROUP BY e.event_id
+                          ORDER BY e.start_datetime DESC");
+        $this->db->bind(':service_id', $service_id);
+        return $this->db->resultSet();
+    }
+}

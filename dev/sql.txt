@@ -1,0 +1,481 @@
+CREATE TABLE service_providers (
+    service_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Profile Information
+    fname VARCHAR(100) NOT NULL,
+    lname VARCHAR(100) NOT NULL,
+    nic VARCHAR(15) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    contact VARCHAR(15) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+
+    -- Business Information
+    businessName VARCHAR(150) NOT NULL,
+    businessId VARCHAR(50) UNIQUE,
+    serviceType VARCHAR(100) NOT NULL,
+    contactB VARCHAR(15) NOT NULL,
+    emailB VARCHAR(150) NOT NULL,
+    businessAddress VARCHAR(255) NOT NULL,
+    bizDistrict VARCHAR(50) NOT NULL,
+    description TEXT,
+    experience VARCHAR(20) NOT NULL,
+    license VARCHAR(255) NOT NULL,
+);
+
+CREATE TABLE packages (
+    package_id INT AUTO_INCREMENT PRIMARY KEY,
+    service_id VARCHAR(150) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    details TEXT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    bg_image_name VARCHAR(500) NOT NULL,
+    notes TEXT,
+    FOREIGN KEY (service_id) REFERENCES service_providers(service_id) ON DELETE CASCADE
+);
+
+CREATE TABLE provider_profiles (
+    service_id INT PRIMARY KEY,
+    intro TEXT,
+    background_image VARCHAR(255),
+    profile_pic VARCHAR(255),
+    background_text TEXT,
+    FOREIGN KEY (service_id) 
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE OR REPLACE VIEW v_provider_full_profile AS
+SELECT
+    sp.service_id,
+
+    -- Full name (fname + lname)
+    CONCAT(sp.fname, ' ', sp.lname) AS full_name,
+
+    -- Provider Profiles fields
+    pp.intro,
+    pp.background_image,
+    pp.profile_pic,
+    pp.background_text
+
+FROM service_providers sp
+LEFT JOIN provider_profiles pp
+    ON sp.service_id = pp.service_id;
+
+
+CREATE OR REPLACE VIEW v_packages_with_provider AS
+SELECT 
+    p.package_id,
+    p.title,
+    p.details,
+    p.price,
+    p.bg_image_name,
+    p.notes,
+
+    sp.service_id,
+    CONCAT(sp.fname, ' ', sp.lname) AS provider_name,
+    sp.businessName,
+    sp.serviceType,
+    sp.district,
+
+    pro.profile_pic,
+
+    ROUND(AVG(r.rating), 1) AS avg_rating,
+    COUNT(r.review_id) AS total_reviews
+
+FROM packages p
+
+JOIN service_providers sp
+    ON p.service_id = sp.service_id
+
+LEFT JOIN provider_profiles pro
+    ON p.service_id = pro.service_id
+
+LEFT JOIN reviews r
+    ON sp.service_id = r.service_id
+
+GROUP BY 
+    p.package_id,
+    sp.service_id,
+    pro.profile_pic;
+
+
+DELIMITER //
+
+CREATE TRIGGER after_service_provider_insert
+AFTER INSERT ON service_providers
+FOR EACH ROW
+BEGIN
+    INSERT INTO provider_profiles (service_id)
+    VALUES (NEW.service_id);
+END //
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_review_insert
+AFTER INSERT ON reviews
+FOR EACH ROW
+BEGIN
+    UPDATE provider_ratings
+    SET 
+        total_reviews = total_reviews + 1,
+        avg_rating = (
+            (avg_rating * (total_reviews - 1) + NEW.rating) / total_reviews
+        )
+    WHERE service_id = NEW.service_id;
+END$$
+
+DELIMITER ;
+
+
+CREATE TABLE provider_availability (
+    availability_id INT AUTO_INCREMENT PRIMARY KEY,
+    service_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    timeslot VARCHAR(50) DEFAULT 'All Day',  -- e.g. '11:00 AM - 6:00 PM'
+    status ENUM('available', 'booked', 'expired') DEFAULT 'available',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (service_id) REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE event_posts (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+    service_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    event_date DATE,
+    location VARCHAR(255),
+    status ENUM('ON', 'OFF') DEFAULT 'ON',  -- Soft delete flag
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (service_id) REFERENCES service_providers(service_id)
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+ALTER TABLE event_posts
+ADD COLUMN like_count INT DEFAULT 0 AFTER status;
+
+CREATE TABLE event_media (
+    media_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    media_type ENUM('image', 'video') NOT NULL,
+    status ENUM('ON', 'OFF') DEFAULT 'ON',  -- Soft delete flag
+    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES event_posts(event_id)
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE event_likes (
+    like_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    client_id INT NOT NULL,
+    liked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('ON', 'OFF') DEFAULT 'ON',
+    FOREIGN KEY (event_id) REFERENCES event_posts(event_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES clients(client_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+DELIMITER $$
+
+CREATE TRIGGER after_like_insert
+AFTER INSERT ON event_likes
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'ON' THEN
+        UPDATE event_posts
+        SET like_count = like_count + 1
+        WHERE event_id = NEW.event_id;
+    END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER after_like_update
+AFTER UPDATE ON event_likes
+FOR EACH ROW
+BEGIN
+    IF OLD.status = 'ON' AND NEW.status = 'OFF' THEN
+        UPDATE event_posts
+        SET like_count = like_count - 1
+        WHERE event_id = NEW.event_id;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+CREATE TABLE conversations (
+    conversation_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    client_id INT NOT NULL,
+    provider_id INT NOT NULL,
+
+    last_message TEXT,
+    last_message_time DATETIME,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE (client_id, provider_id),
+
+    FOREIGN KEY (client_id) REFERENCES clients(client_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+
+    FOREIGN KEY (provider_id) REFERENCES service_providers(service_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    sender_type ENUM('CLIENT', 'PROVIDER', 'ISSUE_COORDINATOR', 'ADMIN') NOT NULL,
+    sender_id INT NOT NULL,
+    message_text TEXT,
+    is_seen TINYINT(1) DEFAULT 0,       -- 0 = unseen, 1 = seen
+    sender_deleted TINYINT(1) DEFAULT 0,
+    receiver_deleted TINYINT(1) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+
+DELIMITER $$
+
+CREATE TRIGGER after_message_insert
+AFTER INSERT ON messages
+FOR EACH ROW
+BEGIN
+    UPDATE conversations
+    SET last_message = NEW.message_text,
+        last_message_time = NEW.created_at
+    WHERE conversation_id = NEW.conversation_id;
+END$$
+
+DELIMITER ;
+
+
+CREATE OR REPLACE VIEW v_conversations_with_provider AS
+SELECT
+    c.conversation_id,
+    c.client_id,
+    c.provider_id,
+    c.last_message,
+    c.last_message_time,
+    c.created_at,
+    c.updated_at,
+
+    -- Provider full name
+    CONCAT(sp.fname, ' ', sp.lname) AS provider_name,
+
+    -- Provider profile picture
+    pp.profile_pic
+
+FROM conversations c
+JOIN service_providers sp
+    ON c.provider_id = sp.service_id
+LEFT JOIN provider_profiles pp
+    ON sp.service_id = pp.service_id;
+
+CREATE OR REPLACE VIEW v_conversations_with_client AS
+SELECT
+    c.conversation_id,
+    c.client_id,
+    c.provider_id,
+    c.last_message,
+    c.last_message_time,
+    c.created_at,
+    c.updated_at,
+
+    -- client full name
+    cl.name,
+
+    -- client profile picture
+    cl.profile_pic
+
+FROM conversations c
+JOIN clients cl
+    ON c.client_id = c.client_id;
+
+CREATE TABLE event_comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    
+    event_id INT NOT NULL,
+    client_id INT NOT NULL,
+    
+    comment_text TEXT NOT NULL,
+    
+    status ENUM('ON', 'OFF') DEFAULT 'ON',   -- soft delete (hide but keep data)
+    
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (post_id) REFERENCES event_posts(event_id)
+        ON DELETE CASCADE,
+        
+    FOREIGN KEY (client_id) REFERENCES clients(client_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE events (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    client_id INT NOT NULL,
+
+    event_name VARCHAR(255) NOT NULL,
+    event_type VARCHAR(100) NOT NULL,
+    event_description TEXT,
+
+    start_datetime DATETIME NOT NULL,
+    end_datetime DATETIME NOT NULL,
+
+    guest_count INT,
+
+    venue_type ENUM('HAS_VENUE', 'NEED_VENUE') NOT NULL,
+    venue_address VARCHAR(255),
+
+    total_cost DECIMAL(12,2) DEFAULT 0.00,
+
+    -- STEP based progress
+    progress_step ENUM(
+        'STEP_1_BASIC',
+        'STEP_2_PACKAGES',
+        'STEP_3_PAYMENT'
+    ) DEFAULT 'STEP_1_BASIC',
+
+    -- computed logically in backend
+    progress_percent DECIMAL(5,2) DEFAULT 33.33,
+
+    status ENUM('ON','OFF') DEFAULT 'ON',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE event_packages (
+    
+    event_package_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    package_id INT NOT NULL,
+
+    client_id INT NOT NULL,
+    service_id INT NOT NULL, -- service provider
+
+    -- confirmation flow
+    sent_status ENUM('OFF','ON') DEFAULT 'OFF',        -- invoice/request sent
+    confirmation_status ENUM(
+        'PENDING',
+        'ACCEPTED',
+        'REJECTED'
+    ) DEFAULT 'PENDING',
+
+    confirmed_at DATETIME NULL,
+
+    -- soft delete / cancel
+    status ENUM('ON','OFF') DEFAULT 'ON',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (package_id)
+        REFERENCES packages(package_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE,
+
+    UNIQUE (event_id, package_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE service_types (
+    service_type_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,   -- Catering, Photography, etc.
+    status ENUM('ON','OFF') DEFAULT 'ON'
+) ENGINE=InnoDB;
+
+
+CREATE TABLE event_services (
+    event_service_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL,
+    service_type_id INT NOT NULL,
+
+    FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (service_type_id)
+        REFERENCES service_types(service_type_id)
+        ON DELETE CASCADE,
+
+    UNIQUE (event_id, service_type_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    provider_id INT NOT NULL,          -- FK -> service provider
+    client_id INT NOT NULL,            -- FK -> client/user
+    booking_id INT DEFAULT NULL,       -- optional, to link to a booking
+    rating INT CHECK (rating BETWEEN 1 AND 5),  -- 1 to 5 stars
+    review_text TEXT,                  -- optional user comment
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (provider_id) REFERENCES service_provider(id) ON DELETE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE clients (
+    client_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Basic Info
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(191) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+
+    -- Contact Info
+    contact VARCHAR(15),
+    address TEXT NOT NULL,
+
+    -- Profile
+    profile_pic VARCHAR(255) DEFAULT NULL,
+
+    -- Status (soft delete / block)
+    status ENUM('ON','OFF') DEFAULT 'ON',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP 
+        ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;

@@ -1,0 +1,206 @@
+:root {
+  /* Tweak these to theme the card */
+  --metric-card-bg: #ffffff;
+  --metric-card-radius: 16px;
+  --metric-card-border: 1px solid rgba(0, 0, 0, 0.08);
+  --metric-card-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.04);
+  --metric-padding-y: 20px;
+  --metric-padding-x: 24px;
+  --metric-width: 270px;
+
+  --metric-title-color: #111111;
+  --metric-value-color: #111111;
+  --metric-note-color: #6b7280;
+
+  --metric-font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.metric-card {
+  background: var(--metric-card-bg);
+  border-radius: var(--metric-card-radius);
+  border: var(--metric-card-border);
+  box-shadow: var(--metric-card-shadow);
+  padding: var(--metric-padding-y) var(--metric-padding-x);
+  width: min(var(--metric-width), 100%);
+  display: grid;
+  row-gap: 8px;
+  font-family: var(--metric-font);
+  color: var(--metric-title-color);
+  position: relative;
+}
+
+.metric-card__title {
+  font-weight: 600;
+  font-size: clamp(14px, 2.2vw, 18px);
+  line-height: 1.3;
+  margin: 0;
+  color: var(--metric-title-color);
+}
+
+.metric-card__value {
+  font-weight: 700;
+  font-size: clamp(28px, 8vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--metric-value-color);
+}
+
+.metric-card__note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--metric-note-color);
+}
+
+/* Optional: align the card to the right of its container */
+.metric-card--right {
+  margin-left: auto;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .metric-card { transition: none !important; }
+}
+
+/* Card variables */
+:root{
+  --card-bg:#fff;
+  --card-radius:16px;
+  --card-border:1px solid rgba(0,0,0,0.08);
+  --card-shadow:0 1px 2px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.04);
+  --card-width: 1096px;
+
+  --text:#111;
+  --muted:#6b7280;
+
+  --thead-bg:#f2f1ef;
+  --row-border:#e6e6e6;
+  --row-hover:#fafafa;
+
+  --accent:#7848F4; /* footer link color */
+
+  --status-new-bg:#dbeafe;       --status-new-fg:#1d4ed8;
+  --status-ip-bg:#fef3c7;        --status-ip-fg:#d97706;
+  --status-res-bg:#dcfce7;       --status-res-fg:#16a34a;
+
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+}
+
+/* Card */
+.complaints-card{
+  width:min(var(--card-width),100%);
+  background:var(--card-bg);
+  border:var(--card-border);
+  border-radius:var(--card-radius);
+  box-shadow:var(--card-shadow);
+  font-family:var(--font);
+  color:var(--text);
+    display:flex;
+
+  flex-direction:column;
+    gap:10px;
+    position: relative;
+    left: 300px;
+    top: -100px;
+}
+
+/* Optional: align the whole card to the right of its container */
+.complaints-card--right{ margin-left:auto; }
+
+/* Header */
+.complaints-card__header{
+  padding:20px 24px 12px;
+}
+.complaints-card__title{
+  font-size:clamp(18px,2.2vw,24px);
+  font-weight:600;
+  margin:0;
+}
+
+/* Table wrapper (enables horizontal scroll on small screens) */
+.complaints-card__table-wrap{
+  overflow-x:auto;
+}
+
+/* Table */
+.complaints-table{
+  width:100%;
+  min-width:760px;
+  border-collapse:collapse;
+}
+.complaints-table thead th{
+  background:var(--thead-bg);
+  text-align:left;
+  font-weight:600;
+  font-size:14px;
+  color:#4b5563;
+  padding:12px 24px;
+  border-bottom:1px solid var(--row-border);
+  white-space:nowrap;
+}
+.complaints-table tbody td{
+  padding:14px 24px;
+  border-bottom:1px solid var(--row-border);
+  vertical-align:middle;
+  font-size:14px;
+}
+.complaints-table tbody tr:hover{
+  background:var(--row-hover);
+}
+
+/* Customer cell */
+.customer{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.customer__avatar{
+  width:32px; height:32px; border-radius:50%; object-fit:cover;
+}
+.customer__name{
+  font-weight:600; line-height:1.2;
+}
+.customer__org{
+  color:var(--muted); font-size:12px; line-height:1.2;
+}
+
+/* Status pill */
+.status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  border-radius:9999px;
+  font-weight:600;
+  font-size:12px;
+  line-height:1;
+  white-space:nowrap;
+}
+.status--new{ background:var(--status-new-bg); color:var(--status-new-fg); }
+.status--inprogress{ background:var(--status-ip-bg); color:var(--status-ip-fg); }
+.status--resolved{ background:var(--status-res-bg); color:var(--status-res-fg); }
+
+/* Ellipsis row */
+.ellipsis-row td{
+  text-align:center;
+  color:#9ca3af;
+  padding:12px 24px;
+  font-size:18px;
+}
+
+/* Footer */
+.complaints-card__footer{
+  display:flex;
+  justify-content:flex-end;
+  padding:12px 24px 20px;
+}
+.complaints-card__link{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+.complaints-card__link:hover{ text-decoration:underline; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}

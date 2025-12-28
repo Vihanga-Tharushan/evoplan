@@ -1,0 +1,558 @@
+.dashboard-applications-application-view,
+.dashboard-applications-application-view * {
+  box-sizing: border-box;
+}
+.dashboard-applications-application-view {
+  background: #ffffff;
+  height: 1765px;
+  position: relative;
+  overflow: hidden;
+}
+.group-3 {
+  position: absolute;
+  inset: 0;
+}
+.group-2 {
+  width: 901px;
+  height: 423px;
+  position: static;
+}
+.rectangle-10 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 409.9px;
+  position: absolute;
+  left: 246px;
+  top: 298.1px;
+}
+.rectangle-11 {
+  background: #ffffff;
+  width: 219px;
+  height: 24.95px;
+  position: absolute;
+  left: 288px;
+  top: 287px;
+}
+.profile-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 307px;
+  top: 285px;
+  width: 215px;
+  height: 40px;
+}
+.name {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 346px;
+}
+.email {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 449px;
+}
+.district {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 301px;
+  top: 564px;
+}
+.town {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 301px;
+  top: 626px;
+}
+.galle {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 381px;
+  top: 569px;
+  width: 162px;
+}
+.hikkaduwa {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 381px;
+  top: 631px;
+  width: 162px;
+}
+.application-id {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 280px;
+  top: 215px;
+}
+.group-4 {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-13 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 863px;
+  position: absolute;
+  left: 246px;
+  top: 763px;
+}
+.rectangle-112 {
+  background: #ffffff;
+  width: 250px;
+  height: 32px;
+  position: absolute;
+  left: 288px;
+  top: 755px;
+}
+.business-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #0b2c75, #0b2c75);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 306px;
+  top: 744.34px;
+  width: 237px;
+  height: 40px;
+  transform-origin: 0 0;
+  transform: rotate(-0.083deg) scale(1, 1);
+}
+.rectangle-14 {
+  background: #d9d9d9;
+  border-radius: 15px;
+  width: 622px;
+  height: 118px;
+  position: absolute;
+  left: 307px;
+  top: 1208px;
+}
+.business-name {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 801px;
+}
+.service-type {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 916px;
+}
+.business-address {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 990px;
+}
+.district2 {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 344px;
+  top: 1027px;
+}
+.town2 {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 347px;
+  top: 1094px;
+}
+.text-on-a-path {
+  border-radius: 0px;
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: 466px;
+  top: 916px;
+  object-fit: cover;
+}
+.venue-halls {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 534px;
+  top: 916px;
+  width: 162px;
+}
+.galle2 {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 432px;
+  top: 1032px;
+  width: 94px;
+}
+.hikkaduwa2 {
+  color: #454545;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 415px;
+  top: 1099px;
+  width: 162px;
+}
+.business-description {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 1161px;
+}
+.years-of-experience {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 305px;
+  top: 1366px;
+}
+.upload-business-license-verified-document {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 305px;
+  top: 1433px;
+}
+.rectangle-15 {
+  background: #d9d9d9;
+  border-radius: 15px;
+  width: 622px;
+  height: 118px;
+  position: absolute;
+  left: 307px;
+  top: 1480px;
+}
+.service-provider-application {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: absolute;
+  left: 700px;
+  translate: -50%;
+  top: 141px;
+  width: 765px;
+  height:40px;
+}
+.avenra-hikkaduwa-pdf {
+  color: var(--black, #131313);
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  font-weight: 500;
+  position: absolute;
+  left: 367px;
+  top: 1501.5px;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 335px;
+  top: 1494px;
+}
+.pngtree-pdf-file-icon-png-png-image-7965915-1 {
+  width: 100%;
+  height: 32px;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.avenra-hotels-hikkaduwa {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 333px;
+  top: 852px;
+}
+.mr-nishantha-fernando {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 333px;
+  top: 392px;
+}
+.app-1033 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 428px;
+  top: 219px;
+}
+.nishantha-fernando-gmail-com {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 329px;
+  top: 495px;
+}
+._10 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 525px;
+  top: 1370px;
+  width: 41px;
+}
+.avenra-hotels-hikkaduwa2 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 326px;
+  top: 1225px;
+  width: 587px;
+  height: 87px;
+}
+.button {
+  width: 162px;
+  height: 54px;
+  position: absolute;
+  left: 970px;
+  top: 1641px;
+}
+.rectangle-5 {
+  background: #7848f4;
+  border-radius: 15px;
+  width: 162px;
+  height: 54px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.approve {
+  color: #fffbfb;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  left: 29px;
+  top: 9px;
+  width: 104px;
+  height: 39px;
+}
+.button2 {
+  width: 162px;
+  height: 54px;
+  position: absolute;
+  left: 779px;
+  top: 1641px;
+}
+.rectangle-52 {
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7848f4;
+  border-width: 2px;
+  width: 162px;
+  height: 54px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.reject {
+  color: #7848f4;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  left: 42px;
+  top: 10px;
+  width: 78px;
+  height: 39px;
+}
+.group-39 {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+.frame-31 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}

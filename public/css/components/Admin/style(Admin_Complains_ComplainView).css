@@ -1,0 +1,406 @@
+.dashboard-complains-complain-view,
+.dashboard-complains-complain-view * {
+  box-sizing: border-box;
+}
+.dashboard-complains-complain-view {
+  background: #ffffff;
+  height: 1160px;
+  position: relative;
+  overflow: hidden;
+}
+.group-3 {
+  position: absolute;
+  inset: 0;
+}
+.group-2 {
+  width: 901px;
+  height: 232px;
+  position: static;
+}
+.rectangle-10 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 219px;
+  position: absolute;
+  left: 246px;
+  top: 288px;
+}
+.rectangle-11 {
+  background: #ffffff;
+  width: 210px;
+  height: 27px;
+  position: absolute;
+  left: 288px;
+  top: 275px;
+}
+.client-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 307px;
+  top: 275px;
+  width: 186px;
+  height: 40px;
+}
+.name {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 336px;
+}
+.client-service-provider-id {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 307px;
+  top: 439px;
+}
+.maggie-johnson {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 333px;
+  top: 382px;
+}
+.c-3024 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 575px;
+  top: 443px;
+}
+.complain-id {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 280px;
+  top: 215px;
+}
+.group-4 {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-13 {
+  background: #fffdfd;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: #7358a4;
+  border-width: 3px;
+  width: 901px;
+  height: 445px;
+  position: absolute;
+  left: 245px;
+  top: 559px;
+}
+.rectangle-112 {
+  background: #ffffff;
+  width: 250px;
+  height: 32px;
+  position: absolute;
+  left: 287px;
+  top: 551px;
+}
+.complain-info {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #0b2c75, #0b2c75);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: absolute;
+  left: 305px;
+  top: 540.34px;
+  width: 237px;
+  height: 40px;
+  transform-origin: 0 0;
+  transform: rotate(-0.083deg) scale(1, 1);
+}
+.rectangle-14 {
+  background: #d9d9d9;
+  border-radius: 15px;
+  width: 622px;
+  height: 118px;
+  position: absolute;
+  left: 334px;
+  top: 822px;
+}
+.subject {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 306px;
+  top: 597px;
+}
+.category {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 306px;
+  top: 700px;
+}
+.service-provider-id {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 306px;
+  top: 743px;
+}
+.text-on-a-path {
+  border-radius: 0px;
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: 465px;
+  top: 712px;
+  object-fit: cover;
+}
+.product-defect {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 493px;
+  top: 702px;
+  width: 162px;
+}
+.product-defect2 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 492px;
+  top: 748px;
+  width: 162px;
+}
+.complain-description {
+  color: #000000;
+  text-align: left;
+  font-family: "Nunito-Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 306px;
+  top: 786px;
+}
+.one-album-is-missing {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 332px;
+  top: 648px;
+}
+.i-do-not-found-my-photo-album-yet {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 353px;
+  top: 839px;
+  width: 587px;
+  height: 87px;
+}
+.client-complain {
+  background: linear-gradient(to left, #7848f4, #7848f4),
+    linear-gradient(to left, #840faf, #840faf);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+  position: absolute;
+  left: 700px;
+  translate: -50%;
+  top: 141px;
+  width: 765px;
+  height: 50px;
+}
+.cc-2259 {
+  color: #454545;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 439px;
+  top: 219px;
+}
+.button {
+  width: 195px;
+  height: 54px;
+  position: absolute;
+  left: 720px;
+  top: 1027px;
+}
+.rectangle-5 {
+  background: #7848f4;
+  border-radius: 15px;
+  width: 195px;
+  height: 54px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.make-a-call {
+  color: #fffbfb;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  left: 24px;
+  top: 13px;
+  width: 147px;
+  height: 39px;
+}
+.button2 {
+  width: 195px;
+  height: 54px;
+  position: absolute;
+  left: 937px;
+  top: 1027px;
+}
+.send-a-mail {
+  color: #fffbfb;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  position: absolute;
+  left: 24px;
+  top: 13px;
+  width: 147px;
+  height: 39px;
+}
+.group-39 {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+.frame-31 {
+  background: #ffffff;
+  width: 1440px;
+  height: 92px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.rectangle-21 {
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 1320px;
+  top: 11px;
+  object-fit: cover;
+}
+.vector {
+  width: 1.74%;
+  height: 29.35%;
+  position: absolute;
+  right: 13.33%;
+  left: 84.93%;
+  bottom: 43.48%;
+  top: 27.17%;
+  overflow: visible;
+}
+.phosphor-icons-chats-circle {
+  width: 36px;
+  height: 35px;
+  position: absolute;
+  left: 1121px;
+  top: 21px;
+  overflow: visible;
+}
+.vector2 {
+  width: 1.67%;
+  height: 26.09%;
+  position: absolute;
+  right: 27.64%;
+  left: 70.69%;
+  bottom: 42.39%;
+  top: 31.52%;
+  overflow: visible;
+}
+.frame-48096275 {
+  border-radius: 9px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-width: 1px;
+  width: 52px;
+  height: 37px;
+  position: absolute;
+  left: 33px;
+  top: 25px;
+  box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.72);
+  overflow: hidden;
+}
+.group-40 {
+  height: auto;
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  overflow: visible;
+}
+.evo-plan-logo-new-removebg-preview-2 {
+  border-radius: 15px;
+  width: 150px;
+  height: 39px;
+  position: absolute;
+  left: 125px;
+  top: 26.5px;
+  object-fit: cover;
+}

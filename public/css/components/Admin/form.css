@@ -1,0 +1,131 @@
+.login-page,
+.login-page * {
+  box-sizing: border-box;
+}
+
+.form-container {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  padding: 20px;
+  background-color: #fffbfb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  border: 1px solid #7848f4;
+  border-radius: 10px;
+}
+
+.form-container-login {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 80px;
+  padding: 20px;
+  background-color: #fffbfb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  border: 1px solid #7848f4;
+  border-radius: 10px;
+}
+
+.form-img-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-img{
+  border-radius: 15px;
+  width: 337px;
+  height: 83px;
+  object-fit: cover;
+  aspect-ratio: 337/83;
+  align-self: center;
+  position: flex;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.form-topic{
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: #000000;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.form-topic-login {
+  font-family: "Inter", sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #5e34c9;
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+input[type=text], input[type=password], input[type=email] {
+  border: 1px solid #7848f4;
+  border-radius: 30px;
+  width: 90%;
+  height: 24px;
+  margin: 10px 0 20px 0;
+  padding-top: 4px;
+  padding-left: 16px;
+  padding-right: 30px;
+  padding-bottom: 5px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  display: block;
+} 
+
+.form-btn {
+  background: #7848f4;
+  color: #fffbfb;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  height: 40px;
+  width: 100%;
+  border-radius: 30px;
+  margin-bottom: 10px;
+  border: none;
+  cursor: pointer;
+  align-self: right;
+  transition: .2s all;
+}
+.form-btn:hover {
+  background: #311675; 
+}
+.form-cn-btn {
+  background: #fffbfb;
+  color: #7848f4;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  height: 40px;
+  width: 100%;
+  border-radius: 30px;
+  border: #7848f4 1px solid;
+  cursor: pointer;
+  align-self: right;
+  transition: .2s all;
+}
+.form-cn-btn:hover {
+  background: #311675; 
+  color: #fffbfb;
+}
+.form-invalid {
+  color: red;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 560;
+  height: 12px;
+  position: relative;
+  left: 15px;
+  margin-top: -15px;
+  margin-bottom: 10px;
+  display: block;
+}

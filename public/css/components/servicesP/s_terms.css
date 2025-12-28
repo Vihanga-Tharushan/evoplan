@@ -1,0 +1,16 @@
+.header { display: flex; justify-content: flex-end; padding: 35px 45px; }
+.brand__logo { width: 199px; height: 49px; object-fit: contain; border-radius: 15px; }
+
+/* Main */
+.terms { width: min(981px, 92vw); margin: 40px auto 80px; }
+.terms__title { color: #7848f4; font-size: 32px; font-weight: 600; }
+
+.section { margin-top: 24px; font-size: 16px; line-height: 1.6; }
+.section__heading { font-weight: 700; margin-bottom: 8px; }
+.section ul { list-style: disc inside; }
+.section li { margin-left: 18px; margin-bottom: 6px; }
+
+.section--final { font-weight: 700; margin-top: 24px; }
+
+.btn { appearance: none; border: none; border-radius: 15px; height: 50px; padding: 0 24px; font-size: 18px; font-weight: 200; cursor: pointer; }
+.btn.btn--primary{ width: 158px; background: #7848f4; color: #fffbfb; }

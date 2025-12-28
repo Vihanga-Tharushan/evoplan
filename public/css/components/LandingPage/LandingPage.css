@@ -1,0 +1,2151 @@
+.evo-plan-land-page,
+.evo-plan-land-page * {
+  box-sizing: border-box;
+  justify-content: center;
+}
+.evo-plan-land-page {
+  background: linear-gradient(to left, #f8fafc, #f8fafc),
+    linear-gradient(to left, #ffffff, #ffffff);
+  height: auto;
+  position: relative;
+}
+.container {
+  height: auto;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+}
+.footer {
+  display: flex;
+  height: 450px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 5120px;
+  justify-content: center;
+  background: none;
+}
+
+
+.a-complete-platform-where-event-service-providers-grow-their-business-and-clients-easily-connect-with-the-best-professionals-to-bring-their-events-to-life {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  position: relative;
+  top: 138px;
+  height: 34px;
+  display: flex;
+}
+.admin_login-container {
+  width: 1920px;
+  text-align: center;
+  height: 36px;
+  position: absolute;
+  left: 0px;
+  top: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.admin_login-btn {
+  color: #7848f4;
+  background: none;
+  font-family: "  Inter-Bold", sans-serif;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 160px;
+  height: 28px;
+  border-color: #7848f4;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin_login-btn:hover {
+  color: #fdfdfd;
+  background: #7848f4;
+}
+
+.coordinator_login-container {
+  width: 1920px;
+  text-align: center;
+  height: 36px;
+  position: absolute;
+  left: 0px;
+  top: 45px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.coordinator_login-btn {
+  color: #7848f4;
+  background: none;
+  font-family: "  Inter-Bold", sans-serif;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 220px;
+  height: 28px;
+  border-color: #7848f4;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.coordinator_login-btn:hover {
+  color: #fdfdfd;
+  background: #7848f4;
+}
+
+.horizontal-line1 {
+  border-style: solid;
+  border-color: #e2e8f0;
+  border-width: 1px 0px 0px 0px;
+  height: 45px;
+  position: relative;
+  right: 32px;
+  left: 0px;
+  top: 160px;
+}
+.contact-us {
+   color: #161718;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 540;
+  position: relative;
+  top: 184px;
+  height: 14px;
+  line-height: 18px;
+}
+
+.horizontal-line2 {
+  border-style: solid;
+  border-color: #e2e8f0;
+  border-width: 1px 0px 0px 0px;
+  height: 45px;
+  position: relative;
+  right: 32px;
+  left: 0px;
+  top: 190px;
+}
+
+._2025-evo-plan-all-rights-reserved {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+  top: 156px;
+  height: 14px;
+}
+.logo-2 {
+  width: 428px;
+  height: 100px;
+  position: relative;
+  top: 124px;
+  object-fit: cover;
+  aspect-ratio: 430/100;
+}
+
+/* Get Ready to Start */
+.get-ready-to-start {
+  background: #7848f4;
+  height: 356px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 4750px;
+}
+.white-button-with-border {
+  background: #f1f5f9;
+  border-radius: 6px;
+  width: 233px;
+  height: 44px;
+  position: absolute;
+  left: calc(50% - 238px);
+  top: 232px;
+}
+.sign-up-as-service-provider {
+  color: #840faf;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13.234375px;
+  line-height: 20px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 187px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.color-button-with-border {
+  background: #7848f4;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #f8fafc;
+  border-width: 1.2px;
+  width: 220.42px;
+  height: 44px;
+  position: absolute;
+  left: calc(50% - -32px);
+  top: 232px;
+}
+.sign-up-as-client {
+  color: #f8fafc;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13.234375px;
+  line-height: 20px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 156.62px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.get-ready-to-start-para {
+  height: 196px;
+  position: absolute;
+  right: 576px;
+  left: 576px;
+  top: 120px;
+}
+.heading-2-ready-to-get-started {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 35.296875px;
+  line-height: 40px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 379.03px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.join-our-community-of-service-providers-and-clients-today-and-make-your-dream-event-to-next-level-experience {
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16.59375px;
+  line-height: 28px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 69px;
+  width: 818px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-service-providers {
+  height: 659px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 4045px;
+}
+.featured-service-providers-box {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 1293px;
+  top: 129px;
+}
+.rectangle-3925 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.music {
+  width: 51px;
+  height: 51px;
+  position: absolute;
+  left: 130px;
+  top: 38px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.music-dj-service {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 115px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._90-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 112px;
+  top: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.d-js-live-bands-and-music-entertainment {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 28px;
+  top: 167px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-service-providers-box2 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 1290px;
+  top: 396px;
+}
+.rectangle-3929 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.florist {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: 120px;
+  top: 30px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.bouquets-custom-flower-arrangements-custom-cakes-themed-sweet-creations {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 31px;
+  top: 178px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.florists-cake-designers {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 62px;
+  top: 124px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._100-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 112px;
+  top: 156px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-service-providers-box3 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 316px;
+  top: 129px;
+}
+.rectangle-3922 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.wedding-halls-conference-outdoor-venues {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 44px;
+  top: 164px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venues-halls {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 91px;
+  top: 111px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._120-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 100px;
+  top: 134px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venue {
+  width: 43px;
+  height: 43px;
+  position: absolute;
+  left: 131px;
+  top: 44px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-box4 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 638px;
+  top: 129px;
+}
+.rectangle-3923 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+._180-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 105px;
+  top: 137px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.professional-catering-services-and-food-suppliers {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 36px;
+  top: 167px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.catering-food-suppliers {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 63px;
+  top: 111px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.food {
+  width: 49px;
+  height: 49px;
+  position: absolute;
+  left: 136px;
+  top: 38px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-box5 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 960px;
+  top: 129px;
+}
+.rectangle-3924 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+._150-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 105px;
+  top: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.professional-photography-and-videography {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 61px;
+  top: 167px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photography-videography {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 53px;
+  top: 113px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photography {
+  width: 53px;
+  height: 53px;
+  position: absolute;
+  left: 131px;
+  top: 34px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-box6 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 316px;
+  top: 396px;
+}
+.rectangle-3926 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.decorators-events-stylists {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 42px;
+  top: 126px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._110-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 100px;
+  top: 158px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.event-decoration-and-styling-services {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 30px;
+  top: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deco {
+  width: 62px;
+  height: 62px;
+  position: absolute;
+  left: 122px;
+  top: 35px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-box7 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 964px;
+  top: 391px;
+}
+.rectangle-3928 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.hotel-entertainment {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 62px;
+  top: 129px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._200-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 99px;
+  top: 161px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.accommodation-and-entertainment-services {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 17px;
+  top: 187px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hotel {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 120px;
+  top: 30px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-box8 {
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 638px;
+  top: 391px;
+}
+.rectangle-3927 {
+  background: #ffffff;
+  border-radius: 22px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-width: 3px;
+  width: 305px;
+  height: 240px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.event-equipment-rentals {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  position: absolute;
+  left: 53px;
+  top: 127px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+._85-providers {
+  color: #7848f4;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 105px;
+  top: 158px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sound-systems-lighting-and-equipment-rental {
+  color: #8d8d8d;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 31px;
+  top: 186px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rental {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 113px;
+  top: 30px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.featured-service-providers-para {
+  width: 808px;
+  height: 80px;
+  position: absolute;
+  left: 556px;
+  top: 0px;
+}
+.heading-2-featured-photographers {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-ExtraBold", sans-serif;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 434px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.discover-amazing-service-providers-on-our-platform-ready-to-make-your-dream-event-true {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16.734375px;
+  line-height: 28px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 52px;
+  width: 808px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.some-events-that-we-covered {
+  width: 1920px;
+  height: 1102px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 2379px;
+}
+.img-5 {
+  width: 537px;
+  height: 470px;
+  position: absolute;
+  left: 1107px;
+  top: 615px;
+}
+.img-1 {
+  width: 537px;
+  height: 470px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 537/470;
+}
+.img-4 {
+  width: 471px;
+  height: 471px;
+  position: absolute;
+  left: 621px;
+  top: 613px;
+}
+.img-42 {
+  width: 471px;
+  height: 471px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+.img-3 {
+  width: 314px;
+  height: 471px;
+  position: absolute;
+  left: 292px;
+  top: 613px;
+}
+.img-32 {
+  width: 314px;
+  height: 471px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 314/471;
+}
+.img-2 {
+  width: 702px;
+  height: 468px;
+  position: absolute;
+  left: 942px;
+  top: 123px;
+}
+.img-22 {
+  width: 702px;
+  height: 468px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 3/2;
+}
+.img-12 {
+  width: 625px;
+  height: 468px;
+  position: absolute;
+  left: 292px;
+  top: 122px;
+}
+.img-13 {
+  width: 625px;
+  height: 468px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 625/468;
+}
+.some-events-that-we-covered-para {
+  width: 808px;
+  height: 80px;
+  position: absolute;
+  left: 556px;
+  top: 0px;
+}
+.featured-photographers {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-ExtraBold", sans-serif;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 800;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 536px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.make-your-events-colorful-like-these-clients-had {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16.734375px;
+  line-height: 28px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 52px;
+  width: 808px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.what-people-say {
+  height: 376px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 3552px;
+}
+.what-people-saya-para {
+  height: 80px;
+  position: absolute;
+  right: 316px;
+  left: 316px;
+  top: 0px;
+}
+.heading-2-what-people-say {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 29.1796875px;
+  line-height: 36px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 241.11px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hear-from-photographers-and-clients-who-use-our-platform {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16.734375px;
+  line-height: 28px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 52px;
+  width: 469.33px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.what-people-saya-box {
+  background: #ffffff;
+  border-radius: 12px;
+  position: absolute;
+  width: 444px;
+  left: 282px;
+  bottom: 0px;
+  top: 144px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.svg {
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  overflow: visible;
+}
+.this-platform-helped-me-grow-my-photography-business-by-300-in-just-six-months {
+  color: #020817;
+  text-align: left;
+  font-family: "Inter-Italic", sans-serif;
+  font-size: 16.59375px;
+  line-height: 28px;
+  font-weight: 400;
+  font-style: italic;
+  position: absolute;
+  left: 24px;
+  top: 83px;
+  width: 368.95px;
+  height: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.emily-t-wedding-photographer {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13.125px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 160px;
+  width: 199.95px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.what-people-saya-box2 {
+  background: #ffffff;
+  border-radius: 12px;
+  position: absolute;
+  width: 444px;
+  left: 738px;
+  bottom: 0px;
+  top: 144px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.svg2 {
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  overflow: visible;
+}
+.the-booking-system-saves-me-hours-every-week-and-my-clients-love-how-professional-everything-looks {
+  color: #020817;
+  text-align: left;
+  font-family: "Inter-Italic", sans-serif;
+  font-size: 16.734375px;
+  line-height: 28px;
+  font-weight: 400;
+  font-style: italic;
+  position: absolute;
+  left: 24px;
+  top: 83px;
+  width: 339.33px;
+  height: 77px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.mark-s-portrait-photographer {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13.125px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 188px;
+  width: 189.28px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.what-people-saya-box3 {
+  background: #ffffff;
+  border-radius: 12px;
+  position: absolute;
+  width: 444px;
+  left: 1194px;
+  bottom: 0px;
+  top: 144px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.svg3 {
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  overflow: visible;
+}
+.i-found-the-perfect-service-providers-for-my-wedding-through-this-platform-the-experience-was-seamless {
+  color: #020817;
+  text-align: left;
+  font-family: "Inter-Italic", sans-serif;
+  font-size: 16.59375px;
+  line-height: 28px;
+  font-weight: 400;
+  font-style: italic;
+  position: absolute;
+  left: 24px;
+  top: 83px;
+  width: 368.53px;
+  height: 77px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.jessica-k-client {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13.34375px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 188px;
+  width: 107.64px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.platform-features {
+  height: 552px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 1704px;
+}
+.platform-features-para {
+  height: 80px;
+  position: absolute;
+  right: 316px;
+  left: 316px;
+  top: 0px;
+}
+.heading-2-platform-features {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 29.1796875px;
+  line-height: 36px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 254.48px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.everything-you-need-to-plan-your-event-from-finding-services-to-the-final-celebration {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16.59375px;
+  line-height: 28px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 52px;
+  width: 727.43px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  position: absolute;
+  width: 400px;
+  left: 310px;
+  top: 144px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.portfolia {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 24px;
+  overflow: visible;
+}
+.heading-3-portfolio-creation {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 19.53125px;
+  line-height: 28px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 80px;
+  width: 169.12px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.build-a-professional-portfolio-to-showcase-your-best-work-and-attract-clients {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 120px;
+  width: 363.87px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box2 {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  position: absolute;
+  width: 400px;
+  left: 760px;
+  top: 144px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.booking {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 24px;
+  overflow: visible;
+}
+.heading-3-booking-management {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 19.375px;
+  line-height: 28px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 80px;
+  width: 207.95px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.manage-your-bookings-schedule-and-client-sessions-all-in-one-place {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 120px;
+  width: 311.32px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box3 {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  width: 400px;
+  position: absolute;
+  left: 1210px;
+  top: 144px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.buget {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: calc(50% - 23px);
+  top: 17px;
+  overflow: visible;
+}
+.heading-3-custom-web-page {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 19.375px;
+  line-height: 28px;
+  font-weight: 700;
+  position: absolute;
+  left: calc(50% - 112px);
+  top: 80px;
+  width: 237px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.according-to-your-selection-of-service-providers-packages-system-calculates-the-budget {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 120px;
+  width: 351.72px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box4 {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  position: absolute;
+  width: 400px;
+  left: 310px;
+  top: 364px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.client {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 24px;
+  overflow: visible;
+}
+.heading-3-client-experience {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 19.375px;
+  line-height: 28px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 80px;
+  width: 168.09px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.provide-a-seamless-experience-for-clients-from-booking-to-delivery {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 120px;
+  width: 330.75px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box5 {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  position: absolute;
+  width: 400px;
+  left: 760px;
+  top: 350px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.invoice {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 24px;
+  overflow: visible;
+}
+.heading-3-invoice-management {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 19.21875px;
+  line-height: 28px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 80px;
+  width: 196.17px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.create-and-manage-professional-invoices-and-track-payments-easily {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 120px;
+  width: 363.1px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.platform-features-box6 {
+  background: #ffffff;
+  border-radius: 12px;
+  height: 188px;
+  position: absolute;
+  width: 400px;
+  left: 1210px;
+  top: 364px;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.package {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: calc(50% - 12px);
+  top: 24px;
+  overflow: visible;
+}
+.provide-a-full-packages-which-makes-your-planning-easy {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 116px;
+  width: 330.75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-it-works {
+  background: rgba(241, 245, 249, 0.3);
+  height: 640px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 1028px;
+}
+.how-it-works-para {
+  height: 129px;
+  position: absolute;
+  right: 576px;
+  left: 564px;
+  top: 59px;
+}
+.heading-2-how-it-works {
+  color: #020817;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 29.0625px;
+  line-height: 36px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+  width: 188.51px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.our-platform-connects-event-service-providers-with-clients-making-it-easy-to-showcase-your-services-and-help-users-create-unforgettable-events {
+  color: #64748b;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16.59375px;
+  line-height: 28px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 47px;
+  width: 742px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-it-works-box {
+  background: #ffffff;
+  border-radius: 12px;
+  position: absolute;
+  right: 984px;
+  left: 292px;
+  bottom: 100px;
+  top: 252px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.heading-3 {
+  height: 32px;
+  position: absolute;
+  right: 32px;
+  left: 32px;
+  top: 32px;
+}
+.for-service-providers {
+  color: #020817;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 23.4375px;
+  line-height: 32px;
+  font-weight: 700;
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 258px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.svg4 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  translate: 0 -50%;
+  overflow: visible;
+}
+.list4 {
+  height: 132px;
+  position: absolute;
+  right: 32px;
+  left: 32px;
+  top: 80px;
+}
+.item {
+  height: 24px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+}
+.div {
+  color: #0b2c75;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 16.2px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.create-your-custom-webpage-and-professional-portfolio {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.75px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 390.68px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.item2 {
+  height: 24px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 36px;
+}
+.manage-bookings-sessions-and-client-communications {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 390.23px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.item3 {
+  height: 24px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 72px;
+}
+.generate-and-send-professional-invoices {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 288.87px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.item4 {
+  height: 24px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 108px;
+}
+.deliver-photos-securely-through-client-galleries {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 329.4px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.button {
+  background: #7848f4;
+  border-radius: 6px;
+  width: 111px;
+  height: 40px;
+  position: absolute;
+  left: 32px;
+  top: 236px;
+}
+.get-started {
+  color: #f8fafc;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13.015625px;
+  line-height: 20px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 92px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-it-works-box2 {
+  background: #ffffff;
+  border-radius: 12px;
+  position: absolute;
+  right: 292px;
+  left: 984px;
+  bottom: 100px;
+  top: 252px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.svg5 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  translate: 0 -50%;
+  overflow: visible;
+}
+.for-clients {
+  color: #020817;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 23.8125px;
+  line-height: 32px;
+  font-weight: 700;
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 125.25px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.browse-professional-photographers-in-your-area {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 339.03px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.compare-portfolios-and-services-with-ease {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 302.01px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.book-sessions-directly-through-the-platform {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.75px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 305.23px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.receive-and-download-your-photos-securely {
+  color: #64748b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14.875px;
+  line-height: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  width: 312.56px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.button2 {
+  background: #7848f4;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #e2e8f0;
+  border-width: 1px;
+  width: 226px;
+  height: 40px;
+  position: absolute;
+  left: 32px;
+  top: 236px;
+}
+.search-for-a-service-provider {
+  color: #f8fafc;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13.125px;
+  line-height: 20px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 194px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.main {
+  height: 992px;
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 0px;
+}
+.background {
+  background: #000000;
+  height: 992px;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+}
+._32851-ad-7-d-02-c-453-b-9-e-5-e-f-8-d-87-bc-3-c-623-1 {
+  height: 1028px;
+  width:1920px;
+  position: absolute;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 1920/992;
+  box-align: center;
+}
+.gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 40.38461446762085%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 0.6;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  top: 0px;
+}
+.container3 {
+  height: 566px;
+  position: absolute;
+  right: 534px;
+  left: 534px;
+  top: 163px;
+}
+.heading-1-build-your-photography-brand-find-the-right-photographer {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 72px;
+  line-height: 73px;
+  font-weight: 700;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 153px;
+  width: 682.53px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.a-complete-platform-where-event-service-providers-grow-their-business-and-clients-easily-connect-with-the-best-professionals-to-bring-their-events-to-life2 {
+  color: #e5e7eb;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 18.59375px;
+  line-height: 28px;
+  font-weight: 500;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  top: 377px;
+  width: 750.1px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.white-button-with-border2 {
+  cursor: pointer;
+  background: rgba(120, 72, 244, 0.15);
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #ffffff;
+  border-width: 1px;
+  width: 329px;
+  height: 65px;
+  position: absolute;
+  left: calc(50% - -55px);
+  top: 490px;
+}
+.svg6 {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  left: calc(50% - -64.5px);
+  top: calc(50% - 12.5px);
+  overflow: visible;
+}
+.i-m-a-client {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+  position: absolute;
+  left: 93px;
+  top: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.color-button-with-border2 {
+  cursor: pointer;
+  background: #7848f4;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: #ffffff;
+  border-width: 1px;
+  width: 329px;
+  height: 65px;
+  position: absolute;
+  left: calc(50% - 378px);
+  top: 490px;
+}
+.svg7 {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  left: calc(50% - -110.5px);
+  top: calc(50% - 9.5px);
+  overflow: visible;
+}
+.i-m-a-service-provider {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+  position: absolute;
+  left: 35px;
+  top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  width: 1920px;
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+}
+.color-button {
+  cursor: pointer;
+  border: none;
+  background: #ffffff;
+  border-radius: 6px;
+  width: 70px;
+  height: 40px;
+  position: absolute;
+  right: 136px;
+  top: 50%;
+  translate: 0 -50%;
+}
+.log-in2 {
+  color: #0b2c75;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13.34375px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 38.98px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.white-button {
+  cursor: pointer;
+  border: none;
+  background: #7848f4;
+  border-radius: 6px;
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  right: 42px;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.classic_button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.classic_button:focus {
+    outline: none;
+}
+
+.sign-up2 {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13.453125px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  top: 50%;
+  width: 49.98px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo {
+  width: 213px;
+  height: 50px;
+  position: absolute;
+  left: 140px;
+  top: 20px;
+  object-fit: cover;
+  aspect-ratio: 213/50;
+}

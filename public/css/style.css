@@ -1,0 +1,5 @@
+@import url('components/servicesP/flash_messages_style.css');
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
