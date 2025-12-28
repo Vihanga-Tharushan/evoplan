@@ -7,42 +7,43 @@
   <h2 class="packages__title">Packages</h2>
 
   <div class="packages-grid">
-    <!-- Diamond -->
     <?php foreach($data['packages'] as $package): ?>
-    <article class="pkg-card tier--diamond">
-      <figure class="pkg-media">
-        <img src="<?php echo URLROOT; ?>/Public/img/packageImg/<?php echo $package->bg_image_name; ?>" alt="Camera on table">
-        <div class="pkg-overlay">
-          <div class="pkg-top">
-            <h3 class="pkg-title"><?php echo $package->title; ?></h3>
-            <ul class="pkg-list">
-              <li><?php echo $package->details; ?></li>
-            </ul>
-            <div class="pkg-price"><?php echo $package->price; ?></div>
+    <article class="package-card">
+      <div class="card-image">
+        <img src="<?php echo URLROOT; ?>/Public/img/packageImg/<?php echo $package->bg_image_name; ?>" alt="<?php echo $package->title; ?>">
+      </div>
+      <div class="card-content">
+        <h3 class="package-title"><?php echo $package->title; ?></h3>
+        <p class="package-description"><?php echo substr($package->details, 0, 100) . (strlen($package->details) > 100 ? '...' : ''); ?></p>
+        
+        <div class="provider-info-static">
+          <div class="provider-avatar">
+            <div class="avatar-placeholder"><?php echo strtoupper(substr($_SESSION['service_name'], 0, 1)); ?></div>
           </div>
-
-          <div class="pkg-author">
-            <div class="avatar"></div>
-            <div class="author-text">
-              <div class="author-name"><?php echo $_SESSION['service_name']; ?></div>
-            </div>
+          <div class="provider-details">
+            <span class="provider-name"><?php echo $_SESSION['service_name']; ?></span>
+            <span class="provider-badge">Verified Provider</span>
           </div>
         </div>
-      </figure>
-      <?php if($package->service_id == $_SESSION['service_id']): ?>
-      <a class="pkg-link" href="<?php echo URLROOT; ?>/Package/editPackage/<?php echo $package->package_id?>">View&nbsp;Package →</a>
-      <?php endif; ?>
+        
+        <span class="price">Rs.<?php echo number_format($package->price, 2); ?></span>
+        
+        <?php if($package->service_id == $_SESSION['service_id']): ?>
+        <a class="view-package-btn" href="<?php echo URLROOT; ?>/Package/editPackage/<?php echo $package->package_id?>">View Package →</a>
+        <?php endif; ?>
+      </div>
     </article>
     <?php endforeach; ?>
 
-  
-
     <!-- Add Package -->
-    <article class="pkg-card pkg-card--add">
-      <div class="pkg-media add-media">
-        <div class="add-square" aria-hidden="true">+</div>
+    <article class="package-card package-card--add">
+      <div class="card-image add-card-image">
+        <div class="add-icon">+</div>
+        <div class="add-text">Add New Package</div>
       </div>
-      <a class="pkg-link" href="<?php echo URLROOT; ?>/Package/createPackage">Add&nbsp;Package →</a>
+      <div class="card-content">
+        <a class="add-package-btn" href="<?php echo URLROOT; ?>/Package/createPackage">Create Package →</a>
+      </div>
     </article>
   </div>
 </section>
