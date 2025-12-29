@@ -479,3 +479,32 @@ CREATE TABLE clients (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP 
         ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Who sent the notification
+    sender_type ENUM('CLIENT', 'PROVIDER', 'ISSUE_COORDINATOR', 'ADMIN') NOT NULL,
+    sender_id INT NOT NULL,
+
+    -- Who receives the notification
+    receiver_type ENUM('CLIENT', 'PROVIDER', 'ISSUE_COORDINATOR', 'ADMIN') NOT NULL,
+    receiver_id INT NOT NULL,
+
+    -- Notification content
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+
+    -- Context (optional but powerful)
+    event_id INT DEFAULT NULL,
+    package_id INT DEFAULT NULL,
+
+    -- Status tracking
+    is_read ENUM('OFF','ON') DEFAULT 'OFF',
+    status ENUM('ON','OFF') DEFAULT 'ON',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    read_at DATETIME DEFAULT NULL
+) ENGINE=InnoDB;

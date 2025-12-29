@@ -168,7 +168,7 @@
 
                         
                     } else {
-                        die("File upload failed");
+                        die("File failed");
                     }
                 } else {
                     // Load view with errors

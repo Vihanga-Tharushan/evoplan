@@ -1,5 +1,11 @@
 <?php
 
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require_once APPROOT . '/libraries/PHPMailer/Exception.php';
+    require_once APPROOT . '/libraries/PHPMailer/PHPMailer.php';
+    require_once APPROOT . '/libraries/PHPMailer/SMTP.php';
+
     class Clients extends Controller {
         private $clientModel;
 
@@ -17,6 +23,8 @@
 
         private $eventModel;
 
+        private $notificationModel;
+
         public function __construct(){
 
             $this->clientModel = $this->model('M_Client');
@@ -27,9 +35,45 @@
             $this->postModel = $this->model('M_Posts');
             $this->messageModel = $this->model('M_Message');
             $this->eventModel = $this->model('M_Event');
+            $this->notificationModel = $this->model('M_notification');
 
         }
 
+
+        private function sendOtpEmail($email, $otp){
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP settings
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = '2023cs023@stu.ucsc.cmb.ac.lk';        // 🔴 YOUR GMAIL
+        $mail->Password   = 'wsec epbh hyxg tzte';     // 🔴 APP PASSWORD
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Sender & receiver
+        $mail->setFrom('chathusha15@gmail.com', 'EvoPlan');
+        $mail->addAddress($email);
+
+        // Email content
+        $mail->isHTML(true);
+        $mail->Subject = 'EvoPlan Email Verification';
+        $mail->Body    = "
+            <h2>Email Verification</h2>
+            <p>Your 4-digit verification code is:</p>
+            <h1 style='letter-spacing:3px;'>$otp</h1>
+            <p>Do not share this code.</p>
+        ";
+
+        $mail->send();
+        return true;
+
+    } catch (Exception $e) {
+        die('Mail Error: ' . $mail->ErrorInfo);
+    }
+}
 
         public function home(){
 
@@ -367,14 +411,9 @@
         }
         public function allphotography(){
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/allphotography');
-            }
-            else{
-                // Load the allphotography view
-                $this->view('clients/v_allphotography');
-            }
+            // Load the allphotography view
+            $this->view('clients/v_allphotography');
+        
         }
 
         public function viewprovider($id){
@@ -675,105 +714,21 @@
             }
         }
 
-        public function birthday(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/birthday');
-            }
-            else{
-                // Load the birthday view
-                $this->view('clients/v_birthday');
-            }
-        }
-        public function w(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/w');
-            }
-            else{
-                // Load the w view
-                $this->view('clients/v_wedding');
-            }
-        }
-        public function u(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/u');
-            }
-            else{
-                // Load the u view
-                $this->view('clients/v_university');
-            }
-        }
-        public function m(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/m');
-            }
-            else{
-                // Load the m view
-                $this->view('clients/v_musicals');
-            }
-        }
-        public function f(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/f');
-            }
-            else{
-                // Load the f view
-                $this->view('clients/v_familyg');
-            }
-        }
-        public function p(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/p');
-            }
-            else{
-                // Load the p view
-                $this->view('clients/v_promotions');
-            }
-        }
-        public function c(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/c');
-            }
-            else{
-                // Load the c view
-                $this->view('clients/v_corporate');
-            }
-        }
-        public function cr(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/cr');
-            }
-            else{
-                // Load the cr view
-                $this->view('clients/v_cultural');
-            }
-        }
-        public function g(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/g');
-            }
-            else{
-                // Load the g view
-                $this->view('clients/v_graduation');
-            }
-        }
-        public function dummy(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/dummy');
-            }
-            else{
-                // Load the dummy view
-                $this->view('clients/v_dummy');
-            }
+        //about package addition notification to service provider
+        public function sendPackageNotification($serviceProviderId, $eventId, $packageId){
+            
+            $event = $this->eventModel->getEventById($eventId);
+            $package = $this->packageModel->getPackageById($packageId);
+            $client = $this->clientModel->getClientById($event->client_id);
+
+            // Use helper function to send notification
+            $notificationResult = sendPackageNotification(
+                $serviceProviderId, 
+                $event, 
+                $package, 
+                $client
+            );
+            
         }
         public function feedback(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
