@@ -79,4 +79,11 @@ class M_Client {
             return false;
         }
     }
+
+    public function getClientById($id) {
+        $this->db->query("SELECT * FROM clients WHERE client_id = :id");
+        $this->db->bind(':id', $id);
+
+        return $this->db->single();
+    }
 }

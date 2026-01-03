@@ -1,6 +1,5 @@
 <?php
     
-    // Send notification to service provider about package addition
     function sendPackageNotification($serviceProviderId, $eventData, $packageData, $clientData) {
         
         // Prepare notification message
@@ -15,21 +14,22 @@
             'event_id' => $eventData->event_id,
             'package_id' => $packageData->package_id,
             'is_read' => 'OFF',
+            'created_at' => date('Y-m-d H:i:s')
         ];
-        
-        // TODO: Save notification to database
-        // Example: $notificationModel->createNotification($notificationData);
+
+        $notificationModel = new M_notification();
         
         // Send email notification (optional)
        // sendEmailNotification($serviceProviderId, $eventData, $packageData, $clientData);
         
-        return $notificationData;
+       // Save notification to database
+        return $notificationModel->createNotification($notificationData);
     }
     
     // Send email notification to service provider
     function sendEmailNotification($serviceProviderId, $eventData, $packageData, $clientData) {
         
-        // TODO: Get service provider email from database
+        // Get service provider email from database
         // $serviceProviderEmail = getServiceProviderEmail($serviceProviderId);
         
         $subject = "New Package Request - {$eventData->event_name}";
@@ -56,5 +56,61 @@
         
         return true;
     }
+
+    
+function getNotificationIcon($title, $message) {
+    $lowerTitle = strtolower($title);
+    $lowerMessage = strtolower($message);
+    
+    if (strpos($lowerTitle, 'booking') !== false || strpos($lowerMessage, 'booking') !== false) {
+        return ['icon' => '📅', 'type' => 'booking'];
+    } elseif (strpos($lowerTitle, 'message') !== false || strpos($lowerMessage, 'message') !== false) {
+        return ['icon' => '💬', 'type' => 'message'];
+    } elseif (strpos($lowerTitle, 'review') !== false || strpos($lowerTitle, 'rating') !== false) {
+        return ['icon' => '⭐', 'type' => 'review'];
+    } elseif (strpos($lowerTitle, 'payment') !== false || strpos($lowerMessage, 'payment') !== false) {
+        return ['icon' => '💰', 'type' => 'payment'];
+    } elseif (strpos($lowerTitle, 'package') !== false || strpos($lowerMessage, 'package') !== false) {
+        return ['icon' => '📦', 'type' => 'booking'];
+    } elseif (strpos($lowerTitle, 'alert') !== false || strpos($lowerTitle, 'warning') !== false) {
+        return ['icon' => '⚠️', 'type' => 'alert'];
+    } else {
+        return ['icon' => 'ℹ️', 'type' => 'system'];
+    }
+}
+
+function getTimeAgo($datetime) {
+    $timestamp = strtotime($datetime);
+    $diff = time() - $timestamp;
+    
+    if ($diff < 60) {
+        return 'Just now';
+    } elseif ($diff < 3600) {
+        $minutes = floor($diff / 60);
+        return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ago';
+    } elseif ($diff < 86400) {
+        $hours = floor($diff / 3600);
+        return $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
+    } elseif ($diff < 604800) {
+        $days = floor($diff / 86400);
+        return $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
+    } else {
+        return date('M j, Y', $timestamp);
+    }
+}
+
+function getNotificationContext($notification) {
+    if ($notification->event_id) {
+        return 'Event Related';
+    } elseif ($notification->package_id) {
+        return 'Package Request';
+    } elseif ($notification->sender_type === 'CLIENT') {
+        return 'Client';
+    } elseif ($notification->sender_type === 'ADMIN') {
+        return 'Admin';
+    } else {
+        return 'System';
+    }
+}
     
 ?>

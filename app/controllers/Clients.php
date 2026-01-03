@@ -2,10 +2,7 @@
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
-    require_once APPROOT . '/libraries/PHPMailer/Exception.php';
-    require_once APPROOT . '/libraries/PHPMailer/PHPMailer.php';
-    require_once APPROOT . '/libraries/PHPMailer/SMTP.php';
-
+    
     class Clients extends Controller {
         private $clientModel;
 
@@ -41,7 +38,7 @@
 
 
         private function sendOtpEmail($email, $otp){
-    $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
     try {
         // SMTP settings
@@ -73,7 +70,7 @@
     } catch (Exception $e) {
         die('Mail Error: ' . $mail->ErrorInfo);
     }
-}
+        }
 
         public function home(){
 
@@ -694,7 +691,11 @@
                     }
                     // Add package to event in database
                     if($this->eventModel->addPackageToEvent($eventId, $packageId, $ownerId, $clientId)){
+
                         $addedCount++;
+                        // Send notification to service provider about package addition
+                        $this->sendPackageNotificationfromClient($ownerId, $eventId, $packageId);
+
                     } else {
                         echo json_encode(['error' => 'Failed to add package ID ' . $packageId . ' to event.']);
                         return;
@@ -715,20 +716,19 @@
         }
 
         //about package addition notification to service provider
-        public function sendPackageNotification($serviceProviderId, $eventId, $packageId){
+        public function sendPackageNotificationfromClient($serviceProviderId, $eventId, $packageId){
             
             $event = $this->eventModel->getEventById($eventId);
             $package = $this->packageModel->getPackageById($packageId);
             $client = $this->clientModel->getClientById($event->client_id);
 
             // Use helper function to send notification
-            $notificationResult = sendPackageNotification(
+            sendPackageNotification(
                 $serviceProviderId, 
                 $event, 
                 $package, 
                 $client
-            );
-            
+            );            
         }
         public function feedback(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
