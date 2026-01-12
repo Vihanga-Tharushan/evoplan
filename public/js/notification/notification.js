@@ -1,4 +1,3 @@
-// Initialize notification system
 document.addEventListener('DOMContentLoaded', function() {
     const markAllBtn = document.getElementById('mark-all-read');
     const filterTabs = document.querySelectorAll('.filter-tab');

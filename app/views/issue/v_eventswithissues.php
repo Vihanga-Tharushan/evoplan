@@ -2,6 +2,7 @@
 <?php 
 $backUrl = URLROOT . '/IssueC/dashboard';
 require_once APPROOT . '/views/issue/taskbar/taskbar_back.php'; ?>
+<?php require_once APPROOT . '/views/issue/sidebar/sidebar3.php'; ?>
 <link rel="stylesheet" href="../public/css/components/issueC/eventswithissues.css" />
    <!-- <style>
    a,

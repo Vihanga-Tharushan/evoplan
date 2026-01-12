@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/issue/sidebar/sidebar4.php'; ?>
+<?php require_once APPROOT . '/views/issue/sidebar/sidebar6.php'; ?>
 <?php require_once APPROOT . '/views/issue/taskbar/taskbar.php'; ?>
 <head>
     <meta charset="UTF-8">

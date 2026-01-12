@@ -308,7 +308,7 @@
 
         public function events(){
 
-            $events = $this->eventModel->getEventsByServiceProvider($_SESSION['service_id']);
+            $events = $this->eventModel->getUpcomingEventsByServiceProvider($_SESSION['service_id']);
             $previousEvents = $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']);
             $data = [
                 'events' => $events,
@@ -316,6 +316,7 @@
             ];
 
             $this->view('servicesP/v_s_events', $data);
+
         }
 
         public function packages(){
@@ -457,23 +458,67 @@
 
         
 
-        public function upcomingEvents(){
+        public function viewUpcomingEvent($eventId){
 
-            $this->view('servicesP/events/v_s_upcomingEvents');
+            $event = $this->eventModel->getEventById($eventId);
+            $selectedPackage = $this->eventModel->getSelectedPackages($eventId);
+            $client = $this->eventModel->getClientByEventId($eventId);
+            $data = [
+                'event' => $event,
+                'selectedPackage' => $selectedPackage,
+                'client' => $client
+            ];
+            $this->view('servicesP/events/v_s_oneupcoming', $data);
 
         }
 
-        public function oneUpcomingEvent(){
+        public function getPackagesForEvent(){
 
-            $this->view('servicesP/events/v_s_oneupcoming');
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+
+                $packages = $this->eventModel->getSelectedPackages($eventId);
+                echo json_encode($packages);
+            }
+            
+
+        }
+
+        public function rejectConfirmation(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+                $reason = $inputdata['reason'];
+                $serviceId = $_SESSION['service_id'];
+
+                if($this->eventModel->rejectEventByProvider($eventId, $serviceId, $reason)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to reject event']);
+                }
+            }
 
         }
 
         public function sendConfirmation(){
 
-            $this->view('servicesP/events/v_s_sendConfirm');
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+                $message = $inputdata['message'];
+                $serviceId = $_SESSION['service_id'];
+
+                if($this->eventModel->confirmEventByProvider($eventId, $serviceId, $message)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to confirm event']);
+                }
+            }
         }
 
+       
 
         public function previousEvents(){
 

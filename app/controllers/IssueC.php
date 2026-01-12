@@ -213,71 +213,32 @@ class IssueC extends Controller{
         }
     }
 
-    public function v_bankreciepts(){
-            
-            $this->view('issue/v_bankreciepts');
-
-
-    }
 
      public function reports(){
         $this->view('issue/reports');
     }
-   
 
+    public function payments(){
+        $this->view('issue/v_refund');
+    }
+
+    public function complains(){
+        $this->view('issue/complains');
+    }
+
+    public function messages(){
+        $this->view('issue/messages');
+    }
+
+    public function events(){
+        $this->view('issue/v_eventswithissues');}
+   
+    public function replacement(){
+        $this->view('issue/v_replacementslist');
+    }
     
 
-     public function create(){
 
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process service creation
-                redirect('IssueC/eventswithissues');
-            }
-            else {
-                $this->view('issue/v_dashboard');
-            }
-            
-
-
-
-
-}
- public function create2(){
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process service creation
-                redirect('IssueC/dashboard');
-            }
-            else {
-                $this->view('issue/v_eventswithissues');
-            }
-
-}
- public function create3(){
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process service creation
-                redirect('IssueC/eventsdetails');
-            }
-            else {
-                $this->view('issue/v_eventswithissues');
-            }
-
-
-}
-
- public function create4(){
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process service creation
-                redirect('IssueC/v_issuecprofile');
-            }
-            else {
-                $this->view('issue/v_eventsdetails');
-            }
-
-
-}
 
 public function chats(){
     $this->view('issue/v_chat_issue');

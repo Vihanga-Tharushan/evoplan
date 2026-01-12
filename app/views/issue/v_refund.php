@@ -1,5 +1,5 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/issue/sidebar/sidebar3.php'; ?>
+<?php require_once APPROOT . '/views/issue/sidebar/sidebar4.php'; ?>
 <?php require_once APPROOT . '/views/issue/taskbar/taskbar.php'; ?>
 <link rel="stylesheet" href="../public/css/components/issueC/refund.css" />
 

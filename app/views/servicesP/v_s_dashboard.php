@@ -105,67 +105,45 @@
         <h2>Income</h2>
       </header>
 
-      <!-- Simple inline SVG area chart (no libraries) -->
-      <div class="chart">
-        <svg viewBox="0 0 640 300" aria-hidden="true">
-          <!-- grid -->
-          <g stroke="#eaeaea" stroke-width="1">
-            <line x1="60" y1="250" x2="600" y2="250"/>
-            <line x1="60" y1="200" x2="600" y2="200"/>
-            <line x1="60" y1="150" x2="600" y2="150"/>
-            <line x1="60" y1="100" x2="600" y2="100"/>
-            <line x1="60" y1="50"  x2="600" y2="50"/>
-            <line x1="60" y1="250" x2="60"  y2="40"/>
-          </g>
+        <!-- Chart.js donut chart -->
+        <div class="chart">
+          <canvas id="incomeDonut" width="400" height="300" aria-label="Income donut chart" role="img"></canvas>
+        </div>
 
-          <!-- gradient fill -->
-          <defs>
-            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#7848F4"/>
-              <stop offset="100%" stop-color="#fcdda4ff"/>
-            </linearGradient>
-          </defs>
+        <!-- Chart.js CDN and initialization -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          (function(){
+            const ctx = document.getElementById('incomeDonut').getContext('2d');
+            const data = {
+              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+              datasets: [{
+                label: 'Income',
+                //y axis for Rs.in thousands
+                label: 'Income (in thousands)',
+                data: [45, 25, 20, 10, 30, 50, 40, 60, 70, 80, 90, 100],
+                backgroundColor: ['#7848E4', '#f6f282ff','#7848E4', '#f6f282ff','#7848E4', '#f6f282ff','#7848E4', '#f6f282ff','#7848E4', '#f6f282ff','#7848E4', '#f6f282ff'],
+                hoverOffset: 8
+              }]
+            };
 
-          <!-- area path -->
-          <path d="
-            M60,240
-            L120,230
-            L180,180
-            L240,120
-            L300,70
-            L360,160
-            L420,90
-            L480,150
-            L540,60
-            L600,80
-            L600,250 L60,250 Z"
-            fill="url(#areaFill)" opacity="0.9"></path>
+            const config = {
+              type: 'bar',
+              data: data,
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { position: 'bottom' },
+                  tooltip: { enabled: true }
+                }
+              }
+            };
 
-          <!-- x labels -->
-          <g font-size="12" fill="#001326ff">
-            <text x="80"  y="270">2016</text>
-            <text x="140" y="270">2017</text>
-            <text x="200" y="270">2018</text>
-            <text x="260" y="270">2019</text>
-            <text x="320" y="270">2020</text>
-            <text x="380" y="270">2021</text>
-            <text x="440" y="270">2022</text>
-            <text x="500" y="270">2023</text>
-            <text x="580" y="270">Year</text>
-          </g>
-
-          <!-- y labels -->
-          <g font-size="14" fill="#000912ff">
-            <text x="20" y="250">0</text>
-            <text x="16" y="200">10k</text>
-            <text x="16" y="150">20k</text>
-            <text x="16" y="100">50k</text>
-            <text x="12" y="50">100k</text>
-            <text x="12" y="0">Rupees</text>
-
-          </g>
-        </svg>
-      </div>
+            // create chart
+            new Chart(ctx, config);
+          })();
+        </script>
     </article>
     <br>
     <br>

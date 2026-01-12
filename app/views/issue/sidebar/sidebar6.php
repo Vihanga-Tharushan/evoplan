@@ -19,10 +19,10 @@
           </div>
           <br>
 
-          <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame" role="menuitem" aria-current="page" title="Dashboard">
+          <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame-2" role="menuitem" aria-current="page" title="Dashboard">
             <div class="div">
               <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
-              <span class="text-wrapper">Dashboard</span>
+              <span class="text-wrapper-2">Dashboard</span>
             </div>
           </a>
 
@@ -53,10 +53,11 @@
 
           </a>
 
-          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame-2" role="menuitem">
+          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame" role="menuitem">
+            <div class="div">
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/reports.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Reports</span>
-
+            <span class="text-wrapper">Reports</span>
+            </div>
           </a>
           
         </nav>

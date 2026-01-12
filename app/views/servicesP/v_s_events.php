@@ -47,7 +47,7 @@
                                         case 'business conference':
                                             $iconClass = 'fas fa-briefcase';
                                             break;
-                                        // Add more cases as needed
+                                        // more cases as needed
                                     }
                                 ?>
                                 <i class="<?php echo  $iconClass; ?>"></i> <?php echo htmlspecialchars($event->event_type); ?>
@@ -390,23 +390,6 @@
             });
         });
         
-        // Create Event Button
-        const createEventBtn = document.getElementById('createEventBtn');
-        const createEventActionBtn = document.getElementById('action-btn primary');
-        if (createEventBtn) {
-            createEventBtn.addEventListener('click', function() {
-                
-
-               window.location.href = `${URLROOT}/Clients/createEvent`;
-            });
-        }
-        
-        if (createEventActionBtn) {
-            createEventActionBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent event card click
-                window.location.href = `${URLROOT}/Clients/createEvent`;
-            });
-        }
 
         // Service provider specific action handlers
         
@@ -438,7 +421,7 @@
                 e.stopPropagation();
                 const eventId = this.closest('.event-card').getAttribute('event-id');
                 if(!eventId) return alert('Missing event ID');
-                window.location.href = `${URLROOT}/Services/viewEvent/${eventId}`;
+                window.location.href = `${URLROOT}/Service/viewupcomingEvent/${eventId}`;
             });
         });
 
@@ -448,7 +431,7 @@
                 e.stopPropagation();
                 const eventId = this.closest('.event-card').getAttribute('event-id');
                 if(!eventId) return alert('Missing event ID');
-                window.location.href = `${URLROOT}/Services/eventPictures/${eventId}`;
+                window.location.href = `${URLROOT}/Service/eventPictures/${eventId}`;
             });
         });
         
@@ -459,7 +442,10 @@
                 // Only trigger if not clicking on a button inside the card
                 if (!e.target.closest('.action-btn') && !e.target.closest('.create-event-card')) {
                     alert('Opening event details page...');
-                    // window.location.href = '/events/event-id';
+                    //same as view event details
+                    const eventId = this.getAttribute('event-id');
+                    if(!eventId) return alert('Missing event ID');
+                    window.location.href = `${URLROOT}/Service/viewupcomingEvent/${eventId}`;
                 }
             });
         });
