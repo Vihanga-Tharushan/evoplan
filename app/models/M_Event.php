@@ -101,6 +101,14 @@ class M_Event {
         return $this->db->resultSet();
     }
 
+    public function getClientByEventId($event_id) {
+        $this->db->query("SELECT c.* FROM clients c
+                          JOIN events e ON c.client_id = e.client_id
+                          WHERE e.event_id = :event_id");
+        $this->db->bind(':event_id', $event_id);
+        return $this->db->single();
+    }
+
     public function checkPackageInEvent($event_id, $package_id) {
         $this->db->query("SELECT * FROM event_packages WHERE event_id = :event_id AND package_id = :package_id");
         $this->db->bind(':event_id', $event_id);
@@ -132,6 +140,8 @@ class M_Event {
                         p.package_id,
                         p.title AS package_name,
                         p.price AS package_price,
+                        p.details AS package_details,
+                        p.notes AS package_notes,
 
                         -- service provider info
                         sp.service_id,
@@ -149,15 +159,16 @@ class M_Event {
                         ON ep.service_id = sp.service_id
 
                     WHERE ep.event_id = :event_id
-                    AND ep.status = 'ON';9");
+                    AND ep.status = 'ON'");
         $this->db->bind(':event_id', $eventId);
         return $this->db->resultSet();
     }
     
-    public function getEventsByServiceProvider($service_id) {
+    public function getUpcomingEventsByServiceProvider($service_id) {
         $this->db->query("SELECT e.* FROM events e
                           JOIN event_packages ep ON e.event_id = ep.event_id
                           WHERE ep.service_id = :service_id
+                          AND e.start_datetime >= NOW()
                           GROUP BY e.event_id
                           ORDER BY e.start_datetime ASC");
         $this->db->bind(':service_id', $service_id);
@@ -174,5 +185,27 @@ class M_Event {
                           ORDER BY e.start_datetime DESC");
         $this->db->bind(':service_id', $service_id);
         return $this->db->resultSet();
+    }
+
+    public function rejectEventByProvider($event_id, $service_id, $reason) {
+
+        $this->db->query("UPDATE event_packages SET confirmation_status = 'REJECTED', confirmed_at = NOW(), provider_message = :provider_message WHERE event_id = :event_id AND service_id = :service_id");
+        $this->db->bind(':event_id', $event_id);
+        $this->db->bind(':service_id', $service_id);
+        $this->db->bind(':provider_message', $reason);
+        
+        return $this->db->execute();
+
+    }
+
+    public function confirmEventByProvider($event_id, $service_id, $provider_message) {
+
+        $this->db->query("UPDATE event_packages SET confirmation_status = 'ACCEPTED', confirmed_at = NOW(), provider_message = :provider_message WHERE event_id = :event_id AND service_id = :service_id");
+        $this->db->bind(':event_id', $event_id);
+        $this->db->bind(':service_id', $service_id);
+        $this->db->bind(':provider_message', $provider_message);
+        
+        return $this->db->execute();
+
     }
 }

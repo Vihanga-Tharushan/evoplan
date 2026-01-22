@@ -11,7 +11,7 @@
   --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
   --header-h: 64px; /* adjust to your fixed navbar */
   --frame: 1060px;
-  --primary: #6d28d9;
+  --primary: #4B006E;     /* Dark purple */
   --primary-light: #8b5cf6;
   --secondary: #4c1d95;
   --success: #10b981;
@@ -37,25 +37,61 @@
 
 /* HERO / COVER */
 .sp-hero{
-  z-index: 0;
   position: relative;
   padding-top: calc(var(--header-h) + 8px);
-}
-.sp-cover{
-
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
+  max-width: var(--frame);
   margin: 0 auto;
-  min-height: 260px;
+}
+
+.sp-cover{
+  position: relative;
+  z-index: 0;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: clamp(260px, 28vh, 420px);
   border-radius: 0 0 18px 18px;
   overflow: hidden;
-  background: radial-gradient(1200px 500px at 10% 20%, #071d33 0, #7c3aed 60%, #2f26db 100%);
+  /* subtle overlay to improve foreground contrast */
 }
+
 .sp-cover__img{
-  position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover; opacity: .45;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
+
+/* Background Slideshow */
+.background-slideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.background-slideshow .sp-cover__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.background-slideshow .sp-cover__img.active {
+  opacity: 1;
+}
+
 .sp-hero__content{
   position: relative;
   height: 350px;

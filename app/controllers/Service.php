@@ -14,6 +14,8 @@
 
         private $eventModel;
 
+        private $notificationModel;
+
         public function __construct(){
 
             $this->serviceModel = $this->model('M_ServiceP');
@@ -24,6 +26,7 @@
             $this->profileModel = $this->model('M_ServicsProfile');
             $this->messageModel = $this->model('M_Message');
             $this->eventModel = $this->model('M_Event');
+            $this->notificationModel = $this->model('M_notification');
 
         }
         public function register(){
@@ -136,39 +139,32 @@
                     $data['emailB_err'] = "Please enter a valid business email";
                 }
 
+
+
                 //validation is complete
                 if(empty($data['name_err']) && empty($data['email_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['contact_err']) && empty($data['contactB_err']) && empty($data['emailB_err'])){
                     
-                    //hash password
-                    $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
-                    echo "User registered successfully";
-                    //register user
-                    if($this->serviceModel->register($data)){
-                            //redirect to login
+                    // Handle file upload FIRST before registration
+                    $fileName = time() . '_' . basename($data['license']);
+                    
+                    if(uploadImage($data['license_tmp'], $fileName, '/uploads/licenses/')) {
+                        // File uploaded successfully, update data with the file path
+                        $data['license'] = '/uploads/licenses/' . $fileName;
+                        
+                        // Hash password
+                        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                        
+                        // Register user with license file path
+                        if($this->serviceModel->register($data)){
                             flash('register_success', 'You are registered and can log in');
                             redirect('Service/login');
                         } else {
-                            die("Something went wrong");
+                            die("Something went wrong with registration");
                         }
-
-                    // Handle file upload
-                    $uploadDir = 'uploads/licenses/';
-                    if(!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-                    
-                    $fileName = time() . '_' . basename($data['license']);
-                    $uploadFile = $uploadDir . $fileName;
-                    
-                    if(move_uploaded_file($data['license_tmp'], $uploadFile)) {
-                        $data['license'] = $uploadFile;
-                        
-                        //register user
-
-                        
                     } else {
-                        die("File upload failed");
+                        // File upload failed
+                        $data['license_err'] = 'License file upload failed. Please try again.';
+                        $this->view('servicesP/v_s_register', $data);
                     }
                 } else {
                     // Load view with errors
@@ -312,7 +308,7 @@
 
         public function events(){
 
-            $events = $this->eventModel->getEventsByServiceProvider($_SESSION['service_id']);
+            $events = $this->eventModel->getUpcomingEventsByServiceProvider($_SESSION['service_id']);
             $previousEvents = $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']);
             $data = [
                 'events' => $events,
@@ -320,6 +316,7 @@
             ];
 
             $this->view('servicesP/v_s_events', $data);
+
         }
 
         public function packages(){
@@ -329,6 +326,12 @@
                 'packages' => $packages
             ];
             $this->view('servicesP/v_s_packages', $data);
+        }
+
+        public function payment(){
+
+            $this->view('servicesP/v_s_payments');
+
         }
 
         public function profile(){
@@ -344,7 +347,8 @@
                 'rating' => $rating,
                 'availability' => $availability,
                 'EventsPosts' => $EventsPosts,
-                'EventMedia' => $EventMedia
+                'EventMedia' => $EventMedia,
+                'sidebar' => 'profile'
             ];
 
             $this->view('servicesP/v_s_profile', $data);
@@ -362,6 +366,12 @@
                     'background_text' => trim($_POST['background-text']),
                     'intro' => trim($_POST['intro-text']),
                     'service_id' => $_SESSION['service_id'],
+                    'background-image-2' => (isset($_FILES['background-image-2']['name']) && !empty($_FILES['background-image-2']['name']) ? time() . '_' . $_FILES['background-image-2']['name'] : null),
+                    'background-image-3' => (isset($_FILES['background-image-3']['name']) && !empty($_FILES['background-image-3']['name']) ? time() . '_' . $_FILES['background-image-3']['name'] : null),
+                    'background-image-4' => (isset($_FILES['background-image-4']['name']) && !empty($_FILES['background-image-4']['name']) ? time() . '_' . $_FILES['background-image-4']['name'] : null),
+                    'background-image-2_file' => (isset($_FILES['background-image-2']) ? $_FILES['background-image-2'] : null),
+                    'background-image-3_file' => (isset($_FILES['background-image-3']) ? $_FILES['background-image-3'] : null),
+                    'background-image-4_file' => (isset($_FILES['background-image-4']) ? $_FILES['background-image-4'] : null),
 
                     'profile_pic_err' => '',
                     'background_image_err' => '',
@@ -382,6 +392,25 @@
                     // Image uploaded successfully
                 } else {
                     $data['background_image_err'] = 'Cover photo upload failed. Please try again.';
+                }
+
+                //upload additional background images if provided
+                for ($i = 2; $i <= 4; $i++) {
+                    $bgImageKey = 'background-image-' . $i;
+                    $bgImageFileKey = $bgImageKey . '_file';
+                    
+                    if ($data[$bgImageFileKey] !== null && !empty($data[$bgImageFileKey]['name'])) {
+
+                        if (uploadImage($data[$bgImageFileKey]['tmp_name'], $data[$bgImageKey], '/img/coverPhotos/')) {
+                            // Image uploaded successfully
+                            $this->profileModel->uploadAdditionalBackgroundImage($data, $i);
+                        } else {
+                            $data['background_image_err'] .= " Background image $i upload failed. Please try again.";
+                        }
+                    } else {
+                        // No new image uploaded for this slot, set to null or handle accordingly
+                        $data[$bgImageKey] = null;
+                    }
                 }
 
                 //bio text validations
@@ -426,9 +455,9 @@
 
         
 
-        public function complains(){
+        public function complaints(){
 
-            $this->view('servicesP/v_s_complains');
+            $this->view('servicesP/v_s_complaints');
         }
 
     
@@ -461,23 +490,67 @@
 
         
 
-        public function upcomingEvents(){
+        public function viewUpcomingEvent($eventId){
 
-            $this->view('servicesP/events/v_s_upcomingEvents');
+            $event = $this->eventModel->getEventById($eventId);
+            $selectedPackage = $this->eventModel->getSelectedPackages($eventId);
+            $client = $this->eventModel->getClientByEventId($eventId);
+            $data = [
+                'event' => $event,
+                'selectedPackage' => $selectedPackage,
+                'client' => $client
+            ];
+            $this->view('servicesP/events/v_s_oneupcoming', $data);
 
         }
 
-        public function oneUpcomingEvent(){
+        public function getPackagesForEvent(){
 
-            $this->view('servicesP/events/v_s_oneupcoming');
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+
+                $packages = $this->eventModel->getSelectedPackages($eventId);
+                echo json_encode($packages);
+            }
+            
+
+        }
+
+        public function rejectConfirmation(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+                $reason = $inputdata['reason'];
+                $serviceId = $_SESSION['service_id'];
+
+                if($this->eventModel->rejectEventByProvider($eventId, $serviceId, $reason)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to reject event']);
+                }
+            }
 
         }
 
         public function sendConfirmation(){
 
-            $this->view('servicesP/events/v_s_sendConfirm');
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+                $message = $inputdata['message'];
+                $serviceId = $_SESSION['service_id'];
+
+                if($this->eventModel->confirmEventByProvider($eventId, $serviceId, $message)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to confirm event']);
+                }
+            }
         }
 
+       
 
         public function previousEvents(){
 
@@ -511,8 +584,51 @@
 
         public function notifications(){
 
-            $this->view('servicesP/v_s_notification');
+            $notifications = $this->notificationModel->getAllByUser('PROVIDER', $_SESSION['service_id']);
+            $stats = $this->notificationModel->getNotificationStats('PROVIDER', $_SESSION['service_id']);
+            
+            $data = [
+                'notifications' => $notifications,
+                'stats' => $stats
+            ];
 
+            $this->view('servicesP/v_s_notification', $data);
+        }
+
+        public function markNotificationAsRead(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $notificationId = $inputdata['notificationId'];
+                
+                if($this->notificationModel->markAsRead($notificationId)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to mark as read']);
+                }
+            }
+        }
+
+        public function markAllNotificationsAsRead(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if($this->notificationModel->markAllAsRead('PROVIDER', $_SESSION['service_id'])){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to mark all as read']);
+                }
+            }
+        }
+
+        public function deleteNotification(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $notificationId = $inputdata['notificationId'];
+                
+                if($this->notificationModel->deleteNotification($notificationId)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to delete notification']);
+                }
+            }
         }
 
         public function edit($id){
@@ -549,7 +665,7 @@
                 $data =[
                         'start_date' => trim($_POST['from-date']),
                         'end_date' => trim($_POST['to-date']),
-                        'status' => trim($_POST['status']),
+                        'status' =>"booked",
                         'service_id' => $_SESSION['service_id'],
 
                 ];

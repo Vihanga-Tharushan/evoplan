@@ -82,7 +82,7 @@
             $this->db->query("SELECT * FROM v_packages_with_provider");
             $results = $this->db->resultSet();
             return $results;
-        }
+        } 
 
     }
 ?>

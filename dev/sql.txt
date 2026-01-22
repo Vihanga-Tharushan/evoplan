@@ -479,3 +479,109 @@ CREATE TABLE clients (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP 
         ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Who sent the notification
+    sender_type ENUM('CLIENT', 'PROVIDER', 'ISSUE_COORDINATOR', 'ADMIN') NOT NULL,
+    sender_id INT NOT NULL,
+
+    -- Who receives the notification
+    receiver_type ENUM('CLIENT', 'PROVIDER', 'ISSUE_COORDINATOR', 'ADMIN') NOT NULL,
+    receiver_id INT NOT NULL,
+
+    -- Notification content
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+
+    -- Context (optional but powerful)
+    event_id INT DEFAULT NULL,
+    package_id INT DEFAULT NULL,
+
+    -- Status tracking
+    is_read ENUM('OFF','ON') DEFAULT 'OFF',
+    status ENUM('ON','OFF') DEFAULT 'ON',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    read_at DATETIME DEFAULT NULL
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE provider_complaints (
+    complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Relations
+    service_id INT NOT NULL,
+    event_id INT NOT NULL,
+
+    -- Who raised the complaint
+    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM') NOT NULL,
+    
+
+    -- Complaint details
+    complaint_type ENUM(
+        'NO_SHOW',
+        'LATE_CANCELLATION',
+        'QUALITY_ISSUE',
+        'PAYMENT_DISPUTE',
+        'MISCONDUCT',
+        'OTHER'
+    ) NOT NULL,
+
+    description TEXT NOT NULL,
+    
+
+    -- Priority & severity--for ISSUE_COORDINATOR
+    priority ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'MEDIUM',
+
+    -- Status lifecycle
+    status ENUM(
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'REJECTED',
+        'ESCALATED'
+    ) DEFAULT 'OPEN',
+
+    -- Issue Coordinator assignment
+    assigned_ic_id INT DEFAULT NULL,
+    
+
+    -- Resolution
+    resolution_type ENUM(
+        'PROVIDER_REPLACED',
+        'REFUND_ISSUED',
+        'WARNING_GIVEN',
+        'NO_ACTION'
+    ) DEFAULT NULL,
+
+    resolution_note TEXT DEFAULT NULL,
+    resolved_at DATETIME DEFAULT NULL,
+
+    -- Visibility & soft delete
+    status_flag ENUM('ON', 'OFF') DEFAULT 'ON',
+    provider_visible ENUM('ON', 'OFF') DEFAULT 'ON',
+    client_visible ENUM('ON', 'OFF') DEFAULT 'OFF',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Foreign Keys
+    CONSTRAINT fk_pc_provider
+        FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_pc_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB;

@@ -438,7 +438,7 @@
                     else if(precentage == "66%"){
                     
                         alert('Event is 66% completed. Redirecting to event overview page...');
-                        window.location.href =`${URLROOT}/Clients/previewEvent/`;
+                        window.location.href =`${URLROOT}/Clients/previewEvent/${eventId}`;
                         return;
                     }
                     else if(precentage == "100%")

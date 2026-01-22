@@ -348,7 +348,7 @@
           let confirmationStatusHTML = '';
           const confirmStatus = (pkg.confirmation_status || '').toUpperCase();
           
-          if (confirmStatus === 'CONFIRMED') {
+          if (confirmStatus === 'ACCEPTED') {
               confirmationStatusHTML = `
                   <div class="status-badge confirmed">
                       <span class="status-icon">✓</span> Confirmed
@@ -360,7 +360,7 @@
                       <span class="status-icon"></span> Pending
                   </div>
               `;
-          } else if (confirmStatus === 'DECLINED') {
+          } else if (confirmStatus === 'REJECTED') {
               confirmationStatusHTML = `
                   <div class="status-badge declined">
                       <span class="status-icon">✗</span> Declined

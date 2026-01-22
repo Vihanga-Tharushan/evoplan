@@ -1,6 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar2.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
+<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
+<!-- <?php //require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?> -->
 <link href="<?php echo URLROOT; ?>/css/components/servicesP/s_events.css" rel="stylesheet">
 
 <div class="main-container">
@@ -47,7 +47,7 @@
                                         case 'business conference':
                                             $iconClass = 'fas fa-briefcase';
                                             break;
-                                        // Add more cases as needed
+                                        // more cases as needed
                                     }
                                 ?>
                                 <i class="<?php echo  $iconClass; ?>"></i> <?php echo htmlspecialchars($event->event_type); ?>
@@ -384,29 +384,30 @@
                 tabBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
+                // Hide all tab contents and remove show class from cards
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    const cards = content.querySelectorAll('.event-card');
+                    cards.forEach(card => card.classList.remove('show'));
+                });
+                
                 // Show active tab content
-                tabContents.forEach(content => content.classList.remove('active'));
                 document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Staggered reveal for the new tab's cards
+                const newEventCards = document.querySelectorAll(`#${tabId}-tab .event-card:not(.create-event-card)`);
+                newEventCards.forEach((card, i) => {
+                    setTimeout(() => card.classList.add('show'), i * 80);
+                });
             });
         });
         
-        // Create Event Button
-        const createEventBtn = document.getElementById('createEventBtn');
-        const createEventActionBtn = document.getElementById('action-btn primary');
-        if (createEventBtn) {
-            createEventBtn.addEventListener('click', function() {
-                
-
-               window.location.href = `${URLROOT}/Clients/createEvent`;
-            });
-        }
+        // Initial staggered reveal for active tab
+        const initialEventCards = document.querySelectorAll('.tab-content.active .event-card:not(.create-event-card)');
+        initialEventCards.forEach((card, i) => {
+            setTimeout(() => card.classList.add('show'), i * 80);
+        });
         
-        if (createEventActionBtn) {
-            createEventActionBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent event card click
-                window.location.href = `${URLROOT}/Clients/createEvent`;
-            });
-        }
 
         // Service provider specific action handlers
         
@@ -438,7 +439,7 @@
                 e.stopPropagation();
                 const eventId = this.closest('.event-card').getAttribute('event-id');
                 if(!eventId) return alert('Missing event ID');
-                window.location.href = `${URLROOT}/Services/viewEvent/${eventId}`;
+                window.location.href = `${URLROOT}/Service/viewupcomingEvent/${eventId}`;
             });
         });
 
@@ -448,7 +449,7 @@
                 e.stopPropagation();
                 const eventId = this.closest('.event-card').getAttribute('event-id');
                 if(!eventId) return alert('Missing event ID');
-                window.location.href = `${URLROOT}/Services/eventPictures/${eventId}`;
+                window.location.href = `${URLROOT}/Service/eventPictures/${eventId}`;
             });
         });
         
@@ -459,7 +460,10 @@
                 // Only trigger if not clicking on a button inside the card
                 if (!e.target.closest('.action-btn') && !e.target.closest('.create-event-card')) {
                     alert('Opening event details page...');
-                    // window.location.href = '/events/event-id';
+                    //same as view event details
+                    const eventId = this.getAttribute('event-id');
+                    if(!eventId) return alert('Missing event ID');
+                    window.location.href = `${URLROOT}/Service/viewupcomingEvent/${eventId}`;
                 }
             });
         });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/issueC/sidebar/sidebar.css">
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/sidebar.css">
 <script src="<?php echo URLROOT; ?>/public/js/sidebar/script.js"></script>
 <html>
   <body>
@@ -12,32 +12,53 @@
         </button>
 
         <nav class="frame-default">
+
+          <!-- EvoPlan Logo -->
+          <div class="evo-plan-logo">
+                <img src="<?php echo URLROOT; ?>/public/img/taskbar/EvoPlan_Logo_new-removebg-preview 2.svg" alt="EvoPlan Logo" class="evo-plan-image" onclick="window.location.href='<?php echo URLROOT; ?>/Evo/evoplan'">
+          </div>
+          <br>
+
           <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame" role="menuitem" aria-current="page" title="Dashboard">
             <div class="div">
-              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
+              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" style="filter: invert(1) brightness(2);" />
               <span class="text-wrapper">Dashboard</span>
             </div>
           </a>
 
-          <a href="<?php echo URLROOT; ?>/IssueC/v_replacementslist" class="frame-2" role="menuitem" title="Events">
-            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/event.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Replacements</span>
-          </a>
-
-          <a href="<?php echo URLROOT; ?>/IssueC/v_refund" class="frame-2" role="menuitem">
-            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/package.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Payment Adj</span>
-
-          </a>
-          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame-2" role="menuitem">
+          <a href="<?php echo URLROOT; ?>/IssueC/replacement" class="frame-2" role="menuitem">
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/User.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Reports</span>
+            <span class="text-wrapper-2">Replacement</span>
           </a>
-          <a href="<?php echo URLROOT; ?>/IssueC/v_adminreports" class="frame-2" role="menuitem">
+          
+
+          <a href="<?php echo URLROOT; ?>/IssueC/events" class="frame-2" role="menuitem" title="Events">
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/event.svg" alt="" role="presentation" />
+            <span class="text-wrapper-2">Events</span>
+          </a>
+
+          <a href="<?php echo URLROOT; ?>/IssueC/payments" class="frame-2" role="menuitem">
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/CurrencyCircleDollar.svg" alt="" role="presentation" />
+            <span class="text-wrapper-2">Payments</span>
+
+          </a>
+          
+          <a href="<?php echo URLROOT; ?>/IssueC/messages" class="frame-2" role="menuitem">
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/PaperPlaneRight.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Reports to Admin</span>
+            <span class="text-wrapper-2">Messages</span>
           </a>
-         
+          <a href="<?php echo URLROOT; ?>/IssueC/complains" class="frame-2" role="menuitem">
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/Warning.svg" alt="" role="presentation" />
+            <span class="text-wrapper-2">Complains</span>
+
+          </a>
+
+          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame-2" role="menuitem">
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/reports.svg" alt="" role="presentation" />
+            <span class="text-wrapper-2">Reports</span>
+
+          </a>
+          
         </nav>
       </nav>
     </aside>

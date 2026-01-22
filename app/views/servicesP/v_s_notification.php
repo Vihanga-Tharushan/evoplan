@@ -1,131 +1,130 @@
-<?php require APPROOT . '/views/inc/header.php'; ?>
+<?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php
 $backUrl = URLROOT . '/Service/dashboard';
 require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php';
+
+$stats = $data['stats'];
+$notifications = $data['notifications'];
+$unreadCount = $stats->unread ?? 0;
+$totalCount = $stats->total ?? 0;
+$todayCount = $stats->today ?? 0;
 ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_notification.css">
 
-<section class="cmp-page" aria-label="Complaints list">
-  <div class="cmp-frame">
-    <h1 class="cmp-title">Complaints</h1>
-
-    <div class="cmp-panel">
-      <ul class="cmp-list" role="list">
-        <!-- Row 1 -->
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-1" aria-label="Open complaint CMP-4256">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
-
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=21" alt="">
-              <div>
-                <div class="name">Maggie Johnson</div>
-                <div class="org">Supermarket Villanova</div>
-              </div>
+    <div class="notifications-container">
+        <!-- Header -->
+        <header class="notifications-header">
+            <div class="header-main">
+                <div class="header-title">
+                    <h1>Notifications</h1>
+                    <?php if($unreadCount > 0): ?>
+                    <span class="badge-count"><?php echo $unreadCount; ?> new</span>
+                    <?php endif; ?>
+                </div>
+                <div class="header-actions">
+                    <?php if($unreadCount > 0): ?>
+                    <button class="btn btn--primary" id="mark-all-read">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        Mark all as read
+                    </button>
+                    <?php endif; ?>
+                </div>
             </div>
+        </header>
 
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
-
-        <!-- Row 2 -->
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-2">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
-
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=12" alt="">
-              <div>
-                <div class="name">Gael Harry</div>
-                <div class="org">New York Finest Fruits</div>
-              </div>
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3><?php echo $totalCount; ?></h3>
+                        <p>Total</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
-
-        <!-- Row 3 -->
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-3">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
-
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=8" alt="">
-              <div>
-                <div class="name">Ralph Edwards</div>
-                <div class="org">New York Finest Fruits</div>
-              </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 7V3m8 4V3M9 20h6m-6 0a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v11a2 2 0 01-2 2m-6 0v-5"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3><?php echo $todayCount; ?></h3>
+                        <p>Today</p>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active">All Notifications</button>
+            <button class="filter-tab">Unread</button>
+            <button class="filter-tab">Bookings</button>
+            <button class="filter-tab">Reviews</button>
+        </div>
 
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-1" aria-label="Open complaint CMP-4256">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
+        <!-- Notifications List -->
+        <div class="notifications-list" id="notifications-list">
+            <?php if(!empty($notifications)): ?>
+                <?php foreach($notifications as $notification): 
+                    $iconData = getNotificationIcon($notification->title, $notification->message); //helper function
+                    $isUnread = $notification->is_read === 'OFF';
+                    $timeAgo = getTimeAgo($notification->created_at); //helper function
+                    $context = getNotificationContext($notification); //helper function
+                ?>
+                <div class="notification-item <?php echo $isUnread ? 'unread' : 'read'; ?>" data-type="<?php echo $iconData['type']; ?>" data-id="<?php echo $notification->notification_id; ?>">
+                    <div class="notification-badge">
+                        <div class="badge-icon <?php echo $iconData['type']; ?>">
+                            <?php echo $iconData['icon']; ?>
+                        </div>
+                        <?php if($isUnread): ?>
+                        <span class="unread-indicator"></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">
+                            <?php echo htmlspecialchars($notification->title); ?>
+                        </div>
+                        <div class="notification-message">
+                            <?php echo htmlspecialchars($notification->message); ?>
+                        </div>
+                        <div class="notification-meta">
+                            <span class="notification-time"><?php echo $timeAgo; ?></span>
+                            <span class="notification-context"><?php echo $context; ?></span>
+                        </div>
+                    </div>
+                    <div class="notification-actions">
+                        <?php if($isUnread): ?>
+                        <button class="btn btn-mark-read" onclick="markAsRead(this)">Mark as read</button>
+                        <?php endif; ?>
+                        <button class="btn btn-delete" onclick="deleteNotification(this)">Delete</button>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=21" alt="">
-              <div>
-                <div class="name">Maggie Johnson</div>
-                <div class="org">Supermarket Villanova</div>
-              </div>
-            </div>
-
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
-
-        <!-- Row 2 -->
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-2">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
-
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=12" alt="">
-              <div>
-                <div class="name">Gael Harry</div>
-                <div class="org">New York Finest Fruits</div>
-              </div>
-            </div>
-
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
-
-        <!-- Row 3 -->
-        <li class="cmp-item">
-          <a class="cmp-hit" href="#cmp-4256-3">
-            <div class="cmp-id">#CMP-4256</div>
-            <div class="cmp-subject">One album is missing</div>
-
-            <div class="cmp-customer">
-              <img class="avatar" src="https://i.pravatar.cc/40?img=8" alt="">
-              <div>
-                <div class="name">Ralph Edwards</div>
-                <div class="org">New York Finest Fruits</div>
-              </div>
-            </div>
-
-            <div class="cmp-time">2 hours ago</div>
-            <div class="cmp-status"><span class="pill pill--new">New</span></div>
-          </a>
-        </li>
-      </ul>
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display: <?php echo empty($notifications) ? 'block' : 'none'; ?>;">
+            <div class="empty-icon">📭</div>
+            <h2 class="empty-title">No notifications yet</h2>
+            <p class="empty-subtitle">When you get notifications, they'll appear here. You'll see updates about bookings, messages, and more.</p>
+        </div>
     </div>
-  </div>
-</section>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="<?php echo URLROOT;?>/js/notification/notification.js"></script>
+    
 <?php require APPROOT . '/views/inc/footer.php'; ?>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/taskbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="taskbar">
@@ -19,7 +20,9 @@
         <div class="notification-icon">
             <img src="<?php echo URLROOT; ?>/public/img/taskbar/notification.svg" alt="Notification Icon" class="notification-image" onclick="window.location.href='<?php echo URLROOT; ?>/Service/notifications'">
         </div>
+
         
+        <i class="fa-solid fa-bell"></i>
         <!-- Profile picture -->
         <div class="profile-picture">
             <img src="https://i.pravatar.cc/160?img=12" alt="Profile Picture" class="profile-image" onclick="window.location.href='<?php echo URLROOT; ?>/Service/accountSettings'">
