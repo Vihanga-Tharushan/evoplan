@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
 <link rel="stylesheet" href="../public/css/components/servicesP/s_dashboard.css">
 
 <section class="dash">

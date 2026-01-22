@@ -20,7 +20,6 @@
           <br>
 
           <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame-2" role="menuitem" aria-current="page" title="Dashboard">
-            <div class="div">
               <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
               <span class="text-wrapper-2">Dashboard</span>
             </div>
@@ -47,16 +46,17 @@
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/PaperPlaneRight.svg" alt="" role="presentation" />
             <span class="text-wrapper-2">Messages</span>
           </a>
-          <a href="<?php echo URLROOT; ?>/IssueC/complains" class="frame-2" role="menuitem">
-            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/Warning.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Complains</span>
-
+          <a href="<?php echo URLROOT; ?>/IssueC/complains" class="frame" role="menuitem">
+            <div class="div">
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/Warning.svg" alt="" role="presentation" style="filter: invert(1) brightness(2);" />
+            <span class="text-wrapper">Complains</span>
+            </div>
           </a>
 
-          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame" role="menuitem">
+          <a href="<?php echo URLROOT; ?>/IssueC/reports" class="frame-2" role="menuitem">
             <div class="div">
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/reports.svg" alt="" role="presentation" />
-            <span class="text-wrapper">Reports</span>
+            <span class="text-wrapper-2">Reports</span>
             </div>
           </a>
           

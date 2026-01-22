@@ -20,15 +20,15 @@
           <br>
 
           <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame-2" role="menuitem" aria-current="page" title="Dashboard">
-            <div class="div">
-              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
+            
+              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation"  />
               <span class="text-wrapper-2">Dashboard</span>
-            </div>
+            
           </a>
 
           <a href="<?php echo URLROOT; ?>/IssueC/replacement" class="frame" role="menuitem">
             <div class="div">
-            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/User.svg" alt="" role="presentation" />
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/User.svg" alt="" role="presentation" style="filter: invert(1) brightness(2);"/>
             <span class="text-wrapper">Replacement</span>
             </div>
           </a>

@@ -32,6 +32,20 @@
             }
         }
 
+        public function uploadAdditionalBackgroundImage($data, $imagenumber){
+            $this->db->query("UPDATE provider_profiles SET background_img_$imagenumber = :image_path WHERE service_id = :service_id");
+            // Bind values
+            $this->db->bind(':image_path', $data["background-image-$imagenumber"]);
+            $this->db->bind(':service_id', $data['service_id']);
+           
+             // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         public function getProfileById($service_id){
             $this->db->query("SELECT * FROM provider_profiles WHERE service_id = :service_id");
             $this->db->bind(':service_id', $service_id);

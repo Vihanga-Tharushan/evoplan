@@ -4,17 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedStartDate = null;
     let selectedEndDate = null;
     let isSelectingRange = false;
-    
+
     // Use the data passed from PHP
     let availabilityData = [];
-    document.addEventListener('DOMContentLoaded', function() {
     availabilityData = window.serverAvailabilityData || [];
     if (!Array.isArray(availabilityData)) {
         console.error('Invalid availability data format');
         availabilityData = [];
     }
-    initCalendar();
-});
     // DOM Elements
     const calendarGrid = document.getElementById('calendar-grid');
     const monthDisplay = document.querySelector('.cal__month');
@@ -550,10 +547,11 @@ function commentSecton(){
     // Initialize media carousels
     initMediaCarousel();
 
-    
+    // Initialize background slideshow
+    initBackgroundSlideshow();
 });
 
-// Comment section toggle
+// Comment section DOM elements (outside DOMContentLoaded)
 const commentsPanel = document.getElementById('comments-panel');
 const commentsOverlay = document.getElementById('comments-overlay');
 const closeCommentsBtn = document.getElementById('close-comments');
@@ -688,4 +686,39 @@ function formatTimeAgo(timestamp) {
   if (seconds < 3600) return `${Math.floor(seconds/60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds/3600)}h ago`;
   return `${Math.floor(seconds/86400)}d ago`;
+}
+
+// Background slideshow functionality
+function initBackgroundSlideshow() {
+    const slideshow = document.getElementById('background-slideshow');
+    if (!slideshow) {
+        console.log('background-slideshow element not found');
+        return;
+    }
+
+    const images = slideshow.querySelectorAll('.sp-cover__img');
+    console.log('Images found:', images.length);
+    
+    if (images.length <= 1) {
+        console.log('Only 1 or 0 images, slideshow not needed');
+        return;
+    }
+
+    let currentIndex = 0;
+
+    function showNextImage() {
+        // Remove active class from current image
+        images[currentIndex].classList.remove('active');
+
+        // Move to next image
+        currentIndex = (currentIndex + 1) % images.length;
+
+        // Add active class to new image
+        images[currentIndex].classList.add('active');
+        console.log('Showing image:', currentIndex);
+    }
+
+    // Start slideshow - change image every 4.5 seconds
+    setInterval(showNextImage, 4500);
+    console.log('Slideshow started with', images.length, 'images');
 }

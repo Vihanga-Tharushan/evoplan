@@ -1,7 +1,7 @@
 :root {
   --background-grey: rgba(248, 248, 250, 1);
   --black: rgba(19, 19, 21, 1);
-  --collection-1-main: rgba(120, 72, 244, 1);
+  --primary: #4B006E;
 }
 
 .evo-plan-logo{
@@ -87,7 +87,7 @@
   justify-content: center;
   gap: 10px;
   padding: 15px 10px;
-  background-color: #7848f4;
+  background-color: var(--primary);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -240,7 +240,7 @@
 }
 
 .frame-default .frame:hover {
-  background-color: #6a3de8;
+  background-color: var(--primary);
 }
 
 .frame-default .frame-2:hover {

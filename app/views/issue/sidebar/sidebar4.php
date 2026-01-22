@@ -41,7 +41,7 @@
 
           <a href="<?php echo URLROOT; ?>/IssueC/payments" class="frame" role="menuitem">
             <div class="div">
-            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/CurrencyCircleDollar.svg" alt="" role="presentation" />
+            <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/CurrencyCircleDollar.svg" alt="" role="presentation"style="filter: invert(1) brightness(2);" />
             <span class="text-wrapper">Payments</span>
             </div>
           </a>

@@ -21,7 +21,7 @@
 
           <a href="<?php echo URLROOT; ?>/IssueC/dashboard" class="frame" role="menuitem" aria-current="page" title="Dashboard">
             <div class="div">
-              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
+              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" style="filter: invert(1) brightness(2);" />
               <span class="text-wrapper">Dashboard</span>
             </div>
           </a>

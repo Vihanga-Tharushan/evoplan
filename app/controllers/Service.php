@@ -328,6 +328,12 @@
             $this->view('servicesP/v_s_packages', $data);
         }
 
+        public function payment(){
+
+            $this->view('servicesP/v_s_payments');
+
+        }
+
         public function profile(){
 
             $profile = $this->profileModel->getProfileById($_SESSION['service_id']);
@@ -341,7 +347,8 @@
                 'rating' => $rating,
                 'availability' => $availability,
                 'EventsPosts' => $EventsPosts,
-                'EventMedia' => $EventMedia
+                'EventMedia' => $EventMedia,
+                'sidebar' => 'profile'
             ];
 
             $this->view('servicesP/v_s_profile', $data);
@@ -359,6 +366,12 @@
                     'background_text' => trim($_POST['background-text']),
                     'intro' => trim($_POST['intro-text']),
                     'service_id' => $_SESSION['service_id'],
+                    'background-image-2' => (isset($_FILES['background-image-2']['name']) && !empty($_FILES['background-image-2']['name']) ? time() . '_' . $_FILES['background-image-2']['name'] : null),
+                    'background-image-3' => (isset($_FILES['background-image-3']['name']) && !empty($_FILES['background-image-3']['name']) ? time() . '_' . $_FILES['background-image-3']['name'] : null),
+                    'background-image-4' => (isset($_FILES['background-image-4']['name']) && !empty($_FILES['background-image-4']['name']) ? time() . '_' . $_FILES['background-image-4']['name'] : null),
+                    'background-image-2_file' => (isset($_FILES['background-image-2']) ? $_FILES['background-image-2'] : null),
+                    'background-image-3_file' => (isset($_FILES['background-image-3']) ? $_FILES['background-image-3'] : null),
+                    'background-image-4_file' => (isset($_FILES['background-image-4']) ? $_FILES['background-image-4'] : null),
 
                     'profile_pic_err' => '',
                     'background_image_err' => '',
@@ -379,6 +392,25 @@
                     // Image uploaded successfully
                 } else {
                     $data['background_image_err'] = 'Cover photo upload failed. Please try again.';
+                }
+
+                //upload additional background images if provided
+                for ($i = 2; $i <= 4; $i++) {
+                    $bgImageKey = 'background-image-' . $i;
+                    $bgImageFileKey = $bgImageKey . '_file';
+                    
+                    if ($data[$bgImageFileKey] !== null && !empty($data[$bgImageFileKey]['name'])) {
+
+                        if (uploadImage($data[$bgImageFileKey]['tmp_name'], $data[$bgImageKey], '/img/coverPhotos/')) {
+                            // Image uploaded successfully
+                            $this->profileModel->uploadAdditionalBackgroundImage($data, $i);
+                        } else {
+                            $data['background_image_err'] .= " Background image $i upload failed. Please try again.";
+                        }
+                    } else {
+                        // No new image uploaded for this slot, set to null or handle accordingly
+                        $data[$bgImageKey] = null;
+                    }
                 }
 
                 //bio text validations
@@ -423,9 +455,9 @@
 
         
 
-        public function complains(){
+        public function complaints(){
 
-            $this->view('servicesP/v_s_complains');
+            $this->view('servicesP/v_s_complaints');
         }
 
     
@@ -633,7 +665,7 @@
                 $data =[
                         'start_date' => trim($_POST['from-date']),
                         'end_date' => trim($_POST['to-date']),
-                        'status' => trim($_POST['status']),
+                        'status' =>"booked",
                         'service_id' => $_SESSION['service_id'],
 
                 ];

@@ -1,18 +1,38 @@
 <?php require_once APPROOT . '/views/inc/header.php'?>
-
+<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbarBack.php'; ?>
 
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_profile.css">
-
 
 <main class="sp-page" aria-label="Service provider profile">
   <!-- HERO (cover) -->
   <header class="sp-hero">
     <div class="sp-cover">
-
-      <img class="sp-cover__img" src="<?php echo URLROOT;?>/public/img/coverPhotos/<?php echo $data['profile']->background_image; ?>" alt="">
+      <?php
+        // Collect all available background images
+        $backgroundImages = [];
+        if (!empty($data['profile']->background_image)) {
+            $backgroundImages[] = $data['profile']->background_image;
+        }
+        if (!empty($data['profile']->background_img_2)) {
+            $backgroundImages[] = $data['profile']->background_img_2;
+        }
+        if (!empty($data['profile']->background_img_3)) {
+            $backgroundImages[] = $data['profile']->background_img_3;
+        }
+        if (!empty($data['profile']->background_img_4)) {
+            $backgroundImages[] = $data['profile']->background_img_4;
+        }
+      ?>
+      <div class="background-slideshow" id="background-slideshow">
+        <?php foreach($backgroundImages as $index => $image): ?>
+          <img class="sp-cover__img <?php echo $index === 0 ? 'active' : ''; ?>"
+               src="<?php echo URLROOT;?>/public/img/coverPhotos/<?php echo $image; ?>"
+               alt="Background <?php echo $index + 1; ?>">
+        <?php endforeach; ?>
+      </div>
       <div class="sp-hero__content">
         <h1 class="sp-studio"><br><?php echo $data['profile']->background_text; ?></h1>
-        
+
       </div>
     </div>
 
@@ -293,6 +313,13 @@
     
 </script>
 <script src="<?php echo URLROOT; ?>/js/profile/profile.js"></script>
+
+<script>
+    // Initialize background slideshow after profile.js is loaded
+    window.addEventListener('load', function() {
+        initBackgroundSlideshow();
+    });
+</script>
 
 
 

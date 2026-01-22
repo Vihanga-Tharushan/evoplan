@@ -1,6 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar5.php'; ?>
+<!-- <?php //require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?> -->
+<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_messages.css">
 <main class="chat-shell" aria-label="Chat">
   <!-- Top search -->

@@ -1,6 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar2.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
+<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
+<!-- <?php //require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?> -->
 <link href="<?php echo URLROOT; ?>/css/components/servicesP/s_events.css" rel="stylesheet">
 
 <div class="main-container">
@@ -384,10 +384,28 @@
                 tabBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
+                // Hide all tab contents and remove show class from cards
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    const cards = content.querySelectorAll('.event-card');
+                    cards.forEach(card => card.classList.remove('show'));
+                });
+                
                 // Show active tab content
-                tabContents.forEach(content => content.classList.remove('active'));
                 document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Staggered reveal for the new tab's cards
+                const newEventCards = document.querySelectorAll(`#${tabId}-tab .event-card:not(.create-event-card)`);
+                newEventCards.forEach((card, i) => {
+                    setTimeout(() => card.classList.add('show'), i * 80);
+                });
             });
+        });
+        
+        // Initial staggered reveal for active tab
+        const initialEventCards = document.querySelectorAll('.tab-content.active .event-card:not(.create-event-card)');
+        initialEventCards.forEach((card, i) => {
+            setTimeout(() => card.classList.add('show'), i * 80);
         });
         
 

@@ -37,13 +37,13 @@
           
           <a href="<?php echo URLROOT; ?>/Service/chat" class="frame" role="menuitem">
             <div class="div">
-              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/PaperPlaneRight.svg" alt="" role="presentation" />
+              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/PaperPlaneRight.svg" alt="" role="presentation" style="filter: invert(1) brightness(2);"/>
               <span class="text-wrapper">Messages</span>
             </div>
           </a>
-          <a href="<?php echo URLROOT; ?>/Service/complains" class="frame-2" role="menuitem">
+          <a href="<?php echo URLROOT; ?>/Service/complaints" class="frame-2" role="menuitem">
             <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/Warning.svg" alt="" role="presentation" />
-            <span class="text-wrapper-2">Complains</span>
+            <span class="text-wrapper-2">Complaints</span>
 
           </a>
           <a href="<?php echo URLROOT; ?>/Service/dashboard" class="frame-2" role="menuitem" aria-current="page" title="Dashboard">
@@ -51,6 +51,11 @@
               <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/SquaresFour.svg" alt="" role="presentation" />
               <span class="text-wrapper-2">Analytics</span>
         
+          </a>
+
+          <a href="<?php echo URLROOT; ?>/Service/dashboard" class="frame-2" role="menuitem" aria-current="page" title="Dashboard">
+              <img class="img" src="<?php echo URLROOT; ?>/public/img/sidebar/CurrencyCircleDollar.svg" alt="" role="presentation" />
+              <span class="text-wrapper-2">Payments</span>
           </a>
         </nav>
       </nav>

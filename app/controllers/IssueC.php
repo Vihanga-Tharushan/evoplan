@@ -8,6 +8,7 @@ class IssueC extends Controller{
     }
     
     public function dashboard(){
+
         $this->view('issue/v_dashboard');
     }
 
@@ -87,11 +88,7 @@ class IssueC extends Controller{
 
             
             
-    }
-
-
-
-    
+    }    
     public function issuecprofile(){
             
             $this->view('issue/v_issuecprofile');
@@ -223,7 +220,7 @@ class IssueC extends Controller{
     }
 
     public function complains(){
-        $this->view('issue/complains');
+        $this->view('issue/v_complains');
     }
 
     public function messages(){
