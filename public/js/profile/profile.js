@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedStartDate = null;
     let selectedEndDate = null;
     let isSelectingRange = false;
+    // Reference 'today' (midnight) used to disable past dates selection
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     // Use the data passed from PHP
     let availabilityData = [];
@@ -85,9 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Add days of the month
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(year, month, day);
             const dateString = formatDate(date);
@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dayElement.textContent = day;
             dayElement.setAttribute('data-date', dateString);
 
-            // Check if today
-            if (date.toDateString() === today.toDateString()) {
+            // Mark today
+            if (date.getTime() === today.getTime()) {
                 dayElement.classList.add('cal__day--today');
             }
 
@@ -109,15 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Check availability status from server data
             const status = getDateStatus(date);
-            
             if (status) {
                 dayElement.classList.add(`cal__day--${status}`);
-                // Add tooltip with status
                 dayElement.title = `Marked as ${status}`;
             }
 
-            // Add click event
-            dayElement.addEventListener('click', () => handleDateClick(date));
+            // Disable past dates (strictly before today)
+            if (date.getTime() < today.getTime()) {
+                dayElement.classList.add('cal__day--past');
+                dayElement.title = 'Cannot select a past date';
+            } else {
+                // Only attach click handler for today and future dates
+                dayElement.addEventListener('click', () => handleDateClick(date));
+            }
 
             calendarGrid.appendChild(dayElement);
         }
@@ -125,6 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle date click
     function handleDateClick(date) {
+        // Prevent selecting past dates
+        if (date.getTime() < today.getTime()) return;
         const dateString = formatDate(date);
         
         if (!selectedStartDate) {

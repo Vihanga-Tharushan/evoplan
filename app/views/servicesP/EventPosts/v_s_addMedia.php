@@ -1,5 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
+<?php $backUrl =  URLROOT . '/Service/profile';
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/EventPosts/s_addMedia.css">
 
 <div class="container">
@@ -14,7 +15,7 @@
                 <h2 class="section-title">Upload Media</h2>
                 
                 <div class="drop-zone" id="dropZone">
-                    <i>📁</i>
+                    <i class="fas fa-file-upload"></i>
                     <h3>Drag & Drop Files Here</h3>
                     <p>Supported formats: JPG, PNG, GIF, MP4, MOV</p>
                     <input type="file" id="fileInput" name="fileInput" class="fileInput" multiple accept="image/*,video/*" style="display: none;" value="<?php echo $data['fileInput']; ?>">

@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar2.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/event/findServices.css">
 
 <div class="container">
@@ -44,7 +43,7 @@
                         <div class="separator">-</div>
                         <div class="field">
                             <span>Max</span>
-                            <input type="number" class="input-max" value="7000" min="0" max="100000">
+                            <input type="number" class="input-max" value="7000" min="0" max="1000000">
                         </div>
                     </div>
                     <div class="slider-container">

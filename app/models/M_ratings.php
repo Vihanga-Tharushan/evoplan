@@ -54,4 +54,30 @@
             return $this->db->single();
         }
 
+       //this is for analystics
+
+       public function getRatingsforServiceProvider($service_id){
+
+        $this->db->query("SELECT r.*, CONCAT(u.fname, ' ', u.lname) AS reviewer_name FROM reviews r JOIN users u ON r.user_id = u.user_id WHERE r.service_id = :service_id ORDER BY r.created_at DESC");
+        $this->db->bind(':service_id', $service_id);
+        return $this->db->resultSet();
+
+       }
+
+       public function getAllRatings(){
+            
+            $this->db->query("SELECT 
+                                     sp.service_id,
+                                     CONCAT(sp.fname, ' ', sp.lname) AS provider_name,
+                                     AVG(r.rating) AS avg_rating,
+                                     COUNT(r.review_id) AS total_reviews
+                                    FROM service_providers sp
+                                    LEFT JOIN reviews r
+                                    ON sp.service_id = r.service_id
+                                    GROUP BY sp.service_id, provider_name
+                                    ORDER BY avg_rating DESC;");
+            return $this->db->resultSet();
+
+       }
+
     }

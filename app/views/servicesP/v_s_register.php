@@ -74,13 +74,13 @@
     <label class="form__label" for="serviceType">Service Type</label>
     <select class="form__select" id="serviceType" name="serviceType" required value="<?php echo $data['serviceType']; ?>">
       <option value="">Select Service Type</option>
-      <option value="Decorators and Event Stylists" <?php echo ($data['serviceType'] == 'Decorators and Event Stylists') ? 'selected' : ''; ?>>Decorators and Event Stylists</option>
-      <option value="Event Equipment and Rentals" <?php echo ($data['serviceType'] == 'Event Equipment and Rentals') ? 'selected' : ''; ?>>Event Equipment and Rentals</option>
-      <option value="Music and DJ Services" <?php echo ($data['serviceType'] == 'Music and DJ Services') ? 'selected' : ''; ?>>Music and DJ Services</option>
-      <option value="Hosts, MCs and Entertainers" <?php echo ($data['serviceType'] == 'Hosts, MCs and Entertainers') ? 'selected' : ''; ?>>Hosts, MCs and Entertainers</option>
-      <option value="Transport and Logistics Services" <?php echo ($data['serviceType'] == 'Transport and Logistics Services') ? 'selected' : ''; ?>>Transport and Logistics Services</option>
-      <option value="Florists and Cake Designers" <?php echo ($data['serviceType'] == 'Florists and Cake Designers') ? 'selected' : ''; ?>>Florists and Cake Designers</option>
-      <option value="Venue Providing" <?php echo ($data['serviceType'] == 'Venue Providing') ? 'selected' : ''; ?>>Venue Providing</option>
+      <option value="Decorators and Event Stylists" <?php echo ($data['serviceType'] == 'Decorators') ? 'selected' : ''; ?>>Decorators and Event Stylists</option>
+      <option value="Event Equipment and Rentals" <?php echo ($data['serviceType'] == 'Event Equipment') ? 'selected' : ''; ?>>Event Equipment and Rentals</option>
+      <option value="Music and DJ Services" <?php echo ($data['serviceType'] == 'Music') ? 'selected' : ''; ?>>Music and DJ Services</option>
+      <option value="Hosts, MCs and Entertainers" <?php echo ($data['serviceType'] == 'Entertainers') ? 'selected' : ''; ?>>Hosts, MCs and Entertainers</option>
+      <option value="Transport and Logistics Services" <?php echo ($data['serviceType'] == 'Transportation') ? 'selected' : ''; ?>>Transport and Logistics Services</option>
+      <option value="Florists and Cake Designers" <?php echo ($data['serviceType'] == 'Florists') ? 'selected' : ''; ?>>Florists and Cake Designers</option>
+      <option value="Venue Providing" <?php echo ($data['serviceType'] == 'Venue') ? 'selected' : ''; ?>>Venue Providing</option>
       <option value="Catering" <?php echo ($data['serviceType'] == 'Catering') ? 'selected' : ''; ?>>Catering</option>
       <option value="Photography" <?php echo ($data['serviceType'] == 'Photography') ? 'selected' : ''; ?>>Photography</option>
     </select>

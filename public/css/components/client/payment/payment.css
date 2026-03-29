@@ -1,0 +1,165 @@
+/* Payment Page Styles */
+.payment-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.payment-header h2 {
+    color: #1f2937;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.payment-subtitle {
+    color: #6b7280;
+    font-size: 1.1rem;
+}
+
+.payment-summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.payment-summary-card h3 {
+    color: #1f2937;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.summary-items {
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.item-name {
+    color: #4b5563;
+    font-size: 1rem;
+}
+
+.item-price {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    margin-top: 15px;
+    border-top: 2px solid #4B006E;
+}
+
+.total-label {
+    color: #1f2937;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.total-amount {
+    color: #4B006E;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.payment-action {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.payhere-btn {
+    background: linear-gradient(135deg, #4B006E 0%, #7B2CBF 100%);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(75, 0, 110, 0.3);
+}
+
+.payhere-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(75, 0, 110, 0.4);
+}
+
+.payhere-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+}
+
+.secure-note {
+    margin-top: 15px;
+    color: #6b7280;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.secure-icon {
+    font-size: 1.1rem;
+}
+
+.payment-info {
+    background: #f9fafb;
+    border-left: 4px solid #4B006E;
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 30px;
+}
+
+.payment-info p {
+    color: #4b5563;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 0 15px;
+    }
+
+    .payment-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .payment-summary-card {
+        padding: 20px;
+    }
+
+    .payhere-btn {
+        padding: 15px 40px;
+        font-size: 1rem;
+    }
+
+    .total-amount {
+        font-size: 1.3rem;
+    }
+}

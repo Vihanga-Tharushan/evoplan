@@ -80,9 +80,7 @@
                                 <button class="action-btn view-event-btn">
                                     <i class="fas fa-eye"></i> View
                                 </button>
-                                <button class="action-btn confirm-btn">
-                                    <i class="fas fa-check-circle"></i> Send Confirmation
-                                </button> 
+                                
                             </div>
                             <div class="days-left">
                                 <?php
@@ -112,7 +110,7 @@
                             <div class="event-details">
                                 <div class="event-detail">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Location:</strong> Convention Center, Downtown</span>
+                                    <span ><strong>Location:</strong> Convention Center, Downtown</span>
                                 </div>
                                 <div class="event-detail">
                                     <i class="fas fa-calendar-day"></i>
@@ -411,27 +409,7 @@
 
         // Service provider specific action handlers
         
-        // Send confirmation for upcoming events
-        document.querySelectorAll('.confirm-btn').forEach(btn => {
-            btn.addEventListener('click', function(e){
-                e.stopPropagation();
-                const eventId = this.closest('.event-card').getAttribute('event-id');
-                if(!eventId) return alert('Missing event ID');
-
-                if(confirm('Send confirmation to client for this event?')) {
-                    fetch(`${URLROOT}/Services/sendConfirmation`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ eventId })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        alert(data.message || 'Confirmation sent successfully');
-                    })
-                    .catch(() => alert('Network error while sending confirmation'));
-                }
-            });
-        });
+        
 
         // View event details
         document.querySelectorAll('.view-event-btn').forEach(btn => {

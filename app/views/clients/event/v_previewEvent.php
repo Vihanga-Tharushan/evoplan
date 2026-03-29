@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar2.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/event/previewEvent.css">
 
 <div class="container">
@@ -83,71 +82,11 @@
             </div>
         </div>
 
-        <!-- Payment Options -->
-        <div class="payment-section">
-            <h3>Payment Method</h3>
-            <div class="payment-options">
-                <div class="payment-option active" data-method="credit-card">
-                    <div class="payment-icon credit-card"></div>
-                    <div class="payment-details">
-                        <h4>Credit/Debit Card</h4>
-                        <p>Pay securely with your credit or debit card</p>
-                    </div>
-                </div>
-                <div class="payment-option" data-method="bank-transfer">
-                    <div class="payment-icon bank-transfer"></div>
-                    <div class="payment-details">
-                        <h4>Bank Transfer<?php echo $data['event_id']; ?>'</h4>
-                        <p>Direct bank transfer with payment confirmation</p>
-                    </div>
-                </div>
-                <div class="payment-option" data-method="e-wallet">
-                    <div class="payment-icon e-wallet"></div>
-                    <div class="payment-details">
-                        <h4>E-Wallet</h4>
-                        <p>Pay via your preferred e-wallet service</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="payment-details-form">
-                <div id="credit-card-form" class="payment-form active">
-                    <div class="form-group">
-                        <label for="card-number">Card Number</label>
-                        <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group half">
-                            <label for="expiry-date">Expiry Date</label>
-                            <input type="text" id="expiry-date" placeholder="MM/YY" maxlength="5">
-                        </div>
-                        <div class="form-group half">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" placeholder="XXX" maxlength="4">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cardholder-name">Cardholder Name</label>
-                        <input type="text" id="cardholder-name" placeholder="John Doe">
-                    </div>
-                </div>
-                <!-- Other payment forms would go here -->
-            </div>
-        </div>
-
-        <!-- Terms & Conditions -->
-        <div class="terms-section">
-            <label class="checkbox-container">
-                <input type="checkbox" id="terms-checkbox">
-                <span class="checkmark"></span>
-                <span class="terms-text">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Cancellation Policy</a></span>
-            </label>
-        </div>
-
-        <!-- Make Payment Button -->
+        <!-- Pay Now Button -->
         <button class="payment-btn" id="make-payment-btn" disabled>
-            Make Payment for Full Event (Rs. 0.00)
+            <span class="btn-text">Pay Now (Rs. 0.00)</span>
         </button>
+        <p class="payment-note">Payment button will be enabled once all service providers confirm your packages.</p>
     </div>
 </div>
 
@@ -170,12 +109,7 @@
       
     getSelectedPackages(eventId);
       
-    // Initialize payment option listeners
-    setupPaymentOptions();
-      
-    // Setup terms checkbox listener
-    document.getElementById('terms-checkbox').addEventListener('change', togglePaymentButton);
-      
+
     // Setup payment button listener
     document.getElementById('make-payment-btn').addEventListener('click', processPayment);
   });
@@ -215,6 +149,29 @@
      xml.send(datastring);
   }
   
+  function updateEventVenue(eventId, venueAddress) {
+    const data ={
+        eventId: eventId,
+        venueAddress: venueAddress
+    };
+
+    var xml = new XMLHttpRequest();
+    xml.onload = function() {
+        if(this.readyState == 4 || this.status == 200){
+            var response = JSON.parse(this.responseText);
+            console.log('Venue update response:', response);
+            if(response.status === 'success') {
+                console.log('Event venue address updated successfully');
+            } else {
+                console.warn('Failed to update venue address:', response.message);
+            }
+        }
+    };
+    var datastring = JSON.stringify(data);
+    xml.open("POST", URLROOT + "/Clients/updateEventVenue", true);
+    xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xml.send(datastring);
+  }
 
   function getSelectedPackages(eventId) {
       
@@ -231,6 +188,15 @@
           console.log(response);
           renderPackages(response.packages);
           calculateTotals(response.packages);
+          
+          // Check if there's a venue package and update event venue address
+          if(response.packages && response.packages.length > 0) {
+              const venuePackage = response.packages.find(pkg => pkg.serviceType && pkg.serviceType.toLowerCase() === 'venue');
+              if(venuePackage && venuePackage.businessAddress) {
+                  console.log('Venue package found, updating event venue address...');
+                  updateEventVenue(eventId, venuePackage.businessAddress);
+              }
+          }
       }
     };
 
@@ -240,66 +206,33 @@
     xml.send(datastring);
   }
 
-  function setupPaymentOptions(){
-
-    document.querySelectorAll('.payment-option').forEach(option => {
-
-      option.addEventListener('click', function() {
-          // Remove active class from all options
-          document.querySelectorAll('.payment-option').forEach(opt => {
-              opt.classList.remove('active');
-          });
-          
-          // Add active class to clicked option
-          this.classList.add('active');
-          
-          // Hide all payment forms
-          document.querySelectorAll('.payment-form').forEach(form => {
-              form.classList.remove('active');
-          });
-          
-          // Show the relevant payment form
-          const method = this.dataset.method;
-          document.getElementById(`${method}-form`).classList.add('active');
-      });
-    });
-  }
-
-  function togglePaymentButton() {
-      const termsChecked = document.getElementById('terms-checkbox').checked;
+  function checkAllConfirmed() {
       const paymentBtn = document.getElementById('make-payment-btn');
+      const packageRows = document.querySelectorAll('.package-row');
       
-      // Check if all providers have confirmed (in a real app)
-      const allConfirmed = document.querySelectorAll('.confirmation-status .declined').length === 0;
+      if (packageRows.length === 0) {
+          paymentBtn.disabled = true;
+          return false;
+      }
       
-      paymentBtn.disabled = !termsChecked || !allConfirmed;
+      // Check if all packages have ACCEPTED status
+      const confirmedBadges = document.querySelectorAll('.confirmation-status .status-badge.confirmed');
+      const allConfirmed = confirmedBadges.length === packageRows.length;
+      
+      paymentBtn.disabled = !allConfirmed;
+      
+      return allConfirmed;
   }
 
   function processPayment() {
-      if (!document.getElementById('terms-checkbox').checked) {
-          showNotification('Please accept the terms and conditions', 'error');
+      // Check if all packages are confirmed
+      if (!checkAllConfirmed()) {
+          alert('Please wait for all service providers to confirm your packages before making payment.');
           return;
       }
       
-      // Disable button during processing
-      const paymentBtn = document.getElementById('make-payment-btn');
-      const originalText = paymentBtn.innerHTML;
-      paymentBtn.disabled = true;
-      paymentBtn.innerHTML = '<span class="spinner"></span> Processing Payment...';
-      
-      // Simulate payment processing
-      setTimeout(() => {
-          // In a real app, this would be an API call to process payment
-          console.log('Payment processed successfully');
-          
-          // Show success message
-          showNotification('Payment processed successfully! Your event is confirmed.', 'success');
-          
-          // Redirect to confirmation page after delay
-          setTimeout(() => {
-              window.location.href = `${URLROOT}/client/event/confirmation`;
-          }, 2000);
-      }, 2000);
+      // Redirect to payment gateway
+      window.location.href = `${URLROOT}/Clients/paymentGateway/${eventId}`;
   }
 
   function goBackToPackages() {
@@ -414,6 +347,9 @@
               sendNotification(packageId);
           });
       });
+      
+      // Check if all packages are confirmed and enable/disable payment button
+      checkAllConfirmed();
   }
 
   function calculateTotals(packages) {
@@ -436,7 +372,7 @@
       document.getElementById('service-fee-value').textContent = `Rs. ${serviceFee.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
       document.getElementById('tax-value').textContent = `Rs. ${tax.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
       document.getElementById('total-value').textContent = `Rs. ${totalAmount.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-      document.getElementById('make-payment-btn').textContent = `Make Payment for Full Event (Rs. ${totalAmount.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+      document.querySelector('#make-payment-btn .btn-text').textContent = `Pay Now (Rs. ${totalAmount.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
       
       return { subtotal, serviceFee, tax, totalAmount };
   }

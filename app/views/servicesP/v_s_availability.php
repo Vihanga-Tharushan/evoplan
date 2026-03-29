@@ -1,7 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php 
-$backUrl = URLROOT . '/Service/profile';
-require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
+<?php $backUrl = URLROOT . '/Service/profile';
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/servicesP/s_availability.css">
 <div class="container">
     <header class="main">

@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar5.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_messages.css">
 <main class="chat-shell" aria-label="Chat">
   <!-- Top search -->

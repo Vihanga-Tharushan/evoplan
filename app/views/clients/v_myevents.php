@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar2.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link href="<?php echo URLROOT; ?>/css/components/client/myevents.css" rel="stylesheet">
 
 <div class="main-container">

@@ -22,6 +22,8 @@
 
         private $notificationModel;
 
+        private $complaintModel;
+
         public function __construct(){
 
             $this->clientModel = $this->model('M_Client');
@@ -33,6 +35,8 @@
             $this->messageModel = $this->model('M_Message');
             $this->eventModel = $this->model('M_Event');
             $this->notificationModel = $this->model('M_notification');
+            $this->complaintModel = $this->model('M_Complaints');
+
 
         }
 
@@ -182,6 +186,7 @@
             $_SESSION['client_id'] = $client->client_id;
             $_SESSION['client_email'] = $client->email;
             $_SESSION['client_name'] = $client->name;
+            $_SESSION['client_profile_pic'] = isset($client->profile_pic) ? $client->profile_pic : '';
             redirect('Clients/home');
         }
 
@@ -252,6 +257,7 @@
             unset($_SESSION['client_id']);
             unset($_SESSION['client_email']);
             unset($_SESSION['client_name']);
+            unset($_SESSION['client_profile_pic']);
 
             // Destroy the session
             session_destroy();
@@ -326,6 +332,176 @@
            
         }
 
+        public function updateEventVenue(){
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'];
+                $venueAddress = $inputdata['venueAddress'];
+                // Update event venue in database
+                if($this->eventModel->updateEventVenue($eventId, $venueAddress)){
+                    echo json_encode(['status' => 'success', 'message' => 'Venue updated successfully']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to update venue']);
+                }
+            }
+        }
+
+
+        public function updateSettings(){
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                
+                // Set JSON header
+                header('Content-Type: application/json');
+                
+                $formData = $_POST;
+                
+                // Validate input
+                if(empty($formData['name']) || empty($formData['email'])){
+                    echo json_encode(['success' => false, 'message' => 'Name and email are required']);
+                    return;
+                }
+                
+                // Prepare base update data
+                $updateData = [
+                    'name' => trim($formData['name']),
+                    'email' => trim($formData['email']),
+                    'contact' => isset($formData['contact']) ? trim($formData['contact']) : '',
+                    'address' => isset($formData['address']) ? trim($formData['address']) : '',
+                    'client_id' => $_SESSION['client_id']
+                ];
+
+                // Handle profile picture upload
+                if(isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0){
+                    // Validate file type
+                    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                    if(!in_array($_FILES['profile_pic']['type'], $allowedTypes)){
+                        echo json_encode(['success' => false, 'message' => 'Invalid image type. Only JPG, PNG and GIF are allowed.']);
+                        return;
+                    }
+                    
+                    // Validate file size (5MB max)
+                    if($_FILES['profile_pic']['size'] > 5 * 1024 * 1024){
+                        echo json_encode(['success' => false, 'message' => 'Image size should be less than 5MB']);
+                        return;
+                    }
+                    
+                    // Generate unique filename
+                    $profilePicName = time() . '_' . $_FILES['profile_pic']['name'];
+                    
+                    // Get old profile picture to delete if exists
+                    $client = $this->clientModel->getClientById($_SESSION['client_id']);
+                    $oldProfilePic = isset($client->profile_pic) ? $client->profile_pic : null;
+                    
+                    // Upload new image
+                    if($oldProfilePic && file_exists(PUBROOT . '/img/clientProfilePic/' . $oldProfilePic)){
+                        // Update existing image
+                        if(updateImage(PUBROOT . '/img/clientProfilePic/' . $oldProfilePic, $_FILES['profile_pic']['tmp_name'], $profilePicName, '/img/clientProfilePic/')){
+                            $updateData['profile_pic'] = $profilePicName;
+                            $_SESSION['client_profile_pic'] = $profilePicName;
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Failed to upload profile picture']);
+                            return;
+                        }
+                    } else {
+                        // Upload new image
+                        if(uploadImage($_FILES['profile_pic']['tmp_name'], $profilePicName, '/img/clientProfilePic/')){
+                            $updateData['profile_pic'] = $profilePicName;
+                            $_SESSION['client_profile_pic'] = $profilePicName;
+                        } else {
+                            echo json_encode(['success' => false, 'message' => 'Failed to upload profile picture']);
+                            return;
+                        }
+                    }
+                }
+
+                // Update client profile in database
+                if($this->clientModel->updateProfile($updateData)){
+                    // If email was changed, update session email
+                    if($_SESSION['client_email'] != $updateData['email']){
+                        $_SESSION['client_email'] = $updateData['email'];
+                    }
+                    // Update session name if changed
+                    if($_SESSION['client_name'] != $updateData['name']){
+                        $_SESSION['client_name'] = $updateData['name'];
+                    }
+                    echo json_encode(['success' => true, 'message' => 'Profile updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update profile']);
+                }
+            }
+            else{
+                $this->view('clients/v_settings');
+            }
+        }
+
+        public function updatePassword(){
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                
+                $formData = $_POST;
+                $clientId = $_SESSION['client_id'];
+                
+                // Validate input
+                if(empty($formData['currentPassword']) || empty($formData['newPassword']) || empty($formData['confirmPassword'])){
+                    echo json_encode(['success' => false, 'message' => 'All password fields are required']);
+                    return;
+                }
+                
+                // Verify new passwords match
+                if($formData['newPassword'] !== $formData['confirmPassword']){
+                    echo json_encode(['success' => false, 'message' => 'New passwords do not match']);
+                    return;
+                }
+                
+                // Validate password length
+                if(strlen($formData['newPassword']) < 6){
+                    echo json_encode(['success' => false, 'message' => 'Password must be at least 6 characters long']);
+                    return;
+                }
+                
+                // Get current client data to verify current password
+                $client = $this->clientModel->getClientById($clientId);
+                
+                if(!$client || !password_verify($formData['currentPassword'], $client->password)){
+                    echo json_encode(['success' => false, 'message' => 'Current password is incorrect']);
+                    return;
+                }
+                
+                // Update password
+                if($this->clientModel->updatePassword($clientId, $formData['newPassword'])){
+                    echo json_encode(['success' => true, 'message' => 'Password updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update password']);
+                }
+            }
+        }
+
+        public function getSettings(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                // Fetch client settings from database
+                $clientId = $_SESSION['client_id'];
+                $client = $this->clientModel->getClientById($clientId);
+                
+                if($client){
+                    echo json_encode([
+                        'success' => true,
+                        'data' => [
+                            'name' => $client->name,
+                            'email' => $client->email,
+                            'contact' => isset($client->contact) ? $client->contact : '',
+                            'address' => isset($client->address) ? $client->address : '',
+                            'profile_pic' => isset($client->profile_pic) ? $client->profile_pic : ''
+                        ]
+                    ]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to load settings']);
+                }
+            }
+        }
         public function getEventDetails(){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -350,6 +526,19 @@
             }
         }
 
+
+        public function settings(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Process form data
+                redirect('clients/settings');
+            }
+            else{
+                // Load the settings view
+                $this->view('clients/v_settings');
+            }
+        }
+
         public function profiles() {
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -363,7 +552,17 @@
             
         }
 
+        public function analytics(){
 
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Process form data
+                redirect('clients/analytics');
+            }
+            else{
+                // Load the analytics view
+                $this->view('clients/v_analytics');
+            }
+        }
         public function findServices($eventId){
 
             $data = [
@@ -415,19 +614,35 @@
 
         public function viewprovider($id){
 
-            $profile = $this->profileModel->getProfileByServiceId($id);
+            $profile = $this->profileModel->getProfileById($id);
+            $profileV = $this->profileModel->getProfileByServiceId($id);
             $rating = $this->ratingModel->getRatingsSummary($id);
             $availability = $this->availabilityModel->getAvailabilityByServiceProvider($id);
             $EventsPosts = $this->postModel->getEventPostsByServiceProvider($id);
             $EventMedia = $this->postModel->getMediaByServiceId($id);
             $data = [
+
                 'profile' => $profile,
                 'rating' => $rating,
                 'availability' => $availability,
                 'EventsPosts' => $EventsPosts,
-                'EventMedia' => $EventMedia
+                'EventMedia' => $EventMedia,
+                'profileV' => $profileV
+
             ];
             $this->view('clients/serviceProviderprofile/serviceProviderprofile', $data);
+        }
+
+        public function getPackagesByProvider(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                $serviceProviderId = $_GET['service_id'];
+                 // Fetch packages for the service provider
+
+                $packages = $this->packageModel->getPackagesByProvider($serviceProviderId);
+                echo json_encode($packages);
+            }
+           
         }
         public function allvenues(){
 
@@ -509,6 +724,7 @@
                 $this->view('clients/v_alltransport');
             }
         }
+
         public function chatbox(){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -520,6 +736,7 @@
                 $this->view('clients/v_chatbox');
             }
         }
+
         public function allvenuep(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
@@ -617,6 +834,7 @@
                 $this->view('clients/v_portfolio');
             }
         }
+
         public function terms(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
@@ -730,6 +948,21 @@
                 $client
             );            
         }
+
+        public function notifications(){
+            
+            $notifications = $this->notificationModel->getAllByUser('CLIENT', $_SESSION['client_id']);
+            $stats = $this->notificationModel->getNotificationStats('CLIENT', $_SESSION['client_id']);
+            
+            $data = [
+                'notifications' => $notifications,
+                'stats' => $stats
+            ];
+            // Load the notifications view
+            $this->view('clients/v_notifications', $data);
+        
+        }
+
         public function feedback(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
@@ -748,6 +981,121 @@
             else{
                 // Load the complains view
                 $this->view('clients/v_complains');
+            }
+        }
+
+
+        public function submitComplaint(){
+            // Only accept POST
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+                return;
+            }
+
+            // Get JSON input
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            // Validate required fields
+            if (!isset($data['event_id']) || empty($data['event_id']) ||
+                !isset($data['complainant_type']) || empty($data['complainant_type']) ||
+                !isset($data['issue_type']) || empty($data['issue_type']) ||
+                !isset($data['description']) || empty($data['description'])) {
+                
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Missing required fields'
+                ]);
+                return;
+            }
+
+            // Validate service_id if complainant_type is SERVICEP
+            if ($data['complainant_type'] === 'SERVICEP') {
+                if (!isset($data['service_id']) || empty($data['service_id'])) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Service provider is required when complaint type is Service Provider'
+                    ]);
+                    return;
+                }
+            }
+
+            // Prepare data for insertion
+            $complaintData = [
+                'client_id' => $_SESSION['client_id'] ?? null,
+                'event_id' => $data['event_id'],
+                'complainant_type' => $data['complainant_type'],
+                'issue_type' => $data['issue_type'],
+                'description' => $data['description']
+            ];
+
+            // Add service_id if provided
+            if ($data['complainant_type'] === 'SERVICEP' && isset($data['service_id'])) {
+                $complaintData['service_id'] = $data['service_id'];
+            }
+
+            // Check if client_id exists
+            if (!$complaintData['client_id']) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Client not authenticated'
+                ]);
+                return;
+            }
+
+            // Submit complaint using the model
+            if ($this->complaintModel->submitClientComplaint($complaintData)) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Complaint submitted successfully'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Failed to submit complaint'
+                ]);
+            }
+        }
+        
+        public function getClientEvents(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                if(!isset($_SESSION['client_id'])){
+                    http_response_code(401);
+                    echo json_encode(['success' => false, 'error' => 'Not logged in']);
+                    return;
+                }
+                
+                $events = $this->eventModel->getEventsByClientId($_SESSION['client_id']);
+                echo json_encode(['success' => true, 'events' => $events]);
+            }
+        }
+        
+        public function getEventServiceProviders(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                $eventId = isset($_GET['eventId']) ? intval($_GET['eventId']) : null;
+                
+                if(!$eventId){
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'error' => 'Event ID required']);
+                    return;
+                }
+                
+                // Get service providers hired for this event
+                $providers = $this->eventModel->getServiceProvidersForEvent($eventId);
+                echo json_encode(['success' => true, 'providers' => $providers]);
+            }
+        }
+
+        public function getClientComplaints(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                if(!isset($_SESSION['client_id'])){
+                    http_response_code(401);
+                    echo json_encode(['success' => false, 'error' => 'Not logged in']);
+                    return;
+                }
+                
+                $complaints = $this->complaintModel->getClientComplaintsByClientId($_SESSION['client_id']);
+                echo json_encode(['success' => true, 'complaints' => $complaints]);
             }
         }
         public function spro(){
@@ -847,6 +1195,155 @@
 
             }
         }
+
+        public function getAllServiceProviders(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+                $services = $this->profileModel-> getAllServiceProviders();
+                echo json_encode($services);
+
+            }
+        }
+
+        public function getServiceProviderById($service_id){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+                $service = $this->profileModel->getProfileByServiceId($service_id);
+                echo json_encode($service);
+
+            }
+        }
+
+        public function getServiceProvidersRattings(){
+
+                if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+                    $ratings = $this->ratingModel->getAllRatings();
+                    echo json_encode($ratings);
+    
+                }
+        }
+
+        public function addFavoriteProviders(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceProviderId = $inputdata['profileId'] ?? null;
+                $clientId = $_SESSION['client_id'] ?? null;
+
+                if(!$serviceProviderId || !$clientId){
+                    echo json_encode(['success' => false, 'message' => 'Missing data']);
+                    return;
+                }
+
+                if($this->clientModel->addFavoriteProvider($clientId, $serviceProviderId)){
+                    echo json_encode(['success' => true, 'message' => 'Service provider added to favorites']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to add service provider to favorites']);
+                }
+            }
+        }
+
+        public function getFavoriteProviders(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+                $clientId = $_SESSION['client_id'] ?? null;
+                if(!$clientId){
+                    echo json_encode([]);
+                    return;
+                }
+                
+                $favoriteProviders = $this->profileModel->getFavoriteProvidersWithDetails($clientId);
+                echo json_encode($favoriteProviders);
+
+            }
+        }
+
+        public function removeFavoriteProviders(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceProviderId = $inputdata['profileId'] ?? null;
+                $clientId = $_SESSION['client_id'] ?? null;
+
+                if(!$serviceProviderId || !$clientId){
+                    echo json_encode(['success' => false, 'message' => 'Missing data']);
+                    return;
+                }
+
+                if($this->clientModel->removeFavoriteProvider($clientId, $serviceProviderId)){
+                    echo json_encode(['success' => true, 'message' => 'Service provider removed from favorites']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to remove service provider from favorites']);
+                }
+            }
+        }
+
+        public function paymentGateway($eventId) {
+            // Check if user is logged in
+            if(!isset($_SESSION['client_id'])){
+                redirect('users/login');
+            }
+
+            $clientId = $_SESSION['client_id'];
+            
+            // Get event details
+            $eventDetails = $this->eventModel->getEventById($eventId);
+            
+            // Get selected packages for this event
+            $selectedPackages = $this->eventModel->getSelectedPackages($eventId);
+            
+            // Calculate total amount
+            $totalAmount = 0;
+            foreach($selectedPackages as $package) {
+                $totalAmount += floatval($package->package_price);
+            }
+            
+            // Get client details
+            $clientDetails = $this->clientModel->getClientById($clientId);
+            
+            // Load PayHere config
+            $payhereConfig = require_once APPROOT . '/config/payhere.php';
+            $merchant_id = $payhereConfig['merchant_id'];
+            $merchant_secret = $payhereConfig['merchant_secret'];
+            
+            // Generate order ID
+            $order_id = 'EVT_' . $eventId . '_' . time();
+            
+            // Format amount to 2 decimal places
+            $amount = number_format($totalAmount, 2, '.', '');
+            $currency = 'LKR';
+            
+            // Generate hash
+            // Hash formula: MD5(merchant_id + order_id + amount + currency + MD5(merchant_secret))
+            $hash = strtoupper(
+                md5(
+                    $merchant_id . 
+                    $order_id . 
+                    $amount . 
+                    $currency . 
+                    strtoupper(md5($merchant_secret))
+                )
+            );
+            
+            $data = [
+                'event_id' => $eventId,
+                'client_id' => $clientId,
+                'event_details' => $eventDetails,
+                'packages' => $selectedPackages,
+                'total_amount' => $totalAmount,
+                'client_name' => $clientDetails->name,
+                'client_email' => $clientDetails->email,
+                'merchant_id' => $merchant_id,
+                'order_id' => $order_id,
+                'amount' => $amount,
+                'currency' => $currency,
+                'hash' => $hash
+            ];
+            
+            $this->view('clients/payment/makepayment', $data);
+        }
+        
         
     }
 ?>

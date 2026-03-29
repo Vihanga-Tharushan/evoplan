@@ -8,14 +8,14 @@
 
         //Create package
         public function create($data){ //create package
-            $this->db->query("INSERT INTO packages (service_id, title, details, price, bg_image_name, notes) VALUES (:service_id, :title, :details, :price, :bg_image_name, :notes)");
+            $this->db->query("INSERT INTO packages (service_id, title, details, price, bg_image_name) VALUES (:service_id, :title, :details, :price, :bg_image_name)");
             // Bind values
             $this->db->bind(':service_id', $data['service_id']);
             $this->db->bind(':title', $data['title']);
             $this->db->bind(':details', $data['details']);
             $this->db->bind(':price', $data['price']);
             $this->db->bind(':bg_image_name', $data['bg_image_name']);
-            $this->db->bind(':notes', $data['notes']);
+           
            
              // Execute
             if($this->db->execute()){
@@ -35,19 +35,13 @@
 
 
         public function edit($data){ //edit package
-            $this->db->query("UPDATE packages SET title = :title, details = :details, price = :price, bg_image_name = :bg_image_name, notes = :notes WHERE package_id = :id");
+            $this->db->query("UPDATE packages SET title = :title, details = :details, price = :price, bg_image_name = :bg_image_name WHERE package_id = :id");
             // Bind values
             $this->db->bind(':id', $data['id']);  
             $this->db->bind(':title', $data['title']);
             $this->db->bind(':details', $data['details']);
             $this->db->bind(':price', $data['price']);
             $this->db->bind(':bg_image_name', $data['bg_image_name']);
-            $this->db->bind(':notes', $data['notes']);
-           
-            
-            
-            
-            
            
              // Execute
             if($this->db->execute()){
@@ -82,7 +76,16 @@
             $this->db->query("SELECT * FROM v_packages_with_provider");
             $results = $this->db->resultSet();
             return $results;
-        } 
+        }
+
+        public function getTotalPackagesByProvider($service_id) {
+            $this->db->query("SELECT COUNT(*) AS total_packages FROM packages WHERE service_id = :service_id");
+            $this->db->bind(':service_id', $service_id);
+            $row = $this->db->single();
+            return $row ? (int)$row->total_packages : 0;
+        }
+
+        
 
     }
 ?>

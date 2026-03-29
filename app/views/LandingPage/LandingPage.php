@@ -8,7 +8,7 @@
         <div class="footer-container">
 
           <div class="admin_login-container"><button class="admin_login-btn" onclick="window.location.href='<?php echo URLROOT ?>/Admin/admin_login'">Admin Login</button></div>
-          <div class="coordinator_login-container"><button class="coordinator_login-btn"  onclick="window.location.href='<?php echo URLROOT ?>/Admin/coordinator_login'">Issue Coordinator Login</button></div>
+          <div class="coordinator_login-container"><button class="coordinator_login-btn"  onclick="window.location.href='<?php echo URLROOT ?>/IssueC/coordinator_login'">Issue Coordinator Login</button></div>
           
           <img class="logo-2" src="../public/img/LandingPage/Logo.svg" />
             

@@ -1,7 +1,7 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php
 $backUrl = URLROOT . '/Service/profile';
-require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 
 
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_editprofile.css">

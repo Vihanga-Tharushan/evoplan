@@ -56,7 +56,7 @@
 
 /* Sidebar */
 .threads{
-  width: 420px;
+  width: 397px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -141,8 +141,8 @@
   grid-template-rows: 1fr auto;
   height: var(--panel-h);
   overflow: hidden;
-  width: 1000px;
-  margin-left: 50px;
+  width: 900px;
+  margin-left: 48px;
 }
 
 /* Messages */

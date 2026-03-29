@@ -63,19 +63,19 @@ function getNotificationIcon($title, $message) {
     $lowerMessage = strtolower($message);
     
     if (strpos($lowerTitle, 'booking') !== false || strpos($lowerMessage, 'booking') !== false) {
-        return ['icon' => '📅', 'type' => 'booking'];
+        return ['icon' => '<i class="fa-solid fa-calendar-check"></i>', 'type' => 'booking'];
     } elseif (strpos($lowerTitle, 'message') !== false || strpos($lowerMessage, 'message') !== false) {
-        return ['icon' => '💬', 'type' => 'message'];
+        return ['icon' => '<i class="fa-solid fa-comment"></i>', 'type' => 'message'];
     } elseif (strpos($lowerTitle, 'review') !== false || strpos($lowerTitle, 'rating') !== false) {
-        return ['icon' => '⭐', 'type' => 'review'];
+        return ['icon' => '<i class="fa-solid fa-star"></i>', 'type' => 'review'];
     } elseif (strpos($lowerTitle, 'payment') !== false || strpos($lowerMessage, 'payment') !== false) {
-        return ['icon' => '💰', 'type' => 'payment'];
+        return ['icon' => '<i class="fa-solid fa-money-bill"></i>', 'type' => 'payment'];
     } elseif (strpos($lowerTitle, 'package') !== false || strpos($lowerMessage, 'package') !== false) {
-        return ['icon' => '📦', 'type' => 'booking'];
+        return ['icon' => '<i class="fa-solid fa-box"></i>', 'type' => 'booking'];
     } elseif (strpos($lowerTitle, 'alert') !== false || strpos($lowerTitle, 'warning') !== false) {
-        return ['icon' => '⚠️', 'type' => 'alert'];
+        return ['icon' => '<i class="fa-solid fa-triangle-exclamation"></i>', 'type' => 'alert'];
     } else {
-        return ['icon' => 'ℹ️', 'type' => 'system'];
+        return ['icon' => '<i class="fa-solid fa-info"></i>', 'type' => 'system'];
     }
 }
 

@@ -1,16 +1,9 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/issue/sidebar/sidebar7.php'; ?>
-<?php require_once APPROOT . '/views/issue/taskbar/taskbar.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reports & Logs</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<?php require_once APPROOT . '/views/issue/sidebar/sidebar.php'; ?>
+
   <style>
     :root {
-      --accent: #7c3aed;
+            --accent: #7c3aed;
       --accent-2: #8a7cfb;
       --bg: #f7f7fb;
       --panel: #ffffff;
@@ -34,13 +27,18 @@
       --available: #dbeafe;
       --booked: #fecaca;
       --unavailable: #f1f5f9;
+      --primary: #4B006E;     /* Dark purple */
+      --secondary: #6F1A8C;   /* Accent violet */
+      --dark: #0b1026;         /* Background dark */
+      --light: #f7f8fc;        /* Light section background */
+      --text: #111827;         /* Main text */
+      --muted: #6b7280;        /* Subtext / secondary text */
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
@@ -50,7 +48,7 @@
     }
 
     .reports{
-        margin-left: 200px;
+        margin-left: 270px;
         margin-top: 70px;
     }
     .page-header {

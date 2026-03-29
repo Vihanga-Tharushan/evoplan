@@ -9,6 +9,15 @@
     --text-secondary: #666666;
     --radius: 12px;
     --transition: all 0.3s ease;
+    --primary: #4B006E;     /* Dark purple */
+    --secondary: #6F1A8C;   /* Accent violet */
+    --lightSecondary: rgb(86, 78, 93); /* Light violet */
+    --dark: #0b1026;         /* Background dark */
+    --light: #f7f8fc;        /* Light section background */
+    --text: #111827;         /* Main text */
+    --muted: #6b7280ff;        /* Subtext / secondary text */
+    --darkprimary: #15001eff; /* Darker purple */
+    --border: 1px solid #e5e5e5;
 }
 
 * {
@@ -43,7 +52,7 @@ header {
     background: none;
     border: none;
     font-size: 16px;
-    color: var(--accent);
+    color: var(--primary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -142,7 +151,7 @@ form {
 }
 
 .browse-btn {
-    background-color: var(--accent);
+    background-color: var(--primary);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -153,7 +162,7 @@ form {
 }
 
 .browse-btn:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--secondary);
 }
 
 .file-input {
@@ -395,11 +404,12 @@ form {
 }
 
 .save-btn {
-    background-color: var(--accent);
+    background-color: var(--primary);
     border: none;
     color: white;
+    border: var(--border);
 }
 
 .save-btn:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--secondary);
 }

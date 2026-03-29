@@ -1,7 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php
-$backUrl = URLROOT . '/IssueC/dashboard';
-require_once APPROOT . '/views/issue/taskbar/taskbar_back.php'; ?>
+<?php require_once APPROOT . '/views/issue/sidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="../public/css/components/servicesP/s_messages.css">
 <main class="chat-shell" aria-label="Chat">
   <!-- Top search -->

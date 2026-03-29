@@ -1,7 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-
-<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar2.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
+<?php $backUrl = URLROOT . '/Service/events';
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/events/s_oneupcoming.css">
 <div class="event-container">
@@ -56,7 +55,6 @@
     <div class="section-card">
         <h2 class="section-title">Venue & Location</h2>
         <div class="venue-details">
-            <h3 class="venue-name"><?php echo htmlspecialchars($data['event']->venue_name ?? 'Venue'); ?></h3>
             <p class="venue-address">
                 <?php echo nl2br(htmlspecialchars($data['event']->venue_address ?? '')); ?>
             </p>
@@ -83,6 +81,7 @@
            
             $selectedPackage = $data['selectedPackage'];
             $packagesList = is_array($selectedPackage) ? $selectedPackage : [$selectedPackage];
+            $hasConfirmedPackage = false;
 
             if (!empty($packagesList)) :
                 foreach ($packagesList as $pkg):
@@ -91,6 +90,11 @@
                     $pprice = $pkg->package_price ?? $pkg->price ?? null;
                     $provider = $pkg->service_provider_name ?? ($pkg->service_name ?? 'Provider');
                     $status = $pkg->confirmation_status ?? $pkg->sent_status ?? null;
+                    
+                    // Check if this service provider's package has a confirmed/accepted status
+                    if($pkg->service_id == $_SESSION['service_id'] && ($status === 'CONFIRMED' || $status === 'ACCEPTED')) {
+                        $hasConfirmedPackage = true;
+                    }
             ?>
 
             <?php if($pkg->service_id == $_SESSION['service_id']): ?>
@@ -129,6 +133,7 @@
         </div>
     </div>
   
+    <?php if(!$hasConfirmedPackage): ?>
     <div class="section-card confirm-section">
         <div class="confirm-actions">
             <button type="button" class="send-confirmation" id="sendConfirmation" data-event-id="<?php echo $data['event']->event_id ?? ''; ?>">Send Confirmation</button>
@@ -136,6 +141,7 @@
             <button type="button" class="reject-confirmation" id="rejectConfirmation" data-event-id="<?php echo $data['event']->event_id ?? ''; ?>">Reject</button>
         </div>
     </div>
+    <?php endif; ?>
 
 
     <div class="popup-package hidden" id="packagePopup">

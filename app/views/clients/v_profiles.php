@@ -1,46 +1,49 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar4.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Providers - EvoPlan</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-          --accent: #7c3aed;
-          --accent-2: #8a7cfb;
-          --bg: #f7f7fb;
-          --panel: #ffffff;
-          --muted-surface: #f3f4f6;
-          --text: #0f172a;
-          --muted: #6b7280;
-          --border: #e5e7eb;
-          --radius: 16px;
-          --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
-          --header-h: 64px;
-          --frame: 1200px;
-          --primary: #6d28d9;
-          --primary-light: #8b5cf6;
-          --secondary: #4c1d95;
-          --success: #10b981;
-          --danger: #ef4444;
-          --warning: #f59e0b;
-          --light: #f8fafc;
-          --dark: #1e293b;
-          --gray: #64748b;
-          --border: #e2e8f0;
-          --available: #dbeafe;
-          --booked: #fecaca;
-          --unavailable: #f1f5f9;
+         --accent: #4B006E;
+        --accent-2: #8a7cfb;
+        --bg: #f7f7fb;
+        --panel: #ffffff;
+        --muted-surface: #f3f4f6;
+        --text: #0f172a;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --radius: 16px;
+        --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+        --header-h: 90px;
+        --frame: 1400px;
+        --primary: #4B006E;     /* Dark purple */
+        --primary-light: #7C3AED; /* Lighter purple for hover effects */
+        --secondary: #6F1A8C;   /* Accent violet */
+        --lightSecondary: #7a6e83ff; /* Light violet */
+        --dark: #0b1026;         /* Background dark */
+        --light: #f7f8fc;        /* Light section background */
+        --text: #111827;         /* Main text */
+        --muted: #6b7280ff;        /* Subtext / secondary text */
+        --darkprimary: #15001eff; /* Darker purple */
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --light: #f8fafc;
+        --dark: #1e293b;
+        --gray: #64748b;
+        --border: #e2e8f0;
+        --available: #dbeafe;
+        --booked: #fecaca;
+        --unavailable: #f1f5f9;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
@@ -57,16 +60,7 @@
         }
 
         /* Assuming sidebar width is 250px */
-        .sidebar {
-            width: 250px;
-            background-color: var(--panel);
-            box-shadow: var(--shadow);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-        }
-
+        
         /* Main content area - adjusted for sidebar */
         .main-content {
             flex: 1;
@@ -75,34 +69,7 @@
             min-height: 100vh;
         }
 
-        /* Top navbar placeholder - assuming it's fixed */
-        .top-navbar {
-            position: fixed;
-            top: 0;
-            left: 250px;
-            right: 0;
-            height: var(--header-h);
-            background-color: var(--panel);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 99;
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            justify-content: space-between;
-        }
-
-        .top-navbar .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .top-navbar .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
+        
         /* Page Header */
         .page-header {
             padding: 2rem 2rem 1.5rem;
@@ -132,6 +99,11 @@
             max-width: var(--frame);
             margin: 0 auto;
             padding: 0 2rem 3rem;
+            width: 100%;
+        }
+        
+        #my-favourites .profiles-container {
+            padding: 2rem;
         }
 
         /* Controls Bar */
@@ -223,6 +195,13 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
+            width: 100%;
+        }
+        
+        #favourites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
         }
 
         /* Profile Card */
@@ -236,6 +215,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            min-height: 280px;
+            max-height:450px;
         }
 
         .profile-card:hover {
@@ -316,15 +297,16 @@
         }
 
         .profile-body {
-            padding: 1.5rem;
+            padding: 1.25rem;
             flex-grow: 1;
+            max-height: 280px;
         }
 
         .profile-title {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .profile-name {
@@ -338,10 +320,23 @@
             font-size: 0.9rem;
             color: var(--primary);
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .profile-category-label {
+            background-color: rgba(75, 0, 110, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border: 1px solid rgba(75, 0, 110, 0.2);
         }
 
         .profile-tagline {
@@ -354,7 +349,7 @@
         .profile-description {
             color: var(--gray);
             font-size: 0.95rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             line-height: 1.6;
         }
 
@@ -362,7 +357,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .stars {
@@ -444,7 +439,99 @@
             box-shadow: 0 5px 15px rgba(124, 58, 237, 0.2);
         }
 
-        /* Empty State */
+        /* Tab Navigation */
+        .tabs-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            margin-left: 40px;
+            margin-top: -20px;
+            margin-right: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--muted);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab i {
+            font-size: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-success {
+            background-color: var(--success);
+        }
+
+        /* Section Management */
+        .complaint-section {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            background: var(--panel);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .complaint-section.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-header {
+            padding: 10px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.05) 0%, rgba(138, 124, 251, 0.05) 100%);
+        }
+
+        .section-header span {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Enhanced Empty State Styling */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -452,16 +539,23 @@
             border-radius: var(--radius);
             border: 1px solid var(--border);
             grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
         }
 
         .empty-state-icon {
-            font-size: 3.5rem;
+            font-size: 4rem;
             color: var(--muted);
             margin-bottom: 1.5rem;
+            opacity: 0.6;
         }
 
         .empty-state h3 {
             font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 0.8rem;
             color: var(--dark);
         }
@@ -469,22 +563,18 @@
         .empty-state p {
             color: var(--gray);
             max-width: 500px;
-            margin: 0 auto 2rem;
+            margin: 0 auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         /* Responsive adjustments */
         @media (max-width: 1200px) {
-            .sidebar {
-                width: 220px;
-            }
-            
+           
             .main-content {
                 margin-left: 220px;
             }
-            
-            .top-navbar {
-                left: 220px;
-            }
+           
         }
 
         @media (max-width: 1100px) {
@@ -494,19 +584,12 @@
         }
 
         @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-                overflow: hidden;
-            }
             
             .main-content {
                 margin-left: 70px;
             }
             
-            .top-navbar {
-                left: 70px;
-            }
-            
+           
             .controls-bar {
                 flex-direction: column;
                 align-items: stretch;
@@ -540,17 +623,12 @@
         }
 
         @media (max-width: 576px) {
-            .sidebar {
-                display: none;
-            }
+          
             
             .main-content {
                 margin-left: 0;
             }
             
-            .top-navbar {
-                left: 0;
-            }
             
             .page-header, .profiles-container {
                 padding-left: 1.5rem;
@@ -570,38 +648,34 @@
     </style>
 </head>
 <body>
+
     <div class="main-container">
-        <!-- Sidebar (simulated) -->
-        <div class="sidebar">
-            <!-- Sidebar content would be here -->
-        </div>
-        
-        <!-- Top Navbar (simulated) -->
-        <div class="top-navbar">
-            <div class="logo">EvoPlan</div>
-            <div class="user-menu">
-                <span>Welcome, Alex!</span>
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle" style="font-size: 2rem; color: var(--primary);"></i>
-                </div>
-            </div>
-        </div>
         
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Page Header -->
-            <header class="page-header">
-                <div class="page-header-content">
-                    <h1>Service Providers</h1>
-                    <p>Browse and connect with professional event service providers</p>
-                </div>
-            </header>
             
-            <!-- Profiles Container -->
-            <div class="profiles-container">
+            <!-- Tab Navigation -->
+            <div class="tabs-container"> 
+                <div class="tabs">
+                    <button class="tab active" data-tab="service-providers">
+                        <i class="fas fa-users"></i>
+                        Service Providers
+                    </button>
+                    <button class="tab" data-tab="my-favourites">
+                        <i class="fas fa-heart"></i>
+                        My Favourites
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Service Providers Section -->
+            <div class="complaint-section active" id="service-providers">
+               
+                
+                <!-- Profiles Container -->
+                <div class="profiles-container">
                 <!-- Controls Bar -->
                 <div class="controls-bar">
-                    <!-- Category Tabs -->
                     <div class="category-tabs">
                         <button class="category-btn active" data-category="all">
                             <i class="fas fa-th-large"></i> All Providers
@@ -647,359 +721,154 @@
                 
                 <!-- Profiles Grid -->
                 <div class="profiles-grid" id="profiles-grid">
-                    <!-- Profile Card 1: Photographer -->
-                    <div class="profile-card" data-category="photographers" data-rating="4.8">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Lens Photography" class="profile-image">
-                            <button class="favorite-btn" data-id="1">
-                                <i class="far fa-star"></i>
-                            </button>
-                            <div class="profile-badge premium">
-                                <i class="fas fa-crown"></i> Premium
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-camera"></i> Photographers & Videographers
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">L E N S</h2>
-                            </div>
-                            <h3 class="profile-tagline">Elite Photography</h3>
-                            <p class="profile-description">Specializing in wedding and corporate portrait photography with unmatched clarity. Over 10 years of experience capturing life's most precious moments.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="rating-text">4.8</span>
-                                <span class="review-count">(120 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Premium</span>
-                                <span class="tag">Fast Response</span>
-                                <span class="tag">Award Winning</span>
-                                <span class="tag">Free Preview</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$1,500</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Card 2: Venue -->
-                    <div class="profile-card" data-category="venues" data-rating="4.6">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1194&q=80" alt="Grand Palace Hotel" class="profile-image">
-                            <button class="favorite-btn" data-id="2">
-                                <i class="far fa-star"></i>
-                            </button>
-                            <div class="profile-badge premium">
-                                <i class="fas fa-crown"></i> Premium
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-building"></i> Venues & Halls
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">GRAND PALACE</h2>
-                            </div>
-                            <h3 class="profile-tagline">Luxury Event Venue</h3>
-                            <p class="profile-description">Elegant venue with ballroom capacity for up to 500 guests. Perfect for weddings, corporate events, and gala dinners with exceptional catering services.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="rating-text">4.6</span>
-                                <span class="review-count">(89 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Luxury</span>
-                                <span class="tag">In-house Catering</span>
-                                <span class="tag">500+ Capacity</span>
-                                <span class="tag">Central Location</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$3,200</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Card 3: Music & DJ -->
-                    <div class="profile-card" data-category="music" data-rating="4.9">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Sound Waves DJ" class="profile-image">
-                            <button class="favorite-btn active" data-id="3">
-                                <i class="fas fa-star"></i>
-                            </button>
-                            <div class="profile-badge fast">
-                                <i class="fas fa-bolt"></i> Fast Response
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-music"></i> Music & DJ Services
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">BEAT MASTERS</h2>
-                            </div>
-                            <h3 class="profile-tagline">Premier DJ Entertainment</h3>
-                            <p class="profile-description">Professional DJs with vast music libraries for any event. Specializing in weddings, corporate parties, and club events with state-of-the-art sound systems.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="rating-text">4.9</span>
-                                <span class="review-count">(156 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Custom Playlists</span>
-                                <span class="tag">Lighting Included</span>
-                                <span class="tag">MC Services</span>
-                                <span class="tag">Fast Response</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$850</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Card 4: Florist -->
-                    <div class="profile-card" data-category="florists" data-rating="4.7">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1173&q=80" alt="Bloom Designs" class="profile-image">
-                            <button class="favorite-btn" data-id="4">
-                                <i class="far fa-star"></i>
-                            </button>
-                            <div class="profile-badge premium">
-                                <i class="fas fa-crown"></i> Premium
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-palette"></i> Florists & Cake Designers
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">BLOOM & FLOUR</h2>
-                            </div>
-                            <h3 class="profile-tagline">Floral & Cake Artistry</h3>
-                            <p class="profile-description">Creating breathtaking floral arrangements and custom-designed cakes for weddings and special events. Fresh flowers sourced daily from local growers.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="rating-text">4.7</span>
-                                <span class="review-count">(74 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Custom Designs</span>
-                                <span class="tag">Fresh Daily</span>
-                                <span class="tag">Wedding Specialist</span>
-                                <span class="tag">Cake Artistry</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$1,200</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Card 5: Decorator -->
-                    <div class="profile-card" data-category="decorators" data-rating="4.5">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Elegant Designs" class="profile-image">
-                            <button class="favorite-btn" data-id="5">
-                                <i class="far fa-star"></i>
-                            </button>
-                            <div class="profile-badge fast">
-                                <i class="fas fa-bolt"></i> Fast Response
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-couch"></i> Decorators & Event Stylists
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">ELEGANT STYLE</h2>
-                            </div>
-                            <h3 class="profile-tagline">Event Design & Styling</h3>
-                            <p class="profile-description">Transforming venues into magical spaces with custom decor, lighting, and styling. Specializing in thematic events and luxury wedding decorations.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="rating-text">4.5</span>
-                                <span class="review-count">(63 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Thematic Design</span>
-                                <span class="tag">Lighting Experts</span>
-                                <span class="tag">Fast Setup</span>
-                                <span class="tag">Custom Props</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$2,100</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Profile Card 6: Equipment Rental -->
-                    <div class="profile-card" data-category="equipment" data-rating="4.4">
-                        <div class="profile-header">
-                            <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1112&q=80" alt="Event Gear Pro" class="profile-image">
-                            <button class="favorite-btn" data-id="6">
-                                <i class="far fa-star"></i>
-                            </button>
-                            <div class="profile-badge fast">
-                                <i class="fas fa-bolt"></i> Fast Response
-                            </div>
-                        </div>
-                        <div class="profile-body">
-                            <div class="profile-category">
-                                <i class="fas fa-tools"></i> Event Equipment & Rentals
-                            </div>
-                            <div class="profile-title">
-                                <h2 class="profile-name">EVENT GEAR PRO</h2>
-                            </div>
-                            <h3 class="profile-tagline">Complete Event Rentals</h3>
-                            <p class="profile-description">Providing high-quality event equipment including chairs, tables, tents, sound systems, and staging. Delivery and setup services available.</p>
-                            
-                            <div class="profile-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <span class="rating-text">4.4</span>
-                                <span class="review-count">(52 reviews)</span>
-                            </div>
-                            
-                            <div class="profile-tags">
-                                <span class="tag">Wide Selection</span>
-                                <span class="tag">Delivery & Setup</span>
-                                <span class="tag">Affordable</span>
-                                <span class="tag">Same-Day Service</span>
-                            </div>
-                        </div>
-                        <div class="profile-footer">
-                            <div class="price-section">
-                                <span class="price-label">Starting from</span>
-                                <span class="price-amount">$450</span>
-                            </div>
-                            <button class="view-packages-btn">
-                                <i class="fas fa-eye"></i> View Packages
-                            </button>
-                        </div>
+                    <!-- Dynamic profile cards will be loaded here -->
+                </div>
+                </div>
+            </div>
+            
+            <!-- My Favourites Section -->
+            <div class="complaint-section" id="my-favourites">
+                
+                
+                <!-- Favourites Container -->
+                <div class="profiles-container">
+                    <!-- Favourites Grid -->
+                    <div class="profiles-grid" id="favourites-grid">
+                        <!-- Favourited profiles will be loaded here by JavaScript -->
+                       
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <script> const URLROOT = '<?php echo URLROOT; ?>'; </script>
+
     <script>
+        
+        // Global ratings data storage
+        let ratingsData = {};
+        let favoriteProviderIds = new Set();
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Category tab switching
-            const categoryBtns = document.querySelectorAll('.category-btn');
-            const profileCards = document.querySelectorAll('.profile-card');
-            const ratingSelect = document.getElementById('rating-select');
             
-            // Favorite button functionality
-            const favoriteBtns = document.querySelectorAll('.favorite-btn');
-            favoriteBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const isActive = this.classList.contains('active');
-                    const icon = this.querySelector('i');
+            // Load ratings first, then load favorites, then providers
+            getServiceProvidersRattings().then(() => {
+                return loadFavoritesData();
+            }).then(() => {
+                getAllServiceProviders();
+            }).catch(() => {
+                // If ratings or favorites fail, still load providers
+                getAllServiceProviders();
+            });
+
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const currentActiveSection = document.querySelector('.complaint-section.active');
+                    const tabId = tab.getAttribute('data-tab');
+                    const newSection = document.getElementById(tabId);
                     
-                    if (isActive) {
-                        this.classList.remove('active');
-                        icon.className = 'far fa-star';
-                        alert('Removed from favorites');
-                    } else {
-                        this.classList.add('active');
-                        icon.className = 'fas fa-star';
-                        alert('Added to favorites');
+                    if (currentActiveSection && currentActiveSection !== newSection) {
+                        // Hide current section with transition
+                        hideSection(currentActiveSection);
+                        
+                        // After current section fades out, show new section
+                        setTimeout(() => {
+                            // Update tab states
+                            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                            tab.classList.add('active');
+                            
+                            // Show new section
+                            showSection(newSection);
+                            
+                            // Load favourites if switching to "My Favourites" tab
+                            if (tabId === 'my-favourites') {
+                                displayFavourites();
+                            }
+                        }, 300);
+
+                    } else if (!currentActiveSection) {
+                        // No active section, just show the new one
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        showSection(newSection);
+                        
+                        // Load favourites if "My Favourites" tab is active
+                        if (tabId === 'my-favourites') {
+                            displayFavourites();
+                        }
                     }
                 });
             });
             
-            // View Packages button
-            const viewPackageBtns = document.querySelectorAll('.view-packages-btn');
-            viewPackageBtns.forEach(btn => {
-                btn.addEventListener('click', function(e) {
+
+
+            // Category tab switching
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const ratingSelect = document.getElementById('rating-select');
+            
+            // Favorite button functionality with event delegation
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.favorite-btn')) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    const card = this.closest('.profile-card');
+                    
+                    const btn = e.target.closest('.favorite-btn');
+                    const profileId = btn.getAttribute('data-id');
+                    const isActive = btn.classList.contains('active');
+                    const icon = btn.querySelector('i');
+                    
+                    if (isActive) {
+                        // Remove from favorites
+                        btn.classList.remove('active');
+                        icon.className = 'far fa-star';
+                        removeFavoriteFromDatabase(profileId);
+                    } else {
+                        // Add to favorites
+                        btn.classList.add('active');
+                        icon.className = 'fas fa-star';
+                        addFavoriteToDatabase(profileId);
+                    }
+                    
+                    // Refresh favorites display if currently viewing favorites tab
+                    if (document.getElementById('my-favourites').classList.contains('active')) {
+                        displayFavourites();
+                    }
+                }
+            });
+
+            
+            // View Profile button and card click functionality with event delegation for dynamic content
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-packages-btn')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const btn = e.target.closest('.view-packages-btn');
+                    const card = btn.closest('.profile-card');
                     const providerName = card.querySelector('.profile-name').textContent;
-                    alert(`Redirecting to packages for ${providerName}...`);
+                    const providerId = btn.getAttribute('data-provider-id');
+                    
+                    
                     // In a real implementation, this would navigate to the packages page
-                    // window.location.href = `/providers/${providerId}/packages`;
-                });
+                     window.location.href = `${URLROOT}/Clients/viewProvider/${providerId}`;
+                } else if (e.target.closest('.profile-card') && 
+                          !e.target.closest('.favorite-btn') && 
+                          !e.target.closest('.view-packages-btn')) {
+                    
+                    const card = e.target.closest('.profile-card');
+                    const providerName = card.querySelector('.profile-name').textContent;
+                    alert(`Opening ${providerName} profile...`);
+                    // In a real implementation, this would navigate to the provider's detail page
+                }
             });
             
+
+
             // Category filter function
             function filterByCategory(category) {
-                profileCards.forEach(card => {
+                const cardsInSection = document.querySelectorAll('#service-providers .profile-card');
+                cardsInSection.forEach(card => {
                     const cardCategory = card.getAttribute('data-category');
                     
                     if (category === 'all' || cardCategory === category) {
@@ -1012,7 +881,8 @@
             
             // Rating filter function
             function filterByRating(ratingValue) {
-                profileCards.forEach(card => {
+                const cardsInSection = document.querySelectorAll('#service-providers .profile-card');
+                cardsInSection.forEach(card => {
                     const cardRating = parseFloat(card.getAttribute('data-rating'));
                     
                     if (ratingValue === 'all' || cardRating >= parseFloat(ratingValue)) {
@@ -1054,21 +924,388 @@
                 filterByRating(ratingValue);
             });
             
-            // Profile card click (excluding buttons)
-            profileCards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    // Only trigger if not clicking on a button inside the card
-                    if (!e.target.closest('.favorite-btn') && !e.target.closest('.view-packages-btn')) {
-                        const providerName = this.querySelector('.profile-name').textContent;
-                        alert(`Opening ${providerName} profile...`);
-                        // In a real implementation, this would navigate to the provider's detail page
-                        // window.location.href = `/providers/${providerId}`;
-                    }
-                });
-            });
         });
+
+        function addFavoriteToDatabase(profileId) {
+            const xml = new XMLHttpRequest();
+            xml.open('POST', `${URLROOT}/clients/addFavoriteProviders`, true);
+            xml.setRequestHeader('Content-Type', 'application/json');
+            xml.onload = function() {
+                if (this.status === 200) {
+                    const response = JSON.parse(this.responseText);
+                    if (response.success || response.status === 'success') {
+                        console.log('Added to favorites');
+                    } else {
+                        console.error('Failed to add to favorites:', response.message);
+                    }
+                } else {
+                    console.error('Failed to add favorite');
+                }
+            };
+            xml.onerror = () => console.error('Network error adding favorite');
+            const jsonData = JSON.stringify({profileId: profileId});
+            xml.send(jsonData);
+        }
+
+        function removeFavoriteFromDatabase(profileId) {
+            const xml = new XMLHttpRequest();
+            xml.open('POST', `${URLROOT}/clients/removeFavoriteProviders`, true);
+            xml.setRequestHeader('Content-Type', 'application/json');
+            xml.onload = function() {
+                if (this.status === 200) {
+                    const response = JSON.parse(this.responseText);
+                    if (response.success || response.status === 'success') {
+                        console.log('Removed from favorites');
+                    } else {
+                        console.error('Failed to remove from favorites:', response.message);
+                    }
+                } else {
+                    console.error('Failed to remove favorite');
+                }
+            };
+            xml.onerror = () => console.error('Network error removing favorite');
+            const jsonData = JSON.stringify({profileId: profileId});
+            xml.send(jsonData);
+        }
+
+        function loadFavoritesData() {
+            return new Promise((resolve, reject) => {
+                const xml = new XMLHttpRequest();
+                xml.open('GET', `${URLROOT}/clients/getFavoriteProviders`, true);
+                xml.onload = function() {
+                    if (this.status === 200) {
+                        const providers = JSON.parse(this.responseText);
+                        favoriteProviderIds.clear();
+                        providers.forEach(provider => {
+                            favoriteProviderIds.add(provider.service_id.toString());
+                        });
+                        console.log('Favorites loaded:', Array.from(favoriteProviderIds));
+                        resolve(providers);
+                    } else {
+                        reject(new Error('Failed to fetch favorites'));
+                    }
+                };
+                xml.onerror = () => reject(new Error('Network error'));
+                xml.send();
+            });
+        }
+
+        function displayFavourites() {
+            const favouritesGrid = document.getElementById('favourites-grid');
+            favouritesGrid.innerHTML = '<div class="empty-state"><p>Loading...</p></div>';
+            
+            const xml = new XMLHttpRequest();
+            xml.open('GET', `${URLROOT}/clients/getFavoriteProviders`, true);
+            xml.onload = function() {
+                try {
+                    if (this.status === 200) {
+                        const providers = JSON.parse(this.responseText);
+                        console.log('Favorites API response:', providers);
+                        console.log('Favorites count:', providers.length);
+                        console.log('Favorites data:', JSON.stringify(providers, null, 2));
+                        
+                        favouritesGrid.innerHTML = '';
+                        
+                        // Update global favorites set
+                        favoriteProviderIds.clear();
+                        providers.forEach(provider => {
+                            favoriteProviderIds.add(provider.service_id.toString());
+                        });
+                        console.log('Updated favoriteProviderIds after displayFavourites:', Array.from(favoriteProviderIds));
+                        
+                        if (providers.length === 0) {
+                            console.log('No providers returned from API');
+                            favouritesGrid.innerHTML = `
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <h3>No Favourites Yet</h3>
+                                    <p>Start exploring service providers and add them to your favourites!</p>
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        console.log('Creating cards for', providers.length, 'providers');
+                        providers.forEach((provider, index) => {
+                            console.log(`Creating card ${index} for provider:`, provider.service_id, provider.business_name);
+                            
+                            const categoryIcon = getCategoryIcon(provider.serviceType || 'Service');
+                            const ratingInfo = ratingsData[provider.service_id] || { avg_rating: 0, total_reviews: 0 };
+                            const starsHtml = generateStarRating(ratingInfo.avg_rating);
+                            const profileImage = `${URLROOT}/public/img/profilePics/${provider.profile_pic}`;
+
+                            const profileCard = document.createElement('div');
+                            profileCard.classList.add('profile-card');
+                            profileCard.setAttribute('data-category', getCategorySlug(provider.serviceType || 'other'));
+                            profileCard.setAttribute('data-rating', ratingInfo.avg_rating || 0);
+                            profileCard.setAttribute('data-id', provider.service_id);
+                            
+                            profileCard.innerHTML = `
+                                <div class="profile-header">
+                                    <img src="${profileImage}" alt="${provider.business_name}" class="profile-image">
+                                    <button class="favorite-btn active" data-id="${provider.service_id}">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </div>
+                                <div class="profile-body">
+                                    <div class="profile-title">
+                                        <h2 class="profile-name">${provider.business_name}</h2>
+                                    </div>
+                                    
+                                    <p class="profile-description">${(provider.intro || provider.description || 'Professional service provider ready to make your event memorable.').substring(0, 80)}${(provider.intro || provider.description || '').length > 100 ? '...' : ''}</p>
+                                    
+                                     <div class="profile-category">
+                                        <span class="profile-category-label">
+                                            <i class="${categoryIcon}"></i> ${provider.serviceType || 'Service Provider'}
+                                        </span>
+                                    </div>
+                                    <div class="profile-rating">
+                                        <div class="stars">
+                                            ${starsHtml}
+                                        </div>
+                                        <span class="rating-text">${ratingInfo.avg_rating > 0 ? ratingInfo.avg_rating.toFixed(1) : 'N/A'}</span>
+                                        <span class="review-count">(${ratingInfo.total_reviews} reviews)</span>
+
+                                    </div>
+                                    
+                                    <button class="view-packages-btn" data-provider-id="${provider.service_id}">
+                                        <i class="fas fa-eye"></i> View Profile
+                                    </button>
+
+                                </div>
+                            `;
+                            favouritesGrid.appendChild(profileCard);
+                            console.log(`Card ${index} appended to grid`);
+                        });
+                        console.log('Total cards in favorites grid:', favouritesGrid.children.length);
+                    } else {
+                        console.error('Failed to fetch favorite providers, status:', this.status, 'Response:', this.responseText);
+                        favouritesGrid.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <h3>Error Loading Favorites</h3>
+                                <p>Failed to load your favorite providers (Status: ${this.status}). Please try again later.</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error parsing favorites response:', error, 'Response text:', this.responseText);
+                    favouritesGrid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3>Error Loading Favorites</h3>
+                            <p>An error occurred while loading favorites. Check console for details.</p>
+                        </div>
+                    `;
+                }
+            };
+            xml.onerror = () => {
+                console.error('Network error fetching favorites');
+                favouritesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Network Error</h3>
+                        <p>Failed to connect to the server. Please check your internet connection.</p>
+                    </div>
+                `;
+            };
+            xml.send();
+        }
+
+        function getServiceProvidersRattings(){
+            return new Promise((resolve, reject) => {
+                var xml = new XMLHttpRequest();
+                xml.open('GET', `${URLROOT}/clients/getServiceProvidersRattings`, true);
+                xml.onload = function() {
+                    if (this.status === 200) {
+                        const ratings = JSON.parse(this.responseText);
+                        // Store ratings by service_id for easy lookup
+                        ratings.forEach(rating => {
+                            ratingsData[rating.service_id] = {
+                                avg_rating: rating.avg_rating ? parseFloat(rating.avg_rating) : 0,
+                                total_reviews: rating.total_reviews || 0
+                            };
+                        });
+                        console.log('Ratings loaded:', ratingsData);
+                        resolve(ratingsData);
+                    } else {
+                        console.error('Failed to fetch service providers ratings');
+                        reject(new Error('Failed to fetch ratings'));
+                    }
+                };
+                xml.onerror = () => reject(new Error('Network error'));
+                xml.send();
+            });
+        }
+
+        function getAllServiceProviders() {
+
+            var xml = new XMLHttpRequest();
+            xml.open('GET', `${URLROOT}/clients/getAllServiceProviders`, true);
+            xml.onload = function() {
+                if (this.status === 200) {
+                    const providers = JSON.parse(this.responseText);
+                    displayServiceProviders(providers);
+                } else {
+                    console.error('Failed to fetch service providers');
+                }
+            };
+            xml.send();
+        }
+
+        function displayServiceProviders(providers) {
+            const profilesGrid = document.getElementById('profiles-grid');
+            profilesGrid.innerHTML = ''; // Clear existing profiles
+
+            providers.forEach(provider => {
+                const providerId = provider.service_id;
+                const isFavorited = favoriteProviderIds.has(providerId.toString());
+                
+                // Get category icon (use default if category not available)
+                const categoryIcon = getCategoryIcon(provider.serviceType || 'Service');
+                
+                // Get rating from ratingsData or use default
+                const ratingInfo = ratingsData[providerId] || { avg_rating: 0, total_reviews: 0 };
+                const starsHtml = generateStarRating(ratingInfo.avg_rating);
+                
+                // Handle profile image with fallback
+                const profileImage = `${URLROOT}/public/img/profilePics/${provider.profile_pic}`;
+
+                const profileCard = document.createElement('div');
+                profileCard.classList.add('profile-card');
+                profileCard.setAttribute('data-category', getCategorySlug(provider.serviceType || 'other'));
+                profileCard.setAttribute('data-rating', ratingInfo.avg_rating || 0);
+                
+                profileCard.innerHTML = `
+                    <div class="profile-header">
+                        <img src="${profileImage}" alt="${provider.business_name}" class="profile-image">
+                        <button class="favorite-btn ${isFavorited ? 'active' : ''}" data-id="${providerId}">
+                            <i class="${isFavorited ? 'fas' : 'far'} fa-star"></i>
+                        </button>
+                    </div>
+                    <div class="profile-body">
+                        <div class="profile-title">
+                            <h2 class="profile-name">${provider.business_name}</h2>
+                        </div>
+                        
+                        <p class="profile-description">${(provider.intro || provider.description || 'Professional service provider ready to make your event memorable.').substring(0, 80)}${(provider.intro || provider.description || '').length > 100 ? '...' : ''}</p>
+                        
+                         <div class="profile-category">
+                            <span class="profile-category-label">
+                                <i class="${categoryIcon}"></i> ${provider.serviceType || 'Service Provider'}
+                            </span>
+                        </div>
+                        <div class="profile-rating">
+                            <div class="stars">
+                                ${starsHtml}
+                            </div>
+                            <span class="rating-text">${ratingInfo.avg_rating > 0 ? ratingInfo.avg_rating.toFixed(1) : 'N/A'}</span>
+                            <span class="review-count">(${ratingInfo.total_reviews} reviews)</span>
+
+                        </div>
+                        
+                        <button class="view-packages-btn" data-provider-id="${providerId}">
+                            <i class="fas fa-eye"></i> View Profile
+                        </button>
+
+                    </div>
+                `;
+                profilesGrid.appendChild(profileCard);
+            });
+        }
+        
+        function getCategoryIcon(category) {
+            const categoryIcons = {
+                'Photography': 'fas fa-camera',
+                'Music': 'fas fa-music',
+                'DJ': 'fas fa-music',
+                'Venue': 'fas fa-building',
+                'Catering': 'fas fa-utensils',
+                'Decorators': 'fas fa-palette',
+                'Florists': 'fas fa-leaf',
+                'Transportation': 'fas fa-truck',
+                'Event Equipment': 'fas fa-tools',
+                'Entertainers': 'fas fa-microphone'
+            };
+            
+            // Try to match category with icons, default to camera
+            const matchedIcon = Object.keys(categoryIcons).find(key => 
+                category.toLowerCase().includes(key.toLowerCase())
+            );
+            
+            return matchedIcon ? categoryIcons[matchedIcon] : 'fas fa-camera';
+        }
+        
+        function getCategorySlug(category) {
+            const categoryMap = {
+                'Photography': 'photographers',
+                'Music': 'music',
+                'DJ': 'music',
+                'Venue': 'venues',
+                'Catering': 'catering',
+                'Decorators': 'decorators',
+                'Florists': 'florists',
+                'Transportation': 'transport',
+                'Event Equipment': 'equipment',
+                'Entertainers': 'hosts'
+            };
+            
+            const matchedSlug = Object.keys(categoryMap).find(key => 
+                category.toLowerCase().includes(key.toLowerCase())
+            );
+            
+            return matchedSlug ? categoryMap[matchedSlug] : 'other';
+        }
+        
+        function generateStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            
+            let starsHtml = '';
+            
+            // Full stars
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            }
+            
+            // Half star
+            if (hasHalfStar) {
+                starsHtml += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            // Empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+            
+            return starsHtml;
+        }
+
+        function showSection(section){
+            section.style.display = 'block';
+            // Force reflow to ensure display change takes effect
+            section.offsetHeight;
+            section.classList.add('active');
+        }
+
+        function hideSection(section) {
+            section.classList.remove('active');
+            setTimeout(() => {
+                section.style.display = 'none';
+            }, 300); // Match transition duration
+        }
+
     </script>
 </body>
 </html>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
+
 

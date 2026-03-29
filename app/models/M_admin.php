@@ -113,20 +113,7 @@
             }
         }
 
-        // Find coordinator by email
-        public function findCoordinatorByEmail($ic_email) {
-            $this->db->query("SELECT * FROM coordinators WHERE ic_email = :ic_email");
-            $this->db->bind(':ic_email', $ic_email);
-
-            $row = $this->db->single();
-
-            // Check row
-            if($row){
-                return true;
-            } else {
-                return false;
-            }
-        }
+        
 
         // Update Coordinator
         public function updateCoordinator($data){
@@ -170,19 +157,5 @@
             }
         }
 
-        // Login Coordinator
-        public function coordinatorLogin($ic_email, $ic_password){
-            $this->db->query("SELECT * FROM coordinators WHERE ic_email = :ic_email");
-            $this->db->bind(':ic_email', $ic_email);
-
-            $row = $this->db->single();
-
-            $hashed_password = $row->ic_password;
-
-            if(password_verify($ic_password, $hashed_password)){
-                return $row;
-            } else {
-                return false;
-            }
-        }
+        
     }

@@ -86,4 +86,54 @@ class M_Client {
 
         return $this->db->single();
     }
+
+    public function addFavoriteProvider($client_id, $service_id) {
+        $this->db->query("INSERT INTO favorite_providers (client_id, service_id) VALUES (:client_id, :service_id)");
+        $this->db->bind(':client_id', $client_id);
+        $this->db->bind(':service_id', $service_id);
+
+        return $this->db->execute();
+    }
+
+    public function removeFavoriteProvider($client_id, $service_id) {
+        $this->db->query("DELETE FROM favorite_providers WHERE client_id = :client_id AND service_id = :service_id");
+        $this->db->bind(':client_id', $client_id);
+        $this->db->bind(':service_id', $service_id);
+
+        return $this->db->execute();
+    }
+
+    public function getFavoriteProviders($client_id) {
+        $this->db->query("SELECT * FROM favorite_providers WHERE client_id = :client_id");
+        $this->db->bind(':client_id', $client_id);
+
+        return $this->db->resultSet();
+    }
+
+    public function updateProfile( $data) {
+        // Build dynamic SQL based on whether profile_pic is included
+        if(isset($data['profile_pic'])){
+            $this->db->query("UPDATE clients SET name = :name, address = :address, email = :email, contact = :contact, profile_pic = :profile_pic WHERE client_id = :client_id");
+            $this->db->bind(':profile_pic', $data['profile_pic']);
+        } else {
+            $this->db->query("UPDATE clients SET name = :name, address = :address, email = :email, contact = :contact WHERE client_id = :client_id");
+        }
+        
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':address', $data['address']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':contact', $data['contact']);
+        $this->db->bind(':client_id', $data['client_id']);
+
+        return $this->db->execute();
+    }
+
+    public function updatePassword($client_id, $new_password) {
+        $this->db->query("UPDATE clients SET password = :password WHERE client_id = :client_id");
+        $this->db->bind(':password', password_hash($new_password, PASSWORD_DEFAULT));
+        $this->db->bind(':client_id', $client_id);
+
+        return $this->db->execute();
+    }
+    
 }

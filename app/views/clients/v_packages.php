@@ -1,97 +1,138 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar3.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/packages.css">
 
-    <!-- Hero Section -->
-     
-    <!-- Categories -->
-    <section class="categories">
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/camera.svg" alt="Photography" onclick="location.href='<?php echo URLROOT; ?>/clients/allphotography';">
-            <i class="fas fa-camera"></i>
-            <span>Photography</span>
+<div class="container">
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <div class="filters-row">
+
+             
+            <div class="filter-group">
+                <label class="filter-label">Price Range</label>
+                <div class="price-range-slider">
+                    <div class="price-input">
+                        <div class="field">
+                            <span>Min</span>
+                            <input type="number" class="input-min" value="0" min="0" max="10000">
+                        </div>
+                        <div class="separator">-</div>
+                        <div class="field">
+                            <span>Max</span>
+                            <input type="number" class="input-max" value="7000" min="0" max="1000000">
+                        </div>
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="range-input">
+                            <input type="range" class="range-min" min="0" max="10000" value="0" step="100">
+                            <input type="range" class="range-max" min="0" max="100000" value="7000" step="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Sort By</label><br>
+                <select class="filter-select" id="sort-by">
+                    <option>Highest Rating</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Most Popular</option>
+                </select>
+            </div>
+           
+            <div class="filter-group">
+                <label class="filter-label">Rating</label><br>
+                <select class="filter-select" id="min-rating">
+                    <option>All Ratings</option>
+                    <option>4.5+ Stars</option>
+                    <option>4.0+ Stars</option>
+                    <option>3.5+ Stars</option>
+                    <option>3.0+ Stars</option>
+                    
+                </select>
+            </div>
         </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/HouseLine.svg" alt="Venue" onclick="location.href='<?php echo URLROOT; ?>/clients/allvenues';">
-            <i class="fas fa-building"></i>
-            <span>Venue</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/MusicNotesPlus.svg" alt="Music" onclick="location.href='<?php echo URLROOT; ?>/clients/allmusic';">
-            <i class="fas fa-music"></i>
-            <span>Music</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/Cake.svg" alt="Birthday Cake" onclick="location.href='<?php echo URLROOT; ?>/clients/allcakedesigners';">
-            <i class="fas fa-birthday-cake"></i>
-            <span>Cake designers & Florist</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/Sparkle.svg" alt="Decorator" onclick="location.href='<?php echo URLROOT; ?>/clients/alldecorators';">
-            <i class="fas fa-star"></i>
-            <span>Decorators</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/Armchair.svg" alt="Event Equipments" onclick="location.href='<?php echo URLROOT; ?>/clients/allequipments';">
-            <i class="fas fa-tools"></i>
-            <span>Event Equipments</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/MicrophoneStage.svg" alt="Entertainers" onclick="location.href='<?php echo URLROOT; ?>/clients/allentertainers';">
-            <i class="fas fa-masks-theater"></i>
-            <span>Entertainers</span>
-        </div>
-        <div class="category-item">
-            <img src="<?php echo URLROOT; ?>/img/home/truck.svg" alt="Transport" onclick="location.href='<?php echo URLROOT; ?>/clients/alltransport';">
-            <i class="fas fa-palette"></i>
-            <span>Transpot</span>
-        </div>
-    </section>
+        <button class="reset-filters">Reset Filters</button>
+    </div>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <button class="category-btn active" data-category="recommendation">Recommendation</button>
+        <button class="category-btn" data-category="all">All Services</button>
+        <button class="category-btn" data-category="your-favourites">Your Favourites</button>
+        <button class="category-btn" data-category="catering">Catering</button>
+        <button class="category-btn" data-category="photography">Photography</button>
+        <button class="category-btn" data-category="music">Music</button>
+        <button class="category-btn" data-category="entertainers">Entertainers</button>
+        <button class="category-btn" data-category="decorations">Decorations</button>
+        <button class="category-btn" data-category="venue">Venue</button>
+        <button class="category-btn" data-category="transportation">Transportation</button>
+        <button class="category-btn" data-category="florist">Florist</button>
+        <button class="category-btn" data-category="cake designing">Cake Designing</button>
+        <button class="category-btn" data-category="event equipment">Event Equipment</button>
+        
+    </div>
 
     <!-- Packages Grid -->
-    <section class="packages">
-     <div class="packages-grid">
-    <?php foreach($data['packages'] as $package) : ?>
-    <article class="pkg-card tier--diamond">
-      <figure class="pkg-media">
-        <img src="<?php echo URLROOT; ?>/Public/img/packageImg/<?php echo $package->bg_image_name; ?>" alt="Camera on table">
-        <div class="pkg-overlay">
-          <div class="pkg-top">
-            <h3 class="pkg-title"><?php echo $package->title; ?></h3>
-            <ul class="pkg-list">
-              <li><?php echo $package->details; ?></li>
-            </ul>
-            <div class="pkg-price"><?php echo $package->price; ?></div>
-          </div>
-
-          <a class="pkg-author" href="<?php echo URLROOT;?>/Clients/viewprovider/<?php echo $package->service_id ?>">
-            <div class="avatar"><img src="<?php echo URLROOT; ?>/img/profilePics/<?php echo $package->profile_pic?>" alt=""></div>
-            <div class="author-text">
-              <div class="author-name"><?php echo $package->provider_name; ?></div>
-            </div>
-          </a>
-        </div>
-      </figure>
-      
-      <a class="pkg-link" href="<?php echo URLROOT; ?>/Package/viewPackage/<?php echo $package->package_id?>">View&nbsp;Package →</a>
-      
-    </article>
-    <?php endforeach; ?>
-     </div>
-    </section>
-</form>
+    <div class="packages-grid">
+        <!-- Package cards will be dynamically inserted here -->
+    </div>
 
     
+
+
+    <!--pop up view package details-->
+    <div class="package-popup-overlay" id="package-popup-overlay">
+        <div class="package-popup" id="package-popup">
+            <span class="close-popup" id="close-popup">&times;</span>
+            <div class="popup-content" id="popup-content">
+                <div class="popup-header">
+                    <h2></h2>
+                    <span ></span>
+                </div>
+                    
+                    <div class="popup-body">
+                        <div class="popup-details">
+                                <p class="package-description"></p>
+                                <a href="" class="provider-info">
+                                    <div class="provider-avatar">
+                                        <img src="" alt="Provider">
+                                    </div>
+                                    <div class="provider-details">
+                                        <span class="provider-name"></span>
+                                        <span class="provider-badge">Verified Provider</span>
+                                    </div>
+                                </a>
+                            <div class="rating">
+                                <div class="stars">★★★★★</div>
+                                <span class="rating-value"></span>
+                                <span class="rating-count"></span>
+                            </div>
+                            
+                            <span class="popup-price-label">Price: </span>
+                            <span class="popup-price"></span>
+                        </div>
+
+                        <div class="extra-details">
+                        <p>If you want to know anything more about the package, please contact the provider. You can do that by simply clicking on the provider's name or avatar above. and go to the message</p>
+                        </div>
+                    </div>
+
+                    
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-
-        const profilelink = document.getElementsByClassName('pkg-author');
-        for(let i=0; i<profilelink.length; i++){
-            profilelink[i].addEventListener('click', function(){
-                const providerName = "<?php echo $package->provider_name; ?>";
-                window.location.href = "<?php echo URLROOT; ?>/clients/viewprovider/" + providerName;
-            });
-        }
-
+    const URLROOT = '<?php echo URLROOT; ?>';
+   
 </script>
-<?php require APPROOT . '/views/inc/footer.php';?>
+
+<script src="<?php echo URLROOT; ?>/js/packages/clientPackages.js"></script>
+
+<?php require_once APPROOT . '/views/inc/footer.php'; ?>
+

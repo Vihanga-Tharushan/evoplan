@@ -15,6 +15,8 @@
         private $eventModel;
 
         private $notificationModel;
+        
+        private $complaintsModel;
 
         public function __construct(){
 
@@ -27,6 +29,7 @@
             $this->messageModel = $this->model('M_Message');
             $this->eventModel = $this->model('M_Event');
             $this->notificationModel = $this->model('M_notification');
+            $this->complaintsModel = $this->model('M_Complaints');
 
         }
         public function register(){
@@ -282,8 +285,9 @@
 
             $_SESSION['service_id'] = $service->service_id;
             $_SESSION['service_email'] = $service->email;
-            $_SESSION['service_name'] = $service->fname.' '.$service->lname;
+            $_SESSION['service_name'] = $service->businessName;
             $_SESSION['service_contact'] = $service->contact;
+            $_SESSION['service_profile_pic'] = $service->profile_pic;
 
             redirect('Service/profile');
         }
@@ -294,19 +298,111 @@
             unset($_SESSION['service_email']);
             unset($_SESSION['service_name']);
             unset($_SESSION['service_contact']);
+            unset($_SESSION['service_profile_pic']);
             session_destroy();
-            redirect('Service/login');
+            redirect('Evo/evoplan');
         }
 
         public function isloggedIn(){
-            if(isset($_SESSION['service_id'])){
-                return true;
-            } else {
-                return false;
+
+            if(!isset($_SESSION['service_id'])){
+                redirect('Service/login');
+            }
+        }
+
+
+        public function updatePersonalInfo(){
+            $this->isloggedIn();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Handle AJAX JSON submission
+                $inputData = json_decode(file_get_contents('php://input'), true);
+                $data =[
+                        'fname' => trim($inputData['fname']),
+                        'lname' => trim($inputData['lname']),
+                        'contact' => trim($inputData['contact']),
+                        'address' => trim($inputData['address']),
+                        'district' => trim($inputData['district']),
+                        'service_id' => $_SESSION['service_id']
+                ];
+
+                if($this->serviceModel->updatePersonalInfo($data)){
+                    echo json_encode(['success' => true, 'message' => 'Personal information updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update personal information']);
+                }
+
+
+            }
+        }
+
+        public function updateBusinessInfo(){
+            $this->isloggedIn();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Handle AJAX JSON submission
+                $inputData = json_decode(file_get_contents('php://input'), true);
+                $data =[
+                        'businessName' => trim($inputData['businessName']),
+                        'contactB' => trim($inputData['contactB']),
+                        'emailB' => trim($inputData['emailB']),
+                        'businessAddress' => trim($inputData['businessAddress']),
+                        'bizDistrict' => trim($inputData['bizDistrict']),
+                        'description' => trim($inputData['description']),
+                        'experience' => trim($inputData['experience']),
+                        'service_id' => $_SESSION['service_id']
+                ];
+
+                if($this->serviceModel->updateBusinessInfo($data)){
+                    echo json_encode(['success' => true, 'message' => 'Business information updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update business information']);
+                }
+            }
+        }
+
+        public function verifyPassword(){
+            $this->isloggedIn();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Handle AJAX JSON submission
+                $inputData = json_decode(file_get_contents('php://input'), true);
+                $currentPassword = $inputData['currentPassword'] ?? '';
+                
+                // Get the user's password hash from database
+                $service = $this->serviceModel->getServiceById($_SESSION['service_id']);
+                
+                // Verify password using password_verify
+                if(password_verify($currentPassword, $service->password)){
+                    echo json_encode(['passwordValid' => true, 'success' => true]);
+                } else {
+                    echo json_encode(['passwordValid' => false, 'success' => false]);
+                }
+            }
+        }
+
+        public function updatePassword(){
+            $this->isloggedIn();
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Handle AJAX JSON submission
+                $inputData = json_decode(file_get_contents('php://input'), true);
+                $newPassword = $inputData['newPassword'] ?? '';
+                
+                // Hash the new password
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                
+                $data = [
+                    'password' => $hashedPassword,
+                    'service_id' => $_SESSION['service_id']
+                ];
+                
+                if($this->serviceModel->updatePassword($data)){
+                    echo json_encode(['success' => true, 'message' => 'Password updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update password']);
+                }
             }
         }
 
         public function events(){
+            $this->isloggedIn();
 
             $events = $this->eventModel->getUpcomingEventsByServiceProvider($_SESSION['service_id']);
             $previousEvents = $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']);
@@ -320,12 +416,35 @@
         }
 
         public function packages(){
+            $this->isloggedIn();
 
             $packages = $this->packageModel->getPackagesByProvider($_SESSION['service_id']);
             $data = [
                 'packages' => $packages
             ];
             $this->view('servicesP/v_s_packages', $data);
+        }
+
+        public function getPackageDetails(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $packageId = $inputdata['packageId'];
+                $package = $this->packageModel->getPackageById($packageId);
+                echo json_encode(['package' => $package]);
+            }
+
+        }
+
+        //this is for analyzing financial data and generating reports, not for regular page view
+        public function getEventStatus(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['service_id'];
+                $eventStatusData = $this->eventModel->getEventStatusData($serviceId);
+                echo json_encode($eventStatusData);
+            }
         }
 
         public function payment(){
@@ -335,6 +454,7 @@
         }
 
         public function profile(){
+            $this->isloggedIn();
 
             $profile = $this->profileModel->getProfileById($_SESSION['service_id']);
             $rating = $this->ratingModel->getRatingsSummary($_SESSION['service_id']);
@@ -354,7 +474,17 @@
             $this->view('servicesP/v_s_profile', $data);
         }
 
+        public function getRatingsSummary(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['service_id'];
+                $ratingsSummary = $this->ratingModel->getRatingsforServiceProvider($serviceId);
+                echo json_encode($ratingsSummary);
+            }
+        }
+
         public function editProfile(){
+            $this->isloggedIn();
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
@@ -456,12 +586,95 @@
         
 
         public function complaints(){
+            $this->isloggedIn();
 
-            $this->view('servicesP/v_s_complaints');
+            $Previousevents = $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']);
+            $Upcomingevents = $this->eventModel->getUpcomingEventsByServiceProvider($_SESSION['service_id']);
+
+            $data = [
+                'previousEvents'=> $Previousevents,
+                'upcomingEvents'=> $Upcomingevents
+            ];
+            $this->view('servicesP/v_s_complaints', $data);
         }
+
+        public function complaintDetails(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $complaintId = $_GET['complaintId'] ?? null;
+                
+                if(!$complaintId){
+                    echo json_encode(['success' => false, 'error' => 'Complaint ID is required']);
+                    return;
+                }
+                
+                $complaint = $this->complaintsModel->getComplaintById($complaintId);
+                echo json_encode(['success' => true, 'complaint' => $complaint]);
+            }
+
+        }
+
+        public function getmyComplaints(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+
+                $complaints = $this->complaintsModel->getComplaintsByServiceProvider($_SESSION['service_id']);
+                echo json_encode(['complaints' => $complaints]);
+
+            }
+           
+        }
+
+        public function getComplaintDetails(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                $complaintId = $_GET['complaintId'] ?? null;
+                
+                if(!$complaintId){
+                    echo json_encode(['success' => false, 'error' => 'Complaint ID is required']);
+                    return;
+                }
+                
+                $complaint = $this->complaintsModel->getComplaintById($complaintId);
+                echo json_encode(['success' => true, 'complaint' => $complaint]);
+            }
+
+        }
+
+
+        public function submitComplaint(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                // Handle FormData from AJAX
+                $data = [
+                    'service_id' => $_SESSION['service_id'] ?? null,
+                    'event_id' => $_POST['event_id'] ?? null,
+                    'complainant_type' => $_POST['complainant_type'] ?? null,
+                    'complaint_type' => $_POST['complaint_type'] ?? null,
+                    'description_text' => $_POST['description'] ?? null,
+                    'event_name' => $_POST['event_name'] ?? null
+                ];
+            
+                // Validate required fields
+                if(empty($data['service_id']) || empty($data['event_id']) || empty($data['complainant_type']) || empty($data['complaint_type']) || empty($data['description_text'])){
+                    echo json_encode(['success' => false, 'error' => 'All fields are required']);
+                    return;
+                }
+
+                if($this->complaintsModel->submitComplaint($data)){
+                    echo json_encode(['success' => true, 'message' => 'Complaint submitted successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to submit complaint. Please try again.']);
+                }
+            }
+
+        }                                 
 
     
         public function chat(){
+            $this->isloggedIn();
 
             $conversationList = $this->messageModel->getConversationProfilesForProvider($_SESSION['service_id']);
 
@@ -478,15 +691,18 @@
 
         public function dashboard(){
             
-            $this->view('servicesP/v_s_dashboard');
+            $data = [
+                'totalEvents' => $this->eventModel->getTotalEventsByProvider($_SESSION['service_id']),
+                'upcomingEventsCount' => $this->eventModel->getUpcomingEventsCountByServiceProvider($_SESSION['service_id']),
+                'previousEvents' => $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']),
+                'totalPackages' => $this->packageModel->getTotalPackagesByProvider($_SESSION['service_id']),
+                'Rating' => $this->ratingModel->getRatingsSummary($_SESSION['service_id'])
+            ];
+            $this->view('servicesP/v_s_dashboard', $data);
+
             
         }
 
-        public function tempDashboard(){
-
-            $this->view('servicesP/v_s_tempDashboard');
-
-        }
 
         
 
@@ -577,12 +793,17 @@
         }
 
         public function accountSettings(){
+            $this->isloggedIn();
 
-            $this->view('servicesP/v_s_accountSettings');
+            $data = [
+                'accountdata' => $this->serviceModel->getServiceById($_SESSION['service_id'])
+            ];
+            $this->view('servicesP/v_s_accountSettings', $data);
 
         }
 
         public function notifications(){
+            $this->isloggedIn();
 
             $notifications = $this->notificationModel->getAllByUser('PROVIDER', $_SESSION['service_id']);
             $stats = $this->notificationModel->getNotificationStats('PROVIDER', $_SESSION['service_id']);
@@ -654,6 +875,7 @@
         }
 
         public function availability(){
+            $this->isloggedIn();
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
@@ -694,6 +916,7 @@
 
 
         public function deleteAvailability($id){
+            $this->isloggedIn();
 
             $id = ['availability_id' => $id];
             if($this->availabilityModel->DeleteAvailability($id)){

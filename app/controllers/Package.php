@@ -10,18 +10,13 @@
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
-                // Process package creation
                 
-                // Sanitize POST data
-                //$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
                 $data =[
                         'title' => trim($_POST['title']),
                         'details' => trim($_POST['details']),
                         'price' => trim($_POST['price']),
                         'bg_image' => $_FILES['bg_image'],
                         'bg_image_name' => time() . '_' . $_FILES['bg_image']['name'],
-                        'notes' => trim($_POST['notes']),
                         'service_id' => $_SESSION['service_id'],
 
                         'title_err' => '',
@@ -31,80 +26,73 @@
                 ];
 
                 // Validate Title
-                
-                    if(empty($data['title'])){
-                        $data['title_err'] = 'Please enter a title';
-                    }
+                if(empty($data['title'])){
+                    $data['title_err'] = 'Please enter a title';
+                }
 
-                    // Validate Details
-                    if(empty($data['details'])){
-                        $data['details_err'] = 'Please enter package details';
-                    }
+                // Validate Details
+                if(empty($data['details'])){
+                    $data['details_err'] = 'Please enter package details';
+                }
 
-                    // Validate Price
-                    if(empty($data['price'])){
-                        $data['price_err'] = 'Please enter a price';
-                    }
+                // Validate Price
+                if(empty($data['price'])){
+                    $data['price_err'] = 'Please enter a price';
+                }
 
-                    // Validate and upload Background Image
+                // Validate and upload Background Image
+                if(isset($_FILES['bg_image']) && $_FILES['bg_image']['error'] == 0){
                     if(uploadImage($_FILES['bg_image']['tmp_name'], $data['bg_image_name'], '/img/packageImg/')){
                         // Image uploaded successfully
                     } else {
                         $data['bg_image_err'] = 'Image upload failed. Please try again.';
                     }
+                } else {
+                    $data['bg_image_err'] = 'Please select an image';
+                }
 
-                    // Make sure errors are empty
-                    if(empty($data['title_err']) && empty($data['details_err']) && empty($data['price_err']) && empty($data['bg_image_err'])){
-                        // Validated
-                        // TO DO: Add package to database
-                        if($this->packageModel->create($data)){
-                            flash('package_message', 'Package created successfully');
-                            redirect('Service/packages');
-                        }else{
-                            die('Something went wrong');
-                        }
+                // Make sure errors are empty
+                if(empty($data['title_err']) && empty($data['details_err']) && empty($data['price_err']) && empty($data['bg_image_err'])){
+                    // Validated - Add package to database
+                    if($this->packageModel->create($data)){
+                        // Return success JSON for AJAX
+                        echo json_encode(['success' => true, 'message' => 'Package created successfully']);
+                        exit;
                     }else{
-                        $this->view('servicesP/packages/v_s_createpackage', $data);
+                        echo json_encode(['success' => false, 'message' => 'Failed to create package']);
+                        exit;
                     }
+                }else{
+                    // Return errors JSON for AJAX
+                    $errors = [];
+                    if(!empty($data['title_err'])) $errors['title'] = $data['title_err'];
+                    if(!empty($data['details_err'])) $errors['details'] = $data['details_err'];
+                    if(!empty($data['price_err'])) $errors['price'] = $data['price_err'];
+                    if(!empty($data['bg_image_err'])) $errors['bg_image'] = $data['bg_image_err'];
+                    
+                    echo json_encode(['success' => false, 'errors' => $errors]);
+                    exit;
+                }
                 
             }else{
-                $data =[
-                    'title' => '',
-                    'details' => '',
-                    'price' => '',
-                    'bg_image' => '',
-                    'notes' => '',
-                    'bg_image_name' => '',
-                    
-
-                    'title_err' => '',
-                    'details_err' => '',
-                    'price_err' => '',
-                    'bg_image_err' => ''
-                ];
-
-                $this->view('servicesP/packages/v_s_createpackage', $data);
+                // For non-AJAX requests, redirect
+                redirect('Service/packages');
             }
         }
 
-        public function editPackage($package_id){
+        public function editPackage(){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
-                // Process package creation
-                
-                // Sanitize POST data
-                //$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
+                // Handle AJAX FormData submission
                 $data =[
-                        'id' => $package_id,
+                        'id' => $_POST['id'],
                         'title' => trim($_POST['title']),
                         'details' => trim($_POST['details']),
                         'price' => trim($_POST['price']),
                         'bg_image' => $_FILES['bg_image'],
                         'bg_image_name' => time() . '_' . $_FILES['bg_image']['name'],
-                        'notes' => trim($_POST['notes']),
-                        
+                        'service_id' => $_SESSION['service_id'],
 
                         'title_err' => '',
                         'details_err' => '',
@@ -113,85 +101,83 @@
                 ];
 
                 // Validate Title
-                
-                    if(empty($data['title'])){
-                        $data['title_err'] = 'Please enter a title';
-                    }
+                if(empty($data['title'])){
+                    $data['title_err'] = 'Please enter a title';
+                }
 
-                    // Validate Details
-                    if(empty($data['details'])){
-                        $data['details_err'] = 'Please enter package details';
-                    }
+                // Validate Details
+                if(empty($data['details'])){
+                    $data['details_err'] = 'Please enter package details';
+                }
 
-                    // Validate Price
-                    if(empty($data['price'])){
-                        $data['price_err'] = 'Please enter a price';
-                    }
+                // Validate Price
+                if(empty($data['price'])){
+                    $data['price_err'] = 'Please enter a price';
+                }
 
-                    // Validate and upload Background Image
+                // Validate and upload Background Image (optional for edit)
+                if(isset($_FILES['bg_image']) && $_FILES['bg_image']['error'] == 0){
                     if(uploadImage($_FILES['bg_image']['tmp_name'], $data['bg_image_name'], '/img/packageImg/')){
                         // Image uploaded successfully
                     } else {
                         $data['bg_image_err'] = 'Image upload failed. Please try again.';
                     }
+                } else {
+                    // Keep existing image if no new image uploaded
+                    $existingPackage = $this->packageModel->getPackageById($_POST['id']);
+                    $data['bg_image_name'] = $existingPackage->bg_image_name;
+                }
 
-                    // Make sure errors are empty
-                    if(empty($data['title_err']) && empty($data['details_err']) && empty($data['price_err'])){
-                        // Validated
-                        // TO DO: Add package to database
-                        if($this->packageModel->edit($data)){
-                            flash('package_message', 'Package edited successfully');
-                            redirect('Service/packages');
-                        }else{
-                            die('Something went wrong');
-                        }
+                // Make sure errors are empty
+                if(empty($data['title_err']) && empty($data['details_err']) && empty($data['price_err']) && empty($data['bg_image_err'])){
+                    // Validated - Update package in database
+                    if($this->packageModel->edit($data)){
+                        // Return success JSON for AJAX
+                        echo json_encode(['success' => true, 'message' => 'Package updated successfully']);
+                        exit;
                     }else{
-                        $this->view('servicesP/packages/v_s_createpackage', $data);
+                        echo json_encode(['success' => false, 'message' => 'Failed to update package']);
+                        exit;
                     }
+                }else{
+                    // Return errors JSON for AJAX
+                    $errors = [];
+                    if(!empty($data['title_err'])) $errors['title'] = $data['title_err'];
+                    if(!empty($data['details_err'])) $errors['details'] = $data['details_err'];
+                    if(!empty($data['price_err'])) $errors['price'] = $data['price_err'];
+                    if(!empty($data['bg_image_err'])) $errors['bg_image'] = $data['bg_image_err'];
+                    
+                    echo json_encode(['success' => false, 'errors' => $errors]);
+                    exit;
+                }
                 
             }else{
-                $package = $this->packageModel->getPackageById($package_id);
-                //check ownership
-                if($package->service_id != $_SESSION['service_id']){
-                    redirect('Service/packages');
-                }
-                $data =[
-                    'id' => $package_id,
-                    'title' => $package->title,
-                    'details' => $package->details,
-                    'price' => $package->price,
-                    'bg_image' => '',
-                    'notes' => $package->notes,
-                    'bg_image_name' => $package->bg_image_name,
-
-                    'title_err' => '',
-                    'details_err' => '',
-                    'price_err' => '',
-                    'bg_image_err' => ''
-                ];
-
-                $this->view('servicesP/packages/v_s_updatepackage', $data);
+                // For non-AJAX requests, redirect
+                redirect('Service/packages');
             }
         }
 
-        public function deletePackage($id){
+        public function deletePackage(){
 
-            
-            //check ownership
+            if($_SERVER['REQUEST_METHOD'] = 'POST'){
+                    $input = json_decode(file_get_contents('php://input'), true);
+                $id = $input['package_id'];
+                //check ownership
+
                 $package = $this->packageModel->getPackageById($id);
-                if($package->service_email != $_SESSION['service_email']){
-                    redirect('Service/packages');
+                if($package->service_id != $_SESSION['service_id']){
+                    echo json_encode(['success' => false, 'message' => 'Unauthorized action']);
+                    exit;
                 }
                 // Process service deletion
                 if($this->packageModel->deletePackage($id)){
-                    flash('package_message', 'Package deleted successfully');
-                    redirect('Service/packages');
+                    echo json_encode(['success' => true, 'message' => 'Package deleted successfully']);
                 } else {
-                    die("Something went wrong");
+                    echo json_encode(['success' => false, 'message' => 'Something went wrong']);
                 }
-
-                
-           
+            }else{
+                redirect('Service/packages');
+            }   
         }
 
         public function viewPackage($package_id){

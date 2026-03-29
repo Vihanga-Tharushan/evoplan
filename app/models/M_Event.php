@@ -58,6 +58,27 @@ class M_Event {
     }
 
 
+    public function getEventsByClientId($clientId) {
+        $this->db->query("SELECT event_id, event_name FROM events WHERE client_id = :clientId ORDER BY start_datetime DESC");
+        $this->db->bind(':clientId', $clientId);
+        return $this->db->resultSet();
+    }
+
+    public function getServiceProvidersForEvent($eventId) {
+        $this->db->query("SELECT DISTINCT 
+                            sp.service_id,
+                            CONCAT(sp.fname, ' ', sp.lname) AS service_provider_name,
+                            sp.businessName,
+                            sp.serviceType
+                        FROM event_packages ep
+                        JOIN service_providers sp ON ep.service_id = sp.service_id
+                        WHERE ep.event_id = :event_id
+                        AND ep.status = 'ON'
+                        ORDER BY sp.businessName ASC");
+        $this->db->bind(':event_id', $eventId);
+        return $this->db->resultSet();
+    }
+
     public function getUpcomingEventsByClientId($clientId) {
         $this->db->query("SELECT * FROM events WHERE client_id = :clientId AND start_datetime >= NOW() ORDER BY start_datetime ASC");
         $this->db->bind(':clientId', $clientId);
@@ -146,6 +167,8 @@ class M_Event {
                         -- service provider info
                         sp.service_id,
                         CONCAT(sp.fname, ' ', sp.lname) AS service_provider_name,
+                        sp.serviceType,
+                        sp.businessAddress,
 
                         -- event-package status
                         ep.confirmation_status,
@@ -162,6 +185,15 @@ class M_Event {
                     AND ep.status = 'ON'");
         $this->db->bind(':event_id', $eventId);
         return $this->db->resultSet();
+    }
+
+
+    public function updateEventVenue($eventId, $venueAddress) {
+        $this->db->query("UPDATE events SET venue_address = :venue_address WHERE event_id = :event_id");
+        $this->db->bind(':event_id', $eventId);
+        $this->db->bind(':venue_address', $venueAddress);
+        
+        return $this->db->execute();
     }
     
     public function getUpcomingEventsByServiceProvider($service_id) {
@@ -208,4 +240,79 @@ class M_Event {
         return $this->db->execute();
 
     }
+
+
+    public function getAllEventsByServiceProvider($service_id) {
+        
+        $this->db->query("SELECT e.* FROM events e
+                          JOIN event_packages ep ON e.event_id = ep.event_id
+                          WHERE ep.service_id = :service_id
+                          GROUP BY e.event_id
+                          ORDER BY e.start_datetime DESC");
+        $this->db->bind(':service_id', $service_id);
+        return $this->db->resultSet();
+    }
+
+    public function getTotalEventsByProvider($service_id) {
+        $this->db->query("SELECT COUNT(DISTINCT e.event_id) AS total_events FROM events e
+                          JOIN event_packages ep ON e.event_id = ep.event_id
+                          WHERE ep.service_id = :service_id");
+        $this->db->bind(':service_id', $service_id);
+        $row = $this->db->single();
+        return $row ? (int)$row->total_events : 0;
+    }
+
+    public function getUpcomingEventsCountByServiceProvider($service_id) {
+        $this->db->query("SELECT COUNT(DISTINCT e.event_id) AS upcoming_events FROM events e
+                          JOIN event_packages ep ON e.event_id = ep.event_id
+                          WHERE ep.service_id = :service_id
+                          AND e.start_datetime >= NOW()");
+        $this->db->bind(':service_id', $service_id);
+        $row = $this->db->single();
+        return $row ? (int)$row->upcoming_events : 0;
+    }
+
+    //this is analytics(dashboard page)
+
+    public function getEventStatusData($serviceId){
+        $this->db->query("SELECT 
+                            confirmation_status,
+                            COUNT(*) as count
+                        FROM event_packages
+                        WHERE service_id = :service_id AND status = 'ON'
+                        GROUP BY confirmation_status");
+        $this->db->bind(':service_id', $serviceId);
+        $results = $this->db->resultSet();
+        
+        // Format results as array with status as key
+        $statusCounts = [
+            'ACCEPTED' => 0,
+            'PENDING' => 0,
+            'REJECTED' => 0,
+            'COMPLETED' => 0
+        ];
+        
+        foreach($results as $row) {
+            if(isset($statusCounts[$row->confirmation_status])) {
+                $statusCounts[$row->confirmation_status] = (int)$row->count;
+            }
+        }
+        
+        return $statusCounts;
+    }
+
+    public function updateEventPaymentStatus($eventId, $paymentStatus) {
+        $this->db->query("UPDATE events SET progress_step = :progress_step, progress_precent = 100 WHERE event_id = :event_id");
+        $this->db->bind(':event_id', $eventId);
+        $this->db->bind(':progress_step', $paymentStatus);
+        
+        if($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+       
 }
