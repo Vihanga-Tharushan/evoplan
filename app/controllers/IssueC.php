@@ -306,6 +306,10 @@ class IssueC extends Controller{
         public function replacement(){
             $this->view('issue/v_replacementslist');
         }
+
+        public function myaccount(){
+            $this->view('issue/myaccount');
+        }
         
 
 
@@ -401,11 +405,94 @@ class IssueC extends Controller{
         }
     }
 
+    // --- API endpoints for dashboard analytics ---
+    public function apiDashboardMetrics() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+
+        $start = isset($_GET['start']) ? $_GET['start'] . ' 00:00:00' : null;
+        $end = isset($_GET['end']) ? $_GET['end'] . ' 23:59:59' : null;
+
+        $metrics = $this->complaintModel->getDashboardMetrics($start, $end);
+        echo json_encode(['success' => true, 'data' => $metrics]);
+    }
+
+    public function apiIssuesTrend() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $months = isset($_GET['months']) ? intval($_GET['months']) : 6;
+        $data = $this->complaintModel->getIssuesRaisedVsResolvedLastMonths($months);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
+
+    public function apiIssuesByCategory() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $start = isset($_GET['start']) ? $_GET['start'] . ' 00:00:00' : null;
+        $end = isset($_GET['end']) ? $_GET['end'] . ' 23:59:59' : null;
+        $data = $this->complaintModel->getIssuesByCategory($start, $end);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
+
+    public function apiComplaintStatus() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $start = isset($_GET['start']) ? $_GET['start'] . ' 00:00:00' : null;
+        $end = isset($_GET['end']) ? $_GET['end'] . ' 23:59:59' : null;
+        $data = $this->complaintModel->getComplaintStatusBreakdown($start, $end);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
+
+    public function apiResolutionTimeTrend() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $months = isset($_GET['months']) ? intval($_GET['months']) : 6;
+        $data = $this->complaintModel->getAvgResolutionTimeTrend($months);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
+
+    public function apiReplacementTrend() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $months = isset($_GET['months']) ? intval($_GET['months']) : 6;
+        $data = $this->complaintModel->getReplacementRequestsTrend($months);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
+
+    public function apiTopProviders() {
+        if($_SERVER['REQUEST_METHOD'] !== 'GET'){
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Method Not Allowed']);
+            return;
+        }
+        $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 5;
+        $data = $this->complaintModel->getTopProvidersByComplaints($limit);
+        echo json_encode(['success' => true, 'data' => $data]);
+    }
 
 
 
 
 
- 
+
+
 }
 ?>

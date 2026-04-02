@@ -126,6 +126,142 @@ class M_Complaints {
         return $this->db->resultSet();
     }
 
+    // --- Analytics methods for dashboard ---
+    public function getDashboardMetrics($start_date = null, $end_date = null) {
+        // Open issues (currently unresolved)
+        $this->db->query("SELECT COUNT(*) AS open_issues FROM provider_complaints WHERE status != 'RESOLVED'");
+        $open = $this->db->single();
 
+        // Resolved this period
+        if ($start_date && $end_date) {
+            $this->db->query("SELECT COUNT(*) AS resolved_count FROM provider_complaints WHERE status = 'RESOLVED' AND resolved_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start_date);
+            $this->db->bind(':end', $end_date);
+            $resolved = $this->db->single();
+        } else {
+            $this->db->query("SELECT COUNT(*) AS resolved_count FROM provider_complaints WHERE status = 'RESOLVED'");
+            $resolved = $this->db->single();
+        }
+
+        // Pending replacements
+        if ($start_date && $end_date) {
+            $this->db->query("SELECT COUNT(*) AS pending_replacements FROM event_financial_breakdown WHERE replacement_status = 'REPLACEMENT' AND created_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start_date);
+            $this->db->bind(':end', $end_date);
+            $pending = $this->db->single();
+        } else {
+            $this->db->query("SELECT COUNT(*) AS pending_replacements FROM event_financial_breakdown WHERE replacement_status = 'REPLACEMENT'");
+            $pending = $this->db->single();
+        }
+
+        // Average resolution time (days)
+        if ($start_date && $end_date) {
+            $this->db->query("SELECT AVG(TIMESTAMPDIFF(DAY, created_at, resolved_at)) AS avg_days FROM provider_complaints WHERE status = 'RESOLVED' AND resolved_at BETWEEN :start AND :end AND resolved_at IS NOT NULL");
+            $this->db->bind(':start', $start_date);
+            $this->db->bind(':end', $end_date);
+            $avg = $this->db->single();
+        } else {
+            $this->db->query("SELECT AVG(TIMESTAMPDIFF(DAY, created_at, resolved_at)) AS avg_days FROM provider_complaints WHERE status = 'RESOLVED' AND resolved_at IS NOT NULL");
+            $avg = $this->db->single();
+        }
+
+        return [
+            'open_issues' => isset($open->open_issues) ? intval($open->open_issues) : 0,
+            'resolved_count' => isset($resolved->resolved_count) ? intval($resolved->resolved_count) : 0,
+            'pending_replacements' => isset($pending->pending_replacements) ? intval($pending->pending_replacements) : 0,
+            'avg_resolution_days' => $avg && isset($avg->avg_days) ? round(floatval($avg->avg_days), 2) : null
+        ];
+    }
+
+    public function getIssuesRaisedVsResolvedLastMonths($months = 6) {
+        $results = [];
+        for ($i = $months-1; $i >= 0; $i--) {
+            $start = date('Y-m-01 00:00:00', strtotime("-{$i} months"));
+            $end = date('Y-m-t 23:59:59', strtotime("-{$i} months"));
+
+            $this->db->query("SELECT COUNT(*) AS raised FROM provider_complaints WHERE created_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start);
+            $this->db->bind(':end', $end);
+            $raised = $this->db->single();
+
+            $this->db->query("SELECT COUNT(*) AS resolved FROM provider_complaints WHERE status = 'RESOLVED' AND resolved_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start);
+            $this->db->bind(':end', $end);
+            $resolved = $this->db->single();
+
+            $results[] = [
+                'label' => date('M Y', strtotime($start)),
+                'raised' => intval($raised->raised ?? 0),
+                'resolved' => intval($resolved->resolved ?? 0)
+            ];
+        }
+        return $results;
+    }
+
+    public function getIssuesByCategory($start_date = null, $end_date = null) {
+        if ($start_date && $end_date) {
+            $this->db->query("SELECT complaint_type AS category, COUNT(*) AS cnt FROM provider_complaints WHERE created_at BETWEEN :start AND :end GROUP BY complaint_type");
+            $this->db->bind(':start', $start_date);
+            $this->db->bind(':end', $end_date);
+        } else {
+            $this->db->query("SELECT complaint_type AS category, COUNT(*) AS cnt FROM provider_complaints GROUP BY complaint_type");
+        }
+        return $this->db->resultSet();
+    }
+
+    public function getComplaintStatusBreakdown($start_date = null, $end_date = null) {
+        if ($start_date && $end_date) {
+            $this->db->query("SELECT status, COUNT(*) AS cnt FROM provider_complaints WHERE created_at BETWEEN :start AND :end GROUP BY status");
+            $this->db->bind(':start', $start_date);
+            $this->db->bind(':end', $end_date);
+        } else {
+            $this->db->query("SELECT status, COUNT(*) AS cnt FROM provider_complaints GROUP BY status");
+        }
+        return $this->db->resultSet();
+    }
+
+    public function getAvgResolutionTimeTrend($months = 6) {
+        $results = [];
+        for ($i = $months-1; $i >= 0; $i--) {
+            $start = date('Y-m-01 00:00:00', strtotime("-{$i} months"));
+            $end = date('Y-m-t 23:59:59', strtotime("-{$i} months"));
+
+            $this->db->query("SELECT AVG(TIMESTAMPDIFF(DAY, created_at, resolved_at)) AS avg_days FROM provider_complaints WHERE status = 'RESOLVED' AND resolved_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start);
+            $this->db->bind(':end', $end);
+            $avg = $this->db->single();
+
+            $results[] = [
+                'label' => date('M Y', strtotime($start)),
+                'avg_days' => $avg && isset($avg->avg_days) ? round(floatval($avg->avg_days), 2) : null
+            ];
+        }
+        return $results;
+    }
+
+    public function getReplacementRequestsTrend($months = 6) {
+        $results = [];
+        for ($i = $months-1; $i >= 0; $i--) {
+            $start = date('Y-m-01 00:00:00', strtotime("-{$i} months"));
+            $end = date('Y-m-t 23:59:59', strtotime("-{$i} months"));
+
+            $this->db->query("SELECT COUNT(*) AS cnt FROM event_financial_breakdown WHERE replacement_status = 'REPLACEMENT' AND created_at BETWEEN :start AND :end");
+            $this->db->bind(':start', $start);
+            $this->db->bind(':end', $end);
+            $cnt = $this->db->single();
+
+            $results[] = [
+                'label' => date('M Y', strtotime($start)),
+                'count' => intval($cnt->cnt ?? 0)
+            ];
+        }
+        return $results;
+    }
+
+    public function getTopProvidersByComplaints($limit = 5) {
+        $this->db->query("SELECT sp.service_id, sp.businessName AS provider_name, COUNT(pc.complaint_id) AS cnt FROM provider_complaints pc LEFT JOIN service_providers sp ON pc.service_id = sp.service_id GROUP BY pc.service_id ORDER BY cnt DESC LIMIT :limit");
+        $this->db->bind(':limit', $limit);
+        return $this->db->resultSet();
+    }
 
 }

@@ -11,8 +11,8 @@
         <div class="tabs">
             <button class="tab active" data-tab="complaints-for-me">
                 <i class="fa fa-exclamation-triangle"></i>
-                Complaints for Me
-                <span class="badge badge-success">3</span>
+                Warnings for Me
+                <span class="badge badge-success">0</span>
             </button>
             <button class="tab" data-tab="create-complaint">
                 <i class="fa fa-plus"></i>
@@ -25,10 +25,10 @@
         </div>
     </div>
 
-    <!-- Complaints For Me Section -->
+    <!-- warnings For Me Section -->
     <div class="complaint-section active" id="complaints-for-me">
         <div class="section-header">
-            <span>Received Complaints</span>
+            <span>Received Warnings</span>
         </div>
         
         <!-- Complaints Table -->
