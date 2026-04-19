@@ -62,7 +62,7 @@
     <!-- INTRO -->
     <section class="card">
       <header class="card__head">
-        <h2 class="card__title">Intro</h2>
+        <h2 class="card__title">Introduction</h2>
         <!-- <div class="row-actions">
           <a class="btn btn--chip" >Edit Bio</a>
         </div> -->

@@ -17,8 +17,8 @@
       </div>
       <div class="stat-content">
         <div class="stat-label">Total Income</div>
-        <div class="stat-value">$45,230</div>
-        <div class="stat-change positive">↑ 12.5% from last month</div>
+        <div class="stat-value">Rs. <?php echo isset($totalIncome) ? number_format($totalIncome, 2) : '0.00'; ?></div>
+        <!-- <div class="stat-change positive">↑ 12.5% from last month</div> -->
       </div>
     </div>
     <div class="stat-card">
@@ -27,8 +27,8 @@
       </div>
       <div class="stat-content">
         <div class="stat-label">Total Users</div>
-        <div class="stat-value">1,240</div>
-        <div class="stat-change positive">↑ 8.2% from last month</div>
+        <div class="stat-value"><?php echo isset($totalUsers) ? number_format($totalUsers) : '0'; ?></div>
+        <!-- <div class="stat-change positive">↑ 8.2% from last month</div> -->
       </div>
     </div>
     <div class="stat-card">
@@ -36,9 +36,9 @@
         <i class="fas fa-calendar-check"></i>
       </div>
       <div class="stat-content">
-        <div class="stat-label">Active Events</div>
-        <div class="stat-value">156</div>
-        <div class="stat-change positive">↑ 5.1% from last month</div>
+        <div class="stat-label">Total Events</div>
+        <div class="stat-value"><?php echo isset($totalEvents) ? number_format($totalEvents) : '0'; ?></div>
+        <!-- <div class="stat-change positive">↑ 5.1% from last month</div> -->
       </div>
     </div>
     <div class="stat-card">
@@ -47,8 +47,8 @@
       </div>
       <div class="stat-content">
         <div class="stat-label">Service Providers</div>
-        <div class="stat-value">84</div>
-        <div class="stat-change positive">↑ 3.7% from last month</div>
+        <div class="stat-value"><?php echo isset($serviceProviders) ? number_format($serviceProviders) : '0'; ?></div>
+        <!-- <div class="stat-change positive">↑ 3.7% from last month</div> -->
       </div>
     </div>
   </div>
@@ -57,7 +57,7 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-header">
-        <h2>Income Overview (12 Months)</h2>
+        <h2>Income Overview</h2>
         <div class="year-selector-container-inline">
           <label for="incomeYearDropdown">Year:</label>
           <select id="incomeYearDropdown" class="year-dropdown-inline">
@@ -98,19 +98,19 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-header">
-        <h2>Clients by Age Groups</h2>
+        <h2>Events by Progress Status</h2>
       </div>
       <div class="chart-wrapper pie-wrapper">
-        <canvas id="ageChart"></canvas>
+        <canvas id="eventProgressChart"></canvas>
       </div>
     </div>
 
     <div class="chart-card">
       <div class="chart-header">
-        <h2>Clients by Gender</h2>
+        <h2>Service Providers by Approval Status</h2>
       </div>
       <div class="chart-wrapper pie-wrapper">
-        <canvas id="genderChart"></canvas>
+        <canvas id="approvalChart"></canvas>
       </div>
     </div>
   </div>
@@ -129,13 +129,17 @@
   function createIncomeChart(year = '2026') {
     const incomeCtx = document.getElementById('incomeChart').getContext('2d');
     
-    const incomeDataByYear = {
-      '2026': [3200, 3800, 3500, 4200, 4800, 5200, 4900, 5400, 5800, 6200, 6800, 7200],
-      '2025': [2800, 3200, 3100, 3800, 4200, 4600, 4300, 4900, 5200, 5600, 6100, 6500],
-      '2024': [2400, 2800, 2700, 3300, 3700, 4100, 3800, 4400, 4700, 5100, 5500, 5800],
-      '2023': [2000, 2400, 2300, 2900, 3200, 3600, 3300, 3900, 4200, 4600, 5000, 5400],
-      '2022': [1600, 2000, 1900, 2500, 2800, 3200, 2900, 3500, 3800, 4200, 4600, 5000]
-    };
+    const incomeDataByYear = <?php 
+      if(isset($monthlyIncomeData) && is_array($monthlyIncomeData)){
+        $jsData = [];
+        foreach($monthlyIncomeData as $year => $data){
+          $jsData[$year] = array_map(function($val){ return round($val, 2); }, $data);
+        }
+        echo json_encode($jsData);
+      } else {
+        echo json_encode([]);
+      }
+    ?>;
 
     if (incomeChart) {
       incomeChart.destroy();
@@ -174,11 +178,24 @@
             beginAtZero: true,
             grid: {
               color: 'rgba(0, 0, 0, 0.05)'
+            },
+            title: {
+              display: true,
+              text: 'Income'
+            },
+            ticks: {
+              callback: function(value) {
+                return 'Rs. ' + value.toLocaleString();
+              }
             }
           },
           x: {
             grid: {
               display: false
+            },
+            title: {
+              display: true,
+              text: 'Month'
             }
           }
         }
@@ -190,13 +207,20 @@
   function createUserGrowthChart(year = '2026') {
     const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
     
-    const userDataByYear = {
-      '2026': [65, 78, 90, 85, 95, 110, 105, 120, 135, 145, 155, 165],
-      '2025': [55, 68, 78, 75, 82, 95, 92, 105, 118, 128, 138, 150],
-      '2024': [45, 58, 68, 65, 72, 85, 82, 95, 108, 118, 128, 140],
-      '2023': [35, 48, 58, 55, 62, 75, 72, 85, 98, 108, 118, 130],
-      '2022': [25, 38, 48, 45, 52, 65, 62, 75, 88, 98, 108, 120]
-    };
+    const userDataByYear = <?php 
+      if(isset($monthlyUserGrowthData) && is_array($monthlyUserGrowthData)){
+        $jsData = [];
+        foreach($monthlyUserGrowthData as $year => $data){
+          $jsData[$year] = [
+            'providers' => array_map('intval', $data['providers'] ?? []),
+            'clients' => array_map('intval', $data['clients'] ?? [])
+          ];
+        }
+        echo json_encode($jsData);
+      } else {
+        echo json_encode([]);
+      }
+    ?>;
 
     if (userGrowthChart) {
       userGrowthChart.destroy();
@@ -206,19 +230,54 @@
       type: 'bar',
       data: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          label: 'New Users',
-          data: userDataByYear[year],
-          backgroundColor: 'rgba(75, 0, 110, 0.8)',
-          borderColor: 'rgba(75, 0, 110, 1)',
-          borderWidth: 1,
-          borderRadius: 6,
-          borderSkipped: false
-        }]
+        datasets: [
+          {
+            label: 'Service Providers',
+            data: userDataByYear[year].providers,
+            backgroundColor: 'rgba(75, 0, 110, 0.8)',
+            borderColor: 'rgba(75, 0, 110, 1)',
+            borderWidth: 1,
+            borderRadius: 6,
+            borderSkipped: false
+          },
+          {
+            label: 'Clients',
+            data: userDataByYear[year].clients,
+            backgroundColor: 'rgba(168, 85, 247, 0.6)',
+            borderColor: 'rgba(168, 85, 247, 1)',
+            borderWidth: 1,
+            borderRadius: 6,
+            borderSkipped: false
+          }
+        ]
       },
       options: {
+        indexAxis: undefined,
         responsive: true,
         maintainAspectRatio: true,
+        scales: {
+          x: {
+            stacked: true,
+            grid: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: 'Month'
+            }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            },
+            title: {
+              display: true,
+              text: 'User count'
+            }
+          }
+        },
         plugins: {
           legend: {
             display: true,
@@ -229,37 +288,23 @@
               font: { size: 13, weight: 'bold' }
             }
           }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.05)'
-            }
-          },
-          x: {
-            grid: {
-              display: false
-            }
-          }
         }
       }
     });
   }
 
-  // Age Distribution Pie Chart
-  const ageCtx = document.getElementById('ageChart').getContext('2d');
-  new Chart(ageCtx, {
+  // Event Progress Pie Chart
+  const eventProgressCtx = document.getElementById('eventProgressChart').getContext('2d');
+  new Chart(eventProgressCtx, {
     type: 'doughnut',
     data: {
-      labels: ['18-25', '26-35', '36-50', '50+'],
+      labels: ['Basic Details Only (33%)', 'Waiting for Confirmations (66%)', 'Completed (100%)'],
       datasets: [{
-        data: [32, 38, 22, 8],
+        data: [<?php echo isset($eventProgressData) ? implode(',', $eventProgressData) : '5,8,12'; ?>],
         backgroundColor: [
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(59, 130, 246, 0.8)',
-          'rgba(245, 158, 11, 0.8)',
-          'rgba(156, 163, 175, 0.8)'
+          'rgba(245, 158, 11, 0.8)',    // Orange/Amber for 33%
+          'rgba(251, 191, 36, 0.8)',    // Yellow for 66%
+          'rgba(16, 185, 129, 0.8)'     // Green for 100% (Completed)
         ],
         borderColor: '#fff',
         borderWidth: 2
@@ -280,18 +325,18 @@
     }
   });
 
-  // Gender Distribution Pie Chart
-  const genderCtx = document.getElementById('genderChart').getContext('2d');
-  new Chart(genderCtx, {
+  // Service Provider Approval Status Pie Chart
+  const approvalCtx = document.getElementById('approvalChart').getContext('2d');
+  new Chart(approvalCtx, {
     type: 'doughnut',
     data: {
-      labels: ['Female', 'Male', 'Others'],
+      labels: ['Approved', 'Pending', 'Rejected'],
       datasets: [{
-        data: [57, 40, 3],
+        data: [<?php echo isset($approvalData) ? implode(',', $approvalData) : '15,8,2'; ?>],
         backgroundColor: [
-          'rgba(239, 68, 68, 0.8)',
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(156, 163, 175, 0.8)'
+          'rgba(16, 185, 129, 0.8)',    // Green for Approved
+          'rgba(245, 158, 11, 0.8)',    // Orange for Pending
+          'rgba(239, 68, 68, 0.8)'      // Red for Rejected
         ],
         borderColor: '#fff',
         borderWidth: 2

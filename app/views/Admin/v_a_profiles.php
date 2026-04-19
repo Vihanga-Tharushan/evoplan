@@ -181,8 +181,8 @@
           <button class="btn-icon" title="View Details">
             <i class="fas fa-eye"></i>
           </button>
-          <button class="btn-icon danger" title="Delete" onclick="confirmDeleteProfile('${profile.id}', '${profile.category}')">
-            <i class="fas fa-trash"></i>
+          <button class="btn-icon danger" title="Deactivate" onclick="confirmDeleteProfile('${profile.id}', '${profile.category}')">
+            <i class="fas fa-ban"></i>
           </button>
         </div>
       </div>
@@ -249,7 +249,7 @@
     const userType = category === 'Clients' ? 'client' : 'service_provider';
     const categoryName = category === 'Clients' ? 'Client' : 'Service Provider';
     
-    if (confirm(`Are you sure you want to delete this ${categoryName}? This action cannot be undone.`)) {
+    if (confirm(`Are you sure you want to deactivate this ${categoryName}? They can be reactivated later.`)) {
       window.location.href = '<?php echo URLROOT; ?>/Admin/delete_profile/' + userId + '/' + userType;
     }
   }

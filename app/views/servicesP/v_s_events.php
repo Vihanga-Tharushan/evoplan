@@ -246,9 +246,7 @@
                                 <button class="action-btn view-event-btn">
                                     <i class="fas fa-eye"></i> View Event
                                 </button>
-                                <button class="action-btn get-pics-btn">
-                                    <i class="fas fa-image"></i> Get Pictures
-                                </button>
+                               
                             </div>
                             <div class="event-date">
                                 <span style="color: var(--muted); font-size: 0.9rem;">Completed on <?php echo date('M j, Y', strtotime($event->end_datetime)); ?></span>

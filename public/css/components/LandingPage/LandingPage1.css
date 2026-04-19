@@ -315,9 +315,31 @@ body {
 /* ============================= */
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   margin-top: 60px;
+  justify-content: center;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1024px) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
 }
 
 .feature {
@@ -330,6 +352,14 @@ body {
   border: 2px solid #f5f5f5;
   position: relative;
   overflow: hidden;
+}
+
+.feature:nth-child(5) {
+  grid-column: 2;
+}
+
+.feature:nth-child(6) {
+  grid-column: 3;
 }
 
 .feature::before {

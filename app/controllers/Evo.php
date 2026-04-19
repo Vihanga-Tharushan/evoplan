@@ -1,10 +1,21 @@
 <?php
 
 class Evo extends Controller {
+      private $landingModel;
         public function __construct(){
+
+            $this->landingModel = $this->model('M_Landing');
     }
     public function EvoPlan(){
-      $this->view('LandingPage/LandingPage');
+      // Get landing page photos from database
+      $photos = $this->landingModel->getLandingPhotos();
+      
+      // Initialize data array with photos
+      $data = [
+        'photos' => is_array($photos) ? $photos : []
+      ];
+      
+      $this->view('LandingPage/LandingPage', $data);
     }
 
     public function Client(){
