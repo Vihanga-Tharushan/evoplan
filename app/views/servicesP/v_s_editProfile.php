@@ -63,21 +63,9 @@ require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
     </div>
 
     <div class="section">
-         <div class="section-title">
-            <span>Text for Background Image</span>
-            <a href="#" class="edit-link" id="edit-bio">Edit</a>
-        </div>
-        <div class="bio-container">
-            <div class="bio-title">TEXT</div>
-            <textarea class="input-field" name="background-text" id="background-text" rows="4" placeholder="Write something about you need to put infront of the Background Image..."><?php echo $data['background_text']; ?></textarea>
-        </div>
-
-    </div>
-    
-    <div class="section">
         <div class="section-title">
             <span>Introduction</span>
-            <a href="#" class="edit-link" id="edit-bio">Edit</a>
+          
         </div>
         <div class="bio-container">
             <div class="bio-title">Introduction</div>

@@ -483,6 +483,10 @@
 
         }
 
+        public function sample(){
+            $this->view('servicesP/v_s_sample');
+        }
+
 
         public function getPaymentDetails(){
 
@@ -651,12 +655,23 @@
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
+                // Get existing profile data
+                $profile = $this->profileModel->getProfileById($_SESSION['service_id']);
+                
+                // Only create new filenames if files were actually uploaded
+                $profile_pic = isset($_FILES['profile-pic-input']['name']) && !empty($_FILES['profile-pic-input']['name']) 
+                    ? time() . '_' . $_FILES['profile-pic-input']['name'] 
+                    : $profile->profile_pic;
+                
+                $background_image = isset($_FILES['cover-input']['name']) && !empty($_FILES['cover-input']['name']) 
+                    ? time() . '_' . $_FILES['cover-input']['name'] 
+                    : $profile->background_image;
+                
                 $data = [
-                    'profile_pic' => time() . '_' . $_FILES['profile-pic-input']['name'],
-                    'background_image' => time() . '_' . $_FILES['cover-input']['name'],
-                    'profile_pic_file' => $_FILES['profile-pic-input'],
-                    'background_image_file' => $_FILES['cover-input'],
-                    'background_text' => trim($_POST['background-text']),
+                    'profile_pic' => $profile_pic,
+                    'background_image' => $background_image,
+                    'profile_pic_file' => $_FILES['profile-pic-input'] ?? null,
+                    'background_image_file' => $_FILES['cover-input'] ?? null,
                     'intro' => trim($_POST['intro-text']),
                     'service_id' => $_SESSION['service_id'],
                     'background-image-2' => (isset($_FILES['background-image-2']['name']) && !empty($_FILES['background-image-2']['name']) ? time() . '_' . $_FILES['background-image-2']['name'] : null),
@@ -673,18 +688,22 @@
                 ];
 
                 
-                //profile pic Upload
-                if(uploadImage($data['profile_pic_file']['tmp_name'], $data['profile_pic'], '/img/profilePics/')){
-                    // Image uploaded successfully
-                } else {
-                    $data['profile_pic_err'] = 'Profile picture upload failed. Please try again.';
+                //profile pic Upload - only if file was provided
+                if(isset($_FILES['profile-pic-input']['name']) && !empty($_FILES['profile-pic-input']['name'])){
+                    if(uploadImage($data['profile_pic_file']['tmp_name'], $data['profile_pic'], '/img/profilePics/')){
+                        // Image uploaded successfully
+                    } else {
+                        $data['profile_pic_err'] = 'Profile picture upload failed. Please try again.';
+                    }
                 }
 
-                //cover photo validations
-                if(uploadImage($data['background_image_file']['tmp_name'], $data['background_image'], '/img/coverPhotos/')){
-                    // Image uploaded successfully
-                } else {
-                    $data['background_image_err'] = 'Cover photo upload failed. Please try again.';
+                //cover photo validations - only if file was provided
+                if(isset($_FILES['cover-input']['name']) && !empty($_FILES['cover-input']['name'])){
+                    if(uploadImage($data['background_image_file']['tmp_name'], $data['background_image'], '/img/coverPhotos/')){
+                        // Image uploaded successfully
+                    } else {
+                        $data['background_image_err'] = 'Cover photo upload failed. Please try again.';
+                    }
                 }
 
                 //upload additional background images if provided
@@ -711,7 +730,7 @@
                     $data['intro_err'] = 'Bio text is required.';
                 }
 
-                if(empty($data['profile_pic_err']) && empty($data['background_image_err']) && empty($data['intro_err'])){
+                if(empty($data['intro_err'])){
                     // No errors, proceed with profile update
                     if($this->profileModel->updateProfile($data)){
                         flash('profile_message', 'Profile updated successfully');

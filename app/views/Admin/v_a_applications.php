@@ -133,112 +133,42 @@
 </div>
 
 <script>
-  // Application data
-  const applicationsData = [
-    {
-      id: 'App-1033',
-      documentName: 'Avenra Hikkaduwa.jpg',
-      documentPath: '../public/img/applications/avenra-hikkaduwa.jpg',
-      category: 'Venue & Halls',
-      businessName: 'Avenra Hotels, Hikkaduwa',
-      submittedDate: '2 hours ago',
-      status: 'pending',
-      details: 'Luxury venue with capacity for 500+ guests'
-    },
-    {
-      id: 'App-1032',
-      documentName: 'MacroLens.jpg',
-      documentPath: '../public/img/applications/macrolens.jpg',
-      category: 'Photography',
-      businessName: 'MacroLens',
-      submittedDate: '3 hours ago',
-      status: 'approved',
-      details: 'Professional photography services'
-    },
-    {
-      id: 'App-1031',
-      documentName: 'Wisithuru Flora.jpg',
-      documentPath: '../public/img/applications/wisithuru-flora.jpg',
-      category: 'Florist',
-      businessName: 'Wisithuru Flora',
-      submittedDate: '6 hours ago',
-      status: 'pending',
-      details: 'Wedding and event floral arrangements'
-    },
-    {
-      id: 'App-1030',
-      documentName: 'Ocean View.jpg',
-      documentPath: '../public/img/applications/ocean-view.jpg',
-      category: 'Venue & Halls',
-      businessName: 'Ocean View, Galle',
-      submittedDate: '10 hours ago',
-      status: 'pending',
-      details: 'Beachfront venue with modern facilities'
-    },
-    {
-      id: 'App-1029',
-      documentName: 'Leo Studio.jpg',
-      documentPath: '../public/img/applications/leo-studio.jpg',
-      category: 'Videography',
-      businessName: 'Leo Studio',
-      submittedDate: '16 hours ago',
-      status: 'pending',
-      details: 'Professional videography and editing'
-    },
-    {
-      id: 'App-1028',
-      documentName: 'Nisha Cake.jpg',
-      documentPath: '../public/img/applications/nisha-cake.jpg',
-      category: 'Cake Designer',
-      businessName: 'Nisha Cake',
-      submittedDate: '23 hours ago',
-      status: 'approved',
-      details: 'Custom cake design and baking services'
-    },
-    {
-      id: 'App-1027',
-      documentName: 'Monarch.jpg',
-      documentPath: '../public/img/applications/monarch.jpg',
-      category: 'Photography',
-      businessName: 'Monarch',
-      submittedDate: '1 day ago',
-      status: 'approved',
-      details: 'Professional photography studio'
-    },
-    {
-      id: 'App-1026',
-      documentName: 'Wijerathna Logi.jpg',
-      documentPath: '../public/img/applications/wijerathna-logi.jpg',
-      category: 'Transport & Logistic',
-      businessName: 'Wijerathna Logistic',
-      submittedDate: '2 days ago',
-      status: 'rejected',
-      details: 'Transportation and logistics services'
-    },
-    {
-      id: 'App-1025',
-      documentName: 'Blue Moon Resort.jpg',
-      documentPath: '../public/img/applications/blue-moon-resort.jpg',
-      category: 'Venue & Halls',
-      businessName: 'Blue Moon Resort, Colombo',
-      submittedDate: '5 hours ago',
-      status: 'approved',
-      details: 'Premium resort venue with banquet halls'
-    },
-    {
-      id: 'App-1024',
-      documentName: 'Dj Russo.jpg',
-      documentPath: '../public/img/applications/dj-russo.jpg',
-      category: 'DJ Artist',
-      businessName: 'DJ Russo',
-      submittedDate: '8 hours ago',
-      status: 'approved',
-      details: 'Professional DJ and music services'
+  // Application data from database
+  const applicationsData = <?php
+    $appObjects = array();
+    
+    if (!empty($data['applications'])) {
+      foreach ($data['applications'] as $app) {
+        $submitted_date = isset($app->created_at) ? $app->created_at : date('Y-m-d H:i:s');
+        $approval_status = strtolower($app->Approval);
+        $doc_name = basename($app->license);
+        
+        $obj = array(
+          'id' => 'App-' . str_pad($app->service_id, 4, '0', STR_PAD_LEFT),
+          'documentName' => $doc_name,
+          'documentPath' => '../' . $app->license,
+          'category' => $app->serviceType ?? 'Service Provider',
+          'businessName' => $app->businessName ?? 'Unknown Business',
+          'submittedDate' => $submitted_date,
+          'status' => $approval_status,
+          'details' => 'Service Provider: ' . ($app->fname ?? '') . ' ' . ($app->lname ?? ''),
+          'service_id' => $app->service_id,
+          'email' => $app->email ?? ''
+        );
+        $appObjects[] = $obj;
+      }
     }
-  ];
+    
+    echo json_encode($appObjects);
+  ?>;
+
+  // Debug log
+  console.log('Applications Data:', applicationsData);
+  console.log('Total applications:', applicationsData.length);
 
   let currentFilter = 'all';
   let currentApplicationId = null;
+  let currentServiceId = null;
 
   // Initialize
   function initApplications() {
@@ -300,10 +230,10 @@
       if (app.status === 'pending') {
         actionButtons = `
           <div class="action-buttons-inline">
-            <button class="btn-icon btn-success" title="Approve Application" onclick="approveApplication('${app.id}')">
+            <button class="btn-icon btn-success" title="Approve Application" onclick="approveApplication('${app.service_id}', '${app.businessName}')">
               <i class="fas fa-check"></i>
             </button>
-            <button class="btn-icon btn-danger" title="Reject Application" onclick="rejectApplication('${app.id}')">
+            <button class="btn-icon btn-danger" title="Reject Application" onclick="rejectApplication('${app.service_id}', '${app.businessName}')">
               <i class="fas fa-times"></i>
             </button>
             <button class="btn-icon btn-primary" title="View Details" onclick="viewDetails('${app.id}')">
@@ -366,6 +296,7 @@
     const app = applicationsData.find(a => a.id === appId);
     if (app) {
       currentApplicationId = appId;
+      currentServiceId = app.service_id;
       
       // Populate modal fields
       document.getElementById('modalAppId').textContent = app.id;
@@ -407,51 +338,107 @@
 
   // Approve from modal
   function approveFromModal() {
-    if (currentApplicationId) {
-      const app = applicationsData.find(a => a.id === currentApplicationId);
+    if (currentServiceId) {
+      const app = applicationsData.find(a => a.service_id === currentServiceId);
       if (app) {
-        app.status = 'approved';
-        updateCounts();
-        renderApplications();
-        closeApplicationModal();
-        alert(`Application ${currentApplicationId} for ${app.businessName} has been approved!`);
+        // Make AJAX call to update database
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '<?php echo URLROOT; ?>/Admin/approveApplication', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            app.status = 'approved';
+            updateCounts();
+            renderApplications();
+            closeApplicationModal();
+            alert(`Application ${currentApplicationId} for ${app.businessName} has been approved!`);
+          } else {
+            alert('Error updating application');
+          }
+        };
+        
+        xhr.send('service_id=' + currentServiceId + '&approval=APPROVED');
       }
     }
   }
 
   // Reject from modal
   function rejectFromModal() {
-    if (currentApplicationId) {
-      const app = applicationsData.find(a => a.id === currentApplicationId);
+    if (currentServiceId) {
+      const app = applicationsData.find(a => a.service_id === currentServiceId);
       if (app) {
-        app.status = 'rejected';
-        updateCounts();
-        renderApplications();
-        closeApplicationModal();
-        alert(`Application ${currentApplicationId} for ${app.businessName} has been rejected!`);
+        // Make AJAX call to update database
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '<?php echo URLROOT; ?>/Admin/approveApplication', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            app.status = 'rejected';
+            updateCounts();
+            renderApplications();
+            closeApplicationModal();
+            alert(`Application ${currentApplicationId} for ${app.businessName} has been rejected!`);
+          } else {
+            alert('Error updating application');
+          }
+        };
+        
+        xhr.send('service_id=' + currentServiceId + '&approval=REJECTED');
       }
     }
   }
 
   // Approve application (from table button)
-  function approveApplication(appId) {
-    const app = applicationsData.find(a => a.id === appId);
-    if (app) {
-      app.status = 'approved';
-      updateCounts();
-      renderApplications();
-      alert(`Application ${appId} for ${app.businessName} has been approved!`);
+  function approveApplication(serviceId, businessName) {
+    if (confirm(`Are you sure you want to approve ${businessName}?`)) {
+      // Make AJAX call to update database
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '<?php echo URLROOT; ?>/Admin/approveApplication', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const app = applicationsData.find(a => a.service_id === parseInt(serviceId));
+          if (app) {
+            app.status = 'approved';
+            updateCounts();
+            renderApplications();
+            alert(`Application for ${businessName} has been approved!`);
+          }
+        } else {
+          alert('Error updating application');
+        }
+      };
+      
+      xhr.send('service_id=' + serviceId + '&approval=APPROVED');
     }
   }
 
   // Reject application (from table button)
-  function rejectApplication(appId) {
-    const app = applicationsData.find(a => a.id === appId);
-    if (app) {
-      app.status = 'rejected';
-      updateCounts();
-      renderApplications();
-      alert(`Application ${appId} for ${app.businessName} has been rejected!`);
+  function rejectApplication(serviceId, businessName) {
+    if (confirm(`Are you sure you want to reject ${businessName}?`)) {
+      // Make AJAX call to update database
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '<?php echo URLROOT; ?>/Admin/approveApplication', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const app = applicationsData.find(a => a.service_id === parseInt(serviceId));
+          if (app) {
+            app.status = 'rejected';
+            updateCounts();
+            renderApplications();
+            alert(`Application for ${businessName} has been rejected!`);
+          }
+        } else {
+          alert('Error updating application');
+        }
+      };
+      
+      xhr.send('service_id=' + serviceId + '&approval=REJECTED');
     }
   }
 

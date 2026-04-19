@@ -3,11 +3,22 @@
 <link rel="stylesheet" href="../public/css/components/Admin/style(Admin_Payments).css">
 <link rel="stylesheet" href="../public/css/components/table1.css">
 
+<style>
+  .notification-badge {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    margin-left: 6px;
+  }
+</style>
+
 <div class="payments-container">
   <!-- Header -->
   <div class="payments-header">
     <h1>Payment Management</h1>
-    <p>Manage payments, payment requests, and refund requests</p>
+    <p>Manage payments and payment requests</p>
   </div>
 
   <!-- Search Bar
@@ -25,36 +36,52 @@
 
   <!-- Tab Navigation -->
   <div class="category-tabs">
-    <button class="tab-btn active" data-tab="client-payment" onclick="switchTab('client-payment')">
+    <button class="tab-btn active" data-tab="all-transactions" onclick="switchTab('all-transactions')">
+      <i class="fas fa-exchange-alt"></i>
+      All Transactions
+    </button>
+    <button class="tab-btn" data-tab="client-payment" onclick="switchTab('client-payment')">
       <i class="fas fa-wallet"></i>
       Payments from Clients
-      <span class="count" id="clientPaymentCount">0</span>
     </button>
     <button class="tab-btn" data-tab="provider-payment" onclick="switchTab('provider-payment')">
       <i class="fas fa-handshake"></i>
       Payment Requests
-      <span class="count" id="providerPaymentCount">0</span>
-    </button>
-    <button class="tab-btn" data-tab="refund" onclick="switchTab('refund')">
-      <i class="fas fa-undo"></i>
-      Refund Requests
-      <span class="count" id="refundRequestCount">0</span>
+      <span class="notification-badge" id="providerPaymentBadge" style="display: none;">●</span>
     </button>
   </div>
 
-  <!-- Table View - Client Payments -->
-  <div class="table-scroll" id="clientPaymentTable">
+  <!-- Table View - All Transactions -->
+  <div class="table-scroll" id="allTransactionsTable">
     <table class="table">
       <thead>
         <tr>
           <th>Transaction ID</th>
-          <th>Event ID</th>
+          <th>Event Name</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Amount</th>
+          <th>Payment Method</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="allTransactionsTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Table View - Client Payments -->
+  <div class="table-scroll" id="clientPaymentTable" style="display: none;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Transaction ID</th>
+          <th>Event Name</th>
           <th>Event Category</th>
           <th>Client Name</th>
           <th>Amount</th>
           <th>Date</th>
           <th>Payment Status</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="clientPaymentTableBody"></tbody>
@@ -67,8 +94,8 @@
       <thead>
         <tr>
           <th>Request ID</th>
-          <th>Event ID</th>
-          <th>Provider Name</th>
+          <th>Event Name</th>
+          <th>Service Provider Name</th>
           <th>Service Type</th>
           <th>Amount</th>
           <th>Request Date</th>
@@ -79,187 +106,75 @@
       <tbody id="providerPaymentTableBody"></tbody>
     </table>
   </div>
-
-  <!-- Table View - Refund Requests -->
-  <div class="table-scroll" id="refundRequestTable" style="display: none;">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Refund ID</th>
-          <th>Event ID</th>
-          <th>Client Name</th>
-          <th>Refund Reason</th>
-          <th>Amount</th>
-          <th>Request Date</th>
-          <th>Refund Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="refundRequestTableBody"></tbody>
-    </table>
-  </div>
 </div>
 
 <script>
-  // Sample payment and refund data
+  // Fetch client and provider payments data from database
   const paymentsData = [
-    // Payments from Clients
-    {
-      id: 'PAY-5032',
-      type: 'client-payment',
-      eventId: 'EVT-2031',
-      clientId: 'C-2542',
-      clientName: 'Ramya De Silva',
-      eventCategory: 'Birthday',
-      amount: 'Rs. 45,000',
-      amountNum: 45000,
-      date: '2 hours ago',
-      status: 'pending',
-      paymentMethod: 'Card',
-      description: 'Birthday event payment - Partial advance'
-    },
-    {
-      id: 'PAY-5031',
-      type: 'client-payment',
-      eventId: 'EVT-2030',
-      clientId: 'C-0099',
-      clientName: 'Sarah Johnson',
-      eventCategory: 'Wedding',
-      amount: 'Rs. 125,000',
-      amountNum: 125000,
-      date: '5 hours ago',
-      status: 'completed',
-      paymentMethod: 'Bank Transfer',
-      description: 'Wedding venue and decoration payment'
-    },
-    {
-      id: 'PAY-5030',
-      type: 'client-payment',
-      eventId: 'EVT-2029',
-      clientId: 'C-2453',
-      clientName: 'Emily Brown',
-      eventCategory: 'Family Gathering',
-      amount: 'Rs. 35,500',
-      amountNum: 35500,
-      date: '1 day ago',
-      status: 'completed',
-      paymentMethod: 'Card',
-      description: 'Family gathering catering service'
-    },
-    {
-      id: 'PAY-5029',
-      type: 'client-payment',
-      eventId: 'EVT-2028',
-      clientId: 'C-0864',
-      clientName: 'Jessica Williams',
-      eventCategory: 'Anniversary',
-      amount: 'Rs. 28,000',
-      amountNum: 28000,
-      date: '2 days ago',
-      status: 'completed',
-      paymentMethod: 'Card',
-      description: 'Anniversary party setup'
-    },
-
-    // Payment Requests from Service Providers
-    {
-      id: 'PREQ-4021',
-      type: 'provider-payment',
-      eventId: 'EVT-2027',
-      clientId: 'SP-0929',
-      clientName: 'Michael Chen',
-      providerName: 'Elite Photography',
-      eventCategory: 'Corporate Event',
-      amount: 'Rs. 85,000',
-      amountNum: 85000,
-      date: '3 days ago',
-      status: 'pending',
-      serviceType: 'Photography',
-      description: 'Corporate event photography - Full package'
-    },
-    {
-      id: 'PREQ-4020',
-      type: 'provider-payment',
-      eventId: 'EVT-2026',
-      clientId: 'SP-0842',
-      clientName: 'Garden Dreams Decor',
-      providerName: 'Garden Dreams Decor',
-      eventCategory: 'Wedding',
-      amount: 'Rs. 95,000',
-      amountNum: 95000,
-      date: '1 day ago',
-      status: 'pending',
-      serviceType: 'Decoration',
-      description: 'Wedding hall decoration - Complete setup'
-    },
-    {
-      id: 'PREQ-4019',
-      type: 'provider-payment',
-      eventId: 'EVT-2025',
-      clientId: 'SP-1105',
-      clientName: 'Supreme Catering',
-      providerName: 'Supreme Catering',
-      eventCategory: 'Birthday',
-      amount: 'Rs. 42,500',
-      amountNum: 42500,
-      date: '5 hours ago',
-      status: 'pending',
-      serviceType: 'Catering',
-      description: 'Birthday party catering - 150 guests'
-    },
-
-    // Refund Requests from Clients
-    {
-      id: 'REF-1024',
-      type: 'refund',
-      eventId: 'EVT-2024',
-      clientId: 'C-0042',
-      clientName: 'David Miller',
-      eventCategory: 'Party',
-      amount: 'Rs. 15,000',
-      amountNum: 15000,
-      date: '6 hours ago',
-      status: 'pending',
-      reason: 'Event cancelled due to venue unavailability',
-      originalPayment: 'PAY-4998',
-      description: 'Refund request for cancelled event'
-    },
-    {
-      id: 'REF-1023',
-      type: 'refund',
-      eventId: 'EVT-2023',
-      clientId: 'C-2632',
-      clientName: 'Kasuni Perera',
-      eventCategory: 'Wedding',
-      amount: 'Rs. 50,000',
-      amountNum: 50000,
-      date: '1 day ago',
-      status: 'pending',
-      reason: 'Partial refund - Changed decoration style',
-      originalPayment: 'PAY-4997',
-      description: 'Partial refund request'
-    },
-    {
-      id: 'REF-1022',
-      type: 'refund',
-      eventId: 'EVT-2022',
-      clientId: 'C-0531',
-      clientName: 'Roshan Lokuge',
-      eventCategory: 'Birthday',
-      amount: 'Rs. 20,000',
-      amountNum: 20000,
-      date: '2 days ago',
-      status: 'completed',
-      reason: 'Duplicate booking refund',
-      originalPayment: 'PAY-4996',
-      description: 'Refund approved and processed'
-    }
+    <?php 
+      if (!empty($data['allTransactions'])) {
+        foreach ($data['allTransactions'] as $transaction) {
+          echo "{
+            id: '#{$transaction->transaction_id}',
+            type: 'all-transactions',
+            eventName: '" . ucwords(strtolower($transaction->event_name ?? 'N/A')) . "',
+            fromName: '" . ucwords(strtolower($transaction->sender_name ?? 'System')) . "',
+            fromType: '{$transaction->sender_type}',
+            toName: '" . ucwords(strtolower($transaction->receiver_name ?? 'System')) . "',
+            toType: '{$transaction->receiver_type}',
+            amount: 'Rs. " . number_format($transaction->total_amount, 2) . "',
+            amountNum: {$transaction->total_amount},
+            paymentMethod: '" . ucwords(strtolower(str_replace('_', ' ', $transaction->payment_method))) . "',
+            date: '" . date('M d, Y H:i', strtotime($transaction->created_at)) . "',
+            status: '" . strtolower($transaction->payment_status) . "',
+            senderType: '{$transaction->sender_type}',
+            receiverType: '{$transaction->receiver_type}',
+            description: 'Transaction record'
+          },\n";
+        }
+      }
+      if (!empty($data['clientPayments'])) {
+        foreach ($data['clientPayments'] as $payment) {
+          $statusLabel = strtolower($payment->payment_status) === 'paid' ? 'completed' : 'pending';
+          echo "{
+            id: '#{$payment->transaction_id}',
+            type: 'client-payment',
+            eventName: '" . ucwords(strtolower($payment->event_name)) . "',
+            clientId: 'C-{$payment->sender_id}',
+            clientName: '" . ucwords(strtolower($payment->client_name)) . "',
+            eventCategory: '" . ucwords(strtolower($payment->event_type)) . "',
+            amount: 'Rs. " . number_format($payment->total_amount, 2) . "',
+            amountNum: {$payment->total_amount},
+            date: '" . date('M d, Y', strtotime($payment->event_created_at)) . "',
+            status: '{$statusLabel}',
+            description: 'Client payment transaction'
+          },\n";
+        }
+      }
+      if (!empty($data['providerPayments'])) {
+        foreach ($data['providerPayments'] as $request) {
+          $statusLabel = strtolower($request->payment_status) === 'pending' ? 'pending' : 'completed';
+          echo "{
+            id: 'PREQ-{$request->payment_id}',
+            type: 'provider-payment',
+            eventId: '" . ucwords(strtolower($request->event_name)) . "',
+            providerName: '" . ucwords(strtolower($request->businessName)) . "',
+            serviceType: '" . ucwords(strtolower($request->serviceType)) . "',
+            amount: 'Rs. " . number_format($request->amount, 2) . "',
+            amountNum: {$request->amount},
+            date: '" . date('M d, Y', strtotime($request->created_at)) . "',
+            status: '{$statusLabel}',
+            description: 'Payment request from service provider'
+          },\n";
+        }
+      }
+    ?>
   ];
 
   // Initialize
   function initPayments() {
     updateCounts();
-    switchTab('client-payment');
+    switchTab('all-transactions');
     setupSearch();
   }
 
@@ -268,9 +183,9 @@
     activeTab = type;
     
     // Hide all tables
+    document.getElementById('allTransactionsTable').style.display = 'none';
     document.getElementById('clientPaymentTable').style.display = 'none';
     document.getElementById('providerPaymentTable').style.display = 'none';
-    document.getElementById('refundRequestTable').style.display = 'none';
     
     // Update active tab button
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -279,22 +194,22 @@
     document.querySelector(`[data-tab="${type}"]`).classList.add('active');
     
     // Show and render appropriate table
-    if (type === 'client-payment') {
+    if (type === 'all-transactions') {
+      document.getElementById('allTransactionsTable').style.display = 'block';
+      renderAllTransactionsTable();
+    } else if (type === 'client-payment') {
       document.getElementById('clientPaymentTable').style.display = 'block';
       renderClientPaymentTable();
     } else if (type === 'provider-payment') {
       document.getElementById('providerPaymentTable').style.display = 'block';
       renderProviderPaymentTable();
-    } else if (type === 'refund') {
-      document.getElementById('refundRequestTable').style.display = 'block';
-      renderRefundRequestTable();
     }
   }
 
-  // Render Client Payments Table
-  function renderClientPaymentTable() {
-    const tbody = document.getElementById('clientPaymentTableBody');
-    const filteredData = paymentsData.filter(item => item.type === 'client-payment');
+  // Render All Transactions Table
+  function renderAllTransactionsTable() {
+    const tbody = document.getElementById('allTransactionsTableBody');
+    const filteredData = paymentsData.filter(item => item.type === 'all-transactions');
     
     if (filteredData.length === 0) {
       tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">No transactions found</td></tr>';
@@ -305,22 +220,53 @@
       const statusBadgeClass = `badge-${item.status}`;
       const statusLabel = item.status === 'pending' ? '⏳ Pending' : '✓ Completed';
       
-      let actionButtons = `
-        <button class="btn-icon btn-primary" title="View Details" onclick="viewDetails('${item.id}')">
-          <i class="fas fa-eye"></i>
-        </button>
-      `;
+      // Color coding: Green for CLIENT->SYSTEM (incoming), Red for outgoing (SYSTEM->SERVICEP or SYSTEM->CLIENT)
+      let amountColorStyle = '';
+      if (item.senderType === 'CLIENT' && item.receiverType === 'SYSTEM') {
+        amountColorStyle = 'color: #28a745; font-weight: bold;'; // Green for incoming
+      } else if ((item.senderType === 'SYSTEM' && item.receiverType === 'SERVICEP') || 
+                 (item.senderType === 'SYSTEM' && item.receiverType === 'CLIENT')) {
+        amountColorStyle = 'color: #dc3545; font-weight: bold;'; // Red for outgoing
+      }
       
       return `
         <tr>
           <td><strong>${item.id}</strong></td>
-          <td>${item.eventId}</td>
+          <td>${item.eventName}</td>
+          <td>${item.fromName} <small>(${item.fromType})</small></td>
+          <td>${item.toName} <small>(${item.toType})</small></td>
+          <td style="${amountColorStyle}">${item.amount}</td>
+          <td>${item.paymentMethod}</td>
+          <td>${item.date}</td>
+          <td><span class="${statusBadgeClass}">${statusLabel}</span></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Render Client Payments Table
+  function renderClientPaymentTable() {
+    const tbody = document.getElementById('clientPaymentTableBody');
+    const filteredData = paymentsData.filter(item => item.type === 'client-payment');
+    
+    if (filteredData.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">No transactions found</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filteredData.map(item => {
+      const statusBadgeClass = `badge-${item.status}`;
+      const statusLabel = item.status === 'pending' ? '⏳ Pending' : '✓ Completed';
+      
+      return `
+        <tr>
+          <td><strong>${item.id}</strong></td>
+          <td>${item.eventName}</td>
           <td>${item.eventCategory}</td>
           <td>${item.clientName}</td>
           <td><strong>${item.amount}</strong></td>
           <td>${item.date}</td>
           <td><span class="${statusBadgeClass}">${statusLabel}</span></td>
-          <td>${actionButtons}</td>
         </tr>
       `;
     }).join('');
@@ -375,54 +321,6 @@
     }).join('');
   }
 
-  // Render Refund Requests Table
-  function renderRefundRequestTable() {
-    const tbody = document.getElementById('refundRequestTableBody');
-    const filteredData = paymentsData.filter(item => item.type === 'refund');
-    
-    if (filteredData.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">No refund requests found</td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = filteredData.map(item => {
-      const statusBadgeClass = `badge-${item.status}`;
-      const statusLabel = item.status === 'pending' ? '⏳ Pending' : '✓ Approved';
-      
-      let actionButtons = '';
-      if (item.status === 'pending') {
-        actionButtons = `
-          <div class="action-buttons-inline">
-            <button class="btn-icon btn-success" title="Approve" onclick="approveRequest('refund', '${item.id}')">
-              <i class="fas fa-check"></i>
-            </button>
-            <button class="btn-icon btn-danger" title="Deny" onclick="denyRequest('refund', '${item.id}')">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        `;
-      } else {
-        actionButtons = `
-          <button class="btn-icon btn-primary" title="View Details" onclick="viewDetails('${item.id}')">
-            <i class="fas fa-eye"></i>
-          </button>
-        `;
-      }
-      
-      return `
-        <tr>
-          <td><strong>${item.id}</strong></td>
-          <td>${item.eventId}</td>
-          <td>${item.clientName}</td>
-          <td>${item.reason}</td>
-          <td><strong>${item.amount}</strong></td>
-          <td>${item.date}</td>
-          <td><span class="${statusBadgeClass}">${statusLabel}</span></td>
-          <td>${actionButtons}</td>
-        </tr>
-      `;
-    }).join('');
-  }
 
   // Setup search functionality
   function setupSearch() {
@@ -432,12 +330,12 @@
       
       // Search in the currently active table
       let tableBodyId = '';
-      if (activeTab === 'client-payment') {
+      if (activeTab === 'all-transactions') {
+        tableBodyId = 'allTransactionsTableBody';
+      } else if (activeTab === 'client-payment') {
         tableBodyId = 'clientPaymentTableBody';
       } else if (activeTab === 'provider-payment') {
         tableBodyId = 'providerPaymentTableBody';
-      } else if (activeTab === 'refund') {
-        tableBodyId = 'refundRequestTableBody';
       }
       
       if (tableBodyId) {
@@ -454,42 +352,73 @@
 
   // Update counts on tabs
   function updateCounts() {
-    document.getElementById('clientPaymentCount').textContent = paymentsData.filter(p => p.type === 'client-payment').length;
-    document.getElementById('providerPaymentCount').textContent = paymentsData.filter(p => p.type === 'provider-payment').length;
-    document.getElementById('refundRequestCount').textContent = paymentsData.filter(p => p.type === 'refund').length;
-  }
-
-  // Approve request (payment or refund)
-  function approveRequest(type, id) {
-    const item = paymentsData.find(p => p.id === id);
-    if (item) {
-      item.status = 'completed';
-      const typeLabel = type === 'provider-payment' ? 'Payment Request' : 'Refund Request';
-      alert(`${typeLabel} ${id} approved successfully!`);
-      
-      // Re-render the appropriate table
-      if (type === 'provider-payment') {
-        renderProviderPaymentTable();
-      } else if (type === 'refund') {
-        renderRefundRequestTable();
-      }
+    // Show red badge if there are pending provider payments
+    const pendingCount = paymentsData.filter(p => p.type === 'provider-payment' && p.status === 'pending').length;
+    const badge = document.getElementById('providerPaymentBadge');
+    if (pendingCount > 0) {
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
     }
   }
 
-  // Deny/Reject request (payment or refund)
+  // Approve request
+  function approveRequest(type, id) {
+    if (type !== 'provider-payment') {
+      alert('Only provider payment requests can be approved');
+      return;
+    }
+    
+    // Extract payment_id from the id (remove 'PREQ-' prefix)
+    const payment_id = id.replace('PREQ-', '');
+    
+    // Make AJAX call to approve payment
+    fetch('<?php echo URLROOT; ?>/Admin/approvePayment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'payment_id=' + encodeURIComponent(payment_id)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Payment approved successfully!');
+        // Update local data
+        const item = paymentsData.find(p => p.id === id);
+        if (item) {
+          item.status = 'completed';
+          renderProviderPaymentTable();
+          updateCounts();
+        }
+      } else {
+        alert('Error: ' + (data.message || 'Failed to approve payment'));
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error approving payment');
+    });
+  }
+
+  // Deny/Reject request
   function denyRequest(type, id) {
-    const item = paymentsData.find(p => p.id === id);
-    if (item) {
-      paymentsData = paymentsData.filter(p => p.id !== id);
-      const typeLabel = type === 'provider-payment' ? 'Payment Request' : 'Refund Request';
-      alert(`${typeLabel} ${id} rejected successfully!`);
-      updateCounts();
-      
-      // Re-render the appropriate table
-      if (type === 'provider-payment') {
-        renderProviderPaymentTable();
-      } else if (type === 'refund') {
-        renderRefundRequestTable();
+    if (type !== 'provider-payment') {
+      alert('Only provider payment requests can be rejected');
+      return;
+    }
+    
+    if (confirm('Are you sure you want to reject this payment request?')) {
+      const item = paymentsData.find(p => p.id === id);
+      if (item) {
+        paymentsData = paymentsData.filter(p => p.id !== id);
+        alert(`Payment Request ${id} rejected successfully!`);
+        updateCounts();
+        
+        // Re-render the appropriate table
+        if (type === 'provider-payment') {
+          renderProviderPaymentTable();
+        }
       }
     }
   }

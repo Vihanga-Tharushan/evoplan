@@ -9,30 +9,6 @@
     <p>View and manage all customer and service provider complaints</p>
   </div>
 
-  <!-- Status Filter Tabs -->
-  <div class="status-tabs">
-    <button class="status-btn active" data-status="all" onclick="filterStatus('all')">
-      <i class="fas fa-list"></i>
-      <span>All Complaints</span>
-      <span class="count">0</span>
-    </button>
-    <button class="status-btn" data-status="new" onclick="filterStatus('new')">
-      <i class="fas fa-clock"></i>
-      <span>New</span>
-      <span class="count">0</span>
-    </button>
-    <button class="status-btn" data-status="in-progress" onclick="filterStatus('in-progress')">
-      <i class="fas fa-spinner"></i>
-      <span>In Progress</span>
-      <span class="count">0</span>
-    </button>
-    <button class="status-btn" data-status="resolved" onclick="filterStatus('resolved')">
-      <i class="fas fa-check-circle"></i>
-      <span>Resolved</span>
-      <span class="count">0</span>
-    </button>
-  </div>
-
   <!-- Type Filter Tabs -->
   <div class="type-tabs">
     <button class="type-btn active" data-type="all" onclick="filterType('all')">
@@ -54,129 +30,112 @@
 </div>
 
 <script>
-  // Sample complaints data
-  const complaintsData = [
-    {
-      id: 'CC-4259',
-      type: 'client',
-      subject: 'One album is missing',
-      category: 'Product Defect',
-      name: 'Malika Nishantha',
-      company: 'Amari Supermarket',
-      date: '2 hours ago',
-      status: 'new',
-      avatar: '../public/img/Admin/Complains/rectangle-14.png',
-      description: 'Customer reported that one of the photo albums from the event package is missing.'
-    },
-    {
-      id: 'CSP-1558',
-      type: 'provider',
-      subject: 'Stats missing',
-      category: 'System',
-      name: 'Shanika Perera',
-      company: 'Amari Supermarket',
-      date: '2 hours ago',
-      status: 'new',
-      avatar: '../public/img/Admin/Complains/rectangle-10.png',
-      description: 'Service provider reported missing statistics in their dashboard.'
-    },
-    {
-      id: 'CC-4258',
-      type: 'client',
-      subject: 'One album is missing',
-      category: 'Product Defect',
-      name: 'Sanju de Silva',
-      company: 'Amari Supermarket',
-      date: '2 days ago',
-      status: 'in-progress',
-      avatar: '../public/img/Admin/Complains/rectangle-15.png',
-      description: 'Follow-up complaint regarding missing photo album delivery.'
-    },
-    {
-      id: 'CSP-1557',
-      type: 'provider',
-      subject: 'Payment fail',
-      category: 'Payment',
-      name: 'Kasuni Perera',
-      company: 'Amari Supermarket',
-      date: '2 days ago',
-      status: 'in-progress',
-      avatar: '../public/img/Admin/Complains/rectangle-11.png',
-      description: 'Service provider experiencing payment processing failures.'
-    },
-    {
-      id: 'CC-4257',
-      type: 'client',
-      subject: 'One album is missing',
-      category: 'Service',
-      name: 'Nethmi Liyanage',
-      company: 'Amari Supermarket',
-      date: '1 week ago',
-      status: 'resolved',
-      avatar: '../public/img/Admin/Complains/rectangle-16.png',
-      description: 'Service quality complaint - resolved with replacement.'
-    },
-    {
-      id: 'CSP-1556',
-      type: 'provider',
-      subject: 'Payment fail',
-      category: 'Payment',
-      name: 'Roshan Lokuge',
-      company: 'Amari Supermarket',
-      date: '1 week ago',
-      status: 'resolved',
-      avatar: '../public/img/Admin/Complains/rectangle-12.png',
-      description: 'Payment issue successfully resolved.'
-    },
-    {
-      id: 'CC-4256',
-      type: 'client',
-      subject: 'One album is missing',
-      category: 'Product Defect',
-      name: 'Chanalee Hiranya',
-      company: 'Amari Supermarket',
-      date: '1 week ago',
-      status: 'resolved',
-      avatar: '../public/img/Admin/Complains/rectangle-17.png',
-      description: 'Missing album issue resolved with replacement delivery.'
-    },
-    {
-      id: 'CSP-1555',
-      type: 'provider',
-      subject: 'Stats missing',
-      category: 'System',
-      name: 'Malinga Silva',
-      company: 'Amari Supermarket',
-      date: '1 week ago',
-      status: 'resolved',
-      avatar: '../public/img/Admin/Complains/rectangle-13.png',
-      description: 'System statistics issue has been fixed.'
-    }
-  ];
+  // Helper function to format date
+  function formatDate(dateString) {
+    if (!dateString) return 'Just now';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    return date.toLocaleDateString();
+  }
 
-  let currentStatus = 'all';
+  // Track current filter type
   let currentType = 'all';
+
+  // Complaints data from database
+  const complaintsData = <?php
+    $complaintObjects = array();
+    
+    if (!empty($data['clientComplaints'])) {
+      foreach ($data['clientComplaints'] as $complaint) {
+        $statusMap = [
+          'SEND' => 'new',
+          'OPEN' => 'new',
+          'IN_PROGRESS' => 'in-progress',
+          'RESOLVED' => 'resolved',
+          'REJECTED' => 'resolved',
+          'ESCALATED' => 'in-progress'
+        ];
+        $status = isset($complaint->status) && isset($statusMap[$complaint->status]) ? $statusMap[$complaint->status] : 'new';
+        
+        $obj = array(
+          'id' => 'CC-' . $complaint->complaint_id,
+          'type' => 'client',
+          'subject' => $complaint->issue_type ?? 'Other',
+          'category' => 'Client Issue',
+          'name' => $complaint->client_name ?? 'Unknown Client',
+          'company' => 'Event Service',
+          'date' => $complaint->created_at,
+          'status' => $status,
+          'avatar' => '../public/img/Admin/Complains/default-client.png',
+          'description' => $complaint->description ?? ''
+        );
+        $complaintObjects[] = $obj;
+      }
+    }
+    
+    if (!empty($data['providerComplaints'])) {
+      foreach ($data['providerComplaints'] as $complaint) {
+        $statusMap = [
+          'SEND' => 'new',
+          'OPEN' => 'new',
+          'IN_PROGRESS' => 'in-progress',
+          'RESOLVED' => 'resolved',
+          'REJECTED' => 'resolved',
+          'ESCALATED' => 'in-progress'
+        ];
+        $status = isset($complaint->status) && isset($statusMap[$complaint->status]) ? $statusMap[$complaint->status] : 'new';
+        
+        $obj = array(
+          'id' => 'CSP-' . $complaint->complaint_id,
+          'type' => 'provider',
+          'subject' => $complaint->complaint_type ?? 'Other',
+          'category' => 'Provider Issue',
+          'name' => $complaint->service_name ?? 'Unknown Provider',
+          'company' => $complaint->event_name ?? 'N/A',
+          'date' => $complaint->created_at,
+          'status' => $status,
+          'avatar' => '../public/img/Admin/Complains/default-provider.png',
+          'description' => $complaint->description_text ?? ''
+        );
+        $complaintObjects[] = $obj;
+      }
+    }
+    
+    echo json_encode($complaintObjects);
+  ?>;
+
+  // Debug: Log data to console
+  console.log('Complaints Data:', complaintsData);
+  console.log('Total complaints:', complaintsData.length);
 
   // Initialize
   function initComplaints() {
+    console.log('Initializing complaints...');
     renderComplaints();
-    updateCounts();
+    updateTypeCounts();
   }
 
   // Render complaints
   function renderComplaints() {
+    console.log('renderComplaints called, currentType:', currentType);
     const container = document.getElementById('complaintsList');
     let filtered = complaintsData;
-
-    // Filter by status
-    if (currentStatus !== 'all') {
-      filtered = filtered.filter(c => c.status === currentStatus);
-    }
 
     // Filter by type
     if (currentType !== 'all') {
       filtered = filtered.filter(c => c.type === currentType);
     }
+    
+    console.log('Filtered complaints:', filtered);
 
     if (filtered.length === 0) {
       container.innerHTML = '<div class="empty-state"><p>No complaints found</p></div>';
@@ -223,30 +182,16 @@
           </div>
 
           <div class="complaint-footer">
-            <span class="complaint-date"><i class="fas fa-calendar-alt"></i> ${complaint.date}</span>
-            <div class="complaint-actions">
-              <button class="btn-icon" title="View Details">
-                <i class="fas fa-eye"></i>
-              </button>
-              <button class="btn-icon" title="Reply">
-                <i class="fas fa-reply"></i>
-              </button>
-              <button class="btn-icon danger" title="Delete">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
+            <span class="complaint-date"><i class="fas fa-calendar-alt"></i> <span class="time-ago">${complaint.date}</span></span>
           </div>
         </div>
       `;
     }).join('');
-  }
 
-  // Filter by status
-  function filterStatus(status) {
-    currentStatus = status;
-    document.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-status="${status}"]`).classList.add('active');
-    renderComplaints();
+    // Format all timestamps
+    document.querySelectorAll('.time-ago').forEach(el => {
+      el.textContent = formatDate(el.textContent);
+    });
   }
 
   // Filter by type
@@ -257,22 +202,8 @@
     renderComplaints();
   }
 
-  // Update counts
-  function updateCounts() {
-    // Status counts
-    const statusCounts = {
-      all: complaintsData.length,
-      new: complaintsData.filter(c => c.status === 'new').length,
-      'in-progress': complaintsData.filter(c => c.status === 'in-progress').length,
-      resolved: complaintsData.filter(c => c.status === 'resolved').length
-    };
-
-    Object.keys(statusCounts).forEach(key => {
-      const btn = document.querySelector(`[data-status="${key}"]`);
-      if (btn) btn.querySelector('.count').textContent = statusCounts[key];
-    });
-
-    // Type counts
+  // Update type counts
+  function updateTypeCounts() {
     const typeCounts = {
       all: complaintsData.length,
       client: complaintsData.filter(c => c.type === 'client').length,

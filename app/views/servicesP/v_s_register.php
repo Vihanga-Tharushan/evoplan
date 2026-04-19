@@ -23,34 +23,34 @@
     <span class="invalidFeedback"><?php echo $data['name_err']; ?></span>
 
     <label class="form__label" for="lname">Last Name</label>
-    <input class="form__input" id="lname" name="lname" type="text" placeholder="Your last name" accept="" required value="<?php echo $data['lname']; ?>">
+    <input class="form__input" id="lname" name="lname" type="text" placeholder="Your last name" accept="" value="<?php echo $data['lname']; ?>">
 
     <label class="form__label" for="nic">NIC Number</label>
-    <input class="form__input" id="nic" name="nic" type="text" placeholder="Your NIC number" required value="<?php echo $data['nic']; ?>">
+    <input class="form__input" id="nic" name="nic" type="text" placeholder="Your NIC number"value="<?php echo $data['nic']; ?>">
     <span class="invalidFeedback"><?php echo $data['nic_err']; ?></span>
 
     <label class="form__label" for="email">Email</label>
-    <input class="form__input" id="email" name="email" type="email" placeholder="you@example.com" required value="<?php echo $data['email']; ?>">
+    <input class="form__input" id="email" name="email" type="email" placeholder="you@example.com"value="<?php echo $data['email']; ?>">
     <span class="invalidFeedback"><?php echo $data['email_err']; ?></span>
 
 	  <label class="form__label" for="password">Password</label>
-	  <input class="form__input" id="password" name="password" type="password" placeholder="Create a password" required value="<?php echo $data['password']; ?>">
+	  <input class="form__input" id="password" name="password" type="password" placeholder="Create a password" value="<?php echo $data['password']; ?>">
     <span class="invalidFeedback"><?php echo $data['password_err']; ?></span>
 
 	  <label class="form__label" for="confirm_password">Confirm Password</label>
-    <input class="form__input" id="confirm_password" name="confirm_password" type="password" placeholder="Confirm your password" required accept="" value="<?php echo $data['confirm_password']; ?>">
+    <input class="form__input" id="confirm_password" name="confirm_password" type="password" placeholder="Confirm your password" accept="" value="<?php echo $data['confirm_password']; ?>">
     <span class="invalidFeedback"><?php echo $data['confirm_password_err']; ?></span>
 
     <label class="form__label" for="contact">Contact Number</label>
-    <input class="form__input" id="contact" name="contact" type="tel" placeholder="Your contact number" required value="<?php echo $data['contact']; ?>">
+    <input class="form__input" id="contact" name="contact" type="tel" placeholder="Your contact number"  value="<?php echo $data['contact']; ?>">
     <span class="invalidFeedback"><?php echo $data['contact_err']; ?></span>
 
     <label class="form__label" for="address">Address</label>
-    <input class="form__input" id="address" name="address" type="text" placeholder="Your address" required value="<?php echo $data['address']; ?>">
+    <input class="form__input" id="address" name="address" type="text" placeholder="Your address" value="<?php echo $data['address']; ?>">
     <span class="invalidFeedback"><?php echo $data['address_err']; ?></span>
 
     <label class="form__label" for="district">District</label>
-    <select class="form__select" id="district" name="district" required value="<?php echo $data['district']; ?>">
+    <select class="form__select" id="district" name="district" value="<?php echo $data['district']; ?>">
       <option value="">Select District</option>
       <optgroup label="Western Province">
         <option value="Colombo" <?php echo ($data['district'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
@@ -103,7 +103,7 @@
     <h2 class="form-block__title">Business Info</h2>
 
     <label class="form__label" for="businessName">Business Name</label>
-    <input class="form__input" id="businessName" name="businessName" type="text" placeholder="Your business name" required accept="" value="<?php echo $data['businessName']; ?>">
+    <input class="form__input" id="businessName" name="businessName" type="text" placeholder="Your business name"  accept="" value="<?php echo $data['businessName']; ?>">
     <span class="invalidFeedback"><?php echo $data['businessName_err']; ?></span>
 
     <label class="form__label" for="businessId">Business ID</label>
@@ -111,7 +111,7 @@
     <span class="invalidFeedback"><?php echo $data['businessId_err']; ?></span>
 
     <label class="form__label" for="serviceType">Service Type</label>
-    <select class="form__select" id="serviceType" name="serviceType" required value="<?php echo $data['serviceType']; ?>">
+    <select class="form__select" id="serviceType" name="serviceType"  value="<?php echo $data['serviceType']; ?>">
       <option value="">Select Service Type</option>
       <option value="Decorators and Event Stylists" <?php echo ($data['serviceType'] == 'Decorators') ? 'selected' : ''; ?>>Decorators and Event Stylists</option>
       <option value="Event Equipment and Rentals" <?php echo ($data['serviceType'] == 'Event Equipment') ? 'selected' : ''; ?>>Event Equipment and Rentals</option>
@@ -123,20 +123,21 @@
       <option value="Catering" <?php echo ($data['serviceType'] == 'Catering') ? 'selected' : ''; ?>>Catering</option>
       <option value="Photography" <?php echo ($data['serviceType'] == 'Photography') ? 'selected' : ''; ?>>Photography</option>
     </select>
+    <span class="invalidFeedback"><?php echo $data['serviceType_err']; ?></span>
 
     <label class="form__label" for="contactB">Business Contact Number</label>
-    <input class="form__input" id="contactB" name="contactB" type="tel" placeholder="Your contact number" required value="<?php echo $data['contactB']; ?>">
+    <input class="form__input" id="contactB" name="contactB" type="tel" placeholder="Your contact number"  value="<?php echo $data['contactB']; ?>">
     <span class="invalidFeedback"><?php echo $data['contactB_err']; ?></span>
 
     <label class="form__label" for="emailB">Business Email</label>
-    <input class="form__input" id="emailB" name="emailB" type="email" placeholder="business@example.com" required value="<?php echo $data['emailB']; ?>">
+    <input class="form__input" id="emailB" name="emailB" type="email" placeholder="business@example.com"  value="<?php echo $data['emailB']; ?>">
     <span class="invalidFeedback"><?php echo $data['emailB_err']; ?></span>
 
     <label class="form__label" for="businessAddress">Business Address</label>
-    <input class="form__input" id="businessAddress" name="businessAddress" type="text" placeholder="Street, City" required value="<?php echo $data['businessAddress']; ?>">
+    <input class="form__input" id="businessAddress" name="businessAddress" type="text" placeholder="Street, City"  value="<?php echo $data['businessAddress']; ?>">
 
     <label class="form__label" for="bizDistrict">District</label>
-    <select class="form__select" id="bizDistrict" name="bizDistrict" required>
+    <select class="form__select" id="bizDistrict" name="bizDistrict">
       <option value="">Select District</option>
       <optgroup label="Western Province">
         <option value="Colombo" <?php echo ($data['bizDistrict'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
@@ -187,7 +188,7 @@
     <textarea class="form__textarea" id="description" name="description" placeholder="Tell us about your business"><?php echo $data['description']; ?></textarea>
 
     <label class="form__label" for="experience">Years of Experience</label>
-    <select class="form__select" id="experience" name="experience" required>
+    <select class="form__select" id="experience" name="experience">
       <option value="">Select Experience</option>
       <option value="0-1 years" <?php echo ($data['experience'] == '0-1 years') ? 'selected' : ''; ?>>0-1 years</option>
       <option value="2-5 years" <?php echo ($data['experience'] == '2-5 years') ? 'selected' : ''; ?>>2-5 years</option>
@@ -231,7 +232,7 @@
   <!-- Submit Section -->
   <section class="submit">
     <label class="checkbox">
-      <input type="checkbox" name="terms" required>
+      <input type="checkbox" name="terms" >
       <span>I accept the <strong class="accent">EvoPlan</strong> 
         <a href="<?php echo URLROOT; ?>/Service/terms" target="_blank"><u>terms and conditions</u></a>
       </span>

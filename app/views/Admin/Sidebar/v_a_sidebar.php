@@ -397,7 +397,7 @@
         </div>
       </div>
     </nav>
-    <!-- Navbar --> <nav class="navbar flex">
+    Navbar <nav class="navbar flex">
       <div class="nav-left flex">
         <button id="back-btn" class="btn-icon" title="Go Back">
           <i class="fa-solid fa-arrow-left"></i>
@@ -405,7 +405,7 @@
       </div>
 
       <div class="nav-right flex">
-        <div style="position:relative;">
+        <!-- <div style="position:relative;">
           <button id="notif-btn" class="btn-icon" title="Notifications">
             <i class="fa-solid fa-bell"></i>
           </button>
@@ -414,7 +414,7 @@
 
         <span class="nav_image">
           <img src="<?php echo URLROOT; ?>/public/img/sidebar/profile.jpg" alt="profile" />
-        </span>
+        </span> -->
       </div>
     </nav>
   </body>

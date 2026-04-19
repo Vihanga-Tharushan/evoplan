@@ -11,6 +11,7 @@
         public function view($view, $data= []){
             //to load a view 
             if(file_exists('../app/views/'. $view . '.php')){
+                extract($data);
                 require_once '../app/views/' . $view . '.php';
             }else{
                 //view does not exist

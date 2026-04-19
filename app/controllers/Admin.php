@@ -12,20 +12,119 @@
       $this->eventViewModel = $this->model('M_eventView');
     }
 
+    // Dashboard and statistics
+    
     public function stats(){
-      $this->view('Admin/v_a_stats');
+      // Get stats card data
+      $totalIncome = $this->adminModel->getTotalIncome();
+      $totalUsers = $this->adminModel->getTotalUsers();
+      $totalEvents = $this->adminModel->getTotalEvents();
+      $serviceProviders = $this->adminModel->getApprovedServiceProviders();
+      
+      // Get monthly data for charts
+      $monthlyIncomeData = $this->adminModel->getAllMonthlyIncomeData();
+      $monthlyUserGrowthData = $this->adminModel->getAllMonthlyUserGrowthData();
+      
+      // Get event progress distribution
+      $eventProgressData = $this->adminModel->getEventProgressDistribution();
+      
+      // Get service provider approval status distribution
+      $approvalData = $this->adminModel->getServiceProviderApprovalDistribution();
+      
+      $data = [
+        'totalIncome' => $totalIncome,
+        'totalUsers' => $totalUsers,
+        'totalEvents' => $totalEvents,
+        'serviceProviders' => $serviceProviders,
+        'monthlyIncomeData' => $monthlyIncomeData,
+        'monthlyUserGrowthData' => $monthlyUserGrowthData,
+        'eventProgressData' => $eventProgressData,
+        'approvalData' => $approvalData
+      ];
+      
+      $this->view('Admin/v_a_stats', $data);
     }
 
+    // Payments management
+    
     public function payments(){
-      $this->view('Admin/v_a_payments');
+      $data = [
+        'allTransactions' => $this->adminModel->getTransactions(),
+        'clientPayments' => $this->adminModel->getClientPayments(),
+        'providerPayments' => $this->adminModel->getProviderPaymentsRequests()
+      ];
+      $this->view('Admin/v_a_payments', $data);
     }
+
+    public function approvePayment(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $payment_id = isset($_POST['payment_id']) ? $_POST['payment_id'] : null;
+        
+        if(!$payment_id){
+          header('Content-Type: application/json');
+          echo json_encode(['success' => false, 'message' => 'Payment ID is required']);
+          exit;
+        }
+        
+        // Load payment model
+        $paymentModel = $this->model('M_Payment');
+        
+        // Approve the payment request and create transaction
+        if($paymentModel->ApprovePaymentRequest($payment_id) && $paymentModel->createPaymentTransaction($payment_id)){
+          header('Content-Type: application/json');
+          echo json_encode(['success' => true, 'message' => 'Payment approved successfully']);
+          exit;
+        } else {
+          header('Content-Type: application/json');
+          echo json_encode(['success' => false, 'message' => 'Failed to approve payment']);
+          exit;
+        }
+      }
+    }
+
+    // Applications management
 
     public function applications(){
-      $this->view('Admin/v_a_applications');
+      $data = [
+        'applications' => $this->adminModel->getServiceApplications()
+      ];
+      $this->view('Admin/v_a_applications', $data);
     }
 
+    public function approveApplication(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $service_id = isset($_POST['service_id']) ? $_POST['service_id'] : null;
+        $approval = isset($_POST['approval']) ? $_POST['approval'] : null;
+        
+        // Validate approval status (APPROVED or REJECTED)
+        if($approval !== 'APPROVED' && $approval !== 'REJECTED'){
+          header('Content-Type: application/json');
+          echo json_encode(['success' => false, 'message' => 'Invalid approval status']);
+          exit;
+        }
+        
+        // Update service provider approval status
+        if($this->adminModel->updateServiceApproval($service_id, $approval)){
+          header('Content-Type: application/json');
+          echo json_encode(['success' => true, 'message' => 'Approval status updated successfully']);
+          exit;
+        } else {
+          header('Content-Type: application/json');
+          echo json_encode(['success' => false, 'message' => 'Failed to update approval status']);
+          exit;
+        }
+      }
+    }
+
+    // Complaints management
+
     public function complaints(){
-      $this->view('Admin/v_a_complaints');
+      // Get all client and service provider complaints from database
+      $data = [
+        'clientComplaints' => $this->adminModel->getClientComplaints(),
+        'providerComplaints' => $this->adminModel->getProviderComplaints()
+      ];
+      $this->view('Admin/v_a_complaints', $data);
     }
 
     // Profiles management
@@ -41,7 +140,7 @@
 
     public function delete_profile($user_id, $type = 'client'){
       if($this->adminModel->deleteProfile($user_id, $type)){
-        flash('admin_message', 'Profile Deleted Successfully');
+        flash('admin_message', 'Profile Deactivated Successfully');
         redirect('Admin/profiles');
       } else {
         die('Something went wrong');
@@ -137,7 +236,7 @@
             ////////////////////////////////////////////
             /////////// Create Session /////////////////
             ////////////////////////////////////////////
-            $this->view('Admin/v_a_stats');
+            redirect('Admin/Stats');
           } else {
             $data['a_password_err'] = 'Password is incorrect';
             $this->view('Admin/v_a_login', $data);
@@ -797,7 +896,16 @@
     }
 
     public function main_page(){
-      $this->view('LandingPage/LandingPage');
+      // Get landing page photos from database
+      $landingModel = $this->model('M_Landing');
+      $photos = $landingModel->getLandingPhotos();
+      
+      // Initialize data array with photos
+      $data = [
+        'photos' => is_array($photos) ? $photos : []
+      ];
+      
+      $this->view('LandingPage/LandingPage', $data);
     }
   }
 

@@ -1,5 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/LandingPage/LandingPage1.css">
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/LandingPage/LandingPage.css">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +22,13 @@
 
 <!-- NAV -->
 <header class="navbar">
-  <div class="logo"><img src="<?php echo URLROOT; ?>/public/img/LandingPage/Logo.svg" alt="EvoPlan Logo" class="navbar-logo"></div>
+  <div class="logo">
+    <img src="../public/img/LandingPage/Logo.svg">
+  </div>
 </header>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="home">
   <div class="hero-glass">
     <h1>From Idea to Action<br>Plan Your Event Seamlessly</h1>
     <p>
@@ -42,7 +44,7 @@
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section">
+<section class="section" id="how-it-works">
   <h2>How It Works</h2>
   <p class="section-sub">
     Connecting event professionals with clients to create unforgettable moments.
@@ -82,7 +84,7 @@
 </section>
 
 <!-- FEATURES -->
-<section class="section light">
+<section class="section light" id="features">
   <h2>Platform Features</h2>
   <p class="section-sub">Everything you need to manage events professionally.</p>
 
@@ -139,36 +141,47 @@
 </section>
 
 <!-- GALLERY -->
-<section class="section">
+<section class="section" id="events">
   <h2>Events We Covered</h2>
   <p class="section-sub">Explore the amazing events and celebrations we've helped create.</p>
 
   <div class="slideshow-container">
     <div class="slideshow-wrapper">
       <div class="slides-track">
+        <!-- Wedding Events -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop" alt="Wedding Event">
-          <div class="slide-caption">Wedding Celebration</div>
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=600&fit=crop" alt="Wedding Celebration" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Wedding Celebrations</div>
         </div>
+
+        <!-- Birthday Party -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=800&h=600&fit=crop" alt="Birthday Party">
-          <div class="slide-caption">Birthday Party</div>
+          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200&h=600&fit=crop" alt="Birthday Party" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Birthday Parties</div>
         </div>
+
+        <!-- Corporate Events -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1540575467063-178f50002cbc?w=800&h=600&fit=crop" alt="Corporate Event">
-          <div class="slide-caption">Corporate Gala</div>
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop" alt="Corporate Event" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Corporate Events</div>
         </div>
+
+        <!-- Engagement Events -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop" alt="Concert Event">
-          <div class="slide-caption">Concert Night</div>
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=600&fit=crop" alt="Engagement Party" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Family Gatherings</div>
         </div>
+
+        <!-- Festival Celebrations -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&h=600&fit=crop" alt="Beach Event">
-          <div class="slide-caption">Beach Party</div>
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&h=600&fit=crop" alt="Festival Celebration" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Festival Celebrations</div>
         </div>
+
+        <!-- Outdoor Events -->
         <div class="slide fade">
-          <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800&h=600&fit=crop" alt="Graduation Ceremony">
-          <div class="slide-caption">Graduation Ceremony</div>
+          <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=600&fit=crop" alt="Outdoor Events" onerror="console.log('Image failed to load:', this.src);">
+          <div class="slide-caption">Outdoor Events</div>
         </div>
       </div>
     </div>
@@ -239,10 +252,10 @@
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">How It Works</a></li>
-        <li><a href="#">Features</a></li>
-        <li><a href="#">Events</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#events">Events</a></li>
       </ul>
     </div>
 
@@ -252,8 +265,6 @@
       <ul>
         <li><a href="#">For Service Providers</a></li>
         <li><a href="#">For Clients</a></li>
-        <li><a href="#">Pricing</a></li>
-        <li><a href="#">FAQs</a></li>
       </ul>
     </div>
 
@@ -267,7 +278,7 @@
         <li><div class="social_icons">
             <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
             <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://wa.me" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div></li>
       </ul>
     </div>
@@ -283,7 +294,7 @@
   </div>
 </footer>
 
-<script src="<?php echo URLROOT; ?>/public/css/components/LandingPage/LandingPage1.js"></script>
+<script src="<?php echo URLROOT; ?>/public/js/LandingPage.js"></script>
 </body>
 </html>
 
