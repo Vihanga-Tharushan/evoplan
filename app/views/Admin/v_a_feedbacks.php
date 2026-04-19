@@ -1,283 +1,160 @@
+<?php require_once APPROOT . '/views/Admin/Sidebar/v_a_sidebar.php'; ?>
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="../public/css/components/Admin/style(Admin_Feedbacks).css">
 
-<div class="dashboard-feedbacks">
-
-    <div class="dashboard">
-      <div class="dashboard-frame">
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Stats'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Stats.svg" />
-              Stats
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Payments'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Payments.svg" />
-            Payments
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Applications'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Applications.svg" />
-            Applications
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Complains'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Complains.svg" />
-            Complains
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Profiles'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Profiles.svg" />
-              Profiles
-            </div>
-        </button>
-          
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Events'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Events.svg" />
-              Events
-            </div>
-        </button>
-
-        <div class="select">
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Feedbacks.svg"/>
-            Feedbacks
-          </div>
-        </div>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Admins'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Admins.svg"/>
-              Admins &amp; <br /> Coordinators
-            </div>
-        </button>
-
-      </div>
-    </div>
-
-    <div class="frame-48096285">
-      <div class="feedbacks">Feedbacks</div>
-      <div class="div">......</div>
-      <div class="frame-4">
-        <div class="frame-5">
-          <div class="see-all">See all</div>
-          <img class="icon-from-tabler-io" src="../public/img/Admin/Feedbacks/icon-from-tabler-io0.svg" />
-        </div>
-      </div>
-      <div class="frame-48096299">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Malika Nishantha</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/08/10 12:20 PM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-10.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-10.png"
-        />
-      </div>
-      <div class="frame-48096300">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Sanju de Silva</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/08/08 10:25 AM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-11.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-11.png"
-        />
-      </div>
-      <div class="frame-48096301">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Malinga Silva</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/08/05 03:15 PM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-12.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-12.png"
-        />
-      </div>
-      <div class="frame-48096302">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Kasuni Perera</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/08/03 11:00 PM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-13.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-13.png"
-        />
-      </div>
-      <div class="frame-48096303">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Nethmi Liyanage</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/08/01 09:45 AM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-14.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-14.png"
-        />
-      </div>
-      <div class="frame-48096304">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Roshan Lokuge</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/07/27 08:30 PM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-15.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-15.png"
-        />
-      </div>
-      <div class="frame-48096305">
-        <div class="rectangle-15"></div>
-        <div class="rectangle-16"></div>
-        <div class="frame-9">
-          <div class="maggie-johnson">Chanalee Hiranya</div>
-          <div class="client-c-2345">
-            Client
-            <br />
-            2025/07/19 09:45 AM
-          </div>
-        </div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Feedbacks/rectangle-16.png" />
-        </div>
-        <div class="rectangle-14"></div>
-        <div
-          class="feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback-feedback"
-        >
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback Feedback
-          Feedback Feedback Feedback Feedback Feedback Feedback Feedback.
-        </div>
-        <img
-          class="pngwing-com-2025-08-10-t-212036-595-1"
-          src="../public/img/Admin/Feedbacks/pngwing-com-2025-08-10-t-212036-595-16.png"
-        />
-      </div>
-    </div>
-    
-    <div class="frame-31">
-      <button class="logout-btn" onclick="window.location.href='<?php echo URLROOT ?>/Admin/main_page'">Log Out</button>
-      <button class=btn_to_mainPage > 
-        <img class="evo-plan-logo-new-removebg-preview-2" src="../public/img/Admin/Stats/evo-plan-logo-new-removebg-preview-20.png" />
-      </button>
-    </div>
+<div class="feedbacks-container">
+  <!-- Header -->
+  <div class="feedbacks-header">
+    <h1>Customer Feedbacks</h1>
+    <p>View and manage all customer feedback and reviews</p>
   </div>
+
+  <!-- Rating Filter Tabs -->
+  <div class="rating-tabs">
+    <button class="rating-btn active" data-rating="all" onclick="filterRating('all')">
+      <i class="fas fa-star"></i>
+      <span>All</span>
+      <span class="count">0</span>
+    </button>
+    <button class="rating-btn" data-rating="5" onclick="filterRating('5')">
+      <i class="fas fa-star"></i>
+      <span>5 Stars</span>
+      <span class="count">0</span>
+    </button>
+    <button class="rating-btn" data-rating="4" onclick="filterRating('4')">
+      <i class="fas fa-star"></i>
+      <span>4 Stars</span>
+      <span class="count">0</span>
+    </button>
+    <button class="rating-btn" data-rating="lessthan3" onclick="filterRating('lessthan3')">
+      <i class="fas fa-star-half-alt"></i>
+      <span>3 or less</span>
+      <span class="count">0</span>
+    </button>
+  </div>
+
+  <!-- Feedbacks List -->
+  <div class="feedbacks-list" id="feedbacksList"></div>
+</div>
+
+<script>
+  // Feedbacks data from database
+  const feedbacksData = [
+    <?php
+      if (!empty($data['feedbacks'])) {
+        foreach ($data['feedbacks'] as $feedback) {
+          echo "{
+            id: {$feedback->review_id},
+            name: '{$feedback->reviewer_name}',
+            providerName: '{$feedback->provider_name}',
+            userType: 'Client',
+            date: '{$feedback->created_at}',
+            rating: {$feedback->rating},
+            feedback: '" . addslashes($feedback->review_text) . "',
+            avatar: ''
+          },";
+        }
+      }
+    ?>
+  ];
+
+  let currentRating = 'all';
+
+  // Initialize
+  function initFeedbacks() {
+    renderFeedbacks();
+    updateCounts();
+  }
+
+  // Render feedbacks
+  function renderFeedbacks() {
+    const container = document.getElementById('feedbacksList');
+    let filteredFeedbacks = feedbacksData;
+
+    if (currentRating !== 'all') {
+      if (currentRating === '5') {
+        filteredFeedbacks = feedbacksData.filter(f => f.rating === 5);
+      } else if (currentRating === '4') {
+        filteredFeedbacks = feedbacksData.filter(f => f.rating === 4);
+      } else if (currentRating === 'lessthan3') {
+        filteredFeedbacks = feedbacksData.filter(f => f.rating <= 3);
+      }
+    }
+
+    if (filteredFeedbacks.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>No feedbacks found</p></div>';
+      return;
+    }
+
+    container.innerHTML = filteredFeedbacks.map(feedback => {
+      const stars = Array(feedback.rating).fill('★').join('');
+      return `
+        <div class="feedback-item" data-searchable="${(feedback.name + ' ' + feedback.feedback).toLowerCase()}">
+          <div class="feedback-header">
+            <div class="feedback-user">
+              <img class="feedback-avatar" src="${feedback.avatar}" alt="${feedback.name}" />
+              <div class="feedback-info">
+                <h3>${feedback.name}</h3>
+                <p class="feedback-meta">For: ${feedback.providerName} • ${feedback.date}</p>
+              </div>
+            </div>
+            <div class="feedback-rating">
+              <span class="stars">${stars}</span>
+            </div>
+          </div>
+          <div class="feedback-content">
+            <p>${feedback.feedback}</p>
+          </div>
+          <div class="feedback-actions">
+            <button class="btn-icon danger" title="Delete" onclick="deleteFeedback(${feedback.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Filter by rating
+  function filterRating(rating) {
+    currentRating = rating;
+    document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-rating="${rating}"]`).classList.add('active');
+    renderFeedbacks();
+  }
+
+  // Update counts with actual feedback data
+  function updateCounts() {
+    if (feedbacksData.length === 0) {
+      // If no feedbacks, set all counts to 0
+      document.querySelectorAll('.rating-btn .count').forEach(el => el.textContent = '0');
+      return;
+    }
+
+    const counts = {
+      all: feedbacksData.length,
+      5: feedbacksData.filter(f => f.rating === 5).length,
+      4: feedbacksData.filter(f => f.rating === 4).length,
+      lessthan3: feedbacksData.filter(f => f.rating <= 3).length
+    };
+
+    Object.keys(counts).forEach(key => {
+      const btn = document.querySelector(`[data-rating="${key}"]`);
+      if (btn) {
+        btn.querySelector('.count').textContent = counts[key];
+      }
+    });
+  }
+
+  // Delete feedback function
+  function deleteFeedback(feedbackId) {
+    if (confirm('Are you sure you want to delete this feedback?')) {
+      window.location.href = '<?php echo URLROOT; ?>/Admin/delete_feedback/' + feedbackId;
+    }
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', initFeedbacks);
+</script>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>

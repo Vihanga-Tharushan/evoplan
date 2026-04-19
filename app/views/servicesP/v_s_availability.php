@@ -1,11 +1,10 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php 
-$backUrl = URLROOT . '/Service/profile';
-require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
+<?php $backUrl = URLROOT . '/Service/profile';
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/servicesP/s_availability.css">
 <div class="container">
     <header class="main">
-        <h2 class="main">Manage your available dates</h2>
+        <h2 class="main">Manage Your Available Dates</h2>
         
     </header>
 
@@ -40,17 +39,14 @@ require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
                         </div>
                         
                         <div class="legend">
-                            <div class="legend-item">
-                                <div class="legend-color legend-available"></div>
-                                <span>Available</span>
-                            </div>
+                            
                             <div class="legend-item">
                                 <div class="legend-color legend-booked"></div>
                                 <span>Booked</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-color legend-unavailable"></div>
-                                <span>Unavailable</span>
+                                <span>Available</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-color legend-today"></div>
@@ -68,11 +64,11 @@ require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
             <!-- Add Date -->
             <aside class="card">
                 <header class="card__h">
-                    <h2 class="card__t">Add Availability</h2>
+                    <h2 class="card__t">Mark Unavailability</h2>
                 </header>
                 <div class="card__body">
                     <div class="alert alert--info">
-                        Select a date range on the calendar to add availability for multiple days
+                        Select a date or date range on the calender to mark Unavailable dates.
                     </div>
                     
                     <div class="range-summary" id="range-summary" style="display: none;">
@@ -92,17 +88,9 @@ require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
                             </div>
                         </div>
 
-                        <div class="field">
-                            <span class="field__label">Status</span>
-                            <select class="input" id="status" name="status">
-                                <option value="available">Available</option>
-                                <option value="unavailable">Unavailable</option>
-                            </select>
-                        </div>
-
                         <div class="row-actions">
                             <button type="submit" class="btn btn--primary" id="add-availability">
-                                <span>Mark Range as Available</span>
+                                <span>Mark Range as Unavailable</span>
                             </button>
                             <button type="button" class="btn btn--light" id="view-events">
                                 <span>View List</span>
@@ -120,7 +108,7 @@ require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
     <div class="tab-content" id="availability-tab">
         <div class="card">
             <header class="card__head">
-                <h2 class="card__title">Current Availability</h2>
+                <h2 class="card__title">Current Unavailability List</h2>
             </header>
             <div class="card__body">
                 <table class="availability-table" id="availability-table">
@@ -171,34 +159,6 @@ require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
     </div>
 </div>
 
-<!-- Date Details Modal -->
-<div class="modal" id="date-modal">
-    <div class="modal__content">
-        <div class="modal__header">
-            <h2 class="modal__title" id="modal-date">Date Details</h2>
-            <button class="modal__close" id="modal-close">&times;</button>
-        </div>
-        <div class="modal__body">
-            <div class="date-info">
-                <h3>Availability Slots</h3>
-                <ul class="slot-list" id="slot-list">
-                    <!-- Time slots will be populated here -->
-                </ul>
-            </div>
-            <div class="field">
-                <span class="field__label">Add Time Slot</span>
-                <div class="time-inputs">
-                    <input class="input" type="time" id="modal-start-time">
-                    <input class="input" type="time" id="modal-end-time">
-                </div>
-            </div>
-        </div>
-        <div class="modal__footer">
-            <button class="btn btn--light" id="modal-cancel">Cancel</button>
-            <button class="btn btn--primary" id="modal-add">Add Slot</button>
-        </div>
-    </div>
-</div>
 
 <script>
     // Make PHP data available to JavaScript

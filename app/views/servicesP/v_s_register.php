@@ -1,19 +1,18 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<link rel="stylesheet" href="../public/css/components/servicesP/s_register.css">
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_register.css">
 
 <main class="registration">
-		<header class="registration__header">
-			<a href="#" class="brand" aria-label="EvoPlan Home">
-				<img src="../public/img/choose_register/EvoPlan_Logo_new-removebg-preview 2.svg" alt="EvoPlan" class="brand__logo">
-			</a>
-		</header>
+	<header class="registration__header">
+		<a href="<?php echo URLROOT; ?>" class="brand" aria-label="EvoPlan Home">
+			<img src="<?php echo URLROOT; ?>/public/img/LandingPage/Logo.svg" alt="EvoPlan" class="brand__logo">
+		</a>
+	</header>
 
-		<section class="banner" aria-hidden="true">
-			<div class="banner__bar"></div>
-			<h1 class="banner__title">Create Service Provider Account</h1>
-		</section>
+	<section class="banner">
+		<h1 class="banner__title">Create Service Provider Account</h1>
+	</section>
 
-<form  action="<?php echo URLROOT?>/Service/create" method="POST" enctype="multipart/form-data">
+	<form action="<?php echo URLROOT?>/Service/create" method="POST" enctype="multipart/form-data">
 
   <!-- Profile Info Section -->
   <section class="form-block">
@@ -53,9 +52,49 @@
     <label class="form__label" for="district">District</label>
     <select class="form__select" id="district" name="district" required value="<?php echo $data['district']; ?>">
       <option value="">Select District</option>
-      <option value="Colombo" <?php echo ($data['district'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
-      <option value="Kandy" <?php echo ($data['district'] == 'Kandy') ? 'selected' : ''; ?>>Kandy</option>
-      <option value="Galle" <?php echo ($data['district'] == 'Galle') ? 'selected' : ''; ?>>Galle</option>
+      <optgroup label="Western Province">
+        <option value="Colombo" <?php echo ($data['district'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
+        <option value="Gampaha" <?php echo ($data['district'] == 'Gampaha') ? 'selected' : ''; ?>>Gampaha</option>
+        <option value="Kalutara" <?php echo ($data['district'] == 'Kalutara') ? 'selected' : ''; ?>>Kalutara</option>
+      </optgroup>
+      <optgroup label="Central Province">
+        <option value="Kandy" <?php echo ($data['district'] == 'Kandy') ? 'selected' : ''; ?>>Kandy</option>
+        <option value="Matale" <?php echo ($data['district'] == 'Matale') ? 'selected' : ''; ?>>Matale</option>
+        <option value="Nuwara Eliya" <?php echo ($data['district'] == 'Nuwara Eliya') ? 'selected' : ''; ?>>Nuwara Eliya</option>
+      </optgroup>
+      <optgroup label="Southern Province">
+        <option value="Galle" <?php echo ($data['district'] == 'Galle') ? 'selected' : ''; ?>>Galle</option>
+        <option value="Matara" <?php echo ($data['district'] == 'Matara') ? 'selected' : ''; ?>>Matara</option>
+        <option value="Hambantota" <?php echo ($data['district'] == 'Hambantota') ? 'selected' : ''; ?>>Hambantota</option>
+      </optgroup>
+      <optgroup label="Northern Province">
+        <option value="Jaffna" <?php echo ($data['district'] == 'Jaffna') ? 'selected' : ''; ?>>Jaffna</option>
+        <option value="Kilinochchi" <?php echo ($data['district'] == 'Kilinochchi') ? 'selected' : ''; ?>>Kilinochchi</option>
+        <option value="Mannar" <?php echo ($data['district'] == 'Mannar') ? 'selected' : ''; ?>>Mannar</option>
+        <option value="Vavuniya" <?php echo ($data['district'] == 'Vavuniya') ? 'selected' : ''; ?>>Vavuniya</option>
+        <option value="Mullaitivu" <?php echo ($data['district'] == 'Mullaitivu') ? 'selected' : ''; ?>>Mullaitivu</option>
+      </optgroup>
+      <optgroup label="Eastern Province">
+        <option value="Batticaloa" <?php echo ($data['district'] == 'Batticaloa') ? 'selected' : ''; ?>>Batticaloa</option>
+        <option value="Ampara" <?php echo ($data['district'] == 'Ampara') ? 'selected' : ''; ?>>Ampara</option>
+        <option value="Trincomalee" <?php echo ($data['district'] == 'Trincomalee') ? 'selected' : ''; ?>>Trincomalee</option>
+      </optgroup>
+      <optgroup label="North Western Province">
+        <option value="Kurunegala" <?php echo ($data['district'] == 'Kurunegala') ? 'selected' : ''; ?>>Kurunegala</option>
+        <option value="Puttalam" <?php echo ($data['district'] == 'Puttalam') ? 'selected' : ''; ?>>Puttalam</option>
+      </optgroup>
+      <optgroup label="North Central Province">
+        <option value="Anuradhapura" <?php echo ($data['district'] == 'Anuradhapura') ? 'selected' : ''; ?>>Anuradhapura</option>
+        <option value="Polonnaruwa" <?php echo ($data['district'] == 'Polonnaruwa') ? 'selected' : ''; ?>>Polonnaruwa</option>
+      </optgroup>
+      <optgroup label="Uva Province">
+        <option value="Badulla" <?php echo ($data['district'] == 'Badulla') ? 'selected' : ''; ?>>Badulla</option>
+        <option value="Moneragala" <?php echo ($data['district'] == 'Moneragala') ? 'selected' : ''; ?>>Moneragala</option>
+      </optgroup>
+      <optgroup label="Sabaragamuwa Province">
+        <option value="Ratnapura" <?php echo ($data['district'] == 'Ratnapura') ? 'selected' : ''; ?>>Ratnapura</option>
+        <option value="Kegalle" <?php echo ($data['district'] == 'Kegalle') ? 'selected' : ''; ?>>Kegalle</option>
+      </optgroup>
     </select>
   </section>
 
@@ -74,13 +113,13 @@
     <label class="form__label" for="serviceType">Service Type</label>
     <select class="form__select" id="serviceType" name="serviceType" required value="<?php echo $data['serviceType']; ?>">
       <option value="">Select Service Type</option>
-      <option value="Decorators and Event Stylists" <?php echo ($data['serviceType'] == 'Decorators and Event Stylists') ? 'selected' : ''; ?>>Decorators and Event Stylists</option>
-      <option value="Event Equipment and Rentals" <?php echo ($data['serviceType'] == 'Event Equipment and Rentals') ? 'selected' : ''; ?>>Event Equipment and Rentals</option>
-      <option value="Music and DJ Services" <?php echo ($data['serviceType'] == 'Music and DJ Services') ? 'selected' : ''; ?>>Music and DJ Services</option>
-      <option value="Hosts, MCs and Entertainers" <?php echo ($data['serviceType'] == 'Hosts, MCs and Entertainers') ? 'selected' : ''; ?>>Hosts, MCs and Entertainers</option>
-      <option value="Transport and Logistics Services" <?php echo ($data['serviceType'] == 'Transport and Logistics Services') ? 'selected' : ''; ?>>Transport and Logistics Services</option>
-      <option value="Florists and Cake Designers" <?php echo ($data['serviceType'] == 'Florists and Cake Designers') ? 'selected' : ''; ?>>Florists and Cake Designers</option>
-      <option value="Venue Providing" <?php echo ($data['serviceType'] == 'Venue Providing') ? 'selected' : ''; ?>>Venue Providing</option>
+      <option value="Decorators and Event Stylists" <?php echo ($data['serviceType'] == 'Decorators') ? 'selected' : ''; ?>>Decorators and Event Stylists</option>
+      <option value="Event Equipment and Rentals" <?php echo ($data['serviceType'] == 'Event Equipment') ? 'selected' : ''; ?>>Event Equipment and Rentals</option>
+      <option value="Music and DJ Services" <?php echo ($data['serviceType'] == 'Music') ? 'selected' : ''; ?>>Music and DJ Services</option>
+      <option value="Hosts, MCs and Entertainers" <?php echo ($data['serviceType'] == 'Entertainers') ? 'selected' : ''; ?>>Hosts, MCs and Entertainers</option>
+      <option value="Transport and Logistics Services" <?php echo ($data['serviceType'] == 'Transportation') ? 'selected' : ''; ?>>Transport and Logistics Services</option>
+      <option value="Florists and Cake Designers" <?php echo ($data['serviceType'] == 'Florists') ? 'selected' : ''; ?>>Florists and Cake Designers</option>
+      <option value="Venue Providing" <?php echo ($data['serviceType'] == 'Venue') ? 'selected' : ''; ?>>Venue Providing</option>
       <option value="Catering" <?php echo ($data['serviceType'] == 'Catering') ? 'selected' : ''; ?>>Catering</option>
       <option value="Photography" <?php echo ($data['serviceType'] == 'Photography') ? 'selected' : ''; ?>>Photography</option>
     </select>
@@ -99,9 +138,49 @@
     <label class="form__label" for="bizDistrict">District</label>
     <select class="form__select" id="bizDistrict" name="bizDistrict" required>
       <option value="">Select District</option>
-      <option value="Colombo" <?php echo ($data['bizDistrict'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
-      <option value="Kandy" <?php echo ($data['bizDistrict'] == 'Kandy') ? 'selected' : ''; ?>>Kandy</option>
-      <option value="Galle" <?php echo ($data['bizDistrict'] == 'Galle') ? 'selected' : ''; ?>>Galle</option>
+      <optgroup label="Western Province">
+        <option value="Colombo" <?php echo ($data['bizDistrict'] == 'Colombo') ? 'selected' : ''; ?>>Colombo</option>
+        <option value="Gampaha" <?php echo ($data['bizDistrict'] == 'Gampaha') ? 'selected' : ''; ?>>Gampaha</option>
+        <option value="Kalutara" <?php echo ($data['bizDistrict'] == 'Kalutara') ? 'selected' : ''; ?>>Kalutara</option>
+      </optgroup>
+      <optgroup label="Central Province">
+        <option value="Kandy" <?php echo ($data['bizDistrict'] == 'Kandy') ? 'selected' : ''; ?>>Kandy</option>
+        <option value="Matale" <?php echo ($data['bizDistrict'] == 'Matale') ? 'selected' : ''; ?>>Matale</option>
+        <option value="Nuwara Eliya" <?php echo ($data['bizDistrict'] == 'Nuwara Eliya') ? 'selected' : ''; ?>>Nuwara Eliya</option>
+      </optgroup>
+      <optgroup label="Southern Province">
+        <option value="Galle" <?php echo ($data['bizDistrict'] == 'Galle') ? 'selected' : ''; ?>>Galle</option>
+        <option value="Matara" <?php echo ($data['bizDistrict'] == 'Matara') ? 'selected' : ''; ?>>Matara</option>
+        <option value="Hambantota" <?php echo ($data['bizDistrict'] == 'Hambantota') ? 'selected' : ''; ?>>Hambantota</option>
+      </optgroup>
+      <optgroup label="Northern Province">
+        <option value="Jaffna" <?php echo ($data['bizDistrict'] == 'Jaffna') ? 'selected' : ''; ?>>Jaffna</option>
+        <option value="Kilinochchi" <?php echo ($data['bizDistrict'] == 'Kilinochchi') ? 'selected' : ''; ?>>Kilinochchi</option>
+        <option value="Mannar" <?php echo ($data['bizDistrict'] == 'Mannar') ? 'selected' : ''; ?>>Mannar</option>
+        <option value="Vavuniya" <?php echo ($data['bizDistrict'] == 'Vavuniya') ? 'selected' : ''; ?>>Vavuniya</option>
+        <option value="Mullaitivu" <?php echo ($data['bizDistrict'] == 'Mullaitivu') ? 'selected' : ''; ?>>Mullaitivu</option>
+      </optgroup>
+      <optgroup label="Eastern Province">
+        <option value="Batticaloa" <?php echo ($data['bizDistrict'] == 'Batticaloa') ? 'selected' : ''; ?>>Batticaloa</option>
+        <option value="Ampara" <?php echo ($data['bizDistrict'] == 'Ampara') ? 'selected' : ''; ?>>Ampara</option>
+        <option value="Trincomalee" <?php echo ($data['bizDistrict'] == 'Trincomalee') ? 'selected' : ''; ?>>Trincomalee</option>
+      </optgroup>
+      <optgroup label="North Western Province">
+        <option value="Kurunegala" <?php echo ($data['bizDistrict'] == 'Kurunegala') ? 'selected' : ''; ?>>Kurunegala</option>
+        <option value="Puttalam" <?php echo ($data['bizDistrict'] == 'Puttalam') ? 'selected' : ''; ?>>Puttalam</option>
+      </optgroup>
+      <optgroup label="North Central Province">
+        <option value="Anuradhapura" <?php echo ($data['bizDistrict'] == 'Anuradhapura') ? 'selected' : ''; ?>>Anuradhapura</option>
+        <option value="Polonnaruwa" <?php echo ($data['bizDistrict'] == 'Polonnaruwa') ? 'selected' : ''; ?>>Polonnaruwa</option>
+      </optgroup>
+      <optgroup label="Uva Province">
+        <option value="Badulla" <?php echo ($data['bizDistrict'] == 'Badulla') ? 'selected' : ''; ?>>Badulla</option>
+        <option value="Moneragala" <?php echo ($data['bizDistrict'] == 'Moneragala') ? 'selected' : ''; ?>>Moneragala</option>
+      </optgroup>
+      <optgroup label="Sabaragamuwa Province">
+        <option value="Ratnapura" <?php echo ($data['bizDistrict'] == 'Ratnapura') ? 'selected' : ''; ?>>Ratnapura</option>
+        <option value="Kegalle" <?php echo ($data['bizDistrict'] == 'Kegalle') ? 'selected' : ''; ?>>Kegalle</option>
+      </optgroup>
     </select>
 
     <label class="form__label" for="description">Business Description</label>

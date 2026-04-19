@@ -4,17 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedStartDate = null;
     let selectedEndDate = null;
     let isSelectingRange = false;
-    
+    // Reference 'today' (midnight) used to disable past dates selection
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     // Use the data passed from PHP
     let availabilityData = [];
-    document.addEventListener('DOMContentLoaded', function() {
     availabilityData = window.serverAvailabilityData || [];
     if (!Array.isArray(availabilityData)) {
         console.error('Invalid availability data format');
         availabilityData = [];
     }
-    initCalendar();
-});
     // DOM Elements
     const calendarGrid = document.getElementById('calendar-grid');
     const monthDisplay = document.querySelector('.cal__month');
@@ -88,9 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Add days of the month
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(year, month, day);
             const dateString = formatDate(date);
@@ -100,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dayElement.textContent = day;
             dayElement.setAttribute('data-date', dateString);
 
-            // Check if today
-            if (date.toDateString() === today.toDateString()) {
+            // Mark today
+            if (date.getTime() === today.getTime()) {
                 dayElement.classList.add('cal__day--today');
             }
 
@@ -112,15 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Check availability status from server data
             const status = getDateStatus(date);
-            
             if (status) {
                 dayElement.classList.add(`cal__day--${status}`);
-                // Add tooltip with status
                 dayElement.title = `Marked as ${status}`;
             }
 
-            // Add click event
-            dayElement.addEventListener('click', () => handleDateClick(date));
+            // Disable past dates (strictly before today)
+            if (date.getTime() < today.getTime()) {
+                dayElement.classList.add('cal__day--past');
+                dayElement.title = 'Cannot select a past date';
+            } else {
+                // Only attach click handler for today and future dates
+                dayElement.addEventListener('click', () => handleDateClick(date));
+            }
 
             calendarGrid.appendChild(dayElement);
         }
@@ -128,6 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle date click
     function handleDateClick(date) {
+        // Prevent selecting past dates
+        if (date.getTime() < today.getTime()) return;
         const dateString = formatDate(date);
         
         if (!selectedStartDate) {
@@ -550,10 +553,11 @@ function commentSecton(){
     // Initialize media carousels
     initMediaCarousel();
 
-    
+    // Initialize background slideshow
+    initBackgroundSlideshow();
 });
 
-// Comment section toggle
+// Comment section DOM elements (outside DOMContentLoaded)
 const commentsPanel = document.getElementById('comments-panel');
 const commentsOverlay = document.getElementById('comments-overlay');
 const closeCommentsBtn = document.getElementById('close-comments');
@@ -688,4 +692,39 @@ function formatTimeAgo(timestamp) {
   if (seconds < 3600) return `${Math.floor(seconds/60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds/3600)}h ago`;
   return `${Math.floor(seconds/86400)}d ago`;
+}
+
+// Background slideshow functionality
+function initBackgroundSlideshow() {
+    const slideshow = document.getElementById('background-slideshow');
+    if (!slideshow) {
+        console.log('background-slideshow element not found');
+        return;
+    }
+
+    const images = slideshow.querySelectorAll('.sp-cover__img');
+    console.log('Images found:', images.length);
+    
+    if (images.length <= 1) {
+        console.log('Only 1 or 0 images, slideshow not needed');
+        return;
+    }
+
+    let currentIndex = 0;
+
+    function showNextImage() {
+        // Remove active class from current image
+        images[currentIndex].classList.remove('active');
+
+        // Move to next image
+        currentIndex = (currentIndex + 1) % images.length;
+
+        // Add active class to new image
+        images[currentIndex].classList.add('active');
+        console.log('Showing image:', currentIndex);
+    }
+
+    // Start slideshow - change image every 4.5 seconds
+    setInterval(showNextImage, 4500);
+    console.log('Slideshow started with', images.length, 'images');
 }

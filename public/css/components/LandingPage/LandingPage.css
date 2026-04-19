@@ -1920,7 +1920,6 @@
   position: absolute;
   left: 50%;
   translate: -50%;
-  top: 0px;
 }
 .background {
   background: #000000;
@@ -2117,6 +2116,7 @@
     cursor: pointer;
     border: none;
     background: none;
+    all: unset;
 }
 
 .classic_button:focus {
@@ -2144,8 +2144,8 @@
   width: 213px;
   height: 50px;
   position: absolute;
-  left: 140px;
-  top: 20px;
+  left: 42px;
+  top: 11px;
   object-fit: cover;
   aspect-ratio: 213/50;
 }

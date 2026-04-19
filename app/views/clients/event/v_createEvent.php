@@ -1,6 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar2.php'; ?>
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link accesskey="" rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/createEvent.css">
 
 <div class="main-container">
@@ -187,52 +186,7 @@
                 </div>
             </div>
             
-            <!-- Right Sidebar -->
-            <div class="right-sidebar">
-                <div class="sidebar-card">
-                    <div class="sidebar-image" style="background-image: url('<?php echo URLROOT; ?>/public/img/events/createevent.jpg');">
-                        EvoPlan
-                    </div>
-                    <h3 class="sidebar-title">Plan Your Dream Event</h3>
-                    <p class="sidebar-text">Every great event begins with a vision. Tell us about yours, and we'll connect you with the best providers to make it happen flawlessly.</p>
-                    <ul class="sidebar-list">
-                        <li><p>Connect with vetted service providers in your area</p></li>
-                        <li><p>Compare packages and pricing in real-time</p></li>
-                        <li><p>Manage all event details in one centralized platform</p></li>
-                        <li><p>Get instant booking confirmations</p></li>
-                    </ul>
-                </div>
-                
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">Event Summary</h3>
-                    <div class="event-summary">
-                        <div class="summary-item">
-                            <span class="summary-label">Event Name:</span>
-                            <span class="summary-value" id="summary-eventName">Not set</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Event Type:</span>
-                            <span class="summary-value" id="summary-eventType">Not set</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Date:</span>
-                            <span class="summary-value" id="summary-date">Not set</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Guests:</span>
-                            <span class="summary-value" id="summary-guests">Not set</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Location:</span>
-                            <span class="summary-value" id="summary-location">Not set</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Services Needed:</span>
-                            <span class="summary-value" id="summary-services">None selected</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </main>
 </div>

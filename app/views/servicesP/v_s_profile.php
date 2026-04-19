@@ -1,18 +1,43 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar4.php'; ?>
+<?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
+<!-- <?php //require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?> -->
+
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_profile.css">
-
-
+<style>
+  .sp-page{
+  margin-left: 240px;
+  max-width: 2200px;
+  }
+</style>
 <main class="sp-page" aria-label="Service provider profile">
   <!-- HERO (cover) -->
   <header class="sp-hero">
     <div class="sp-cover">
-
-      <img class="sp-cover__img" src="<?php echo URLROOT;?>/public/img/coverPhotos/<?php echo $data['profile']->background_image; ?>" alt="">
+      <?php
+        // Collect all available background images
+        $backgroundImages = [];
+        if (!empty($data['profile']->background_image)) {
+            $backgroundImages[] = $data['profile']->background_image;
+        }
+        if (!empty($data['profile']->background_img_2)) {
+            $backgroundImages[] = $data['profile']->background_img_2;
+        }
+        if (!empty($data['profile']->background_img_3)) {
+            $backgroundImages[] = $data['profile']->background_img_3;
+        }
+        if (!empty($data['profile']->background_img_4)) {
+            $backgroundImages[] = $data['profile']->background_img_4;
+        }
+      ?>
+      <div class="background-slideshow" id="background-slideshow">
+        <?php foreach($backgroundImages as $index => $image): ?>
+          <img class="sp-cover__img <?php echo $index === 0 ? 'active' : ''; ?>"
+               src="<?php echo URLROOT;?>/public/img/coverPhotos/<?php echo $image; ?>"
+               alt="Background <?php echo $index + 1; ?>">
+        <?php endforeach; ?>
+      </div>
       <div class="sp-hero__content">
-        <h1 class="sp-studio"><br><?php echo $data['profile']->background_text; ?></h1>
-        
+
       </div>
     </div>
 
@@ -72,9 +97,6 @@
         <div class="reviews__score">
           Average Rating
           <div class="score__big"><?php echo $data['rating']->average_rating; ?></div>
-          <!-- <div class="score__stars" aria-label="4 out of 5 stars">
-            <span class="star star--on">★</span><span class="star star--on">★</span><span class="star star--on">★</span><span class="star star--on">★</span><span class="star">★</span>
-          </div> -->
           <div class="score__count"><?php echo $data['rating']->total_reviews; ?> reviews</div>
         </div>
       </div>
@@ -107,26 +129,20 @@
                         </div>
                         
                         <div class="legend">
-                            <div class="legend-item">
-                                <div class="legend-color legend-available"></div>
-                                <span>Available</span>
-                            </div>
+                           
                             <div class="legend-item">
                                 <div class="legend-color legend-booked"></div>
                                 <span>Booked</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-color legend-unavailable"></div>
-                                <span>Unavailable</span>
+                                <span>Available</span>
                             </div>
                             <div class="legend-item">
                                 <div class="legend-color legend-today"></div>
                                 <span>Today</span>
                             </div>
-                            <div class="legend-item">
-                                <div class="legend-color legend-range"></div>
-                                <span>Selected Range</span>
-                            </div>
+                           
 
 
                         </div>
@@ -138,7 +154,8 @@
 
     <!-- UPLOAD SHORTCUTS -->
     <section class="uploader">
-      <a href="<?php echo URLROOT; ?>/Posts/UploadEvent" class="chip chip--line"> upload Event</a>
+      
+      <a href="<?php echo URLROOT; ?>/Posts/UploadEvent" class="chip chip--line"><i class="fa-solid fa-arrow-up-from-bracket"></i>ADD MEMORY</a>
      
     </section>
 
@@ -201,15 +218,11 @@
       <?php if(count($mediaArray) > 1): ?>
           <!-- Left / Right nav -->
           <button class="media__nav media__nav--left" aria-label="Previous media">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-            </svg>
+           <i class="fa-solid fa-chevron-left"></i>
           </button>
 
           <button class="media__nav media__nav--right" aria-label="Next media">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-            </svg>
+            <i class="fa-solid fa-chevron-right"></i>
           </button>
         <?php endif; ?>
 

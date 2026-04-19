@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/evoplan/public/css/components/Admin/form.css">
 
   <div class="form-container-login">
-      <form action="<?php echo URLROOT; ?>/Admin/coordinator_login" method="POST">
+      <form action="<?php echo URLROOT; ?>/IssueC/coordinator_login" method="POST">
 
         <div class="form-img-container">
         <img class="form-topic" src="../public/img/choose_register/EvoPlan_Logo_new-removebg-preview 2.svg"/>

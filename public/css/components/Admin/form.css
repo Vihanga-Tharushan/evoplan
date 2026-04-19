@@ -8,10 +8,10 @@
   margin-right: auto;
   margin-top: 10px;
   padding: 20px;
-  background-color: #fffbfb;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f7f8fc;
+  box-shadow: 0 4px 8px rgba(75, 0, 110, 0.1);
   width: 500px;
-  border: 1px solid #7848f4;
+  border: 1px solid #6F1A8C;
   border-radius: 10px;
 }
 
@@ -20,10 +20,10 @@
   margin-right: auto;
   margin-top: 80px;
   padding: 20px;
-  background-color: #fffbfb;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f7f8fc;
+  box-shadow: 0 4px 8px rgba(75, 0, 110, 0.1);
   width: 500px;
-  border: 1px solid #7848f4;
+  border: 1px solid #6F1A8C;
   border-radius: 10px;
 }
 
@@ -46,11 +46,11 @@
   margin-left: auto;
   margin-right: auto;
 }
-.form-topic{
+.form-topic {
   font-family: "Inter", sans-serif;
   font-size: 30px;
   font-weight: 600;
-  color: #000000;
+  color: #111827;
   text-align: left;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -59,14 +59,14 @@
   font-family: "Inter", sans-serif;
   font-size: 36px;
   font-weight: 600;
-  color: #5e34c9;
+  color: #4B006E;
   text-align: center;
   padding-top: 25px;
   padding-bottom: 25px;
 }
 
-input[type=text], input[type=password], input[type=email] {
-  border: 1px solid #7848f4;
+input[type=text], input[type=password], input[type=email],input[type=date] {
+  border: 2px solid #6F1A8C;
   border-radius: 30px;
   width: 90%;
   height: 24px;
@@ -79,11 +79,17 @@ input[type=text], input[type=password], input[type=email] {
   font-family: "Inter", sans-serif;
   outline: none;
   display: block;
+  transition: all 0.3s ease;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=date]:focus {
+  border-color: #4B006E;
+  background-color: rgba(75, 0, 110, 0.02);
 } 
 
 .form-btn {
-  background: #7848f4;
-  color: #fffbfb;
+  background: linear-gradient(135deg, #4B006E 0%, #6F1A8C 100%);
+  color: #ffffff;
   font-family: "Inter", sans-serif;
   font-size: 20px;
   font-weight: 500;
@@ -94,28 +100,31 @@ input[type=text], input[type=password], input[type=email] {
   border: none;
   cursor: pointer;
   align-self: right;
-  transition: .2s all;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.2);
 }
 .form-btn:hover {
-  background: #311675; 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(75, 0, 110, 0.3);
 }
 .form-cn-btn {
-  background: #fffbfb;
-  color: #7848f4;
+  background: #f7f8fc;
+  color: #4B006E;
   font-family: "Inter", sans-serif;
   font-size: 20px;
   font-weight: 500;
   height: 40px;
   width: 100%;
   border-radius: 30px;
-  border: #7848f4 1px solid;
+  border: 2px solid #6F1A8C;
   cursor: pointer;
   align-self: right;
-  transition: .2s all;
+  transition: all 0.3s ease;
 }
 .form-cn-btn:hover {
-  background: #311675; 
-  color: #fffbfb;
+  background: #4B006E; 
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 .form-invalid {
   color: red;
@@ -128,4 +137,54 @@ input[type=text], input[type=password], input[type=email] {
   margin-top: -15px;
   margin-bottom: 10px;
   display: block;
+}
+
+/* File Input Styles */
+input[type=file] {
+  display: none !important;
+}
+
+.file__label {
+  display: inline-block !important;
+  padding: 10px 15px !important;
+  background: linear-gradient(135deg, #4B006E 0%, #6F1A8C 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 30px !important;
+  cursor: pointer !important;
+  margin-bottom: 10px !important;
+  font-weight: 500 !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.2) !important;
+}
+
+.file__label:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(75, 0, 110, 0.3) !important;
+}
+
+.file__hint {
+  color: #6F1A8C;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  margin: 5px 0 15px 0;
+  display: block;
+}
+
+.form-preview-container {
+  text-align: center;
+  margin-top: 20px !important;
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  border: 2px dashed #6F1A8C;
+}
+
+.form-preview-img {
+  max-width: 300px !important;
+  max-height: 300px !important;
+  border-radius: 8px !important;
+  object-fit: cover !important;
 }

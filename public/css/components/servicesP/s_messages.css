@@ -5,7 +5,7 @@
   --shadow: 0 12px 30px rgba(0,0,0,.06);
   --muted: #6b7280;
   --text: #0f172a;
-  --primary: #6d28d9;
+  --primary: #4B006E;     /* Dark purple */
   --accent: #7c3aed;
   --bubble-in: #e9eaec;
   --bubble-out: #8a7cfb;
@@ -14,15 +14,17 @@
   --panel-h: 660px;
 }
 
+
 /* Layout */
 .chat-shell{
 
-  margin-left: 250px;
+  margin-left: 270px;
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
   min-height: 100vh;
   padding: 10px;
   position:fixed;
+  
 }
 
 .chat-top{
@@ -48,13 +50,14 @@
   grid-template-columns: var(--sidebar-w) 1fr;
   gap: 50px;
   max-width: 2120px;
-  margin-top: 70px;
+  margin-top: 40px;
+  margin-left: -10px;
 
 }
 
 /* Sidebar */
 .threads{
-  width: 420px;
+  width: 397px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -65,7 +68,7 @@
   display: grid;
   grid-template-rows: auto 1.2fr;
   gap: 20px;
-  padding-right: 10px;
+ 
 }
 .thread-list{
   list-style: none; margin: 0; padding: 0;
@@ -139,7 +142,8 @@
   grid-template-rows: 1fr auto;
   height: var(--panel-h);
   overflow: hidden;
-  width: 1000px;
+  flex: 1;
+  min-width: 800px;
   margin-left: 50px;
 }
 
@@ -244,12 +248,13 @@
   border-top: 1px solid var(--border);
   background: #fff;
   padding: 10px 12px;
+  overflow: visible;
 }
 .field{
   border: 1px solid var(--border);
   border-radius: 999px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 6px;
   padding: 6px 8px 6px 14px;

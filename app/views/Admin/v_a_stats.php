@@ -1,221 +1,338 @@
+<?php require_once APPROOT . '/views/Admin/Sidebar/v_a_sidebar.php'; ?>
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-    <link rel="stylesheet" href="../public/css/components/Admin/style(Admin_Stats).css">
 
-    <div class="dashboard-stats">
+<link rel="stylesheet" href="../public/css/components/Admin/style(Admin_Stats).css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="dashboard">
-      <div class="dashboard-frame">
+<div class="dashboard-stats">
+  <div class="stats-header">
+    <h1>Dashboard Overview</h1>
+  </div>
 
-        <div class="select">
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Stats.svg"/>
-            Stats
-          </div>
-        </div>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Payments'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Payments.svg" />
-            Payments
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Applications'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Applications.svg" />
-            Applications
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Complains'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Complains.svg" />
-            Complains
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Profiles'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Profiles.svg" />
-              Profiles
-            </div>
-        </button>
-          
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Events'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Events.svg" />
-              Events
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Feedbacks'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Feedbacks.svg"/>
-              Feedbacks
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Admins'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Admins.svg"/>
-              Admins &amp; <br /> Coordinators
-            </div>
-        </button>
-
+  <!-- Top Stats Cards -->
+  <div class="stats-cards-container">
+    <div class="stat-card">
+      <div class="stat-icon income-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Total Income</div>
+        <div class="stat-value">$45,230</div>
+        <div class="stat-change positive">↑ 12.5% from last month</div>
       </div>
     </div>
-
-
-    <div class="row">
-      <div class="rows">
-        <div class="widget">
-          <div class="heading">
-            <div class="growth">Income Overview</div>
-          </div>
-          <div class="chart">
-            <img src="../public/img/Admin/Stats/Graph1.svg" />
-          </div>
-        </div>
-        
+    <div class="stat-card">
+      <div class="stat-icon users-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value">1,240</div>
+        <div class="stat-change positive">↑ 8.2% from last month</div>
       </div>
     </div>
-
-    <div class="row3">
-      <div class="rows">
-        <div class="widget">
-          <div class="heading">
-            <div class="growth">User Growth Summery</div>
-          </div>
-          <div class="chart">
-            <img src="../public/img/Admin/Stats/Graph2.svg" />
-          </div>
-        </div>
-        
+    <div class="stat-card">
+      <div class="stat-icon events-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-label">Active Events</div>
+        <div class="stat-value">156</div>
+        <div class="stat-change positive">↑ 5.1% from last month</div>
       </div>
     </div>
-
-    <!-- <div class="row3">
-
-      <div class="frame-12">
-          <div class="widget2">
-            <div class="top-month">Top month</div>
-            <div class="frame-26">
-              <div class="november">September</div>
-              <div class="_20192">2023</div>
-            </div>
-          </div>
-          <div class="widget3">
-            <div class="top-year">Top year</div>
-            <div class="frame-262">
-              <div class="_20232">2023</div>
-              <div class="_96-k-sold-so-far">96K</div>
-            </div>
-          </div>
-          <div class="widget3">
-            <div class="top-service-provider">Top Service Provider</div>
-            <div class="frame-263">
-              <div class="avatar">
-                <img class="rectangle-1" src="../public/img/Admin/Stats/rectangle-10.png" />
-              </div>
-              <div class="frame-9">
-                <div class="maggie-johnson">Sachini Tharuka</div>
-              </div>
-            </div>
-          </div>
-          <div class="widget3">
-            <div class="top-client">Top Client</div>
-            <div class="frame-263">
-              <div class="avatar">
-                <img class="rectangle-1" src="../public/img/Admin/Stats/rectangle-11.png" />
-              </div>
-              <div class="frame-9">
-                <div class="maggie-johnson">Hasarangi de Silva</div>
-                <div class="oasis-organic-inc">Photographer</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-    </div> -->
-
-    <!-- <div class="rows2">
-      <div class="widget">
-        <div class="heading">
-          <div class="earnings">Users Growth Summery</div>
-        </div>
-        <div class="chart">
-          <img src="../public/img/Admin/Stats/Graph2.svg" />
-        </div>
+    <div class="stat-card">
+      <div class="stat-icon services-icon">
+        <i class="fas fa-handshake"></i>
       </div>
-    </div> -->
-
-    <div class="aged-pie-chart">
-      <!-- <div class="year">Year</div>
-      <div class="frame-48096276">
-        <div class="text"></div>
-        <img class="arrow-drop-up" src="../public/img/Admin/Stats/arrow-drop-up0.svg" />
-        <div class="_20233">2023</div>
+      <div class="stat-content">
+        <div class="stat-label">Service Providers</div>
+        <div class="stat-value">84</div>
+        <div class="stat-change positive">↑ 3.7% from last month</div>
       </div>
-      <div class="month">Month</div>
-      <div class="frame-480962762">
-        <div class="january">January</div>
-        <img class="arrow-drop-up2" src="../public/img/Admin/Stats/arrow-drop-up1.svg" />
-      </div> -->
-      <div class="title2">Clients based on Age Groups</div>
-      <img class="ellipse-8" src="../public/img/Admin/Stats/Chart1.png" />
-      <div class="key">
-        <div class="_502">50+</div>
-        <div class="_8">8%</div>
-        <div class="ellipse-61"></div>
-        <div class="_36-502">36 - 50</div>
-        <div class="_22">22%</div>
-        <div class="ellipse-612"></div>
-        <div class="_26-352">26 - 35</div>
-        <div class="_38">38%</div>
-        <div class="ellipse-613"></div>
-        <div class="_18-252">18 - 25</div>
-        <div class="_32">32%</div>
-        <div class="ellipse-614"></div>
-      </div>
-    </div>
-
-    <div class="gender-pie-chart">
-      <!-- <div class="year2">Year</div>
-      <div class="frame-480962763">
-        <div class="_20233">2023</div>
-        <img class="arrow-drop-up3" src="../public/img/Admin/Stats/arrow-drop-up2.svg" />
-      </div>
-      <div class="month2">Month</div>
-      <div class="frame-480962764">
-        <div class="january2">January</div>
-        <img class="arrow-drop-up4" src="../public/img/Admin/Stats/arrow-drop-up3.svg" />
-      </div> -->
-      <div class="title3">Clients based on Gender</div>
-      <img class="ellipse-7" src="../public/img/Admin/Stats/Chart2.png" />
-      <div class="key2">
-        <div class="others">Others</div>
-        <div class="_3">3%</div>
-        <div class="ellipse-615"></div>
-        <div class="male">Male</div>
-        <div class="_40">40%</div>
-        <div class="ellipse-616"></div>
-        <div class="female">Female</div>
-        <div class="_57">57%</div>
-        <div class="ellipse-617"></div>
-      </div>
-    </div>
-    
-    <div class="clients-stats">Clients Stats</div>
-
-    <div class="frame-31">
-      
-      <button class="logout-btn" onclick="window.location.href='<?php echo URLROOT ?>/Admin/main_page'">Log Out</button>
-
-      <button class=btn_to_mainPage > 
-        <img class="evo-plan-logo-new-removebg-preview-2" src="../public/img/Admin/Stats/evo-plan-logo-new-removebg-preview-20.png" />
-      </button>
-
     </div>
   </div>
+
+  <!-- Charts Row 1 -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>Income Overview (12 Months)</h2>
+        <div class="year-selector-container-inline">
+          <label for="incomeYearDropdown">Year:</label>
+          <select id="incomeYearDropdown" class="year-dropdown-inline">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="incomeChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>User Growth Summary</h2>
+        <div class="year-selector-container-inline">
+          <label for="userGrowthYearDropdown">Year:</label>
+          <select id="userGrowthYearDropdown" class="year-dropdown-inline">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="userGrowthChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>Clients by Age Groups</h2>
+      </div>
+      <div class="chart-wrapper pie-wrapper">
+        <canvas id="ageChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h2>Clients by Gender</h2>
+      </div>
+      <div class="chart-wrapper pie-wrapper">
+        <canvas id="genderChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Chart.js default options
+  Chart.defaults.font.family = "'Inter', 'Segoe UI', sans-serif";
+  Chart.defaults.color = '#7d7d7d';
+
+  // Chart instances
+  let incomeChart = null;
+  let userGrowthChart = null;
+
+  // Income Chart function
+  function createIncomeChart(year = '2026') {
+    const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+    
+    const incomeDataByYear = {
+      '2026': [3200, 3800, 3500, 4200, 4800, 5200, 4900, 5400, 5800, 6200, 6800, 7200],
+      '2025': [2800, 3200, 3100, 3800, 4200, 4600, 4300, 4900, 5200, 5600, 6100, 6500],
+      '2024': [2400, 2800, 2700, 3300, 3700, 4100, 3800, 4400, 4700, 5100, 5500, 5800],
+      '2023': [2000, 2400, 2300, 2900, 3200, 3600, 3300, 3900, 4200, 4600, 5000, 5400],
+      '2022': [1600, 2000, 1900, 2500, 2800, 3200, 2900, 3500, 3800, 4200, 4600, 5000]
+    };
+
+    if (incomeChart) {
+      incomeChart.destroy();
+    }
+    
+    incomeChart = new Chart(incomeCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Monthly Income',
+          data: incomeDataByYear[year],
+          backgroundColor: 'rgba(16, 185, 129, 0.8)',
+          borderColor: 'rgba(16, 185, 129, 1)',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              padding: 20,
+              font: { size: 13, weight: 'bold' }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // User Growth Chart function
+  function createUserGrowthChart(year = '2026') {
+    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+    
+    const userDataByYear = {
+      '2026': [65, 78, 90, 85, 95, 110, 105, 120, 135, 145, 155, 165],
+      '2025': [55, 68, 78, 75, 82, 95, 92, 105, 118, 128, 138, 150],
+      '2024': [45, 58, 68, 65, 72, 85, 82, 95, 108, 118, 128, 140],
+      '2023': [35, 48, 58, 55, 62, 75, 72, 85, 98, 108, 118, 130],
+      '2022': [25, 38, 48, 45, 52, 65, 62, 75, 88, 98, 108, 120]
+    };
+
+    if (userGrowthChart) {
+      userGrowthChart.destroy();
+    }
+    
+    userGrowthChart = new Chart(userGrowthCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'New Users',
+          data: userDataByYear[year],
+          backgroundColor: 'rgba(75, 0, 110, 0.8)',
+          borderColor: 'rgba(75, 0, 110, 1)',
+          borderWidth: 1,
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              padding: 20,
+              font: { size: 13, weight: 'bold' }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Age Distribution Pie Chart
+  const ageCtx = document.getElementById('ageChart').getContext('2d');
+  new Chart(ageCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['18-25', '26-35', '36-50', '50+'],
+      datasets: [{
+        data: [32, 38, 22, 8],
+        backgroundColor: [
+          'rgba(16, 185, 129, 0.8)',
+          'rgba(59, 130, 246, 0.8)',
+          'rgba(245, 158, 11, 0.8)',
+          'rgba(156, 163, 175, 0.8)'
+        ],
+        borderColor: '#fff',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            font: { size: 12, weight: '500' }
+          }
+        }
+      }
+    }
+  });
+
+  // Gender Distribution Pie Chart
+  const genderCtx = document.getElementById('genderChart').getContext('2d');
+  new Chart(genderCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Female', 'Male', 'Others'],
+      datasets: [{
+        data: [57, 40, 3],
+        backgroundColor: [
+          'rgba(239, 68, 68, 0.8)',
+          'rgba(16, 185, 129, 0.8)',
+          'rgba(156, 163, 175, 0.8)'
+        ],
+        borderColor: '#fff',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            font: { size: 12, weight: '500' }
+          }
+        }
+      }
+    }
+  });
+
+  // Year dropdown event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    const incomeYearDropdown = document.getElementById('incomeYearDropdown');
+    const userGrowthYearDropdown = document.getElementById('userGrowthYearDropdown');
+    
+    // Initialize charts
+    createIncomeChart('2026');
+    createUserGrowthChart('2026');
+    
+    // Income chart year change listener
+    incomeYearDropdown.addEventListener('change', function(e) {
+      const selectedYear = e.target.value;
+      createIncomeChart(selectedYear);
+    });
+    
+    // User growth chart year change listener
+    userGrowthYearDropdown.addEventListener('change', function(e) {
+      const selectedYear = e.target.value;
+      createUserGrowthChart(selectedYear);
+    });
+  });
+</script>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
