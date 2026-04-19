@@ -50,13 +50,14 @@
   grid-template-columns: var(--sidebar-w) 1fr;
   gap: 50px;
   max-width: 2120px;
-  margin-top: 70px;
+  margin-top: 40px;
+  margin-left: -10px;
 
 }
 
 /* Sidebar */
 .threads{
-  width: 420px;
+  width: 397px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -67,7 +68,7 @@
   display: grid;
   grid-template-rows: auto 1.2fr;
   gap: 20px;
-  padding-right: 10px;
+ 
 }
 .thread-list{
   list-style: none; margin: 0; padding: 0;
@@ -141,7 +142,8 @@
   grid-template-rows: 1fr auto;
   height: var(--panel-h);
   overflow: hidden;
-  width: 1000px;
+  flex: 1;
+  min-width: 800px;
   margin-left: 50px;
 }
 
@@ -246,12 +248,13 @@
   border-top: 1px solid var(--border);
   background: #fff;
   padding: 10px 12px;
+  overflow: visible;
 }
 .field{
   border: 1px solid var(--border);
   border-radius: 999px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 6px;
   padding: 6px 8px 6px 14px;

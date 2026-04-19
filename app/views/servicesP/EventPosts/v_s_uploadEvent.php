@@ -1,5 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php'; ?>
+<?php $backUrl =  URLROOT . '/Service/profile'; 
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/EventPosts/s_uploadEvent.css">
 <div class="container">
         <div class="header">

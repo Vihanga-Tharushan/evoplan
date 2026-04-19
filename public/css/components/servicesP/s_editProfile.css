@@ -35,7 +35,7 @@ body {
     font-size: 32px;
     font-weight: 700;
     color: #1f2937;
-    background: linear-gradient(135deg, #7848f4 0%, #8a5bf7 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -74,7 +74,7 @@ body {
 }
 
 .edit-link {
-    color: #7848f4;
+    color: var(--primary);
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -85,7 +85,7 @@ body {
 }
 
 .edit-link:hover {
-    color: #6336d9;
+    color: var(--primary-dark);
     background: rgba(120, 72, 244, 0.15);
     text-decoration: none;
 }
@@ -109,7 +109,7 @@ body {
 }
 
 .profile-pic:hover, .avatar:hover {
-    border-color: #7848f4;
+    border-color:var(--secondary);
     transform: scale(1.08) rotate(2deg);
     box-shadow: 0 6px 16px rgba(120, 72, 244, 0.25);
 }
@@ -160,14 +160,14 @@ body {
 }
 
 .preview-container:hover .cover-photo {
-    border-color: #7848f4;
+    border-color: var(--secondary);
     transform: scale(1.02);
     box-shadow: 0 8px 20px rgba(120, 72, 244, 0.25);
     
 }
 
 .change-text {
-    color: #7848f4;
+    color: var(--primary);
     font-weight: 700;
     font-size: 18px;
     text-align: center;
@@ -208,7 +208,7 @@ body {
 
 .input-field:focus {
     outline: none;
-    border-color: #7848f4;
+    border-color:var(--secondary);
     box-shadow: 0 0 0 4px rgba(120, 72, 244, 0.15);
 }
 
@@ -222,7 +222,7 @@ body {
 }
 
 .upload-btn {
-    background: linear-gradient(135deg, #7848f4 0%, #8a5bf7 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: white;
     border: none;
     padding: 12px 28px;
@@ -257,7 +257,7 @@ body {
 }
 
 .save-btn {
-    background: linear-gradient(135deg, #7848f4 0%, #8a5bf7 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: white;
     border: none;
     box-shadow: 0 6px 20px rgba(120, 72, 244, 0.4);
@@ -330,7 +330,7 @@ body {
 }
 
 .image-upload-slot:hover {
-    border-color: #7848f4;
+    border-color: var(--secondary);
     background: rgba(120, 72, 244, 0.05);
     transform: scale(1.02);
 }
@@ -362,7 +362,7 @@ body {
 }
 
 .image-preview:hover {
-    border-color: #7848f4;
+    border-color: var(--secondary);
     transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(120, 72, 244, 0.2);
 }

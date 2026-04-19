@@ -3,9 +3,99 @@
   class Admin extends Controller {
 
     private $adminModel;
+    private $ratingsModel;
+    private $eventViewModel;
   
     public function __construct(){
       $this->adminModel = $this->model('M_admin');
+      $this->ratingsModel = $this->model('M_ratings');
+      $this->eventViewModel = $this->model('M_eventView');
+    }
+
+    public function stats(){
+      $this->view('Admin/v_a_stats');
+    }
+
+    public function payments(){
+      $this->view('Admin/v_a_payments');
+    }
+
+    public function applications(){
+      $this->view('Admin/v_a_applications');
+    }
+
+    public function complaints(){
+      $this->view('Admin/v_a_complaints');
+    }
+
+    // Profiles management
+
+    public function profiles(){
+      // Get all clients and service providers data from database
+      $data = [
+        'clients' => $this->adminModel->getClients(),
+        'serviceProviders' => $this->adminModel->getServiceProviders()
+      ];
+      $this->view('Admin/v_a_profiles', $data);
+    }
+
+    public function delete_profile($user_id, $type = 'client'){
+      if($this->adminModel->deleteProfile($user_id, $type)){
+        flash('admin_message', 'Profile Deleted Successfully');
+        redirect('Admin/profiles');
+      } else {
+        die('Something went wrong');
+      }
+    }
+
+    // Events management
+
+    public function events(){
+      $data = [
+        'events' => $this->eventViewModel->getEventsFullView()
+      ];
+      $this->view('Admin/v_a_events', $data);
+    }
+
+    public function getEventsData(){
+      if($_SERVER['REQUEST_METHOD'] == 'GET'){
+        header('Content-Type: application/json');
+        $events = $this->eventViewModel->getEventsFullView();
+        echo json_encode($events);
+        exit;
+      }
+    }
+
+    // Feedbacks and Reviews management
+
+    public function feedbacks(){
+      // Get all feedbacks and reviews from database
+      $data = [
+        'feedbacks' => $this->ratingsModel->getAllRatingsToAdmin()
+      ];
+
+      $this->view('Admin/v_a_feedbacks', $data);
+    }
+
+    public function delete_feedback($rating_id){
+      if($this->ratingsModel->deleteRating($rating_id)){
+        flash('admin_message', 'Feedback Deleted Successfully');
+        redirect('Admin/feedbacks');
+      } else {
+        die('Something went wrong');
+      }
+    }
+
+    // Admins and Issue Coordinators management
+
+    public function admins(){
+      // Get all admins and coordinators data from database
+      $data = [
+        'admins' => $this->adminModel->getAdmins(),
+        'coordinators' => $this->adminModel->getCoordinators()
+      ];
+      
+      $this->view('Admin/v_a_admins', $data);
     }
 
     public function admin_login(){
@@ -492,13 +582,13 @@
         if(empty($data['ic_email_err']) && empty($data['ic_password_err'])) {
           // Log the admin
           // $loggedInAdmin = $this->adminModel->adminLogin($data['a_email'], $data['a_password']);
-          $loggedInAdmin = $this->adminModel->CoordinatorLogin($data['ic_email'], $data['ic_password']);
+          $loggedInAdmin = $this->adminModel->adminLogin($data['ic_email'], $data['ic_password']);
 
           if ($loggedInAdmin) {
             ////////////////////////////////////////////
             /////////// Create Session /////////////////
             ////////////////////////////////////////////
-            $this->view('issue/v_dashboard');
+            die ('Login Successfull');
           } else {
             $data['ic_password_err'] = 'Password is incorrect';
             $this->view('issue/v_ic_login', $data);
@@ -525,50 +615,185 @@
 
     }
 
+    // Feature page controller methods
 
-    //View functions
-    public function stats(){
-      $this->view('Admin/v_a_stats');
+    public function features(){
+      // Get all landing page photos from database
+      $data = [
+        'photos' => $this->adminModel->getLandingPagePhotos()
+      ];
+
+      $this->view('Admin/v_a_features', $data);
     }
 
-    public function payments(){
-      $this->view('Admin/v_a_payments');
+    public function Add_photo(){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // Form Submitting
+        // Validation
+        //$POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        // Input data
+        $data = [
+                  'event_name' => trim($_POST['event_name']),
+                  'event_date' => trim($_POST['event_date']),
+                  'event_photo' => isset($_FILES['event_photo']) ? $_FILES['event_photo'] : '',
+                  'event_photo_name' => isset($_FILES['event_photo']['name']) ? time() . '_' . $_FILES['event_photo']['name'] : '',
+
+                  'event_name_err' => '',
+                  'event_date_err' => '',
+                  'event_photo_err' => ''
+          ];
+
+          // Validation data
+          // Validate Name
+          if(empty($data['event_name'])){
+            $data['event_name_err'] = 'Please enter the event name';
+          } 
+
+          // Validate Email
+          if(empty($data['event_date'])){
+            $data['event_date_err'] = 'Please enter the event date';
+          }
+
+          // Validate and upload Background Image
+          if(empty($_FILES['event_photo']['name'])){
+            $data['event_photo_err'] = 'Please select an image file';
+          } elseif($_FILES['event_photo']['error'] !== UPLOAD_ERR_OK){
+            $data['event_photo_err'] = 'Error uploading file. Please try again.';
+          } elseif(!uploadImage($_FILES['event_photo']['tmp_name'], $data['event_photo_name'], '/img/packageImg/')){
+            $data['event_photo_err'] = 'Image upload failed. Please try again.';
+          }
+          
+
+          // Validation passed
+          if(empty($data['event_name_err']) && empty($data['event_date_err']) && empty($data['event_photo_err'])){
+            
+            // Register Admin
+              if($this->adminModel->addPhoto($data)){
+                redirect('Admin/features');
+              } else {
+                die('Something went wrong');
+              }
+
+          } else {
+            // Load form with errors
+            $this->view('Admin/v_a_add_photo', $data);
+          }
+
+      } else {
+        // Initial form
+        $data = [
+          'event_name' => '',
+          'event_date' => '',
+          'event_photo' => '',
+          'event_photo_name' => '',
+
+          'event_name_err' => '',
+          'event_date_err' => '',
+          'event_photo_err' => ''
+            ];
+      }
+      $this->view('Admin/v_a_add_photo', $data);
     }
 
-    public function applications(){
-      $this->view('Admin/v_a_applications');
-    }
+    public function Update_photo($photo_id){
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // Form Submitting
+        // Validation
+        //$POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-    public function complains(){
-      $this->view('Admin/v_a_complains');
-    }
+        // Get existing photo to preserve old photo name if no new photo is uploaded
+        $existingPhoto = $this->adminModel->getPhotoById($photo_id);
 
-    public function profiles(){
-      $this->view('Admin/v_a_profiles');
-    }
+        // Input data
+        $data = [
+                  'photo_id' => $photo_id,
+                  'event_name' => trim($_POST['event_name']),
+                  'event_date' => trim($_POST['event_date']),
+                  'event_photo' => isset($_FILES['event_photo']) ? $_FILES['event_photo'] : '',
+                  'event_photo_name' => isset($_FILES['event_photo']['name']) ? time() . '_' . $_FILES['event_photo']['name'] : $existingPhoto->event_photo_name,
 
-    public function events(){
-      $this->view('Admin/v_a_events');
-    }
+                  'event_name_err' => '',
+                  'event_date_err' => '',
+                  'event_photo_err' => ''
+          ];
 
-    public function feedbacks(){
-      $this->view('Admin/v_a_feedbacks');
-    }
+          // Validation data
+          // Validate Name
+          if(empty($data['event_name'])){
+            $data['event_name_err'] = 'Please enter the event name';
+          } 
 
-    public function admins(){
-      $this->view('Admin/v_a_admins');
-    }
+          // Validate Date
+          if(empty($data['event_date'])){
+            $data['event_date_err'] = 'Please enter the event date';
+          }
 
-    public function application_view(){
-      $this->view('Admin/v_a_application_view');
-    }
+          // Validate and upload Background Image (only if a new file is selected)
+          if(!empty($_FILES['event_photo']['name'])){
+            if($_FILES['event_photo']['error'] !== UPLOAD_ERR_OK){
+              $data['event_photo_err'] = 'Error uploading file. Please try again.';
+            } elseif(!uploadImage($_FILES['event_photo']['tmp_name'], $data['event_photo_name'], '/img/packageImg/')){
+                $data['event_photo_err'] = 'Image upload failed. Please try again.';
+            }
+          }
+          
 
-    public function complain_view(){
-      $this->view('Admin/v_a_complain_view');
-    }
+          // Validation passed
+          if(empty($data['event_name_err']) && empty($data['event_date_err']) && empty($data['event_photo_err'])){
+            
+            // Check if new photo was uploaded
+            if(!empty($_FILES['event_photo']['name'])){
+              // New photo uploaded - update everything including photo
+              if($this->adminModel->updatePhoto($data)){
+                redirect('Admin/features');
+              } else {
+                die('Something went wrong');
+              }
+            } else {
+              // No new photo - update only name and date, photo column stays same
+              if($this->adminModel->updatePhotoInfo($data)){
+                redirect('Admin/features');
+              } else {
+                die('Something went wrong');
+              }
+            }
 
-    public function payment_view(){
-      $this->view('Admin/v_a_payment_view');
+          } else {
+            // Load form with errors
+            $this->view('Admin/v_a_update_photo', $data);
+          }
+
+      } else {
+        $photo = $this->adminModel->getPhotoById($photo_id);
+        
+        if(!$photo){
+          die('Photo not found');
+        }
+        
+        $data = [
+          'photo_id' => $photo_id,
+          'event_name' => $photo->event_name,
+          'event_date' => $photo->event_date,
+          'photo_path' => isset($photo->event_photo_name) ? 'img/packageImg/' . $photo->event_photo_name : '',
+          'event_photo' => '',
+          'event_photo_name' => $photo->event_photo_name,
+
+          'event_name_err' => '',
+          'event_date_err' => '',
+          'event_photo_err' => ''
+            ];
+      }
+      $this->view('Admin/v_a_update_photo', $data);
+    }
+    
+    public function Delete_photo($photo_id){
+        if($this->adminModel->deletePhoto($photo_id)){
+          flash('admin_message', 'Photo Deleted Successfully');
+          redirect('Admin/features');
+        } else {
+          die('Something went wrong');
+        }
     }
 
     public function main_page(){

@@ -51,14 +51,15 @@ CREATE OR REPLACE VIEW v_provider_full_profile AS
 SELECT
     sp.service_id,
 
-    -- Full name (fname + lname)
-    CONCAT(sp.fname, ' ', sp.lname) AS full_name,
+    -- Business name (fname + lname)
+    sp.businessName AS business_name,
 
     -- Provider Profiles fields
     pp.intro,
     pp.background_image,
     pp.profile_pic,
-    pp.background_text
+    pp.background_text,
+    pp.serviceType,
 
 FROM service_providers sp
 LEFT JOIN provider_profiles pp
@@ -255,6 +256,20 @@ CREATE TABLE messages (
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+
+DROP TABLE IF EXISTS `conversations`;
+CREATE TABLE IF NOT EXISTS `conversations` (
+  `conversation_id` int NOT NULL AUTO_INCREMENT,
+  `client_id` int NOT NULL,
+  `provider_id` int NOT NULL,
+  `last_message` text,
+  `last_message_time` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`conversation_id`),
+  UNIQUE KEY `client_id` (`client_id`,`provider_id`),
+  KEY `provider_id` (`provider_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELIMITER $$
 
@@ -519,7 +534,7 @@ CREATE TABLE provider_complaints (
     event_id INT NOT NULL,
 
     -- Who raised the complaint
-    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM') NOT NULL,
+    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM','OTHER') NOT NULL,
     
 
     -- Complaint details
@@ -540,12 +555,13 @@ CREATE TABLE provider_complaints (
 
     -- Status lifecycle
     status ENUM(
+        'SEND',
         'OPEN',
         'IN_PROGRESS',
         'RESOLVED',
         'REJECTED',
         'ESCALATED'
-    ) DEFAULT 'OPEN',
+    ) DEFAULT 'SEND',
 
     -- Issue Coordinator assignment
     assigned_ic_id INT DEFAULT NULL,
@@ -582,6 +598,550 @@ CREATE TABLE provider_complaints (
         FOREIGN KEY (event_id)
         REFERENCES events(event_id)
         ON DELETE CASCADE
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
+
+CREATE TABLE provider_complaints (
+    complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Relations
+    service_id INT NOT NULL,
+    event_id INT NOT NULL,
+
+    -- Who raised the complaint
+    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM','OTHER') NOT NULL,
+    
+
+    -- Complaint details
+    complaint_type ENUM(
+        'NO_SHOW',
+        'LATE_CANCELLATION',
+        'QUALITY_ISSUE',
+        'PAYMENT_DISPUTE',
+        'MISCONDUCT',
+        'OTHER'
+    ) NOT NULL,
+
+    description TEXT NOT NULL,
+    
+
+    -- Priority & severity--for ISSUE_COORDINATOR
+    priority ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'MEDIUM',
+
+    -- Status lifecycle
+    status ENUM(
+        'SEND',
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'REJECTED',
+        'ESCALATED'
+    ) DEFAULT 'SEND',
+
+    -- Issue Coordinator assignment
+    assigned_ic_id INT DEFAULT NULL,
+    
+
+    -- Resolution
+    resolution_type ENUM(
+        'PROVIDER_REPLACED',
+        'REFUND_ISSUED',
+        'WARNING_GIVEN',
+        'NO_ACTION'
+    ) DEFAULT NULL,
+
+    resolution_note TEXT DEFAULT NULL,
+    resolved_at DATETIME DEFAULT NULL,
+
+    -- Visibility & soft delete
+    status_flag ENUM('ON', 'OFF') DEFAULT 'ON',
+    provider_visible ENUM('ON', 'OFF') DEFAULT 'ON',
+    client_visible ENUM('ON', 'OFF') DEFAULT 'OFF',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Foreign Keys
+    CONSTRAINT fk_pc_provider
+        FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_pc_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
+
+
+
+CREATE VIEW v_events_with_clients AS
+SELECT
+    e.event_id,
+    e.event_name,
+    e.event_type,
+    e.event_description,
+    e.start_datetime,
+    e.end_datetime,
+    e.guest_count,
+    e.venue_type,
+    e.venue_address,
+    e.total_cost,
+    e.progress_step,
+    e.progress_precent,
+    e.status AS event_status,
+    e.is_completed,
+    e.created_at AS event_created_at,
+
+    c.client_id,
+    c.name AS client_name,
+    c.email AS client_email,
+    c.contact AS client_contact,
+    c.profile_pic AS client_profile_pic
+
+FROM events e
+JOIN clients c
+    ON e.client_id = c.client_id;
+
+
+CREATE TABLE event_payments (
+    event_payment_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL,
+    client_id INT NOT NULL,
+
+    total_amount DECIMAL(12,2) NOT NULL,
+    payment_method ENUM('CARD', 'BANK_TRANSFER', 'WALLET') NOT NULL,
+
+    payment_status ENUM(
+        'PENDING',
+        'PAID',
+        'FAILED',
+        'REFUNDED'
+    ) DEFAULT 'PENDING',
+
+    gateway_reference VARCHAR(255),
+    paid_at DATETIME DEFAULT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ep_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_ep_client
+        FOREIGN KEY (client_id) REFERENCES clients(client_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE event_pins (
+    event_pin_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL UNIQUE,
+    pin_hash VARCHAR(255) NOT NULL,
+
+    pin_status ENUM(
+        'GENERATED',
+        'USED',
+        'EXPIRED',
+        'BLOCKED'
+    ) DEFAULT 'GENERATED',
+
+    expires_at DATETIME DEFAULT NULL,
+    used_at DATETIME DEFAULT NULL,
+
+    verified_by ENUM('SYSTEM', 'IC') DEFAULT 'SYSTEM',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_pin_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE platform_earnings (
+    earning_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL,
+    package_id INT NOT NULL,
+
+    earning_amount DECIMAL(10,2) NOT NULL,
+
+    recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_pe_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id),
+
+    CONSTRAINT fk_pe_package
+        FOREIGN KEY (package_id) REFERENCES packages(package_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE provider_payouts (
+    payout_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL,
+    service_id INT NOT NULL,
+    breakdown_id INT NOT NULL,
+
+    payout_amount DECIMAL(10,2) NOT NULL,
+
+    payout_status ENUM(
+        'PENDING',
+        'PROCESSING',
+        'PAID',
+        'FAILED',
+        'ON_HOLD'
+    ) DEFAULT 'PENDING',
+
+    payout_method ENUM('BANK', 'WALLET') NOT NULL,
+    payout_reference VARCHAR(255),
+
+    paid_at DATETIME DEFAULT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_pp_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id),
+
+    CONSTRAINT fk_pp_provider
+        FOREIGN KEY (service_id) REFERENCES service_providers(service_id),
+
+    CONSTRAINT fk_pp_breakdown
+        FOREIGN KEY (breakdown_id) REFERENCES event_financial_breakdown(breakdown_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE event_financial_breakdown (
+    breakdown_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    event_id INT NOT NULL,
+    package_id INT NOT NULL,
+    service_id INT NOT NULL,
+
+    package_price DECIMAL(10,2) NOT NULL,
+    platform_fee DECIMAL(10,2) NOT NULL,
+    provider_amount DECIMAL(10,2) NOT NULL,
+
+    replacement_status ENUM(
+        'ORIGINAL',
+        'REPLACEMENT'
+    ) DEFAULT 'ORIGINAL',
+
+    payout_eligibility ENUM(
+        'ELIGIBLE',
+        'ON_HOLD',
+        'CANCELLED'
+    ) DEFAULT 'ELIGIBLE',
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_efb_event
+        FOREIGN KEY (event_id) REFERENCES events(event_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_efb_package
+        FOREIGN KEY (package_id) REFERENCES packages(package_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_efb_provider
+        FOREIGN KEY (service_id) REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE favorite_providers (
+    favorite_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    client_id INT NOT NULL,
+    service_id INT NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    -- prevent duplicate favorites
+    UNIQUE KEY uniq_client_provider (client_id, service_id),
+
+    CONSTRAINT fk_fp_client
+        FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_fp_provider
+        FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE favorite_packages (
+    favorite_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    client_id INT NOT NULL,
+    package_id INT NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY uniq_client_package (client_id, package_id),
+
+    CONSTRAINT fk_fpkg_client
+        FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_fpkg_package
+        FOREIGN KEY (package_id)
+        REFERENCES packages(package_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+CREATE TABLE client_complaints (
+    complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Relations
+    client_id INT NOT NULL,
+    event_id INT NOT NULL,
+    service_id INT DEFAULT NULL,  -- only if complaint is about provider
+
+    -- Who raised the complaint
+    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM') NOT NULL DEFAULT 'CLIENT',
+
+    -- Complaint details
+    issue_type ENUM(
+        'SERVICE_QUALITY',
+        'NO_RESPONSE',
+        'MISCONDUCT',
+        'PAYMENT_ISSUE',
+        'REFUND_REQUEST',
+        'OTHER'
+    ) NOT NULL,
+
+    description TEXT NOT NULL,
+
+    -- Priority (set by IC)
+    priority ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'MEDIUM',
+
+    -- Status lifecycle
+    status ENUM(
+        'SEND',
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'REJECTED',
+        'ESCALATED'
+    ) DEFAULT 'SEND',
+
+    -- Issue Coordinator assignment
+    assigned_ic_id INT DEFAULT NULL,
+
+    -- Resolution section
+    resolution_type ENUM(
+        'PROVIDER_REPLACED',
+        'REFUND_ISSUED',
+        'WARNING_GIVEN',
+        'NO_ACTION'
+    ) DEFAULT NULL,
+
+    resolution_note TEXT DEFAULT NULL,
+    resolved_at DATETIME DEFAULT NULL,
+
+    -- Visibility & soft delete
+    status_flag ENUM('ON', 'OFF') DEFAULT 'ON',
+    provider_visible ENUM('ON', 'OFF') DEFAULT 'OFF',
+    client_visible ENUM('ON', 'OFF') DEFAULT 'ON',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Foreign Keys
+    CONSTRAINT fk_cc_client
+        FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_cc_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_cc_provider
+        FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
+CREATE TABLE client_complaints (
+    complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Relations
+    client_id INT NOT NULL,
+    event_id INT NOT NULL,
+    service_id INT DEFAULT NULL,  -- only if complaint is about provider
+
+    -- Who raised the complaint
+    complainant_type ENUM('CLIENT', 'IC', 'SYSTEM') NOT NULL DEFAULT 'CLIENT',
+
+    -- Complaint details
+    issue_type ENUM(
+        'SERVICE_QUALITY',
+        'NO_RESPONSE',
+        'MISCONDUCT',
+        'PAYMENT_ISSUE',
+        'REFUND_REQUEST',
+        'OTHER'
+    ) NOT NULL,
+
+    description TEXT NOT NULL,
+
+    -- Priority (set by IC)
+    priority ENUM('LOW', 'MEDIUM', 'HIGH', 'CRITICAL') DEFAULT 'MEDIUM',
+
+    -- Status lifecycle
+    status ENUM(
+        'SEND',
+        'OPEN',
+        'IN_PROGRESS',
+        'RESOLVED',
+        'REJECTED',
+        'ESCALATED'
+    ) DEFAULT 'SEND',
+
+    -- Issue Coordinator assignment
+    assigned_ic_id INT DEFAULT NULL,
+
+    -- Resolution section
+    resolution_type ENUM(
+        'PROVIDER_REPLACED',
+        'REFUND_ISSUED',
+        'WARNING_GIVEN',
+        'NO_ACTION'
+    ) DEFAULT NULL,
+
+    resolution_note TEXT DEFAULT NULL,
+    resolved_at DATETIME DEFAULT NULL,
+
+    -- Visibility & soft delete
+    status_flag ENUM('ON', 'OFF') DEFAULT 'ON',
+    provider_visible ENUM('ON', 'OFF') DEFAULT 'OFF',
+    client_visible ENUM('ON', 'OFF') DEFAULT 'ON',
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Foreign Keys
+    CONSTRAINT fk_cc_client
+        FOREIGN KEY (client_id)
+        REFERENCES clients(client_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_cc_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_cc_provider
+        FOREIGN KEY (service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_provider_complaint_replacement
+AFTER UPDATE ON provider_complaints
+FOR EACH ROW
+BEGIN
+    IF NEW.resolution_type = 'PROVIDER_REPLACED'
+       AND OLD.resolution_type <> 'PROVIDER_REPLACED' THEN
+
+        INSERT INTO service_provider_replacements (
+            source_type,
+            complaint_id,
+            event_id,
+            old_service_id,
+            reason,
+            assigned_ic_id
+        )
+        VALUES (
+            'PROVIDER_COMPLAINT',
+            NEW.complaint_id,
+            NEW.event_id,
+            NEW.service_id,
+            NEW.description,
+            NEW.assigned_ic_id
+        );
+
+    END IF;
+END$$
+
+DELIMITER ;
+
+CREATE TABLE service_provider_replacements (
+    replacement_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Source of replacement
+    source_type ENUM('CLIENT_COMPLAINT', 'PROVIDER_COMPLAINT') NOT NULL,
+    complaint_id INT NOT NULL,
+
+    -- Event & provider details
+    event_id INT NOT NULL,
+    old_service_id INT NOT NULL,
+    new_service_id INT DEFAULT NULL, -- assigned later by IC
+
+    -- Status of replacement process
+    replacement_status ENUM(
+        'PENDING',
+        'SEARCHING',
+        'ASSIGNED',
+        'CONFIRMED',
+        'FAILED'
+    ) DEFAULT 'PENDING',
+
+    -- Notes
+    reason TEXT DEFAULT NULL,
+
+    -- IC handling
+    assigned_ic_id INT DEFAULT NULL,
+
+    -- Timestamps
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- Foreign Keys
+    CONSTRAINT fk_spr_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(event_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_spr_old_provider
+        FOREIGN KEY (old_service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_spr_new_provider
+        FOREIGN KEY (new_service_id)
+        REFERENCES service_providers(service_id)
+        ON DELETE SET NULL
         ON UPDATE CASCADE
 
 ) ENGINE=InnoDB;

@@ -1,177 +1,168 @@
-.dashboard-admins,
-.dashboard-admins * {
+
+.admins-container,
+.admins-container * {
   box-sizing: border-box;
 }
-.dashboard-admins {
+
+.admins-container {
+  margin-left: 300px;
+  margin-top: 100px;
+  margin-right: 40px;
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   background: #ffffff;
-  height: 2183px;
-  position: relative;
-  overflow: hidden;
-}
-.admins-frame {
-  background: #ffffff;
-  color: #6b3de0;
-  border-radius: 10px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.1);
-  border-width: 2px;
-  width: 1089px;
-  height: 333px;
-  position: absolute;
-  left: 292px;
-  top: 136px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-.coordinators-frame {
-  background: #ffffff;
-  color: #6b3de0;
-  border-radius: 10px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.1);
-  border-width: 2px;
-  width: 1089px;
-  height: 333px;
-  position: absolute;
-  left: 300px;
-  top: 510px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-}
-.frame-31 {
-  background: #ffffff;
-  width: 1440px;
-  height: 92px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  overflow: hidden;
-}
-.rectangle-21 {
-  border-radius: 100px;
-  width: 70px;
-  height: 70px;
-  position: absolute;
-  left: 1320px;
-  top: 11px;
-  object-fit: cover;
-}
-.evo-plan-logo-new-removebg-preview-2 {
-  border-radius: 15px;
-  width: 150px;
-  height: 39px;
-  position: absolute;
-  left: 66px;
-  top: 26.5px;
-  object-fit: cover;
 }
 
-.btn_to_mainPage {
+/* Header Section */
+.admins-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admins-header h1 {
+  color: #111827;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.admins-header p {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+/* Section Styling */
+.admin-section,
+.coordinator-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.section-header h2 {
+  color: #111827;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Add Button */
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #4B006E 0%, #390052 100%);
+  color: #ffffff;
   border: none;
-  background: none;
-  cursor: pointer
-}
-
-img.evo-plan-logo-new-removebg-preview-2 {
-  transition: 0.3s;
-}
-
-img.evo-plan-logo-new-removebg-preview-2:hover {
-  transform: scale(1.1);
-}
-
-.admin-topic {
-  color: #6b3de0; 
-  text-align: left;
-  font-family: "Inter-Bold", sans-serif;
-  font-size: 44px;
-  font-weight: 700;
-  position: absolute;
-  left: 36px;
-  top: 12px;
-}
-.coordinator-topic {
-  color: #6b3de0; 
-  text-align: left;
-  font-family: "Inter-Bold", sans-serif;
-  font-size: 44px;
-  font-weight: 700;
-  position: absolute;
-  left: 36px;
-  top: 12px;
-}
-.add-admin-btn {
-  border: 1px solid #6b3de0;
-  background: #ffffff;
-  border-radius: 5px;
-  padding: 6px 15px 6px 15px;
-  color: #6b3de0;
-  text-align: center;
-  font-family: "Inter-Bold", sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  position: absolute;
-  right: 36px;
-  top: 28px;
-}
-.add-admin-btn:hover {
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  background-color: #6b3de0;
-  color: #ffffff;
-  transition: color 0.3s;
-}
-.add-coordinator-btn {
-  border: 1px solid #6b3de0;
-  background: #ffffff;
-  border-radius: 5px;
-  padding: 6px 15px 6px 15px;
-  color: #6b3de0;
-  text-align: center;
-  font-family: "Inter-Bold", sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  position: absolute;
-  right: 36px;
-  top: 28px;
-}
-.add-coordinator-btn:hover {
-  cursor: pointer;
-  background-color: #6b3de0;
-  color: #ffffff;
-  transition: color 0.3s;
-}
-.admin-table-container {
-  position: absolute;
-  left: 25px;
-  top: 80px;
-  width: 1039px;
-  height: 228px;
-  overflow-y: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.2);
 }
 
-.text {
-  font-family: "Inter-Bold", sans-serif;
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(75, 0, 110, 0.35);
 }
 
-
-.logout-btn {
-  border-radius: 5px;
-  border: none;
-  background-color: #7848f4;
-  text-align: center;
-  color: #ffffff;
-  font-family: "  Inter-Bold", sans-serif;
-  font-size: 16px;
-  width: 100px;
-  height: 40px;
-  position: absolute;
-  right: 50px;
-  top: 40px;
-  transition: all 0.15s ease-in-out;
-  cursor: pointer;
+.add-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(75, 0, 110, 0.2);
 }
-.logout-btn:hover {
-  background-color: #5e36c7;
+
+.add-btn i {
+  font-size: 14px;
+}
+
+/* Action Buttons Inline */
+.action-buttons-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-buttons-inline a {
+  text-decoration: none;
+}
+
+/* Disabled Buttons */
+.action-buttons-inline button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-buttons-inline button:disabled:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admins-container {
+    margin-left: 250px;
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admins-container {
+    margin-left: 0;
+    margin-top: 80px;
+    margin-right: 15px;
+  }
+
+  .admins-header h1 {
+    font-size: 24px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .admins-container {
+    margin-left: 0;
+    margin-right: 10px;
+    margin-top: 70px;
+    gap: 20px;
+  }
+
+  .admins-header h1 {
+    font-size: 20px;
+  }
+
+  .add-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
 }
 
 

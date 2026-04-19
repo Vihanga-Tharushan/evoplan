@@ -1,7 +1,7 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php 
 $backUrl = URLROOT . '/Clients/packages';
-require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbarBack.php'; ?>
+require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_messages.css">
 <main class="chat-shell" aria-label="Chat">
   <div class="chat-wrap">

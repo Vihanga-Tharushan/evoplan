@@ -1,7 +1,7 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php
-$backUrl = URLROOT . '/Service/dashboard';
-require_once APPROOT . '/views/inc/components/taskbar/taskbar_back.php';
+$backUrl = URLROOT . '/Service/profile';
+require_once APPROOT . '/views/inc/components/taskbar/navbar.php';
 
 $stats = $data['stats'];
 $notifications = $data['notifications'];
@@ -23,10 +23,8 @@ $todayCount = $stats->today ?? 0;
                 </div>
                 <div class="header-actions">
                     <?php if($unreadCount > 0): ?>
-                    <button class="btn btn--primary" id="mark-all-read">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 6L9 17l-5-5"/>
-                        </svg>
+                    <button class="btn btn--success" id="mark-all-read">
+                        <i class="fa-regular fa-circle-check"></i>
                         Mark all as read
                     </button>
                     <?php endif; ?>
@@ -39,13 +37,11 @@ $todayCount = $stats->today ?? 0;
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
+                       <i class="fa-solid fa-bell"></i>
                     </div>
                     <div class="stat-content">
                         <h3><?php echo $totalCount; ?></h3>
-                        <p>Total</p>
+                        <p>Total Notifications</p>
                     </div>
                 </div>
             </div>
@@ -53,13 +49,23 @@ $todayCount = $stats->today ?? 0;
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 7V3m8 4V3M9 20h6m-6 0a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v11a2 2 0 01-2 2m-6 0v-5"/>
-                        </svg>
+                          <i class="fa-solid fa-envelope-open-text"></i>
                     </div>
                     <div class="stat-content">
                         <h3><?php echo $todayCount; ?></h3>
                         <p>Today</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                         <i class="fa-regular fa-comment-dots"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3><?php echo $unreadCount; ?></h3>
+                        <p>Unread</p>
                     </div>
                 </div>
             </div>

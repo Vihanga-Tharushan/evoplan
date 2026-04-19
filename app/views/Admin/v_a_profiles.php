@@ -1,263 +1,261 @@
+<?php require_once APPROOT . '/views/Admin/Sidebar/v_a_sidebar.php'; ?>
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <link rel="stylesheet" href="../public/css/components/Admin/style(Admin_Profiles).css">
 
-<div class="dashboard-profiles">
+<div class="profiles-container">
+  <!-- Header -->
+  <div class="profiles-header">
+    <h1>User Profiles</h1>
+    <p>Manage and view all users across different categories</p>
+  </div>
 
-    <div class="dashboard">
-      <div class="dashboard-frame">
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Stats'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Stats.svg" />
-              Stats
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Payments'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Payments.svg" />
-            Payments
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Applications'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Applications.svg" />
-            Applications
-          </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Complains'">         
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Complains.svg" />
-            Complains
-          </div>
-        </button>
-
-        <div class="select">
-          <div class="dashboard-items">
-            <img src="../public/img/Admin/Dashboard/Profiles.svg"/>
-            Profiles
-          </div>
-        </div>
-          
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Events'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Events.svg" />
-              Events
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Feedbacks'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Feedbacks.svg"/>
-              Feedbacks
-            </div>
-        </button>
-
-        <button class="button" onclick="window.location.href='<?php echo URLROOT ?>/Admin/Admins'">
-            <div class="dashboard-items">
-              <img src="../public/img/Admin/Dashboard/Admins.svg"/>
-              Admins &amp; <br /> Coordinators
-            </div>
-        </button>
-
-      </div>
-    </div>
-
-    <div class="frame-48096285">
-      <div class="client-profiles">Client Profiles</div>
-      <div class="frame-48096286">
-        <div class="client-id">Client_ID</div>
-        <div class="client-name">Client Name</div>
-        <div class="profile-picture">Profile Picture</div>
-        <div class="sign-up-date">Sign-up Date</div>
-        <div class="status">Status</div>
-      </div>
-      <div class="frame-48096287">
-        <div class="c-4259">C-4259</div>
-        <div class="maggie-johnson">Ramya De Silva</div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-10.png" />
-        </div>
-        <div class="_2-hours-ago">2 hours ago</div>
-        <div class="frame-48096288">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-480962882">
-        <div class="c-4258">C-4258</div>
-        <div class="maggie-johnson">Ramya De Silva</div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-11.png" />
-        </div>
-        <div class="_2-hours-ago">2 hours ago</div>
-        <div class="frame-480962883">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-48096289">
-        <div class="c-4257">C-4257</div>
-        <div class="maggie-johnson">Ramya De Silva</div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-12.png" />
-        </div>
-        <div class="_2-hours-ago">2 hours ago</div>
-        <div class="frame-480962884">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-48096290">
-        <div class="c-4256">C-4256</div>
-        <div class="maggie-johnson">Ramya De Silva</div>
-        <div class="avatar">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-13.png" />
-        </div>
-        <div class="_2-hours-ago">2 hours ago</div>
-        <div class="frame-480962885">
-          <div class="in-active">In-active</div>
-        </div>
-      </div>
-      <div class="div">......</div>
-      <div class="frame-4">
-        <div class="frame-5">
-          <div class="see-all">See all</div>
-          <img class="icon-from-tabler-io" src="../public/img/Admin/Profiles/icon-from-tabler-io0.svg" />
-        </div>
-      </div>
-    </div>
-    <div class="frame-480962872">
-      <div class="search-client-profiles">Search Client Profiles</div>
-      <div class="frame-480962862">
-        <div class="client-id">Client_ID</div>
-        <div class="client-name">Client Name</div>
-        <div class="profile-picture">Profile Picture</div>
-        <div class="sign-up-date">Sign-up Date</div>
-        <div class="status">Status</div>
-      </div>
-      <div class="search-bar">
-        <div class="rectangle-24"></div>
-        <div class="rectangle-25"></div>
-        <div class="client-id2">Client ID</div>
-        <img
-          class="pngwing-com-2025-08-10-t-210607-925-1"
-          src="../public/img/Admin/Profiles/pngwing-com-2025-08-10-t-210607-925-10.png"
-        />
-      </div>
-      <div class="search-bar2">
-        <div class="rectangle-242"></div>
-        <div class="rectangle-252"></div>
-        <div class="client-name2">Client Name</div>
-        <img
-          class="pngwing-com-2025-08-10-t-210607-925-12"
-          src="../public/img/Admin/Profiles/pngwing-com-2025-08-10-t-210607-925-11.png"
-        />
-      </div>
-    </div>
-    <div class="frame-480962886">
-      <div class="search-service-provider-profiles">
-        Search Service Provider Profiles
-      </div>
-      <div class="search-bar">
-        <div class="rectangle-24"></div>
-        <div class="rectangle-25"></div>
-        <div class="sp-id">SP ID</div>
-        <img
-          class="pngwing-com-2025-08-10-t-210607-925-1"
-          src="../public/img/Admin/Profiles/pngwing-com-2025-08-10-t-210607-925-12.png"
-        />
-      </div>
-      <div class="search-bar2">
-        <div class="rectangle-242"></div>
-        <div class="rectangle-252"></div>
-        <div class="sp-name">SP Name</div>
-        <img
-          class="pngwing-com-2025-08-10-t-210607-925-12"
-          src="../public/img/Admin/Profiles/pngwing-com-2025-08-10-t-210607-925-13.png"
-        />
-      </div>
-      <div class="frame-480962863">
-        <div class="sp-id2">SP_ID</div>
-        <div class="sp-name2">SP Name</div>
-        <div class="category">Category</div>
-        <div class="profile-picture2">Profile Picture</div>
-        <div class="date">Date</div>
-        <div class="status2">Status</div>
-      </div>
-    </div>
-    <div class="frame-480962864">
-      <div class="service-provider-profiles">Service Provider Profiles</div>
-      <div class="frame-48096286">
-        <div class="sp-id2">SP_ID</div>
-        <div class="sp-name2">SP Name</div>
-        <div class="category">Category</div>
-        <div class="profile-picture2">Profile Picture</div>
-        <div class="date">Date</div>
-        <div class="status2">Status</div>
-      </div>
-      <div class="frame-48096287">
-        <div class="sp-4268">SP-4268</div>
-        <div class="jone-stark">Kasuni Kalhara</div>
-        <div class="photographer">Photographer</div>
-        <div class="avatar2">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-14.png" />
-        </div>
-        <div class="_2-hours-ago2">2 hours ago</div>
-        <div class="frame-480962883">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-480962882">
-        <div class="sp-4267">SP-4267</div>
-        <div class="jone-stark">Kasuni Kalhara</div>
-        <div class="photographer">Photographer</div>
-        <div class="avatar2">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-15.png" />
-        </div>
-        <div class="_2-hours-ago2">2 hours ago</div>
-        <div class="frame-480962883">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-48096289">
-        <div class="sp-4266">SP-4266</div>
-        <div class="jone-stark">Kasuni Kalhara</div>
-        <div class="photographer">Photographer</div>
-        <div class="avatar2">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-16.png" />
-        </div>
-        <div class="_2-hours-ago2">2 hours ago</div>
-        <div class="frame-480962883">
-          <div class="active">Active</div>
-        </div>
-      </div>
-      <div class="frame-48096290">
-        <div class="sp-4265">SP-4265</div>
-        <div class="jone-stark">Kasuni Kalhara</div>
-        <div class="photographer">Photographer</div>
-        <div class="avatar2">
-          <img class="rectangle-1" src="../public/img/Admin/Profiles/rectangle-17.png" />
-        </div>
-        <div class="_2-hours-ago2">2 hours ago</div>
-        <div class="frame-480962887">
-          <div class="in-active">In-active</div>
-        </div>
-      </div>
-      <div class="div">......</div>
-      <div class="frame-4">
-        <div class="frame-5">
-          <div class="see-all">See all</div>
-          <img class="icon-from-tabler-io2" src="../public/img/Admin/Profiles/icon-from-tabler-io1.svg" />
-        </div>
-      </div>
-    </div>
-    
-    <div class="frame-31">
-      <button class="logout-btn" onclick="window.location.href='<?php echo URLROOT ?>/Admin/main_page'">Log Out</button>
-      <button class=btn_to_mainPage > 
-        <img class="evo-plan-logo-new-removebg-preview-2" src="../public/img/Admin/Stats/evo-plan-logo-new-removebg-preview-20.png" />
-      </button>
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-bar-wrapper">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search by name or email..." 
+        class="search-input"
+      >
     </div>
   </div>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs">
+    <button class="tab-btn active" data-category="all" onclick="filterCategory('all')">
+      <i class="fas fa-users"></i>
+      <span>All Users</span>
+      <span class="count">0</span>
+    </button>
+    <button class="tab-btn" data-category="clients" onclick="filterCategory('clients')">
+      <i class="fas fa-user-circle"></i>
+      <span>Clients</span>
+      <span class="count">0</span>
+    </button>
+    <button class="tab-btn" data-category="service-providers" onclick="filterCategory('service-providers')">
+      <i class="fas fa-briefcase"></i>
+      <span>Service Providers</span>
+      <span class="count">0</span>
+    </button>
+  </div>
+
+  <!-- Profiles Container -->
+  <div class="profiles-content">
+    <!-- All Users Section -->
+    <div id="all" class="category-content active">
+      <div class="category-header">
+        <h2>All Users</h2>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="list" onclick="toggleView('list')">
+            <i class="fas fa-list"></i>
+          </button>
+          <button class="view-btn" data-view="grid" onclick="toggleView('grid')">
+            <i class="fas fa-th"></i>
+          </button>
+        </div>
+      </div>
+      <div id="all-list" class="profiles-list"></div>
+    </div>
+
+    <!-- Clients Section -->
+    <div id="clients" class="category-content">
+      <div class="category-header">
+        <h2>Client Profiles</h2>
+        <span class="profile-count">0 profiles</span>
+      </div>
+      <div id="clients-list" class="profiles-list"></div>
+    </div>
+
+    <!-- Service Providers Section -->
+    <div id="service-providers" class="category-content">
+      <div class="category-header">
+        <h2>Service Provider Profiles</h2>
+        <span class="profile-count">0 profiles</span>
+      </div>
+      <div id="service-providers-list" class="profiles-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Debug: Check what data is being passed
+  console.log('Raw data from PHP:', <?php echo json_encode(['clients' => count($data['clients'] ?? []), 'serviceProviders' => count($data['serviceProviders'] ?? [])]); ?>);
+
+  // Data from database
+  const profilesData = {
+    clients: [
+      <?php
+        if (!empty($data['clients'])) {
+          foreach ($data['clients'] as $client) {
+            $profile_pic = isset($client->profile_pic) && !empty($client->profile_pic) ? $client->profile_pic : '../public/img/Admin/default-profile.jpg';
+            $created_at = isset($client->created_at) ? $client->created_at : date('Y-m-d H:i:s');
+            echo "{
+              id: '{$client->client_id}',
+              name: '" . addslashes($client->name) . "',
+              email: '{$client->email}',
+              joinDate: '{$created_at}',
+              status: 'Active',
+              category: 'Clients',
+              avatar: '{$profile_pic}'
+            },";
+          }
+        } else {
+          echo "// No clients data";
+        }
+      ?>
+    ],
+    serviceProviders: [
+      <?php
+        if (!empty($data['serviceProviders'])) {
+          foreach ($data['serviceProviders'] as $provider) {
+            $category = isset($provider->service_type) ? $provider->service_type : 'Service Provider';
+            $profile_pic = isset($provider->profile_pic) && !empty($provider->profile_pic) ? $provider->profile_pic : '../public/img/Admin/default-profile.jpg';
+            $created_at = isset($provider->created_at) ? $provider->created_at : date('Y-m-d H:i:s');
+            $fname = isset($provider->fname) ? $provider->fname : '';
+            $lname = isset($provider->lname) ? $provider->lname : '';
+            echo "{
+              id: '{$provider->service_id}',
+              name: '" . addslashes($fname . ' ' . $lname) . "',
+              email: '{$provider->email}',
+              category: '{$category}',
+              joinDate: '{$created_at}',
+              status: 'Active',
+              avatar: '{$profile_pic}'
+            },";
+          }
+        } else {
+          echo "// No service providers data";
+        }
+      ?>
+    ]
+  };
+
+  console.log('profilesData loaded:', profilesData);
+
+  let currentView = 'list';
+  let currentCategory = 'all';
+
+  // Initialize
+  function initProfiles() {
+    renderProfiles();
+    updateCounts();
+  }
+
+  // Render profiles
+  function renderProfiles() {
+    const allProfiles = [...profilesData.clients, ...profilesData.serviceProviders];
+    
+    // Render by category
+    renderCategory('all', allProfiles);
+    renderCategory('clients', profilesData.clients);
+    renderCategory('service-providers', profilesData.serviceProviders);
+  }
+
+  function renderCategory(category, profiles) {
+    const container = document.getElementById(`${category}-list`);
+    if (!container) return;
+
+    if (profiles.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>No profiles found</p></div>';
+      return;
+    }
+
+    container.innerHTML = profiles.map(profile => `
+      <div class="profile-item" data-searchable="${(profile.name + ' ' + profile.email).toLowerCase()}">
+        <div class="profile-main">
+          <img class="profile-avatar" src="${profile.avatar}" alt="${profile.name}" onerror="this.src='../public/img/Admin/default-profile.jpg'" />
+          <div class="profile-info">
+            <h3>${profile.name}</h3>
+            <p class="profile-id">${profile.id}</p>
+            <p class="profile-email">${profile.email}</p>
+            ${profile.category ? `<span class="profile-category">${profile.category}</span>` : ''}
+          </div>
+        </div>
+        <div class="profile-meta">
+          <span class="profile-status ${profile.status === 'Active' ? 'active' : 'inactive'}">${profile.status}</span>
+          <span class="profile-date">${profile.joinDate}</span>
+        </div>
+        <div class="profile-actions">
+          <button class="btn-icon" title="View Details">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button class="btn-icon danger" title="Delete" onclick="confirmDeleteProfile('${profile.id}', '${profile.category}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Filter category
+  function filterCategory(category) {
+    currentCategory = category;
+    document.querySelectorAll('.category-content').forEach(el => el.classList.remove('active'));
+    document.getElementById(category).classList.add('active');
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+  }
+
+  // Toggle view
+  function toggleView(view) {
+    currentView = view;
+    const container = document.getElementById(`${currentCategory}-list`);
+    if (container) {
+      container.classList.toggle('grid-view', view === 'grid');
+    }
+    
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-view="${view}"]`).classList.add('active');
+  }
+
+  // Search functionality
+  document.getElementById('searchInput').addEventListener('keyup', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const items = document.querySelectorAll('.profile-item');
+    
+    items.forEach(item => {
+      const searchable = item.getAttribute('data-searchable');
+      item.style.display = searchable.includes(searchTerm) ? 'flex' : 'none';
+    });
+    
+    // Update counts based on visible items
+    updateFilteredCounts();
+  });
+
+  // Update counts based on filtered results
+  function updateFilteredCounts() {
+    const allVisibleCount = document.querySelectorAll('#all-list .profile-item[style="display: flex"], #all-list .profile-item:not([style*="display: none"])').length;
+    const clientsVisibleCount = document.querySelectorAll('#clients-list .profile-item[style="display: flex"], #clients-list .profile-item:not([style*="display: none"])').length;
+    const providersVisibleCount = document.querySelectorAll('#service-providers-list .profile-item[style="display: flex"], #service-providers-list .profile-item:not([style*="display: none"])').length;
+    
+    document.querySelector('[data-category="all"] .count').textContent = allVisibleCount;
+    document.querySelector('[data-category="clients"] .count').textContent = clientsVisibleCount;
+    document.querySelector('[data-category="service-providers"] .count').textContent = providersVisibleCount;
+  }
+
+  // Update counts
+  function updateCounts() {
+    const allCount = profilesData.clients.length + profilesData.serviceProviders.length;
+    document.querySelector('[data-category="all"] .count').textContent = allCount;
+    document.querySelector('[data-category="clients"] .count').textContent = profilesData.clients.length;
+    document.querySelector('[data-category="service-providers"] .count').textContent = profilesData.serviceProviders.length;
+  }
+
+  // Delete profile with confirmation
+  function confirmDeleteProfile(userId, category) {
+    const userType = category === 'Clients' ? 'client' : 'service_provider';
+    const categoryName = category === 'Clients' ? 'Client' : 'Service Provider';
+    
+    if (confirm(`Are you sure you want to delete this ${categoryName}? This action cannot be undone.`)) {
+      window.location.href = '<?php echo URLROOT; ?>/Admin/delete_profile/' + userId + '/' + userType;
+    }
+  }
+
+  // Initialize on page load
+  window.addEventListener('DOMContentLoaded', initProfiles);
+</script>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>

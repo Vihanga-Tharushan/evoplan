@@ -80,9 +80,7 @@
                                 <button class="action-btn view-event-btn">
                                     <i class="fas fa-eye"></i> View
                                 </button>
-                                <button class="action-btn confirm-btn">
-                                    <i class="fas fa-check-circle"></i> Send Confirmation
-                                </button> 
+                                
                             </div>
                             <div class="days-left">
                                 <?php
@@ -99,7 +97,7 @@
                         </div> 
                     </div>
                    <?php endforeach; ?>
-                  
+<!--                   
                     <div class="event-card upcoming" event-id="101">
                         <div class="event-card-header">
                             <span class="event-type business">
@@ -112,7 +110,7 @@
                             <div class="event-details">
                                 <div class="event-detail">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Location:</strong> Convention Center, Downtown</span>
+                                    <span ><strong>Location:</strong> Convention Center, Downtown</span>
                                 </div>
                                 <div class="event-detail">
                                     <i class="fas fa-calendar-day"></i>
@@ -142,10 +140,10 @@
                                 <span style="font-weight: 600; color: var(--success);">In 22 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Event Card 3 -->
-                    <div class="event-card upcoming" event-id="102">
+                    <!-- <div class="event-card upcoming" event-id="102">
                         <div class="event-card-header">
                             <span class="event-type birthday">
                                 <i class="fas fa-birthday-cake"></i> Birthday Party
@@ -187,7 +185,7 @@
                                 <span style="font-weight: 600; color: var(--warning);">In 8 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             
@@ -261,7 +259,7 @@
                     
                     
                     <!-- Event Card 2 (Previous) -->
-                    <div class="event-card previous" event-id="201">
+                    <!-- <div class="event-card previous" event-id="201">
                         <div class="event-card-header">
                             <span class="event-type wedding">
                                 <i class="fas fa-ring"></i> Wedding Reception
@@ -303,9 +301,9 @@
                             </div>
                         </div>
                     </div>
-                    
+                     -->
                     <!-- Event Card 3 (Previous) -->
-                    <div class="event-card previous" event-id="202">
+                    <!-- <div class="event-card previous" event-id="202">
                         <div class="event-card-header">
                             <span class="event-type party">
                                 <i class="fas fa-glass-cheers"></i> Anniversary Party
@@ -346,7 +344,7 @@
                                 <span style="color: var(--muted); font-size: 0.9rem;">Completed on Oct 18, 2023</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Empty State for when there are no previous events -->
                      <div class="empty-state" style="display: none;">
@@ -411,27 +409,7 @@
 
         // Service provider specific action handlers
         
-        // Send confirmation for upcoming events
-        document.querySelectorAll('.confirm-btn').forEach(btn => {
-            btn.addEventListener('click', function(e){
-                e.stopPropagation();
-                const eventId = this.closest('.event-card').getAttribute('event-id');
-                if(!eventId) return alert('Missing event ID');
-
-                if(confirm('Send confirmation to client for this event?')) {
-                    fetch(`${URLROOT}/Services/sendConfirmation`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ eventId })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        alert(data.message || 'Confirmation sent successfully');
-                    })
-                    .catch(() => alert('Network error while sending confirmation'));
-                }
-            });
-        });
+        
 
         // View event details
         document.querySelectorAll('.view-event-btn').forEach(btn => {

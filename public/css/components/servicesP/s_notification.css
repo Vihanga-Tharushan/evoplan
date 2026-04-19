@@ -1,6 +1,5 @@
 :root {
-    --accent: #7c3aed;
-    --accent-2: #8a7cfb;
+    
     --bg: #f7f7fb;
     --panel: #ffffff;
     --muted-surface: #f3f4f6;
@@ -10,29 +9,41 @@
     --radius: 16px;
     --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
     --header-h: 64px;
-    --frame: 1060px;
-    --primary: #6d28d9;
-    --primary-light: #8b5cf6;
-    --secondary: #4c1d95;
+    --frame: 1200px;
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
     --light: #f8fafc;
     --dark: #1e293b;
     --gray: #64748b;
+    --package-blue: #498dfb;
+    --accent: var(--secondary);
+    --accent-2: var(--primary);
+    --primary-light: var(--lightSecondary);
     --border: #e2e8f0;
+    --red-border: #ff9494;
     --available: #dbeafe;
     --booked: #fecaca;
     --unavailable: #f1f5f9;
+     --primary: #4B006E;     /* Dark purple */
+    --secondary: #6F1A8C;   /* Accent violet */
+    --lightSecondary: rgb(238, 224, 250); /* Light violet */
+    --dark: #0b1026;         /* Background dark */
+    --light: #f7f8fc;        /* Light section background */
+    --text: #111827;         /* Main text */
+    --muted: #6b7280ff;        /* Subtext / secondary text */
+    --darkprimary: #15001eff; /* Darker purple */
+    --background-color: #fbfbfb; /* White background */
+    
 }
 
 
 .notifications-container {
-    
-    max-width: 800px;
+    max-width: var(--frame);
     margin: 0 auto;
     margin-top: 50px;
     padding: 24px;
+    
 }
 
 /* Header */
@@ -56,11 +67,11 @@
 .header-title h1 {
     font-size: 28px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--primary);
 }
 
 .badge-count {
-    background: var(--accent);
+    background: var(--danger);
     color: white;
     font-size: 14px;
     font-weight: 600;
@@ -89,7 +100,7 @@
 }
 
 .btn--primary {
-    background: var(--accent);
+    background: var(--secondary);
     color: white;
 }
 
@@ -122,12 +133,24 @@
     height: 40px;
 }
 
+.btn--success {
+    background: var(--success);
+    color: white;
+}
+
 /* Stats Cards */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 0.75fr));
     gap: 16px;
     margin-bottom: 32px;
+}
+
+.stats-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
 }
 
 .stat-card {
@@ -135,45 +158,44 @@
     border-radius: var(--radius);
     padding: 20px;
     border: 1px solid var(--border);
-    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stat-card:hover {
-    border-color: var(--accent-2);
-    box-shadow: var(--shadow);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stat-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 16px;
 }
 
 .stat-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--muted-surface);
-}
-
-.stat-icon svg {
-    width: 20px;
-    height: 20px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 24px;
 }
 
 .stat-content h3 {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 4px;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0;
 }
 
 .stat-content p {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
+    margin: 0;
 }
 
 /* Filter Tabs */
@@ -225,10 +247,11 @@
     border-bottom: 1px solid var(--border);
     transition: all 0.2s ease;
     position: relative;
+    background-color: var(--background-color);
 }
 
 .notification-item:hover {
-    background: var(--muted-surface);
+    background: var(--lightSecondary);
 }
 
 .notification-item.unread {
@@ -273,7 +296,7 @@
 }
 
 /* Icon colors for different notification types */
-.badge-icon.booking { background: var(--accent); }
+.badge-icon.booking { background: var(--package-blue); }
 .badge-icon.message { background: var(--primary-light); }
 .badge-icon.review { background: var(--warning); }
 .badge-icon.payment { background: var(--success); }
@@ -347,7 +370,7 @@
     color: var(--danger);
     padding: 8px 16px;
     font-size: 13px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--red-border);
 }
 
 .btn-delete:hover {

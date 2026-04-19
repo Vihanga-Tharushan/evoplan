@@ -5,6 +5,56 @@
         public function __construct() {
             $this->db = new Database();
         }
+
+        // Get all clients data
+        public function getClients(){
+            $this->db->query("SELECT * FROM clients");
+            $results = $this->db->resultSet();
+            return $results;
+        }
+
+        // Get all service providers data
+        public function getServiceProviders(){
+            $this->db->query("SELECT * FROM service_providers");
+            $results = $this->db->resultSet();
+            return $results;
+        }
+
+        // Delete profiles by ID and type (client or service provider)
+        public function deleteProfile($user_id, $type = 'client'){
+            if ($type === 'service_provider') {
+                return $this->deleteServiceProvider($user_id);
+            } else {
+                return $this->deleteClient($user_id);
+            }
+        }
+
+
+        public function deleteClient($client_id){
+            $this->db->query("DELETE FROM clients WHERE c_id = :client_id");
+            // Bind values
+            $this->db->bind(':client_id', $client_id);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function deleteServiceProvider($service_id){
+            $this->db->query("UPDATE service_providers SET status = 'INACTIVE' WHERE sp_id = :service_id");
+            // Bind values
+            $this->db->bind(':service_id', $service_id);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
         
         // Add Admin
         public function addAdmin($data){
@@ -21,6 +71,13 @@
             } else {
                 return false;
             }
+        }
+
+        // Load all admins
+        public function getAdmins(){
+            $this->db->query("SELECT * FROM admins");
+            $results = $this->db->resultSet();
+            return $results;
         }
 
         // Find admin by email
@@ -113,6 +170,13 @@
             }
         }
 
+        // Load all coordinators
+        public function getCoordinators(){
+            $this->db->query("SELECT * FROM coordinators");
+            $results = $this->db->resultSet();
+            return $results;
+        }
+
         // Find coordinator by email
         public function findCoordinatorByEmail($ic_email) {
             $this->db->query("SELECT * FROM coordinators WHERE ic_email = :ic_email");
@@ -181,6 +245,86 @@
 
             if(password_verify($ic_password, $hashed_password)){
                 return $row;
+            } else {
+                return false;
+            }
+        }
+
+        // Add Photo to Landing Page
+        public function addPhoto($data){
+            $this->db->query("INSERT INTO landing_photos (event_name, event_date, event_photo_name) VALUES (:event_name, :event_date, :event_photo_name)");
+            // Bind values
+            $this->db->bind(':event_name', $data['event_name']);
+            $this->db->bind(':event_date', $data['event_date']);
+            $this->db->bind(':event_photo_name', $data['event_photo_name']);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Load all landing page photos to display in admin features page
+        public function getLandingPagePhotos(){
+            $this->db->query("SELECT * FROM landing_photos");
+            $results = $this->db->resultSet();
+            return $results;
+        }
+
+        // Get Photo by ID
+        public function getPhotoById($photo_id){
+            $this->db->query("SELECT * FROM landing_photos WHERE photo_id = :photo_id");
+            $this->db->bind(':photo_id', $photo_id);
+
+            $row = $this->db->single();
+
+            return $row;
+        }
+
+        // Update landing page photo (with new photo)
+        public function updatePhoto($data){
+            $this->db->query("UPDATE landing_photos SET event_name = :event_name, event_date = :event_date, event_photo_name = :event_photo_name WHERE photo_id = :photo_id");
+            // Bind values
+            $this->db->bind(':event_name', $data['event_name']);
+            $this->db->bind(':event_date', $data['event_date']);
+            $this->db->bind(':event_photo_name', $data['event_photo_name']);
+            $this->db->bind(':photo_id', $data['photo_id']);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Update landing page photo info only (without changing photo)
+        public function updatePhotoInfo($data){
+            $this->db->query("UPDATE landing_photos SET event_name = :event_name, event_date = :event_date WHERE photo_id = :photo_id");
+            // Bind values
+            $this->db->bind(':event_name', $data['event_name']);
+            $this->db->bind(':event_date', $data['event_date']);
+            $this->db->bind(':photo_id', $data['photo_id']);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Delete landing page photo
+        public function deletePhoto($photo_id){
+            $this->db->query("DELETE FROM landing_photos WHERE photo_id = :photo_id");
+            // Bind values
+            $this->db->bind(':photo_id', $photo_id);
+
+            // Execute
+            if($this->db->execute()){
+                return true;
             } else {
                 return false;
             }

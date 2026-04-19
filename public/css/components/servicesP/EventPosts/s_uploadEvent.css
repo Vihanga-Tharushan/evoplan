@@ -9,6 +9,15 @@
     --text-secondary: #666666;
     --radius: 12px;
     --transition: all 0.3s ease;
+    --primary: #4B006E;     /* Dark purple */
+    --secondary: #6F1A8C;   /* Accent violet */
+    --lightSecondary: rgb(86, 78, 93); /* Light violet */
+    --dark: #0b1026;         /* Background dark */
+    --light: #f7f8fc;        /* Light section background */
+    --text: #111827;         /* Main text */
+    --muted: #6b7280ff;        /* Subtext / secondary text */
+    --darkprimary: #15001eff; /* Darker purple */
+  
 }
 
 * {
@@ -35,7 +44,7 @@ body {
 }
 
 .header h1 {
-    color: var(--accent);
+    color: var(--primary);
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
@@ -56,20 +65,22 @@ body {
 .form-title {
     font-size: 1.8rem;
     margin-bottom: 20px;
-    color: var(--text-primary);
+    color: var(--primary);
     border-bottom: 2px solid var(--accent);
     padding-bottom: 10px;
 }
 
 .form-group {
     margin-bottom: 20px;
+
 }
 
 label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--text-primary);
+    font-size: 20px;
+    color: var(--primary);
 }
 
 input, textarea {
@@ -200,7 +211,7 @@ textarea {
 }
 
 .btn-post {
-    background-color: var(--accent);
+    background-color: var(--secondary);
     color: white;
 }
 

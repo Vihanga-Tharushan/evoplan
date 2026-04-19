@@ -4,14 +4,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hoverable Sidebar Menu HTML CSS & JavaScript</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
-  
   <style>
-    /* Import Google font - Poppins */
+   
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+/* Scope resets and font to the sidebar only (avoid affecting entire page) */
+.sidebar, .sidebar * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.sidebar {
+  font-family: "Poppins", sans-serif;
+}
 
   :root{
     --primary: #4B006E;     /* Dark purple */
@@ -23,12 +31,7 @@
     --muted: #6b7280ff;        /* Subtext / secondary text */
     --darkprimary: #15001eff; /* Darker purple */
   }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
+
 
 /* Pre css */
 .flex {
@@ -45,6 +48,7 @@
   height: 40px;
   width: 40px;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .logo_name img {
@@ -193,14 +197,13 @@
   font-size: 15px;
   color: #333;
 }
-/* Navbar */
+/* Navbar: make full-page width minus the sidebar, and adapt when sidebar collapses */
 .navbar {
-  max-width: 1400px;
-  width: 100%;
   position: fixed;
   top: 0;
-  left: 59%;
-  transform: translateX(-50%);
+  left: 270px; /* sidebar full width */
+  width: calc(100% - 270px);
+  max-width: none;
   background: #fff;
   padding: 10px 20px;
   border-radius: 0 0 8px 8px;
@@ -209,6 +212,12 @@
   z-index: 900;
   display: flex;
   align-items: center;
+}
+
+/* When the sidebar is collapsed, shrink the navbar accordingly */
+.sidebar.close + .navbar {
+  left: calc(55px + 20px); /* match .sidebar.close width */
+  width: calc(100% - (55px + 20px));
 }
 
 /* Navbar helpers */
@@ -222,6 +231,7 @@
   display: flex; 
   align-items: center; 
   gap: 12px; 
+   margin-right: 50px;
 }
 
 .navbar .btn-icon{
@@ -285,6 +295,70 @@
   height: 40px;
   width: 40px;
   margin-left: 20px;
+  cursor: pointer;
+  transition: transform 200ms ease;
+}
+
+.navbar img:hover {
+  transform: scale(1.1);
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  min-width: 150px;
+  z-index: 1001;
+  border: 1px solid #e5e7eb;
+}
+
+.profile-dropdown.show {
+  display: flex;
+}
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 200ms ease;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+}
+
+.profile-dropdown button:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.profile-dropdown button:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.profile-dropdown button:hover {
+  background-color: rgba(75, 0, 110, 0.08);
+  color: var(--primary);
+  padding-left: 20px;
+}
+
+.profile-dropdown button i {
+  font-size: 16px;
+  width: 20px;
+}
+
+.profile-dropdown-container {
+  position: relative;
 }
 /* Responsive */
 @media screen and (max-width: 1100px) {
@@ -311,6 +385,7 @@
     max-width: 100%;
     transform: translateX(0%);
     padding: 8px 12px;
+
   }
   #sidebar-open {
     display: block;
@@ -321,10 +396,12 @@
   .nav-right .nav_image img {
     height: 32px;
     width: 32px;
+    border-radius: 50%;
   }
 }
   </style>
   <body>
+    
     <nav class="sidebar locked">
       <div class="logo_items flex">
         <span class="nav_image">
@@ -334,8 +411,8 @@
         <img src="<?php echo URLROOT; ?>/public/img/sidebar/Evoplan_name.png" alt="logo_img" />
         </div>
        
-        <i class="fa-solid fa-xmark" id="sidebar-close" title="Close Sidebar"></i>
-        <i class="fa-solid fa-lock" id="lock-icon" title="Unlock Sidebar"></i>
+        <!-- <i class="fa-solid fa-xmark" id="sidebar-close" title="Close Sidebar"></i>
+        <i class="fa-solid fa-lock" id="lock-icon" title="Unlock Sidebar"></i> -->
       </div>
       <div class="menu_container">
         <div class="menu_items">
@@ -392,14 +469,14 @@
               </a>
             </li>
             <li class="item">
-              <a href="#" class="link flex">
+              <a href="<?php echo URLROOT; ?>/Service/accountSettings" class="link flex">
                 <i class="fas fa-cog"></i>
                 <span>Setting</span>
               </a>
             </li>
           </ul>
         </div>
-        <div class="sidebar_profile flex">
+        <!-- <div class="sidebar_profile flex">
           <span class="nav_image">
             <img src="images/profile.jpg" alt="logo_img" />
           </span>
@@ -407,15 +484,18 @@
             <span class="name">David Oliva</span>
             <span class="email">david@gmail.com</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </nav>
     <!-- Navbar -->
     <nav class="navbar flex">
       <div class="nav-left flex">
-        <button id="back-btn" class="btn-icon" title="Go Back">
-          <i class="fa-solid fa-arrow-left"></i>
+        <button id="sidebar-open" class="btn-icon" title="Open Sidebar" style="display: none;">
+          <i class="fa-solid fa-bars"></i>
         </button>
+        <!-- <button id="back-btn" class="btn-icon" title="Go Back">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button> -->
       </div>
 
       <div class="nav-right flex">
@@ -426,9 +506,21 @@
           <span class="notif-badge" id="notif-count">3</span>
         </div>
 
-        <span class="nav_image">
-          <img src="<?php echo URLROOT; ?>/public/img/sidebar/profile.jpg" alt="profile" />
-        </span>
+        <div class="profile-dropdown-container">
+          <span class="nav_image" id="profileImg" style="cursor: pointer;">
+            <img src="<?php echo URLROOT; ?>/public/img/profilePics/<?php echo $_SESSION['service_profile_pic']; ?>" />
+          </span>
+          <div class="profile-dropdown" id="profileDropdown">
+            <button id="settingsBtn" title="Account Settings">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </button>
+            <button id="logoutBtn" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   </body>
@@ -438,7 +530,7 @@
 const sidebar = document.querySelector(".sidebar");
 const sidebarOpenBtn = document.querySelector("#sidebar-open");
 const sidebarCloseBtn = document.querySelector("#sidebar-close");
-const sidebarLockBtn = document.querySelector("#lock-icon");
+// const sidebarLockBtn = document.querySelector("#lock-icon");
 const links = document.querySelectorAll(".link");
 
 //function to set active link based on PHP variable
@@ -448,6 +540,43 @@ links.forEach(link => {
   }
 });
 
+// Fetch unread notification count on page load
+function fetchUnreadNotificationCount() {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    if(this.status === 200) {
+      try {
+        const response = JSON.parse(this.responseText);
+        if(response.success) {
+          const notifCount = document.getElementById('notif-count');
+          if(notifCount) {
+            notifCount.textContent = response.unreadCount;
+            // Hide badge if count is 0
+            if(response.unreadCount === 0) {
+              notifCount.style.display = 'none';
+            } else {
+              notifCount.style.display = 'block';
+            }
+          }
+        }
+      } catch(e) {
+        console.error('Error parsing notification response:', e);
+      }
+    }
+  };
+  xhr.onerror = function() {
+    console.error('Error fetching unread notification count');
+  };
+  
+  xhr.open('POST', '<?php echo URLROOT; ?>/Service/getUnreadNotificationCount', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send();
+}
+
+// Load notification count when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  fetchUnreadNotificationCount();
+});
 
 // Function to toggle the lock state of the sidebar
 const toggleLock = () => {
@@ -455,14 +584,14 @@ const toggleLock = () => {
   if (!isNowLocked) {
     // sidebar unlocked -> enable hover behavior and show open-lock icon
     sidebar.classList.add("hoverable");
-    sidebarLockBtn.classList.remove('fa-lock');
-    sidebarLockBtn.classList.add('fa-lock-open');
+    // sidebarLockBtn.classList.remove('fa-lock');
+    // sidebarLockBtn.classList.add('fa-lock-open');
     sidebarLockBtn.title = 'Lock Sidebar';
   } else {
     // sidebar locked -> disable hover behavior and show closed-lock icon
     sidebar.classList.remove("hoverable");
-    sidebarLockBtn.classList.remove('fa-lock-open');
-    sidebarLockBtn.classList.add('fa-lock');
+    // sidebarLockBtn.classList.remove('fa-lock-open');
+    // sidebarLockBtn.classList.add('fa-lock');
     sidebarLockBtn.title = 'Unlock Sidebar';
   }
 };
@@ -489,34 +618,61 @@ if (window.innerWidth < 800) {
   sidebar.classList.remove("hoverable");
 }
 // Adding event listeners to buttons and sidebar for the corresponding actions
-sidebarLockBtn.addEventListener("click", toggleLock);
+// sidebarLockBtn.addEventListener("click", toggleLock);
 sidebar.addEventListener("mouseleave", hideSidebar);
 sidebar.addEventListener("mouseenter", showSidebar);
 sidebarOpenBtn.addEventListener("click", toggleSidebar);
-sidebarCloseBtn.addEventListener("click", toggleSidebar);
+//sidebarCloseBtn.addEventListener("click", toggleSidebar);
 
-// Back button handler
-const backBtn = document.querySelector('#back-btn');
-if (backBtn) {
-  backBtn.addEventListener('click', () => {
-    window.history.back();
-  });
-}
+
 
 // Notification button handler
-const notifBtn = document.querySelector('#notif-btn');
-const notifCount = document.querySelector('#notif-count');
+const notifBtn = document.getElementById('notif-btn');
+const notifCount = document.getElementById('notif-count');
 if (notifBtn) {
   notifBtn.addEventListener('click', () => {
-    // Toggle notification panel or navigate to notifications page
-    console.log('Notifications clicked');
-    // Example: hide badge after click
+    console.log('Notification button clicked');
+    // Optionally, reduce badge opacity if count is not 0
     if (notifCount && notifCount.textContent !== '0') {
       notifCount.style.opacity = '0.5';
     }
-    // Add your notification panel logic here
-    // window.location.href = '<?php echo URLROOT; ?>/notifications';
+    // Redirect to notifications page
+    window.location.href = '<?php echo URLROOT; ?>/Service/notifications';
   });
 }
+
+// Profile dropdown handler
+const profileImg = document.getElementById('profileImg');
+const profileDropdown = document.getElementById('profileDropdown');
+const settingsBtn = document.getElementById('settingsBtn');
+const logoutBtnMenu = document.getElementById('logoutBtn');
+
+if (profileImg) {
+  profileImg.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('show');
+  });
+}
+
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', () => {
+    window.location.href = '<?php echo URLROOT; ?>/Service/accountSettings';
+  });
+}
+
+if (logoutBtnMenu) {
+  logoutBtnMenu.addEventListener('click', () => {
+    if (confirm('Are you sure you want to logout?')) {
+      window.location.href = '<?php echo URLROOT; ?>/Service/logout';
+    }
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', () => {
+  if (profileDropdown.classList.contains('show')) {
+    profileDropdown.classList.remove('show');
+  }
+});
   </script>
 </html>

@@ -132,8 +132,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 dayElement.title = `Marked as ${status}`;
             }
 
-            // Add click event
-            dayElement.addEventListener('click', () => handleDateClick(date));
+            // Disable past dates (strictly before today)
+            if (date.getTime() < today.getTime()) {
+                dayElement.classList.add('cal__day--past');
+                dayElement.title = 'Cannot select a past date as unavailable';
+                dayElement.style.opacity = '0.5';
+                dayElement.style.cursor = 'not-allowed';
+                dayElement.style.backgroundColor = '#f5f5f5';
+                dayElement.style.color = '#999';
+            } else {
+                // Only attach click event for today and future dates
+                dayElement.addEventListener('click', () => handleDateClick(date));
+            }
 
             calendarGrid.appendChild(dayElement);
         }
@@ -141,6 +151,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle date click
     function handleDateClick(date) {
+        // Get today's date at midnight for accurate comparison
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Prevent selecting past dates
+        if (date.getTime() < today.getTime()) {
+            alert('Cannot select past dates as unavailable. Please select future dates only.');
+            return;
+        }
+        
         const dateString = formatDate(date);
         
         if (!selectedStartDate) {
@@ -223,6 +243,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add this function to your availability.js
     function validateDateRange(startDate, endDate) {
+        // Get today's date at midnight for accurate comparison
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Prevent selecting past dates as unavailable
+        if (startDate.getTime() < today.getTime()) {
+            alert('Cannot mark past dates as unavailable. Please select future dates only.');
+            return false;
+        }
+        
         if (startDate > endDate) {
             alert('End date cannot be before start date');
             return false;
@@ -230,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Optional: Limit how far in advance they can book
         const maxDays = 365; // 1 year max
-        const today = new Date();
         const maxDate = new Date();
         maxDate.setDate(today.getDate() + maxDays);
         
