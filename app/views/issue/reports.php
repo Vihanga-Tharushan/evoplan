@@ -1,1623 +1,1128 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/issue/sidebar/sidebar.php'; ?>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+    :root {
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --light: #f8fafc;
+        --dark: #1e293b;
+        --gray: #64748b;
+        --primary: #4B006E;
+        --secondary: #6F1A8C;
+        --bg-light: #f7f8fc;
+        --text: #111827;
+        --muted: #6b7280;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: var(--bg-light);
+        color: var(--text);
+        line-height: 1.6;
+    }
+
+    .report-container {
+        max-width: 1400px;
+        margin-left: 270px;
+        margin-top: 50px;
+        padding: 24px;
+    }
+
+    /* Report Header */
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .report-header-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(75, 0, 110, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--light);
+        color: var(--text);
+        border: 1px solid #e5e7eb;
+    }
+
+    .btn-secondary:hover {
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Metric Cards */
+    .metrics-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+    .metric-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .metric-label {
+        font-size: 0.875rem;
+        color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    /* Tables */
+    .table-section {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .table-header {
+        padding: 16px 24px;
+        border-bottom: 1px solid #e5e7eb;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+    }
+
+    .table-header h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .section-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .section-table thead {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+    }
+
+    .section-table thead th {
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .section-table tbody tr {
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .section-table tbody tr:hover {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.6) 100%);
+        transform: translateX(4px);
+        box-shadow: 4px 0 12px rgba(75, 0, 110, 0.1);
+    }
+
+    .section-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .section-table td {
+        padding: 16px 12px;
+        vertical-align: middle;
+        font-size: 0.875rem;
+        color: var(--text);
+    }
+
+    .table-id {
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .table-event,
+    .table-provider,
+    .table-client {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+
+    .table-amount {
+        font-weight: 700;
+        color: var(--text);
+        text-align: right;
+    }
+
+    .table-amount.positive {
+        color: var(--success);
+    }
+
+    .table-created {
+        color: var(--muted);
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 140px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        transition: width 0.3s ease;
+    }
+
+    .progress-fill.low {
+        background: linear-gradient(90deg, var(--danger) 0%, #ef5350 100%) !important;
+    }
+
+    .progress-fill.medium {
+        background: linear-gradient(90deg, var(--warning) 0%, #fbc02d 100%) !important;
+    }
+
+    .progress-fill.high {
+        background: linear-gradient(90deg, var(--success) 0%, #34d399 100%) !important;
+    }
+
+    .progress-text {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+    }
+
+    /* Table Container */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    .badge-pending {
+        background-color: var(--warning);
+    }
+
+    .badge-completed {
+        background-color: var(--success);
+    }
+
+    .badge-failed {
+        background-color: var(--danger);
+    }
+
+    .badge-resolved {
+        background-color: var(--success);
+    }
+
+    .badge-open {
+        background-color: var(--warning);
+    }
+
+    .badge-escalated {
+        background-color: var(--danger);
+    }
+
+    /* Toast */
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: white;
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-left: 4px solid var(--success);
+        transform: translateY(150%);
+        transition: transform 0.3s ease;
+    }
+
+    .toast.show {
+        transform: translateY(0);
+    }
+
+    .toast-icon {
+        color: var(--success);
+        font-size: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .report-container {
+            margin-left: 0;
+            padding: 12px;
+        }
+
+        .report-header {
+            flex-direction: column;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .report-header-actions {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .metrics-container {
+            grid-template-columns: 1fr;
+        }
+
+        .charts-container {
+            grid-template-columns: 1fr;
+        }
+
+        .section-table {
+            font-size: 0.8rem;
+        }
+
+        .section-table th, .section-table td {
+            padding: 12px 8px;
+        }
+    }
+</style>
+
+<div class="report-container">
+    <!-- Report Header -->
+    <div class="report-header">
+        <div>
+            <h1>Weekly Report</h1>
+            <p id="submission-date" style="color: var(--muted); font-size: 0.875rem;">Date Submitted: </p>
+        </div>
+        <div class="report-header-actions">
+            <button class="btn btn-secondary" id="download-pdf">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-container">
+        <div class="metric-card">
+            <div class="metric-label">Total Events</div>
+            <div class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Total Complaints</div>
+            <div class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Total Replacements</div>
+            <div class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Total Refunds</div>
+            <div class="metric-value">0</div>
+        </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <h2>Events Monitoring</h2>
+        </div>
+        <div class="table-container">
+            <table class="section-table">
+                <thead>
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Progress</th>
+                        <th>Client</th>
+                    </tr>
+                </thead>
+                <tbody id="events-tbody">
+                    <tr><td colspan="5" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Replacements Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <h2>Service Provider Replacements</h2>
+        </div>
+        <div class="table-container">
+            <table class="section-table">
+                <thead>
+                    <tr>
+                        <th>Replacement ID</th>
+                        <th>Event Name</th>
+                        <th>Previous Service Provider</th>
+                        <th>Current Provider</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="replacements-tbody">
+                    <tr><td colspan="6" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Resolved Complaints Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <h2>Resolved Complaints</h2>
+        </div>
+        <table class="section-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Complaint Came From</th>
+                    <th>Issue/Dispute</th>
+                    <th>Client Name</th>
+                    <th>Solution Type</th>
+                    <th>Resolved Date</th>
+                </tr>
+            </thead>
+            <tbody id="complaints-tbody">
+                <tr><td colspan="6" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Refunds Table -->
+    <div class="table-section">
+        <div class="table-header">
+            <h2>Refunds Processed</h2>
+        </div>
+        <div class="table-container">
+            <table class="section-table">
+                <thead>
+                    <tr>
+                        <th>Refund ID</th>
+                        <th>Event Name</th>
+                        <th>Client Name</th>
+                        <th>Original Amount</th>
+                        <th>Refund Amount</th>
+                        <th>Status</th>
+                        <th>Refund Date</th>
+                    </tr>
+                </thead>
+                <tbody id="refunds-tbody">
+                    <tr><td colspan="7" style="text-align: center; color: var(--muted);">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="successToast">
+    <i class="fas fa-check-circle toast-icon"></i>
+    <span id="toastMessage">Report successfully sent!</span>
+</div>
+
+<!-- PDF Loading Overlay -->
+<div id="pdf-loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 5000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 32px; border-radius: 12px; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 16px;"><i class="fas fa-spinner fa-spin"></i></div>
+        <p class="pdf-message">Generating PDF... Please wait</p>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <style>
-      :root {
-          --primary: #4B006E;
-          --secondary: #6F1A8C;
-          --dark: #1e293b;
-          --darkprimary: #15001e;
-          --light: #f8fafc;
-          --text: #111827;
-          --muted: #6b7280;
-          --success: #10b981;
-          --danger: #ef4444;
-          --warning: #f59e0b;
-          --gray: #64748b;
-          --border: #e2e8f0;
-          --card-bg: #eae6f1;
-      }
-
-      * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
-
-      body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          background-color: var(--light);
-          color: var(--text);
-          line-height: 1.6;
-          padding: 24px;
-          margin-top: 40px;
-          margin-left: 270px;
-          max-width: calc(100% - 270px);
-          width: 100%;
-          box-sizing: border-box;
-      }
-
-      /* Header Styles */
-      .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 32px;
-          padding-bottom: 24px;
-          border-bottom: 1px solid var(--border);
-      }
-
-      .logo-section {
-          display: flex;
-          flex-direction: column;
-      }
-
-      .logo {
-          font-size: 28px;
-          font-weight: 700;
-          color: var(--primary);
-          display: flex;
-          align-items: center;
-          margin-bottom: 8px;
-      }
-
-      .logo i {
-          margin-right: 12px;
-          font-size: 32px;
-      }
-
-      .page-title {
-          font-size: 24px;
-          font-weight: 600;
-          color: var(--text);
-          margin-top: 4px;
-      }
-
-      .coordinator-info {
-          text-align: right;
-      }
-
-      .coordinator-name {
-          font-size: 20px;
-          font-weight: 700;
-          color: var(--primary);
-          margin-bottom: 4px;
-      }
-
-      .event-count {
-          font-size: 15px;
-          color: var(--muted);
-          margin-bottom: 4px;
-      }
-
-      .report-period {
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--text);
-      }
-
-      .pdf-button {
-          background: var(--primary);
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 10px;
-          font-family: 'Inter', sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          transition: all 0.3s ease;
-          margin-top: 24px;
-          box-shadow: 0 4px 12px rgba(75, 0, 110, 0.25);
-      }
-
-      .pdf-button:hover {
-          background: #3a0056;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(75, 0, 110, 0.35);
-      }
-
-      .pdf-button i {
-          margin-right: 10px;
-          font-size: 18px;
-      }
-
-      .pdf-button:active {
-          transform: translateY(0);
-      }
-
-      .button-container {
-          display: flex;
-          gap: 12px;
-          margin-top: 24px;
-          flex-wrap: wrap;
-      }
-
-      .send-button {
-          background: var(--success);
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 10px;
-          font-family: 'Inter', sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
-      }
-
-      .send-button:hover {
-          background: #059669;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(16, 185, 129, 0.35);
-      }
-
-      .send-button i {
-          margin-right: 10px;
-          font-size: 18px;
-      }
-
-      .send-button:active {
-          transform: translateY(0);
-      }
-
-      /* Report Content */
-      #report-content {
-          background: white;
-          border-radius: 16px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-          padding: 40px;
-          max-width: 1400px;
-          margin: 0 auto;
-      }
-
-      .section {
-          margin-bottom: 48px;
-      }
-
-      .section-header {
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--primary);
-          margin-bottom: 24px;
-          padding-bottom: 12px;
-          border-bottom: 2px solid var(--card-bg);
-          display: flex;
-          align-items: center;
-      }
-
-      .section-header i {
-          margin-right: 12px;
-          font-size: 20px;
-      }
-
-      .section-intro {
-          color: var(--muted);
-          font-size: 14px;
-          line-height: 1.7;
-          margin-bottom: 24px;
-          padding: 16px;
-          background: rgba(75, 0, 110, 0.03);
-          border-radius: 10px;
-          border-left: 3px solid var(--primary);
-      }
-
-      /* Metric Cards */
-      .metrics-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
-          margin-bottom: 36px;
-      }
-
-      .metric-card {
-          background: white;
-          border-left: 4px solid var(--primary);
-          border-radius: 12px;
-          padding: 20px;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-          transition: transform 0.3s ease;
-      }
-
-      .metric-card:hover {
-          transform: translateY(-3px);
-      }
-
-      .metric-label {
-          font-size: 14px;
-          color: var(--muted);
-          margin-bottom: 8px;
-      }
-
-      .metric-value {
-          font-size: 32px;
-          font-weight: 700;
-          color: var(--text);
-          margin-bottom: 4px;
-      }
-
-      .metric-delta {
-          font-size: 14px;
-          font-weight: 600;
-      }
-
-      .metric-delta.positive {
-          color: var(--success);
-      }
-
-      .metric-delta.negative {
-          color: var(--danger);
-      }
-
-      /* Charts */
-      .chart-container {
-          background: white;
-          border-radius: 12px;
-          padding: 24px;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-          margin-bottom: 24px;
-      }
-
-      .chart-title {
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--text);
-          margin-bottom: 20px;
-          text-align: center;
-      }
-
-      .chart-wrapper {
-          position: relative;
-          height: 320px;
-          width: 100%;
-      }
-
-      .chart-legend {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 24px;
-          margin-top: 20px;
-          padding-top: 16px;
-          border-top: 1px solid var(--border);
-      }
-
-      .legend-item {
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-          font-weight: 500;
-      }
-
-      .legend-color {
-          width: 16px;
-          height: 16px;
-          border-radius: 4px;
-          margin-right: 8px;
-      }
-
-      /* Tables */
-      .table-container {
-          overflow-x: auto;
-          border-radius: 12px;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-          margin-bottom: 24px;
-      }
-
-      table {
-          width: 100%;
-          border-collapse: collapse;
-          min-width: 800px;
-      }
-
-      thead {
-          background-color: var(--card-bg);
-          color: var(--dark);
-      }
-
-      th {
-          padding: 14px 16px;
-          text-align: left;
-          font-size: 12px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-      }
-
-      tbody tr {
-          border-bottom: 1px solid var(--border);
-      }
-
-      tbody tr:nth-child(even) {
-          background-color: var(--light);
-      }
-
-      tbody tr:hover {
-          background-color: rgba(75, 0, 110, 0.03);
-      }
-
-      td {
-          padding: 14px 16px;
-          font-size: 14px;
-      }
-
-      /* Badges */
-      .badge {
-          display: inline-block;
-          padding: 4px 10px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-      }
-
-      .badge.resolved {
-          background-color: #d1fae5;
-          color: #065f46;
-      }
-
-      .badge.in-progress {
-          background-color: #dbeafe;
-          color: #1e40af;
-      }
-
-      .badge.escalated {
-          background-color: #fee2e2;
-          color: #991b1b;
-      }
-
-      .badge.cancelled {
-          background-color: #f1f5f9;
-          color: #475569;
-      }
-
-      .badge.refunded {
-          background-color: #fef3c7;
-          color: #92400e;
-      }
-
-      .badge.high {
-          background-color: #fee2e2;
-          color: #991b1b;
-      }
-
-      .badge.medium {
-          background-color: #ffedd5;
-          color: #9a3412;
-      }
-
-      .badge.low {
-          background-color: #d1fae5;
-          color: #065f46;
-      }
-
-      .badge.critical {
-          background-color: #fecaca;
-          color: #991b1b;
-          font-weight: 700;
-      }
-
-      .badge.high-priority {
-          background-color: #ffedd5;
-          color: #9a3412;
-      }
-
-      .badge.medium-priority {
-          background-color: #dbeafe;
-          color: #1e40af;
-      }
-
-      /* Summary Text */
-      .summary-text {
-          background: rgba(16, 185, 129, 0.05);
-          border-left: 3px solid var(--success);
-          padding: 20px;
-          border-radius: 0 8px 8px 0;
-          margin: 24px 0;
-          font-style: italic;
-          line-height: 1.7;
-      }
-
-      /* Two-column layout for complaints section */
-      .two-column {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 32px;
-          margin-bottom: 32px;
-          width: 100%;
-      }
-
-      .two-column > div {
-          min-width: 0;
-      }
-
-      .column-title {
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--primary);
-          margin-bottom: 16px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid var(--border);
-      }
-
-      /* Stats row */
-      .stats-row {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          margin: 24px 0;
-      }
-
-      .stat-box {
-          background: white;
-          border-radius: 12px;
-          padding: 20px;
-          text-align: center;
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-      }
-
-      .stat-label {
-          font-size: 14px;
-          color: var(--muted);
-          margin-bottom: 8px;
-      }
-
-      .stat-value {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--primary);
-      }
-
-      /* Sign-off section */
-      .sign-off {
-          background: var(--card-bg);
-          border-radius: 16px;
-          padding: 32px;
-          margin-top: 24px;
-          text-align: center;
-          border: 1px solid var(--border);
-      }
-
-      .sign-off p {
-          margin-bottom: 12px;
-          font-size: 16px;
-          font-weight: 500;
-      }
-
-      .signature-line {
-          width: 250px;
-          height: 2px;
-          background: var(--text);
-          margin: 24px auto;
-          position: relative;
-      }
-
-      .signature-line::after {
-          content: "Digital Signature";
-          position: absolute;
-          bottom: -24px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 13px;
-          color: var(--muted);
-          font-style: italic;
-      }
-
-      .submitted-date {
-          font-weight: 600;
-          color: var(--primary);
-          margin-top: 8px;
-          font-size: 16px;
-      }
-
-      /* Responsive adjustments */
-      @media (max-width: 1200px) {
-          .metrics-grid {
-              grid-template-columns: repeat(2, 1fr);
-          }
-          
-          .two-column {
-              grid-template-columns: 1fr;
-          }
-          
-          .stats-row {
-              grid-template-columns: 1fr;
-          }
-          
-          #report-content {
-              padding: 30px;
-          }
-      }
-
-      @media (max-width: 1024px) {
-          body {
-              margin-left: 0;
-              margin-top: 70px;
-              max-width: 100%;
-          }
-      }
-
-      @media (max-width: 768px) {
-          body {
-              margin-left: 0;
-              margin-top: 70px;
-              padding: 16px;
-              max-width: 100%;
-          }
-          
-          .header {
-              flex-direction: column;
-              align-items: flex-start;
-          }
-          
-          .coordinator-info {
-              text-align: left;
-              margin-top: 20px;
-          }
-          
-          .metrics-grid {
-              grid-template-columns: 1fr;
-          }
-          
-          #report-content {
-              padding: 24px;
-          }
-          
-          .chart-wrapper {
-              height: 280px;
-          }
-          
-          .pdf-button {
-              width: 100%;
-              margin-top: 16px;
-          }
-          
-          .button-container {
-              flex-direction: column;
-          }
-          
-          .send-button {
-              width: 100%;
-          }
-      }
-
-      @media (max-width: 480px) {
-          body {
-              padding: 16px;
-              margin-left: 0;
-              margin-top: 70px;
-              max-width: 100%;
-          }
-          
-          #report-content {
-              padding: 20px;
-              border-radius: 12px;
-          }
-          
-          .section-header {
-              font-size: 15px;
-          }
-          
-          .metric-value {
-              font-size: 28px;
-          }
-          
-          .chart-wrapper {
-              height: 240px;
-          }
-          
-          table {
-              min-width: 600px;
-          }
-          
-          td, th {
-              padding: 10px 12px;
-              font-size: 13px;
-          }
-      }
-
-      /* Loading state for PDF generation */
-      .pdf-loading {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(255, 255, 255, 0.9);
-          z-index: 1000;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-      }
-
-      .pdf-loading.active {
-          display: flex;
-      }
-
-      .pdf-spinner {
-          width: 60px;
-          height: 60px;
-          border: 5px solid rgba(75, 0, 110, 0.2);
-          border-top: 5px solid var(--primary);
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin-bottom: 24px;
-      }
-
-      .pdf-message {
-          font-size: 18px;
-          font-weight: 600;
-          color: var(--primary);
-      }
-
-      @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-      }
-  </style>
-</head>
-<body>
-    <!-- PDF Generation Loading Overlay -->
-    <div class="pdf-loading" id="pdf-loading">
-        <div class="pdf-spinner"></div>
-        <div class="pdf-message">Generating PDF Report... Please wait</div>
-    </div>
-
-    <!-- Header with PDF button outside report-content -->
-    <div class="header">
-        <div class="logo-section">
-            
-            <div class="page-title">Weekly Report</div>
-        </div>
-        <div class="coordinator-info">
-            <div class="coordinator-name">Nimal Perera</div>
-            <div class="event-count">Managing 12 Assigned Events</div>
-            <div class="report-period">Week of 23 Jun – 29 Jun 2025</div>
-        </div>
-    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const URLROOT = "<?php echo URLROOT; ?>";
+window.URLROOT_PATH = URLROOT;
+
+
+function loadSolvedComplaints() {
+    const URLROOT = '<?php echo URLROOT; ?>';
+     
+    var xml = new XMLHttpRequest();
+    xml.onload = function() {
+        if (xml.status === 200) {
+            var result = JSON.parse(xml.responseText);
+            if (result.success && result.data) {
+                solvedProviderComplaints = result.data;
+                refreshSolvedComplaints();
+            } else {
+                console.error('Failed to load solved complaints:', result.error);
+            }
+        } else {
+            console.error('Error fetching solved complaints:', xml.statusText);
+        }
+    };
+
+    data = {
+        ic_id: ISSUE_COORDINATOR_ID
+    };
+    stringifydata = JSON.stringify(data);
+    xml.open("POST", `${URLROOT}/IssueC/getSolvedComplaints`, true);
+    xml.setRequestHeader("Content-Type", "application/json");
+    xml.send(stringifydata);
+}
+
+// Load Solved Complaints for client complaints
+function loadClientSolvedComplaints() {
+    const URLROOT = '<?php echo URLROOT; ?>';
+     
+    var xml = new XMLHttpRequest();
+    xml.onload = function() {
+        if (xml.status === 200) {
+            var result = JSON.parse(xml.responseText);
+            if (result.success && result.data) {
+                solvedClientComplaints = result.data;
+                refreshSolvedComplaints();
+            } else {
+                console.error('Failed to load solved client complaints:', result.error);
+            }
+        } else {
+            console.error('Error fetching solved client complaints:', xml.statusText);
+        }
+    };
+
+    data = {
+        ic_id: ISSUE_COORDINATOR_ID
+    };
+    stringifydata = JSON.stringify(data);
+    xml.open("POST", `${URLROOT}/IssueC/getSolvedClientComplaints`, true);
+    xml.setRequestHeader("Content-Type", "application/json");
+    xml.send(stringifydata);
+}
+
+
+// Helper function to format complaint type labels
+function formatComplaintType(typeStr) {
+    const typeMap = {
+        'QUALITY_ISSUE': 'Quality Issue',
+        'NO_SHOW': 'No Show',
+        'PAYMENT_DISPUTE': 'Payment Dispute',
+        'LATE_CANCELLATION': 'Late Cancellation',
+        'MISCONDUCT': 'Misconduct',
+        'OTHER': 'Other',
+        'PROVIDER_REPLACED': 'Provider Replaced',
+        'REFUND_ISSUED': 'Refund Issued',
+        'WARNING_GIVEN': 'Warning Given',
+        'NO_ACTION': 'No Action'
+    };
+    return typeMap[typeStr] || typeStr;
+}
+
+// Helper function to get time since
+function getTimeSince(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
     
-    <div class="button-container">
-        <button class="pdf-button" id="download-pdf">
-            <i class="fas fa-download"></i> Download PDF Report
-        </button>
-        <button class="send-button" id="send-report">
-            <i class="fas fa-paper-plane"></i> Send to Admin
-        </button>
-    </div>
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + ' years ago';
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + ' months ago';
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + ' days ago';
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + ' hours ago';
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + ' minutes ago';
+    
+    return Math.floor(seconds) + ' seconds ago';
+}
 
-    <!-- Report Content (will be captured for PDF) -->
-    <div id="report-content">
-        <!-- Section 1: Summary Overview -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-chart-line"></i> Summary Overview
-            </h2>
-            
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-label">Total Issues Handled</div>
-                    <div class="metric-value">24</div>
-                    <div class="metric-delta positive">
-                        <i class="fas fa-arrow-up"></i> +8 vs previous week
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Complaints Resolved</div>
-                    <div class="metric-value">19</div>
-                    <div class="metric-delta positive">
-                        <i class="fas fa-arrow-up"></i> +5 vs previous week
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Replacements Made</div>
-                    <div class="metric-value">3</div>
-                    <div class="metric-delta negative">
-                        <i class="fas fa-arrow-up"></i> +1 vs previous week
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Escalations to Admin</div>
-                    <div class="metric-value">2</div>
-                    <div class="metric-delta negative">
-                        <i class="fas fa-arrow-up"></i> +2 vs previous week
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">Weekly Activity Breakdown</div>
-                <div class="chart-wrapper">
-                    <canvas id="activityChart"></canvas>
-                </div>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #4B006E;"></div>
-                        <span>Issues Raised</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #10b981;"></div>
-                        <span>Issues Resolved</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #ef4444;"></div>
-                        <span>Escalations</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="summary-text">
-                This week, Nimal Perera handled 24 issues across 12 events. Resolution rate stood at 79%. 2 issues were escalated to the admin due to complexity beyond coordinator authority, including a major venue cancellation and a payment dispute exceeding LKR 150,000.
-            </div>
-        </div>
-        
-        <!-- Section 2: Event Monitoring -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-exclamation-triangle"></i> Event Monitoring & Threat Identification
-            </h2>
-            
-            <div class="section-intro">
-                Each issue coordinator monitors 10–15 assigned events for potential risks including vendor conflicts, scheduling gaps, and client dissatisfaction signals.
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Event Date</th>
-                            <th>Venue</th>
-                            <th>Threat Level</th>
-                            <th>Threat Type</th>
-                            <th>Action Taken</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Colombo Tech Summit</td>
-                            <td>25 Jun 2025</td>
-                            <td>Battaramulla Convention Center</td>
-                            <td><span class="badge high">High</span></td>
-                            <td>Vendor Conflict</td>
-                            <td>Mediated between AV provider and venue management</td>
-                            <td><span class="badge resolved">Resolved</span></td>
-                        </tr>
-                        <tr>
-                            <td>Kandy Wedding Expo</td>
-                            <td>27 Jun 2025</td>
-                            <td>Mahaweli Reach Hotel</td>
-                            <td><span class="badge medium">Medium</span></td>
-                            <td>Scheduling Gap</td>
-                            <td>Rescheduled catering setup time</td>
-                            <td><span class="badge resolved">Resolved</span></td>
-                        </tr>
-                        <tr>
-                            <td>Galle Food Festival</td>
-                            <td>28 Jun 2025</td>
-                            <td>Galle Face Green</td>
-                            <td><span class="badge high">High</span></td>
-                            <td>Weather Risk</td>
-                            <td>Secured backup indoor venue option</td>
-                            <td><span class="badge in-progress">In Progress</span></td>
-                        </tr>
-                        <tr>
-                            <td>Nuwara Eliya Corporate Retreat</td>
-                            <td>26 Jun 2025</td>
-                            <td>Grand Hotel</td>
-                            <td><span class="badge low">Low</span></td>
-                            <td>Client Dissatisfaction</td>
-                            <td>Arranged complimentary upgrade</td>
-                            <td><span class="badge resolved">Resolved</span></td>
-                        </tr>
-                        <tr>
-                            <td>Jaffna Cultural Night</td>
-                            <td>29 Jun 2025</td>
-                            <td>Jaffna Public Library</td>
-                            <td><span class="badge medium">Medium</span></td>
-                            <td>Permit Issue</td>
-                            <td>Contacted local authorities for expedited approval</td>
-                            <td><span class="badge in-progress">In Progress</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="summary-text">
-                5 events were flagged this week. 3 were resolved at coordinator level. 2 remain under active monitoring and may require admin review if weather conditions deteriorate for the Galle Food Festival.
-            </div>
-        </div>
-        
-        <!-- Section 3: Service Provider Replacements -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-exchange-alt"></i> Service Provider Replacements
-            </h2>
-            
-            <div class="section-intro">
-                Replacements are initiated when a service provider fails to meet quality standards, is unresponsive, or cancels last minute.
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Original Provider</th>
-                            <th>Replacement Provider</th>
-                            <th>Reason</th>
-                            <th>Replacement Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Colombo Tech Summit</td>
-                            <td>Elite Audio Visual</td>
-                            <td>SoundWave Solutions</td>
-                            <td>No-show</td>
-                            <td>24 Jun 2025</td>
-                            <td><span class="badge resolved">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Kandy Wedding Expo</td>
-                            <td>Premier Catering Co.</td>
-                            <td>Spice Garden Caterers</td>
-                            <td>Quality issue</td>
-                            <td>26 Jun 2025</td>
-                            <td><span class="badge resolved">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Galle Food Festival</td>
-                            <td>Lanka Tent Masters</td>
-                            <td>Ocean View Marquees</td>
-                            <td>Cancellation</td>
-                            <td>27 Jun 2025</td>
-                            <td><span class="badge in-progress">In Progress</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">Replacement Reasons Breakdown</div>
-                <div class="chart-wrapper">
-                    <canvas id="replacementsChart"></canvas>
-                </div>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #ef4444;"></div>
-                        <span>No-show</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #f59e0b;"></div>
-                        <span>Quality issue</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #4B006E;"></div>
-                        <span>Cancellation</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #64748b;"></div>
-                        <span>Unresponsive</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="summary-text">
-                3 provider replacements were completed this week. The most common reason was no-show (33%). All replacements were confirmed before the event date with minimal disruption to client experience.
-            </div>
-        </div>
-        
-        <!-- Section 4: Complaints Handled -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-comment-dots"></i> Complaints Handled
-            </h2>
-            
-            <div class="section-intro">
-                Complaints from both clients and service providers are reviewed, investigated, and resolved or escalated by the issue coordinator.
-            </div>
-            
-            <div class="two-column">
-                <div>
-                    <div class="column-title">Client Complaints</div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Complaint ID</th>
-                                    <th>Client Name</th>
-                                    <th>Event</th>
-                                    <th>Type</th>
-                                    <th>Date</th>
-                                    <th>Resolution</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>COMP-7845</td>
-                                    <td>Anjali Silva</td>
-                                    <td>Colombo Tech Summit</td>
-                                    <td>Service Quality</td>
-                                    <td>24 Jun</td>
-                                    <td>Partial refund issued</td>
-                                    <td><span class="badge resolved">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>COMP-7851</td>
-                                    <td>Rohan Fernando</td>
-                                    <td>Kandy Wedding Expo</td>
-                                    <td>Delay</td>
-                                    <td>26 Jun</td>
-                                    <td>Provider warning issued</td>
-                                    <td><span class="badge resolved">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>COMP-7862</td>
-                                    <td>Nadeesha Perera</td>
-                                    <td>Galle Food Festival</td>
-                                    <td>Communication</td>
-                                    <td>27 Jun</td>
-                                    <td>Escalated to admin</td>
-                                    <td><span class="badge escalated">Escalated</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div>
-                    <div class="column-title">Service Provider Complaints</div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Complaint ID</th>
-                                    <th>Provider Name</th>
-                                    <th>Event</th>
-                                    <th>Type</th>
-                                    <th>Date</th>
-                                    <th>Resolution</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>COMP-7848</td>
-                                    <td>Elite Audio Visual</td>
-                                    <td>Colombo Tech Summit</td>
-                                    <td>Payment Issue</td>
-                                    <td>24 Jun</td>
-                                    <td>Payment processed</td>
-                                    <td><span class="badge resolved">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>COMP-7855</td>
-                                    <td>Premier Catering Co.</td>
-                                    <td>Kandy Wedding Expo</td>
-                                    <td>Client Behavior</td>
-                                    <td>26 Jun</td>
-                                    <td>Mediation completed</td>
-                                    <td><span class="badge resolved">Resolved</span></td>
-                                </tr>
-                                <tr>
-                                    <td>COMP-7867</td>
-                                    <td>Lanka Tent Masters</td>
-                                    <td>Galle Food Festival</td>
-                                    <td>Contract Dispute</td>
-                                    <td>28 Jun</td>
-                                    <td>Under investigation</td>
-                                    <td><span class="badge in-progress">In Progress</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">Complaints by Type</div>
-                <div class="chart-wrapper">
-                    <canvas id="complaintsChart"></canvas>
-                </div>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #6F1A8C;"></div>
-                        <span>Service Quality</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #6F1A8C;"></div>
-                        <span>Communication</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #6F1A8C;"></div>
-                        <span>Delay</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #6F1A8C;"></div>
-                        <span>Payment Issue</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background-color: #6F1A8C;"></div>
-                        <span>Other</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="summary-text">
-                6 client complaints and 3 provider complaints were handled this week. 78% were fully resolved. 2 were escalated to admin due to complexity and financial implications exceeding coordinator authority limits.
-            </div>
-        </div>
-        
-        <!-- Section 5: Payment Refunds & Cancellations -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-credit-card"></i> Payment Refunds & Cancellations
-            </h2>
-            
-            <div class="section-intro">
-                The coordinator reviews flagged transactions and processes refunds or cancellations where applicable.
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Transaction ID</th>
-                            <th>Client Name</th>
-                            <th>Event</th>
-                            <th>Amount (LKR)</th>
-                            <th>Type</th>
-                            <th>Reason</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>TXN-45678</td>
-                            <td>Anjali Silva</td>
-                            <td>Colombo Tech Summit</td>
-                            <td>28,500</td>
-                            <td>Refund</td>
-                            <td>Service quality below standard</td>
-                            <td>24 Jun</td>
-                            <td><span class="badge refunded">Refunded</span></td>
-                        </tr>
-                        <tr>
-                            <td>TXN-45682</td>
-                            <td>Rohan Fernando</td>
-                            <td>Kandy Wedding Expo</td>
-                            <td>15,750</td>
-                            <td>Refund</td>
-                            <td>Vendor delay exceeding 60 mins</td>
-                            <td>26 Jun</td>
-                            <td><span class="badge refunded">Refunded</span></td>
-                        </tr>
-                        <tr>
-                            <td>TXN-45691</td>
-                            <td>Nadeesha Perera</td>
-                            <td>Galle Food Festival</td>
-                            <td>42,300</td>
-                            <td>Cancellation</td>
-                            <td>Client-initiated (medical emergency)</td>
-                            <td>27 Jun</td>
-                            <td><span class="badge cancelled">Cancelled</span></td>
-                        </tr>
-                        <tr>
-                            <td>TXN-45695</td>
-                            <td>Dinesh Jayawardena</td>
-                            <td>Nuwara Eliya Retreat</td>
-                            <td>68,900</td>
-                            <td>Refund</td>
-                            <td>Partial service delivery</td>
-                            <td>28 Jun</td>
-                            <td><span class="badge pending">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>TXN-45701</td>
-                            <td>Chamari Abeywickrama</td>
-                            <td>Jaffna Cultural Night</td>
-                            <td>35,200</td>
-                            <td>Cancellation</td>
-                            <td>Permit denial by authorities</td>
-                            <td>29 Jun</td>
-                            <td><span class="badge escalated">Escalated</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="stats-row">
-                <div class="stat-box">
-                    <div class="stat-label">Total Refunded</div>
-                    <div class="stat-value">LKR 44,250</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Total Cancelled</div>
-                    <div class="stat-value">LKR 77,500</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Pending Review</div>
-                    <div class="stat-value">2 transactions</div>
-                </div>
-            </div>
-            
-            <div class="summary-text">
-                5 transactions were reviewed this week. LKR 44,250 was refunded to clients. 2 cancellations were processed totaling LKR 77,500. 2 transactions remain under review pending additional documentation from clients.
-            </div>
-        </div>
-        
-        <!-- Section 6: Event Cancellations -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-times-circle"></i> Event Cancellations
-            </h2>
-            
-            <div class="section-intro">
-                Event cancellations are processed by the coordinator upon client or organiser request, following the platform's cancellation policy.
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Client</th>
-                            <th>Scheduled Date</th>
-                            <th>Cancellation Date</th>
-                            <th>Reason</th>
-                            <th>Refund Status</th>
-                            <th>Handled By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Galle Food Festival (Sat)</td>
-                            <td>Nadeesha Perera</td>
-                            <td>28 Jun 2025</td>
-                            <td>27 Jun 2025</td>
-                            <td>Medical emergency</td>
-                            <td>Full refund approved</td>
-                            <td>Nimal Perera</td>
-                        </tr>
-                        <tr>
-                            <td>Jaffna Cultural Night</td>
-                            <td>Chamari Abeywickrama</td>
-                            <td>29 Jun 2025</td>
-                            <td>29 Jun 2025</td>
-                            <td>Permit denial</td>
-                            <td>Partial refund (70%)</td>
-                            <td>Nimal Perera</td>
-                        </tr>
-                        <tr>
-                            <td>Bentota Beach Wedding</td>
-                            <td>Kasun Rajapaksa</td>
-                            <td>05 Jul 2025</td>
-                            <td>28 Jun 2025</td>
-                            <td>Provider unavailability</td>
-                            <td>Full refund approved</td>
-                            <td>Nimal Perera</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="summary-text">
-                3 events were cancelled this week. 2 were client-initiated and 1 was due to provider unavailability. All cancellations followed the EvoPlan cancellation policy with appropriate refunds processed according to timing and circumstances.
-            </div>
-        </div>
-        
-        <!-- Section 7: Escalations to Admin -->
-        <div class="section">
-            <h2 class="section-header">
-                <i class="fas fa-level-up-alt"></i> Escalations to Admin
-            </h2>
-            
-            <div class="section-intro">
-                Issues beyond the coordinator's authority are formally escalated to the admin with full context and recommended actions.
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Escalation ID</th>
-                            <th>Issue Type</th>
-                            <th>Related Event</th>
-                            <th>Description</th>
-                            <th>Date Raised</th>
-                            <th>Priority</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ESC-1124</td>
-                            <td>Payment Dispute</td>
-                            <td>Galle Food Festival</td>
-                            <td>Client demanding full refund despite partial service delivery; amount exceeds LKR 40,000 threshold</td>
-                            <td>27 Jun 2025</td>
-                            <td><span class="badge critical">Critical</span></td>
-                            <td><span class="badge escalated">Pending Review</span></td>
-                        </tr>
-                        <tr>
-                            <td>ESC-1125</td>
-                            <td>Venue Cancellation</td>
-                            <td>Colombo Tech Summit</td>
-                            <td>Venue owner cancelled 48hrs before event due to structural concerns; requires emergency relocation</td>
-                            <td>23 Jun 2025</td>
-                            <td><span class="badge high-priority">High</span></td>
-                            <td><span class="badge resolved">Resolved</span></td>
-                        </tr>
-                        <tr>
-                            <td>ESC-1126</td>
-                            <td>Contract Dispute</td>
-                            <td>Jaffna Cultural Night</td>
-                            <td>Provider demanding additional payment not in original contract; client refuses to pay</td>
-                            <td>29 Jun 2025</td>
-                            <td><span class="badge medium-priority">Medium</span></td>
-                            <td><span class="badge in-progress">Under Review</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="summary-text">
-                3 issues were escalated to admin this week. 1 is marked critical requiring immediate attention. The coordinator recommends establishing a special contingency fund for emergency venue relocations to prevent future disruptions to major events.
-            </div>
-        </div>
-        
-        <!-- Footer: Coordinator Sign-off -->
-        <div class="sign-off">
-            <p>Report prepared by: <strong>Nimal Perera</strong></p>
-            <p>Report Period: <strong>Week of 23 Jun – 29 Jun 2025</strong></p>
-            <p>Submitted to: <strong>Admin Team</strong></p>
-            <div class="signature-line"></div>
-            <p class="submitted-date" id="submission-date">Date Submitted: June 30, 2025</p>
-        </div>
-    </div>
 
-    <script>
-        // Set URLROOT for API calls
-        window.URLROOT_PATH = '<?php echo URLROOT; ?>';
+// Helper function to format time
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Initialize page and load all data
+document.addEventListener('DOMContentLoaded', function() {
+    const ISSUE_COORDINATOR_ID = <?php echo isset($_SESSION['ic_id']) ? (int)$_SESSION['ic_id'] : 0; ?>;
+    
+    // Set submission date
+    document.getElementById('submission-date').textContent = 'Date Submitted: ' + formatDate(new Date().toISOString());
+    
+    // Load all data
+    loadAllData();
+});
+
+// Main function to load all data
+function loadAllData() {
+    loadEvents();
+    loadReplacements();
+    loadComplaints();
+    loadRefunds();
+}
+
+// Load Events with Issues
+function loadEvents() {
+    const URLROOT = window.URLROOT_PATH;
+    
+    fetch(`${URLROOT}/IssueC/getEventsWithIssues`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success && result.data) {
+            populateEventsTable(result.data);
+        } else {
+            console.error('Failed to load events:', result.error || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching events:', error);
+    });
+}
+
+// Populate Events Table with Progress Bars
+function populateEventsTable(events) {
+    const tbody = document.getElementById('events-tbody');
+    
+    if (!events || events.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted);">No events found</td></tr>';
+        updateMetricCard(0, null, null, null, null);
+        return;
+    }
+    
+    // Sort events by progress - show low progress (33%) and medium progress (66%) at top
+    const sortedEvents = [...events].sort((a, b) => {
+        const progressA = normalizeProgress(a.progress_precent);
+        const progressB = normalizeProgress(b.progress_precent);
+        return progressA - progressB; // Low progress first
+    });
+    
+    tbody.innerHTML = sortedEvents.map(event => {
+        const progressValue = normalizeProgress(event.progress_precent);
+        const progressClass = progressValue <= 33 ? 'low' : progressValue <= 66 ? 'medium' : 'high';
+        const eventDate = event.date || event.event_date || event.start_datetime || '';
+        const formattedDate = eventDate ? formatDate(eventDate) : 'N/A';
         
-        // Set current date for submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('submission-date').textContent = `Date Submitted: ${today.toLocaleDateString('en-US', options)}`;
+        return `
+            <tr>
+                <td class="table-id">#${event.event_id}</td>
+                <td class="table-event">${event.event_name || 'N/A'}</td>
+                <td>${formattedDate}</td>
+                <td>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill ${progressClass}" style="width: ${progressValue}%"></div>
+                        </div>
+                        <div class="progress-text">${Math.round(progressValue)}% Complete</div>
+                    </div>
+                </td>
+                <td>${event.client_name || 'N/A'}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Update total events metric
+    updateMetricCard(events.length, null, null, null, null);
+}
+
+// Normalize progress value to percentage
+function normalizeProgress(value) {
+    const raw = Number(value);
+    const normalized = Number.isFinite(raw)
+        ? (raw <= 1 ? raw * 100 : raw)
+        : 0;
+    return Math.max(0, Math.min(100, Math.round(normalized)));
+}
+
+// Load Replacements
+function loadReplacements() {
+    const URLROOT = window.URLROOT_PATH;
+    
+    fetch(`${URLROOT}/IssueC/getReplacementHistory`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success && result.data) {
+            populateReplacementsTable(result.data);
+        } else {
+            console.error('Failed to load replacements:', result.error || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching replacements:', error);
+    });
+}
+
+// Populate Replacements Table
+function populateReplacementsTable(replacements) {
+    const tbody = document.getElementById('replacements-tbody');
+    
+    if (!replacements || replacements.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 40px; color: var(--muted);">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📦</div>
+                    <p style="margin: 0; font-weight: 600;">No replacement history found</p>
+                    <p style="margin: 5px 0 0 0; font-size: 0.9rem;">Service provider replacements will appear here</p>
+                </td>
+            </tr>
+        `;
+        updateMetricCard(null, null, null, 0, null);
+        return;
+    }
+    
+    // Update total replacements metric
+    updateMetricCard(null, null, null, replacements.length, null);
+    
+    tbody.innerHTML = replacements.map(replacement => {
+        // Get replacement ID
+        const replacementId = replacement.replacement_id || replacement.id || 'N/A';
+        
+        // Get event information
+        const eventName = replacement.event_name || 'N/A';
+        
+        // Get previous provider (old provider) - multiple field options
+        const previousProvider = replacement.previous_provider_name || 
+                               replacement.previous_service_provider ||
+                               replacement.old_provider_name ||
+                               replacement.provider_name ||
+                               'N/A';
+        
+        // Get current provider (new provider) - multiple field options
+        const currentProvider = replacement.new_provider_name || 
+                              replacement.new_service_provider ||
+                              replacement.current_provider_name ||
+                              replacement.replacement_provider ||
+                              'N/A';
+        
+        // Get status with proper formatting
+        const status = (replacement.status || 'COMPLETED').toUpperCase();
+        const statusBadgeClass = status === 'COMPLETED' ? 'badge-completed' : 
+                                status === 'PENDING' ? 'badge-pending' : 
+                                status === 'FAILED' ? 'badge-failed' : 'badge-completed';
+        
+        // Get date - try multiple field options
+        const replacementDate = replacement.resolved_at || 
+                              replacement.created_at || 
+                              replacement.replacement_date || 
+                              replacement.updated_at || 
+                              '';
+        const formattedDate = replacementDate ? formatDate(replacementDate) : 'N/A';
+        
+        // Additional info for debugging/display
+        const serviceType = replacement.service_type ? ` (${replacement.service_type})` : '';
+        
+        return `
+            <tr>
+                <td class="table-id">#${replacementId}</td>
+                <td class="table-event">${eventName}</td>
+                <td class="table-provider">${previousProvider}${serviceType}</td>
+                <td class="table-provider">${currentProvider}</td>
+                <td>
+                    <span class="badge ${statusBadgeClass}">${status}</span>
+                </td>
+                <td class="table-created">${formattedDate}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// Load Complaints (Both Provider and Client)
+function loadComplaints() {
+    const URLROOT = window.URLROOT_PATH;
+    const ISSUE_COORDINATOR_ID = <?php echo isset($_SESSION['ic_id']) ? (int)$_SESSION['ic_id'] : 0; ?>;
+    
+    // Load provider complaints
+    fetch(`${URLROOT}/IssueC/getSolvedComplaints`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ic_id: ISSUE_COORDINATOR_ID
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        const providerComplaints = (result.success && result.data) ? result.data : [];
+        
+        // Load client complaints
+        return fetch(`${URLROOT}/IssueC/getSolvedClientComplaints`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ic_id: ISSUE_COORDINATOR_ID
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            const clientComplaints = (result.success && result.data) ? result.data : [];
             
-            // Initialize all charts
-            initActivityChart();
-            initReplacementsChart();
-            initComplaintsChart();
-            
-            // Setup buttons
-            document.getElementById('download-pdf').addEventListener('click', generatePDF);
-            document.getElementById('send-report').addEventListener('click', sendReport);
+            // Combine both types of complaints
+            const allComplaints = [...providerComplaints, ...clientComplaints];
+            populateComplaintsTable(allComplaints);
         });
-        
-        function initActivityChart() {
-            const ctx = document.getElementById('activityChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [
-                        {
-                            label: 'Issues Raised',
-                            data: [4, 3, 5, 2, 6, 3, 1],
-                            backgroundColor: '#4B006E',
-                            borderColor: '#4B006E',
-                            borderWidth: 1,
-                            borderRadius: 6,
-                            borderSkipped: false
-                        },
-                        {
-                            label: 'Issues Resolved',
-                            data: [3, 4, 4, 3, 5, 2, 2],
-                            backgroundColor: '#10b981',
-                            borderColor: '#10b981',
-                            borderWidth: 1,
-                            borderRadius: 6,
-                            borderSkipped: false
-                        },
-                        {
-                            label: 'Escalations',
-                            data: [0, 0, 1, 0, 1, 0, 0],
-                            backgroundColor: '#ef4444',
-                            borderColor: '#ef4444',
-                            borderWidth: 1,
-                            borderRadius: 6,
-                            borderSkipped: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            border: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            border: {
-                                display: false
-                            },
-                            ticks: {
-                                stepSize: 2
-                            }
-                        }
-                    },
-                    interaction: {
-                        mode: 'index'
-                    },
-                    barPercentage: 0.7,
-                    categoryPercentage: 0.8
-                }
-            });
-        }
-        
-        function initReplacementsChart() {
-            const ctx = document.getElementById('replacementsChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['No-show', 'Quality issue', 'Cancellation', 'Unresponsive'],
-                    datasets: [{
-                        data: [1, 1, 1, 0],
-                        backgroundColor: [
-                            '#ef4444', // No-show
-                            '#f59e0b', // Quality issue
-                            '#4B006E', // Cancellation
-                            '#64748b'  // Unresponsive
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 15
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    return `${label}: ${value} (${Math.round(value / 3 * 100)}%)`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '70%',
-                    rotation: -90,
-                    circumference: 360
-                }
-            });
-        }
-        
-        function initComplaintsChart() {
-            const ctx = document.getElementById('complaintsChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Service Quality', 'Communication', 'Delay', 'Payment Issue', 'Other'],
-                    datasets: [{
-                        label: 'Complaint Count',
-                        data: [4, 2, 3, 2, 1],
-                        backgroundColor: '#6F1A8C',
-                        borderColor: '#6F1A8C',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            border: {
-                                display: false
-                            },
-                            ticks: {
-                                stepSize: 1
-                            }
-                        },
-                        y: {
-                            grid: {
-                                display: false
-                            },
-                            border: {
-                                display: false
-                            }
-                        }
-                    },
-                    barPercentage: 0.8,
-                    categoryPercentage: 0.9
-                }
-            });
-        }
-        
-        // PDF Generation Function
-        function generatePDF() {
-            const loadingOverlay = document.getElementById('pdf-loading');
-            loadingOverlay.classList.add('active');
-            
-            // Get the report content element
-            const reportContent = document.getElementById('report-content');
-            
-            // Temporarily adjust styles for PDF
-            const originalPadding = reportContent.style.padding;
-            reportContent.style.padding = '30px';
-            
-            // Capture the element as image
-            html2canvas(reportContent, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                onclone: (document) => {
-                    // Fix any rendering issues in the cloned document
-                }
-            }).then(canvas => {
-                // Restore original padding
-                reportContent.style.padding = originalPadding;
-                
-                // Create PDF
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jspdf.jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                
-                // Calculate dimensions to fit content
-                const imgWidth = 210; // A4 width in mm
-                const pageHeight = 297; // A4 height in mm
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-                
-                // Add first page
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-                
-                // Add additional pages if needed
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                // Save PDF
-                pdf.save(`EvoPlan_Weekly_Report_Nimal_Perera_${new Date().toISOString().slice(0,10)}.pdf`);
-                
-                // Hide loading overlay
-                loadingOverlay.classList.remove('active');
-                
-                // Show success feedback
-                alert('PDF report successfully generated and downloaded!');
-            }).catch(error => {
-                console.error('PDF generation error:', error);
-                loadingOverlay.classList.remove('active');
-                alert('Error generating PDF. Please try again or contact support.');
-            });
-        }
+    })
+    .catch(error => {
+        console.error('Error fetching complaints:', error);
+    });
+}
 
-        // Send Report Function
-        function sendReport() {
-            const coordinatorName = 'Nimal Perera';
-            const reportPeriod = 'Week of 23 Jun – 29 Jun 2025';
-            
-            // Prepare report data
-            const reportData = {
-                coordinator_name: coordinatorName,
-                report_period: reportPeriod,
-                submission_date: new Date().toISOString(),
-                content: document.getElementById('report-content').innerHTML
-            };
+// Populate Complaints Table
+function populateComplaintsTable(complaints) {
+    const tbody = document.getElementById('complaints-tbody');
+    
+    if (!complaints || complaints.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--muted);">No complaints found</td></tr>';
+        updateMetricCard(null, null, 0, null, null); // Update total complaints metric
+        return;
+    }
+    
+    tbody.innerHTML = complaints.map(complaint => {
+        // Determine complaint source
+        const complaintSource = complaint.complaint_source || 
+            (complaint.complainant_type === 'CLIENT' ? 'SERVICE_PROVIDER' : 'CLIENT') ||
+            'Unknown';
+        const sourceLabel = complaintSource === 'CLIENT' ? 'Client' : 'Service Provider';
+        
+        // Get complaint type
+        const complaintType = complaint.issue_type || complaint.complaint_type || 'OTHER';
+        const complaintTypeLabel = formatComplaintType(complaintType);
+        
+        // Get client/provider name
+        const clientName = complaint.client_name || complaint.provider_name || 'Unknown';
+        
+        // Get resolution type
+        const resolutionType = complaint.resolution_type ? formatComplaintType(complaint.resolution_type) : 'N/A';
+        
+        // Get resolved date
+        const resolvedDate = complaint.resolved_at ? formatDate(complaint.resolved_at) : 'N/A';
+        
+        return `
+            <tr>
+                <td class="table-id">#${complaint.complaint_id || complaint.id}</td>
+                <td>${sourceLabel}</td>
+                <td>${complaintTypeLabel}</td>
+                <td>${clientName}</td>
+                <td><span class="badge badge-resolved">${resolutionType}</span></td>
+                <td>${resolvedDate}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Update total complaints metric
+    updateMetricCard(null, 1, complaints.length, null, null);
+}
 
-            // Show loading overlay
-            const loadingOverlay = document.getElementById('pdf-loading');
-            loadingOverlay.classList.add('active');
-            
-            // Update message
-            const message = loadingOverlay.querySelector('.pdf-message');
-            message.textContent = 'Sending report to Admin... Please wait';
+// Load Refunds
+function loadRefunds() {
+    const URLROOT = window.URLROOT_PATH;
+    
+    fetch(`${URLROOT}/IssueC/getResolvedRefunds`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success && result.data) {
+            populateRefundsTable(result.data);
+        } else {
+            console.error('Failed to load refunds:', result.error || 'Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching refunds:', error);
+    });
+}
 
-            // Send report via AJAX
-            fetch(window.URLROOT_PATH + '/api/report/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify(reportData)
-            })
-            .then(response => {
-                if(!response.ok) throw new Error(`HTTP ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
-                loadingOverlay.classList.remove('active');
-                message.textContent = 'Generating PDF Report... Please wait';
-                
-                if(data.success || data.submission_id) {
-                    const submissionId = data.submission_id || 'REP-' + new Date().toISOString().slice(0,10);
-                    alert(`✓ Report successfully sent to Admin!\n\nSubmission ID: ${submissionId}\nTime: ${new Date().toLocaleString()}\n\nThe admin will review and process this report shortly.`);
-                } else {
-                    throw new Error(data.message || 'Unknown error occurred');
-                }
-            })
-            .catch(error => {
-                console.error('Send report error:', error);
-                loadingOverlay.classList.remove('active');
-                message.textContent = 'Generating PDF Report... Please wait';
-                
-                // Provide helpful message even if API fails
-                alert(`⚠ Report submission encountered an issue.\n\nError: ${error.message}\n\nYou can:\n1. Try sending again\n2. Download as PDF and send manually\n3. Contact support if the issue persists`);
-            });
+// Populate Refunds Table
+function populateRefundsTable(refunds) {
+    const tbody = document.getElementById('refunds-tbody');
+    
+    if (!refunds || refunds.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--muted);">No refunds found</td></tr>';
+        updateMetricCard(null, null, null, null, 0); // Update total refunds metric
+        return;
+    }
+    
+    tbody.innerHTML = refunds.map(refund => {
+        // Get refund ID
+        const refundId = refund.refund_id || refund.id || refund.event_id || 'N/A';
+        
+        // Get event name
+        const eventName = refund.event_name || 'N/A';
+        
+        // Get client name
+        const clientName = refund.client_name || 'N/A';
+        
+        // Get original amount - try original_amount first (from getResolvedRefunds API)
+        const originalAmountValue = parseFloat(refund.total_cost);
+        const originalAmount = `Rs. ${originalAmountValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        // Get refund amount - if not available, calculate as 85% of original (15% provider fee deducted)
+        let refundAmountValue = parseFloat(refund.refund_amount || 0);
+        if (refundAmountValue === 0 && originalAmountValue > 0) {
+            refundAmountValue = originalAmountValue * 0.85;
         }
-    </script>
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script>
-        // Fallback for Font Awesome if kit fails
-        if (!window.FontAwesome) {
-            document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">');
+        const refundAmount = `Rs. ${refundAmountValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        // Get status with proper formatting
+        const status = (refund.status || refund.issue_type || 'REFUNDED').toUpperCase();
+        const statusBadgeClass = status === 'REFUNDED' ? 'badge-completed' : 
+                                status === 'COMPLETED' ? 'badge-completed' : 
+                                status === 'PENDING' ? 'badge-pending' : 
+                                status === 'REJECTED' ? 'badge-failed' : 'badge-completed';
+        
+        // Get refund date with time
+        const refundDate = refund.refund_date || refund.resolved_at || refund.resolved_date || refund.updated_at || '';
+        const formattedDate = refundDate ? `
+            <div style="font-weight: 600;">${formatDate(refundDate)}</div>
+            <div style="color: var(--muted); font-size: 0.75rem;">${formatTime(refundDate)}</div>
+        ` : 'N/A';
+        
+        return `
+            <tr>
+                <td class="table-id">#${refundId}</td>
+                <td class="table-event">${eventName}</td>
+                <td class="table-client">${clientName}</td>
+                <td class="table-amount">${originalAmount}</td>
+                <td class="table-amount positive">${refundAmount}</td>
+                <td>
+                    <span class="badge ${statusBadgeClass}">${status}</span>
+                </td>
+                <td class="table-created">${formattedDate}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Update total refunds metric
+    updateMetricCard(null, null, null, null, refunds.length);
+}
+
+// Update individual metric cards
+function updateMetricCard(totalEvents, complaintIndex, complaintCount, replacementCount, refundCount) {
+    const metricCards = document.querySelectorAll('.metric-card');
+    
+    if (totalEvents !== null && metricCards[0]) {
+        metricCards[0].querySelector('.metric-value').textContent = totalEvents;
+    }
+    
+    if (complaintCount !== null && metricCards[1]) {
+        metricCards[1].querySelector('.metric-value').textContent = complaintCount;
+    }
+    
+    if (replacementCount !== null && metricCards[2]) {
+        metricCards[2].querySelector('.metric-value').textContent = replacementCount;
+    }
+    
+    if (refundCount !== null && metricCards[3]) {
+        metricCards[3].querySelector('.metric-value').textContent = refundCount;
+    }
+}
+
+// Download Report as PDF
+document.addEventListener('DOMContentLoaded', function() {
+    const downloadBtn = document.getElementById('download-pdf');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadReportPDF);
+    }
+});
+
+function downloadReportPDF() {
+    const pdfLoading = document.getElementById('pdf-loading');
+    const reportContainer = document.querySelector('.report-container');
+    
+    if (!reportContainer) {
+        alert('Report container not found');
+        return;
+    }
+    
+    // Show loading indicator
+    pdfLoading.style.display = 'flex';
+    
+    const options = {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        windowHeight: reportContainer.scrollHeight
+    };
+    
+    html2canvas(reportContainer, options).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        
+        // PDF page dimensions
+        const pageWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const margin = 10; // mm
+        const contentWidth = pageWidth - (margin * 2);
+        
+        // Calculate scale for canvas to PDF
+        const scale = contentWidth / canvas.width * 25.4; // Convert to pixels (DPI conversion)
+        const pdfImgWidth = contentWidth;
+        const pdfImgHeight = (canvas.height * pdfImgWidth) / canvas.width;
+        
+        // Available height per page
+        const availableHeight = pageHeight - (margin * 2);
+        
+        // Calculate pages needed
+        const totalPages = Math.ceil(pdfImgHeight / availableHeight);
+        
+        // Create PDF with first page
+        const pdf = new jsPDF('p', 'mm', 'A4');
+        
+        // Split canvas into sections and add to PDF
+        const canvasHeight = canvas.height;
+        const sectionHeight = Math.ceil(canvasHeight / totalPages);
+        
+        for (let pageNum = 0; pageNum < totalPages; pageNum++) {
+            if (pageNum > 0) {
+                pdf.addPage();
+            }
+            
+            // Create canvas for this page section
+            const pageCanvas = document.createElement('canvas');
+            pageCanvas.width = canvas.width;
+            pageCanvas.height = Math.min(sectionHeight, canvasHeight - (pageNum * sectionHeight));
+            
+            const ctx = pageCanvas.getContext('2d');
+            const sourceY = pageNum * sectionHeight;
+            
+            // Copy the relevant portion from original canvas
+            ctx.drawImage(
+                canvas,
+                0, sourceY,
+                canvas.width, pageCanvas.height,
+                0, 0,
+                canvas.width, pageCanvas.height
+            );
+            
+            // Convert to image and add to PDF
+            const pageImgData = pageCanvas.toDataURL('image/png');
+            pdf.addImage(
+                pageImgData,
+                'PNG',
+                margin,
+                margin,
+                pdfImgWidth,
+                (pageCanvas.height * pdfImgWidth) / canvas.width
+            );
         }
-    </script>
-</body>
-</html>
+        
+        // Generate filename with current date
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const filename = `Weekly_Report_${dateStr}.pdf`;
+        
+        // Download PDF
+        pdf.save(filename);
+        
+        // Hide loading indicator
+        pdfLoading.style.display = 'none';
+    }).catch(error => {
+        console.error('Error generating PDF:', error);
+        alert('Failed to generate PDF. Please try again.');
+        pdfLoading.style.display = 'none';
+    });
+}
+
+</script>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

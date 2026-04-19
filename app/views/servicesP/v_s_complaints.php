@@ -9,11 +9,7 @@
     <!-- Tab Navigation -->
     <div class="tabs-container">
         <div class="tabs">
-            <button class="tab active" data-tab="complaints-for-me">
-                <i class="fa fa-exclamation-triangle"></i>
-                Warnings for Me
-                <span class="badge badge-success">0</span>
-            </button>
+            
             <button class="tab" data-tab="create-complaint">
                 <i class="fa fa-plus"></i>
                 Create Complaint
@@ -22,64 +18,6 @@
                 <i class="fa fa-list"></i>
                 My Submitted Complaints
             </button>
-        </div>
-    </div>
-
-    <!-- warnings For Me Section -->
-    <div class="complaint-section active" id="complaints-for-me">
-        <div class="section-header">
-            <span>Received Warnings</span>
-        </div>
-        
-        <!-- Complaints Table -->
-        <div class="table-container">
-            <table class="complaints-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Client</th>
-                        <th>Event</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Client Complaint -->
-                    <tr>
-                        <td><span class="id-badge">#CP-001</span></td>
-                        <td><span class="table-type">Client Complaint</span></td>
-                        <td><span class="status-badge status-open">Open</span></td>
-                        <td class="table-client">John Doe</td>
-                        <td class="table-event">Wedding Event</td>
-                        <td class="table-created">Jan 10, 2026</td>
-                        <td><button class="table-view-btn" onclick="openComplaintPopup('complaint-1')"><i class="fas fa-eye"></i> View</button></td>
-                    </tr>
-                    
-                    <!-- Admin Complaint -->
-                    <tr>
-                        <td><span class="id-badge">#CP-002</span></td>
-                        <td><span class="table-type">Admin Complaint</span></td>
-                        <td><span class="status-badge status-in_progress">In Progress</span></td>
-                        <td class="table-client">System Admin</td>
-                        <td class="table-event">Policy Review</td>
-                        <td class="table-created">Jan 12, 2026</td>
-                        <td><button class="table-view-btn" onclick="openComplaintPopup('complaint-2')"><i class="fas fa-eye"></i> View</button></td>
-                    </tr>
-                    
-                    <!-- Another Client Complaint -->
-                    <tr>
-                        <td><span class="id-badge">#CP-003</span></td>
-                        <td><span class="table-type">Client Complaint</span></td>
-                        <td><span class="status-badge status-resolved">Resolved</span></td>
-                        <td class="table-client">Sarah Johnson</td>
-                        <td class="table-event">Birthday Party</td>
-                        <td class="table-created">Jan 14, 2026</td>
-                        <td><button class="table-view-btn" onclick="openComplaintPopup('complaint-3')"><i class="fas fa-eye"></i> View</button></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
@@ -276,45 +214,7 @@
 
 <script>
 
-// Dummy complaints data for the "Complaints for Me" section
-const dummyComplaints = {
-    'complaint-1': {
-        id: 'complaint-1',
-        complaint_id: 'CP-001',
-        complaint_type: 'Issue Coordinator Complaint',
-        complainant_type: 'client',
-        status: 'open',
-        priority: 'medium',
-        created_at: 'Jan 10, 2026',
-        description_text: 'The service provider was late for the wedding event, causing significant delays in the ceremony.',
-        event_name: 'Wedding Event',
-        type: 'received' // This is a complaint received by the provider
-    },
-    'complaint-2': {
-        id: 'complaint-2',
-        complaint_id: 'CP-002',
-        complaint_type: 'Admin Complaint',
-        complainant_type: 'admin',
-        status: 'in_progress',
-        priority: 'high',
-        created_at: 'Jan 12, 2026',
-        description_text: 'Policy review required for service provider conduct during events.',
-        event_name: 'Policy Review',
-        type: 'received'
-    },
-    'complaint-3': {
-        id: 'complaint-3',
-        complaint_id: 'CP-003',
-        complaint_type: 'Issue Coordinator Complaint',
-        complainant_type: 'client',
-        status: 'resolved',
-        priority: 'low',
-        created_at: 'Jan 14, 2026',
-        description_text: 'Minor issue with the birthday party decorations, but overall satisfied.',
-        event_name: 'Birthday Party',
-        type: 'received'
-    }
-};
+
 
 // Tab switching functionality with smooth transitions
 function showSection(section){
@@ -619,13 +519,13 @@ function submitComplaint(formData) {
     mappedData.append('event_name', eventName);
     mappedData.append('complainant_type', formData.get('complainant_type'));
     mappedData.append('complaint_type', formData.get('complaint_type'));
-    mappedData.append('description', formData.get('description'));
+    mappedData.append('description_text', formData.get('description'));
 
     var xml = new XMLHttpRequest();
 
     xml.onload = function(){
         if(this.status === 200){
-            try {
+            try { 
                 var response = JSON.parse(this.responseText);
                 if(response.success){
                     alert('Complaint submitted successfully');
@@ -777,7 +677,16 @@ function viewMyComplaintDetails(complaintId) {
     xml.send();
 }
 
+// Initialize page - load create-complaint section by default
+document.addEventListener('DOMContentLoaded', function() {
+    const createComplaintSection = document.getElementById('create-complaint');
+    const firstTab = document.querySelector('.tab[data-tab="create-complaint"]');
+    
+    if (createComplaintSection && firstTab) {
+        firstTab.classList.add('active');
+        showSection(createComplaintSection);
+    }
+});
+
 </script>
-</body>
-</html>
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>

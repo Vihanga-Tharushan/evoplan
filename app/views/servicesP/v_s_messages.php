@@ -15,9 +15,9 @@
     <aside class="threads" aria-label="Conversations">
       <ul class="thread-list" role="list">
         <?php foreach( $data['conversationsList'] as $conversationList) : ?>
-        <li class="thread <?php echo isset($data['conversation_id']) && $data['conversation_id'] == $conversationList->conversation_id ? 'is-active' : ''; ?>" data-conversation-id="<?php echo $conversationList->conversation_id; ?>" data-client-id ="<?php echo $conversationList->client_id; ?>"  >
+        <li class="thread <?php echo isset($data['conversation_id']) && $data['conversation_id'] == $conversationList->conversation_id ? 'is-active' : ''; ?>" data-conversation-id="<?php echo $conversationList->conversation_id; ?>" data-client-id ="<?php echo $conversationList->client_id ?? ''; ?>">
           <div class="thread__avatar">
-            <div class="avatar" aria-hidden="true" role="img" <?php $conversationList->profile_pic ?>style="background-image: url('<?php echo URLROOT; ?>/public/img/clientProfilePic/<?php echo $conversationList->profile_pic; ?>')" alt="Avatar"></div>
+            <div class="avatar" aria-hidden="true" role="img" style="background-image: url('<?php echo URLROOT; ?>/public/img/clientProfilePic/<?php echo $conversationList->profile_pic; ?>')"></div>
             <span class="presence <?php if(isset($_SESSION['client_id']) && $_SESSION['client_id'] == $conversationList->client_id) echo 'is-online'?>" aria-label="online"></span>
           </div>
 
@@ -26,7 +26,7 @@
               <div class="thread__name"><?php echo $conversationList->name; ?></div>
               <time class="thread__time" datetime="14:41"><?php echo $conversationList->last_message_time; ?></time>
             </div>
-            <div class="thread__snippet"><?php echo $conversationList->last_message; ?></div>
+            <div class="thread__snippet"><?php echo $conversationList->last_message ?? 'No messages yet'; ?></div>
           </div>
           <!-- <span class="badge">3</span> -->
         </li>
@@ -77,6 +77,8 @@
     </section>
   </div>
 </main>
+
+
 
 
 <script>

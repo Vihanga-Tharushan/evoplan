@@ -1,15 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/issue/sidebar/sidebar.php'; ?>
 <link rel="stylesheet" href="../public/css/components/issueC/eventswithissues.css" />
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assigned Events - Issue Coordinator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/assigned-events.css">
-</head>
 <style>
   /* Root Variables */
 :root {
@@ -290,15 +281,15 @@ body {
 }
 
 .progress-fill.low {
-    background: linear-gradient(90deg, var(--warning) 0%, #fb923c 100%);
+    background: linear-gradient(90deg, var(--danger) 0%, #ef5350 100%) !important;
 }
 
 .progress-fill.medium {
-    background: linear-gradient(90deg, var(--info) 0%, #60a5fa 100%);
+    background: linear-gradient(90deg, var(--warning) 0%, #fbc02d 100%) !important;
 }
 
 .progress-fill.high {
-    background: linear-gradient(90deg, var(--success) 0%, #34d399 100%);
+    background: linear-gradient(90deg, var(--success) 0%, #34d399 100%) !important;
 }
 
 .progress-text {
@@ -1037,16 +1028,7 @@ body {
 
         <!-- Filters -->
         <div class="filters-section">
-            <div class="filter-group">
-                <label for="statusFilter">Status</label>
-                <select id="statusFilter" class="filter-select">
-                    <option value="">All Status</option>
-                    <option value="Active">Active</option>
-                    <option value="At Risk">At Risk</option>
-                    <option value="Issue Open">Issue Open</option>
-                    <option value="Completed">Completed</option>
-                </select>
-            </div>
+
             <div class="filter-group">
                 <label for="progressFilter">Progress</label>
                 <select id="progressFilter" class="filter-select">
@@ -1071,7 +1053,6 @@ body {
                         <th>Event</th>
                         <th>Client</th>
                         <th>Date & Time</th>
-                        <th>Status</th>
                         <th>Progress</th>
                         <th>Providers</th>
                         <th>Actions</th>
@@ -1249,373 +1230,48 @@ body {
     </div>
 
     <script>
-      // Mock Data - Simulating database records
-const mockEvents = [
-    {
-        event_id: 1,
-        client_id: 101,
-        client_name: "Sarah Williams",
-        client_email: "sarah.williams@email.com",
-        client_phone: "+1 (555) 123-4567",
-        event_name: "Corporate Annual Gala 2026",
-        event_type: "Corporate Event",
-        event_description: "Annual company celebration with awards ceremony, dinner, and entertainment for 500 employees and stakeholders.",
-        start_datetime: "2026-02-15T18:00:00",
-        end_datetime: "2026-02-15T23:00:00",
-        guest_count: 500,
-        venue_type: "HAS_VENUE",
-        venue_address: "Grand Ballroom, Downtown Convention Center, 123 Main St",
-        total_cost: 45000.00,
-        progress_step: "STEP_3_PAYMENT",
-        progress_percent: 100,
-        status: "Active",
-        packages: [
-            { name: "Premium Catering Package", cost: 15000, items: "3-course meal, appetizers, bar service" },
-            { name: "Professional Photography", cost: 3500, items: "2 photographers, 8 hours coverage" },
-            { name: "Stage & Lighting", cost: 8000, items: "Full stage setup, professional lighting" }
-        ],
-        providers: [
-            { id: 201, name: "Elite Catering Co.", role: "Catering", confirmation: "confirmed" },
-            { id: 202, name: "John Smith Photography", role: "Photography", confirmation: "confirmed" },
-            { id: 203, name: "TechStage Productions", role: "Stage & Audio", confirmation: "pending" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-02-01T10:00:00", title: "Event Created", description: "Initial event booking received from client" },
-            { date: "2026-02-02T14:30:00", title: "Packages Selected", description: "Client selected 3 service packages" },
-            { date: "2026-02-03T09:15:00", title: "Payment Received", description: "Full payment processed successfully" },
-            { date: "2026-02-04T11:00:00", title: "Provider Confirmed", description: "Elite Catering Co. confirmed availability" },
-            { date: "2026-02-04T15:30:00", title: "Provider Confirmed", description: "John Smith Photography confirmed availability" }
-        ]
-    },
-    {
-        event_id: 2,
-        client_id: 102,
-        client_name: "Michael Chen",
-        client_email: "michael.chen@email.com",
-        client_phone: "+1 (555) 234-5678",
-        event_name: "Wedding Reception - Miller",
-        event_type: "Wedding",
-        event_description: "Elegant outdoor wedding reception with ceremony, dinner, and dancing for 150 guests.",
-        start_datetime: "2026-02-20T16:00:00",
-        end_datetime: "2026-02-20T23:00:00",
-        guest_count: 150,
-        venue_type: "HAS_VENUE",
-        venue_address: "Sunset Gardens, 456 Elm Street",
-        total_cost: 28000.00,
-        progress_step: "STEP_2_PACKAGES",
-        progress_percent: 66,
-        status: "At Risk",
-        packages: [
-            { name: "Wedding Catering Package", cost: 12000, items: "Buffet dinner, cocktail hour, wedding cake" },
-            { name: "DJ & Entertainment", cost: 2500, items: "4 hours DJ service, lighting effects" }
-        ],
-        providers: [
-            { id: 204, name: "Gourmet Events Catering", role: "Catering", confirmation: "confirmed" },
-            { id: 205, name: "DJ Mike Productions", role: "Entertainment", confirmation: "declined" }
-        ],
-        conflicts: [
-            { provider: "DJ Mike Productions", issue: "Provider declined - needs replacement", severity: "high" }
-        ],
-        timeline: [
-            { date: "2026-01-28T13:00:00", title: "Event Created", description: "Wedding reception booking confirmed" },
-            { date: "2026-01-29T16:00:00", title: "Packages Selected", description: "Client selected catering and entertainment packages" },
-            { date: "2026-02-01T10:30:00", title: "Provider Confirmed", description: "Gourmet Events Catering confirmed" },
-            { date: "2026-02-03T14:00:00", title: "Provider Declined", description: "DJ Mike Productions declined due to schedule conflict" }
-        ]
-    },
-    {
-        event_id: 3,
-        client_id: 103,
-        client_name: "Emily Johnson",
-        client_email: "emily.j@email.com",
-        client_phone: "+1 (555) 345-6789",
-        event_name: "Tech Conference 2026",
-        event_type: "Conference",
-        event_description: "Two-day technology conference with keynote speakers, workshops, and networking sessions.",
-        start_datetime: "2026-02-25T09:00:00",
-        end_datetime: "2026-02-26T18:00:00",
-        guest_count: 800,
-        venue_type: "NEED_VENUE",
-        venue_address: "To be determined",
-        total_cost: 75000.00,
-        progress_step: "STEP_2_PACKAGES",
-        progress_percent: 66,
-        status: "Issue Open",
-        packages: [
-            { name: "Conference AV Package", cost: 25000, items: "Full AV setup, projectors, sound system" },
-            { name: "Conference Catering", cost: 35000, items: "2-day catering, coffee breaks, lunch" },
-            { name: "Event Staff", cost: 8000, items: "Registration staff, attendants" }
-        ],
-        providers: [
-            { id: 206, name: "ProAV Solutions", role: "Audio Visual", confirmation: "confirmed" },
-            { id: 207, name: "Conference Caterers Inc", role: "Catering", confirmation: "pending" },
-            { id: 208, name: "Event Staffing Pro", role: "Staff", confirmation: "confirmed" }
-        ],
-        conflicts: [
-            { provider: "Conference Caterers Inc", issue: "Venue not confirmed - affecting catering planning", severity: "medium" }
-        ],
-        timeline: [
-            { date: "2026-01-20T09:00:00", title: "Event Created", description: "Conference booking initiated" },
-            { date: "2026-01-22T11:00:00", title: "Packages Selected", description: "All service packages selected" },
-            { date: "2026-01-25T15:00:00", title: "Provider Confirmed", description: "ProAV Solutions confirmed availability" },
-            { date: "2026-01-26T10:00:00", title: "Provider Confirmed", description: "Event Staffing Pro confirmed" },
-            { date: "2026-02-01T14:00:00", title: "Issue Reported", description: "Venue selection delayed affecting planning" }
-        ]
-    },
-    {
-        event_id: 4,
-        client_id: 104,
-        client_name: "David Martinez",
-        client_email: "d.martinez@email.com",
-        client_phone: "+1 (555) 456-7890",
-        event_name: "Birthday Party - Anderson 50th",
-        event_type: "Birthday Party",
-        event_description: "Surprise 50th birthday celebration with dinner, live music, and entertainment.",
-        start_datetime: "2026-02-10T19:00:00",
-        end_datetime: "2026-02-10T23:30:00",
-        guest_count: 75,
-        venue_type: "HAS_VENUE",
-        venue_address: "The Riverside Restaurant, 789 Water St",
-        total_cost: 8500.00,
-        progress_step: "STEP_3_PAYMENT",
-        progress_percent: 100,
-        status: "Active",
-        packages: [
-            { name: "Party Catering", cost: 4500, items: "Dinner buffet, desserts, drinks" },
-            { name: "Live Band", cost: 2500, items: "4-piece band, 3 hours performance" }
-        ],
-        providers: [
-            { id: 209, name: "Party Time Catering", role: "Catering", confirmation: "confirmed" },
-            { id: 210, name: "Blue Note Band", role: "Entertainment", confirmation: "confirmed" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-01-15T14:00:00", title: "Event Created", description: "Birthday party booking received" },
-            { date: "2026-01-16T10:00:00", title: "Packages Selected", description: "Catering and entertainment packages selected" },
-            { date: "2026-01-18T09:00:00", title: "Payment Received", description: "Deposit payment processed" },
-            { date: "2026-01-20T11:00:00", title: "Provider Confirmed", description: "Party Time Catering confirmed" },
-            { date: "2026-01-20T15:00:00", title: "Provider Confirmed", description: "Blue Note Band confirmed" }
-        ]
-    },
-    {
-        event_id: 5,
-        client_id: 105,
-        client_name: "Jennifer Brown",
-        client_email: "jen.brown@email.com",
-        client_phone: "+1 (555) 567-8901",
-        event_name: "Charity Fundraiser Gala",
-        event_type: "Fundraiser",
-        event_description: "Annual charity gala with silent auction, dinner, and keynote speaker.",
-        start_datetime: "2026-03-05T18:00:00",
-        end_datetime: "2026-03-05T22:00:00",
-        guest_count: 300,
-        venue_type: "HAS_VENUE",
-        venue_address: "City Hall Grand Ballroom, 321 Government Ave",
-        total_cost: 32000.00,
-        progress_step: "STEP_2_PACKAGES",
-        progress_percent: 66,
-        status: "Active",
-        packages: [
-            { name: "Gala Catering", cost: 18000, items: "Formal dinner, wine service" },
-            { name: "Event Photography & Video", cost: 5000, items: "Photo and video coverage" },
-            { name: "Decor & Flowers", cost: 6000, items: "Table decorations, centerpieces" }
-        ],
-        providers: [
-            { id: 211, name: "Elegant Affairs Catering", role: "Catering", confirmation: "confirmed" },
-            { id: 212, name: "Visual Memories Studio", role: "Photography", confirmation: "pending" },
-            { id: 213, name: "Bloom Floral Design", role: "Decorations", confirmation: "confirmed" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-01-10T10:00:00", title: "Event Created", description: "Charity gala booking confirmed" },
-            { date: "2026-01-12T14:00:00", title: "Packages Selected", description: "All service packages selected" },
-            { date: "2026-01-15T11:00:00", title: "Provider Confirmed", description: "Elegant Affairs Catering confirmed" },
-            { date: "2026-01-16T09:00:00", title: "Provider Confirmed", description: "Bloom Floral Design confirmed" }
-        ]
-    },
-    {
-        event_id: 6,
-        client_id: 106,
-        client_name: "Robert Lee",
-        client_email: "robert.lee@email.com",
-        client_phone: "+1 (555) 678-9012",
-        event_name: "Product Launch Event",
-        event_type: "Corporate Event",
-        event_description: "New product launch with presentation, demonstrations, and cocktail reception.",
-        start_datetime: "2026-02-28T17:00:00",
-        end_datetime: "2026-02-28T21:00:00",
-        guest_count: 200,
-        venue_type: "HAS_VENUE",
-        venue_address: "Innovation Hub, 555 Tech Parkway",
-        total_cost: 22000.00,
-        progress_step: "STEP_3_PAYMENT",
-        progress_percent: 100,
-        status: "Completed",
-        packages: [
-            { name: "AV & Presentation Setup", cost: 8000, items: "Stage, screens, lighting, sound" },
-            { name: "Cocktail Reception Catering", cost: 9000, items: "Appetizers, open bar, desserts" },
-            { name: "Event Photography", cost: 3000, items: "Event coverage, product photos" }
-        ],
-        providers: [
-            { id: 214, name: "Premier AV Services", role: "Audio Visual", confirmation: "confirmed" },
-            { id: 215, name: "Urban Bites Catering", role: "Catering", confirmation: "confirmed" },
-            { id: 216, name: "Snap Pro Photography", role: "Photography", confirmation: "confirmed" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-01-05T09:00:00", title: "Event Created", description: "Product launch event booked" },
-            { date: "2026-01-07T13:00:00", title: "Packages Selected", description: "All services selected and confirmed" },
-            { date: "2026-01-10T10:00:00", title: "Payment Received", description: "Full payment processed" },
-            { date: "2026-01-12T11:00:00", title: "All Providers Confirmed", description: "All service providers confirmed availability" },
-            { date: "2026-02-28T22:00:00", title: "Event Completed", description: "Event successfully completed" }
-        ]
-    },
-    {
-        event_id: 7,
-        client_id: 107,
-        client_name: "Amanda Garcia",
-        client_email: "amanda.garcia@email.com",
-        client_phone: "+1 (555) 789-0123",
-        event_name: "University Graduation Ceremony",
-        event_type: "Ceremony",
-        event_description: "Graduate school commencement ceremony with processional, speeches, and reception.",
-        start_datetime: "2026-03-15T10:00:00",
-        end_datetime: "2026-03-15T15:00:00",
-        guest_count: 1200,
-        venue_type: "HAS_VENUE",
-        venue_address: "University Stadium, Campus Drive",
-        total_cost: 55000.00,
-        progress_step: "STEP_2_PACKAGES",
-        progress_percent: 66,
-        status: "Active",
-        packages: [
-            { name: "Ceremony Production", cost: 20000, items: "Stage, seating, sound system, livestream" },
-            { name: "Reception Catering", cost: 25000, items: "Post-ceremony reception for 1200" },
-            { name: "Photography & Video", cost: 7000, items: "Professional ceremony documentation" }
-        ],
-        providers: [
-            { id: 217, name: "University Events Team", role: "Production", confirmation: "confirmed" },
-            { id: 218, name: "Campus Catering Services", role: "Catering", confirmation: "confirmed" },
-            { id: 219, name: "Academic Media Group", role: "Media", confirmation: "pending" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2025-12-01T09:00:00", title: "Event Created", description: "Graduation ceremony booking confirmed" },
-            { date: "2025-12-15T14:00:00", title: "Packages Selected", description: "Service packages finalized" },
-            { date: "2026-01-10T10:00:00", title: "Provider Confirmed", description: "University Events Team confirmed" },
-            { date: "2026-01-12T11:00:00", title: "Provider Confirmed", description: "Campus Catering Services confirmed" }
-        ]
-    },
-    {
-        event_id: 8,
-        client_id: 108,
-        client_name: "Thomas Wilson",
-        client_email: "t.wilson@email.com",
-        client_phone: "+1 (555) 890-1234",
-        event_name: "Holiday Office Party",
-        event_type: "Corporate Event",
-        event_description: "End-of-year celebration with dinner, awards, and entertainment for company staff.",
-        start_datetime: "2026-02-12T18:00:00",
-        end_datetime: "2026-02-12T23:00:00",
-        guest_count: 120,
-        venue_type: "HAS_VENUE",
-        venue_address: "Skyline Rooftop Venue, 888 High St",
-        total_cost: 15000.00,
-        progress_step: "STEP_1_BASIC",
-        progress_percent: 33,
-        status: "Active",
-        packages: [
-            { name: "Holiday Dinner Package", cost: 9000, items: "Dinner buffet, bar service" }
-        ],
-        providers: [
-            { id: 220, name: "Holiday Feast Catering", role: "Catering", confirmation: "pending" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-02-01T10:00:00", title: "Event Created", description: "Holiday party booking received" },
-            { date: "2026-02-02T15:00:00", title: "Initial Package Selected", description: "Basic catering package selected" }
-        ]
-    },
-    {
-        event_id: 9,
-        client_id: 109,
-        client_name: "Lisa Anderson",
-        client_email: "lisa.a@email.com",
-        client_phone: "+1 (555) 901-2345",
-        event_name: "Art Gallery Opening",
-        event_type: "Exhibition",
-        event_description: "Contemporary art exhibition opening with artist meet-and-greet and wine reception.",
-        start_datetime: "2026-02-22T18:00:00",
-        end_datetime: "2026-02-22T21:00:00",
-        guest_count: 150,
-        venue_type: "HAS_VENUE",
-        venue_address: "Modern Art Gallery, 777 Arts District",
-        total_cost: 12000.00,
-        progress_step: "STEP_2_PACKAGES",
-        progress_percent: 66,
-        status: "Active",
-        packages: [
-            { name: "Wine & Appetizers Reception", cost: 6000, items: "Wine selection, gourmet appetizers" },
-            { name: "Event Photography", cost: 2500, items: "Exhibition and attendee photos" }
-        ],
-        providers: [
-            { id: 221, name: "Artisan Catering Co", role: "Catering", confirmation: "confirmed" },
-            { id: 222, name: "Gallery Photo Services", role: "Photography", confirmation: "confirmed" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-01-25T11:00:00", title: "Event Created", description: "Gallery opening booking confirmed" },
-            { date: "2026-01-27T14:00:00", title: "Packages Selected", description: "Catering and photography packages selected" },
-            { date: "2026-01-30T10:00:00", title: "Providers Confirmed", description: "All service providers confirmed" }
-        ]
-    },
-    {
-        event_id: 10,
-        client_id: 110,
-        client_name: "Kevin Taylor",
-        client_email: "kevin.t@email.com",
-        client_phone: "+1 (555) 012-3456",
-        event_name: "Sports Awards Banquet",
-        event_type: "Awards Ceremony",
-        event_description: "Annual sports awards ceremony with dinner and awards presentation.",
-        start_datetime: "2026-03-01T18:30:00",
-        end_datetime: "2026-03-01T22:00:00",
-        guest_count: 250,
-        venue_type: "HAS_VENUE",
-        venue_address: "Champions Hall, Stadium Complex",
-        total_cost: 20000.00,
-        progress_step: "STEP_3_PAYMENT",
-        progress_percent: 100,
-        status: "Active",
-        packages: [
-            { name: "Banquet Catering", cost: 12000, items: "Formal dinner, beverages" },
-            { name: "AV & Stage Setup", cost: 5000, items: "Stage, lighting, presentations" }
-        ],
-        providers: [
-            { id: 223, name: "Victory Catering", role: "Catering", confirmation: "confirmed" },
-            { id: 224, name: "Event Tech Solutions", role: "Audio Visual", confirmation: "confirmed" }
-        ],
-        conflicts: [],
-        timeline: [
-            { date: "2026-01-18T09:00:00", title: "Event Created", description: "Awards banquet booked" },
-            { date: "2026-01-20T13:00:00", title: "Packages Selected", description: "Service packages confirmed" },
-            { date: "2026-01-22T10:00:00", title: "Payment Received", description: "Payment processed" },
-            { date: "2026-01-25T11:00:00", title: "All Providers Confirmed", description: "All providers confirmed availability" }
-        ]
-    }
-];
+    // Real Data - Loaded from database
+    let mockEvents = [];
 
 // State
 let filteredEvents = [...mockEvents];
 let currentEvent = null;
-
+const URLROOT = "<?php echo URLROOT; ?>";
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    renderEventsTable();
-    updateStats();
+    loadEventsWithIssues();
     setupFilters();
 });
+
+// Load Events from Database API
+function loadEventsWithIssues() {
+    var xml = new XMLHttpRequest();
+    xml.onload = function(){
+        try{
+            var response = JSON.parse(this.responseText);
+            console.log("Received events:", response);
+            
+            if (response.success && response.data) {
+                mockEvents = response.data;
+                filteredEvents = [...mockEvents];
+                renderEventsTable();
+                updateStats();
+            } else {
+                console.error("Error fetching events:", response.error || "Unknown error");
+            }
+        }
+        catch(err){
+            console.error("Error parsing events data:", err);
+        }
+    };
+
+    xml.onerror = function(){
+        console.error("Error fetching events");
+    };
+
+    xml.open("GET", URLROOT + "/IssueC/getEventsWithIssues", true);
+    xml.send();
+}
 
 // Render Events Table
 function renderEventsTable() {
@@ -1634,8 +1290,9 @@ function renderEventsTable() {
     }
 
     tbody.innerHTML = filteredEvents.map(event => {
-        const progressClass = event.progress_percent === 33 ? 'low' : event.progress_percent === 66 ? 'medium' : 'high';
-        const statusClass = event.status.toLowerCase().replace(' ', '-');
+        const progressValue = normalizeProgress(event.progress_precent);
+        const progressClass = progressValue <= 33 ? 'low' : progressValue <= 66 ? 'medium' : 'high';
+        const providers = event.providers || [];
         
         return `
             <tr onclick="openEventModal(${event.event_id})">
@@ -1647,25 +1304,22 @@ function renderEventsTable() {
                     <div class="table-date-sub">${formatTime(event.start_datetime)}</div>
                 </td>
                 <td>
-                    <span class="status-badge ${statusClass}">${event.status}</span>
-                </td>
-                <td>
                     <div class="progress-container">
                         <div class="progress-bar">
-                            <div class="progress-fill ${progressClass}" style="width: ${event.progress_percent}%"></div>
+                            <div class="progress-fill ${progressClass}" style="width: ${progressValue}%"></div>
                         </div>
-                        <span class="progress-text">${event.progress_percent}% Complete</span>
+                        <span class="progress-text">${progressValue}% ${progressValue <= 33 ? 'Critical' : 'Complete'}</span>
                     </div>
                 </td>
                 <td>
                     <div class="providers-pills">
-                        ${event.providers.slice(0, 3).map(p => `
+                        ${providers.slice(0, 3).map(p => `
                             <span class="provider-pill">
                                 <i class="fas fa-user"></i>
                                 ${p.name.split(' ')[0]}
                             </span>
                         `).join('')}
-                        ${event.providers.length > 3 ? `<span class="provider-pill">+${event.providers.length - 3}</span>` : ''}
+                        ${providers.length > 3 ? `<span class="provider-pill">+${providers.length - 3}</span>` : ''}
                     </div>
                 </td>
                 <td>
@@ -1681,6 +1335,14 @@ function renderEventsTable() {
     }).join('');
 }
 
+function normalizeProgress(value) {
+    const raw = Number(value);
+    const normalized = Number.isFinite(raw)
+        ? (raw <= 1 ? raw * 100 : raw)
+        : 0;
+    return Math.max(0, Math.min(100, Math.round(normalized)));
+}
+
 // Update Stats
 function updateStats() {
     const total = mockEvents.length;
@@ -1694,26 +1356,27 @@ function updateStats() {
 
 // Setup Filters
 function setupFilters() {
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('progressFilter').addEventListener('change', applyFilters);
     document.getElementById('searchInput').addEventListener('input', applyFilters);
 }
 
 // Apply Filters
 function applyFilters() {
-    const status = document.getElementById('statusFilter').value;
     const progress = document.getElementById('progressFilter').value;
     const search = document.getElementById('searchInput').value.toLowerCase();
 
     filteredEvents = mockEvents.filter(event => {
-        const matchesStatus = !status || event.status === status;
-        const matchesProgress = !progress || event.progress_percent == progress;
+        const progressValue = normalizeProgress(event.progress_precent);
+        const matchesProgress = !progress ||
+            (progress === '33' && progressValue <= 33) ||
+            (progress === '66' && progressValue > 33 && progressValue <= 66) ||
+            (progress === '100' && progressValue > 66);
         const matchesSearch = !search || 
             event.event_name.toLowerCase().includes(search) ||
             event.client_name.toLowerCase().includes(search) ||
             event.event_type.toLowerCase().includes(search);
 
-        return matchesStatus && matchesProgress && matchesSearch;
+        return matchesProgress && matchesSearch;
     });
 
     renderEventsTable();
@@ -1731,7 +1394,7 @@ function openEventModal(eventId) {
     document.getElementById('modalStartTime').textContent = formatTime(currentEvent.start_datetime);
     document.getElementById('modalEndTime').textContent = formatTime(currentEvent.end_datetime);
     document.getElementById('modalGuestCount').textContent = `${currentEvent.guest_count} guests`;
-    document.getElementById('modalTotalCost').textContent = `$${currentEvent.total_cost.toLocaleString()}`;
+    document.getElementById('modalTotalCost').textContent = `Rs. ${(currentEvent.total_cost || 0).toLocaleString()}`;
     document.getElementById('modalVenue').textContent = currentEvent.venue_address;
     document.getElementById('modalDescription').textContent = currentEvent.event_description;
 
@@ -1741,18 +1404,19 @@ function openEventModal(eventId) {
     document.getElementById('modalClientPhone').textContent = currentEvent.client_phone;
 
     // Packages
-    const packagesHtml = currentEvent.packages.length > 0 
-        ? currentEvent.packages.map(pkg => `
+    const packages = currentEvent.packages || [];
+    const packagesHtml = packages.length > 0 
+        ? packages.map(pkg => `
             <div class="package-card">
                 <h4>${pkg.name}</h4>
                 <div class="package-details">
                     <div class="package-detail">
                         <span class="package-detail-label">Cost:</span>
-                        <span class="package-detail-value">$${pkg.cost.toLocaleString()}</span>
+                        <span class="package-detail-value">Rs. ${(pkg.cost || 0).toLocaleString()}</span>
                     </div>
                     <div class="package-detail">
                         <span class="package-detail-label">Includes:</span>
-                        <span class="package-detail-value">${pkg.items}</span>
+                        <span class="package-detail-value">${pkg.items || 'N/A'}</span>
                     </div>
                 </div>
             </div>
@@ -1762,9 +1426,11 @@ function openEventModal(eventId) {
     document.getElementById('modalPackages').innerHTML = packagesHtml;
 
     // Providers
-    const providersHtml = currentEvent.providers.length > 0 
-        ? currentEvent.providers.map(provider => {
+    const providers = currentEvent.providers || [];
+    const providersHtml = providers.length > 0 
+        ? providers.map(provider => {
             const confirmationClass = provider.confirmation.toLowerCase();
+            const serviceId = provider.service_id || provider.id; // Use service_id if available, fallback to id
             return `
                 <div class="provider-card-modal">
                     <div class="provider-info-modal">
@@ -1782,7 +1448,7 @@ function openEventModal(eventId) {
                         </div>
                     </div>
                     <div class="provider-actions">
-                        <button class="btn btn-view" onclick="viewProvider(${provider.id})">
+                        <button class="btn btn-view" onclick="event.stopPropagation(); viewProvider(${serviceId})">
                             <i class="fas fa-user"></i>
                             View Provider
                         </button>
@@ -1795,13 +1461,14 @@ function openEventModal(eventId) {
     document.getElementById('modalProviders').innerHTML = providersHtml;
 
     // Conflicts
-    const conflictsHtml = currentEvent.conflicts.length > 0 
-        ? currentEvent.conflicts.map(conflict => `
+    const conflicts = currentEvent.conflicts || [];
+    const conflictsHtml = conflicts.length > 0 
+        ? conflicts.map(conflict => `
             <div class="conflict-item">
                 <i class="fas fa-exclamation-triangle conflict-icon"></i>
                 <div class="conflict-info">
-                    <h5>${conflict.provider}</h5>
-                    <p>${conflict.issue} - Severity: ${conflict.severity}</p>
+                    <h5>${conflict.complaint_type || 'Issue'}</h5>
+                    <p>${conflict.description || 'No description'} - Status: ${conflict.complaint_status || 'Unknown'}</p>
                 </div>
             </div>
         `).join('')
@@ -1815,15 +1482,15 @@ function openEventModal(eventId) {
     document.getElementById('modalConflicts').innerHTML = conflictsHtml;
 
     // Timeline
-    const timelineHtml = currentEvent.timeline.length > 0 
-        ? currentEvent.timeline.map(item => `
+    const timeline = currentEvent.timeline || [];
+    const timelineHtml = timeline.length > 0 
+        ? timeline.map(item => `
             <div class="timeline-item">
                 <div class="timeline-content">
                     <div class="timeline-header">
                         <span class="timeline-title">${item.title}</span>
-                        <span class="timeline-time">${formatDateTime(item.date)}</span>
+                        <span class="timeline-time">${formatDateTime(item.created_at)}</span>
                     </div>
-                    <p class="timeline-description">${item.description}</p>
                 </div>
             </div>
         `).join('')
@@ -1841,15 +1508,45 @@ function closeEventModal() {
     currentEvent = null;
 }
 
-// Start Client Conversation
+// Start Client Conversation - Check if exists or create new
 function startClientConversation() {
     if (!currentEvent) return;
     
-    document.getElementById('messageClientName').textContent = currentEvent.client_name;
-    document.getElementById('messageSubject').value = `Regarding: ${currentEvent.event_name}`;
-    document.getElementById('messageContent').value = '';
+    const clientId = currentEvent.client_id;
     
-    document.getElementById('messageModal').classList.add('active');
+    // Call endpoint to check/create conversation
+    var xml = new XMLHttpRequest();
+    
+    xml.onload = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                var response = JSON.parse(this.responseText);
+                if (response.status === 'success' && response.conversation_id) {
+                    // Navigate to messages page with the conversation selected
+                    window.location.href = URLROOT + '/IssueC/messages?conversation_id=' + response.conversation_id;
+                } else {
+                    alert('Error: ' + (response.message || 'Failed to create conversation'));
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                alert('Error starting conversation');
+            }
+        } else {
+            alert('Error starting conversation');
+        }
+    };
+    
+    xml.onerror = function() {
+        alert('Error starting conversation');
+    };
+    
+    var data = JSON.stringify({
+        client_id: clientId
+    });
+    
+    xml.open("POST", URLROOT + "/IssueC/checkOrCreateConversation", true);
+    xml.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xml.send(data);
 }
 
 // Close Message Modal
@@ -1857,24 +1554,20 @@ function closeMessageModal() {
     document.getElementById('messageModal').classList.remove('active');
 }
 
-// Send Message
+// Send Message (removed - now using mainMessageCoordinator.js)
 function sendMessage() {
-    const subject = document.getElementById('messageSubject').value;
-    const content = document.getElementById('messageContent').value;
-
-    if (!subject.trim() || !content.trim()) {
-        alert('Please fill in both subject and message');
-        return;
-    }
-
-    // Simulate sending message
-    alert(`Message sent to ${currentEvent.client_name}!\n\nSubject: ${subject}\nMessage: ${content}`);
+    alert('Redirecting to messages...');
     closeMessageModal();
 }
 
 // View Provider
 function viewProvider(providerId) {
-    alert(`Navigating to provider profile page for Provider ID: ${providerId}\n\n(This would open the provider details page in a real application)`);
+    if (!providerId) {
+        alert('Provider ID not found');
+        return;
+    }
+    // Navigate to provider profile page
+    window.location.href = URLROOT + '/IssueC/viewprovider/' + providerId;
 }
 
 // Edit Event

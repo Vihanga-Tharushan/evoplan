@@ -85,6 +85,35 @@
             return $row ? (int)$row->total_packages : 0;
         }
 
+
+        public function getPackagePerformanceData($service_id) {
+            $this->db->query("SELECT
+                p.package_id,
+                p.title AS package_name,
+                COUNT(ep.event_package_id) AS usage_count
+            FROM packages p
+            LEFT JOIN event_packages ep ON p.package_id = ep.package_id
+            WHERE p.service_id = :service_id AND (ep.status = 'ON' OR ep.status IS NULL)
+            GROUP BY p.package_id, p.title
+            ORDER BY usage_count DESC");
+
+            $this->db->bind(':service_id', $service_id);
+            $results = $this->db->resultSet();
+            
+            // Format as expected by chart
+            $formatted = [
+                'labels' => [],
+                'data' => []
+            ];
+            
+            foreach($results as $row) {
+                $formatted['labels'][] = $row->package_name;
+                $formatted['data'][] = (int)$row->usage_count;
+            }
+            
+            return $formatted;
+        }
+
         
 
     }

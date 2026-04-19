@@ -1,0 +1,583 @@
+/* =========================
+   TABLE COMPONENT VARIABLES
+   (Primary color variables inherited from style(Admin_Events).css)
+========================= */
+:root {
+  /* Primary color variations for gradients and effects */
+  --primary-dark: #390052;
+  --primary: #4B006E;
+  --secondary: #6F1A8C;
+  --lightSecondary: #7a6e83ff;
+
+  /* Color utilities for table styling */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-900: #111827;
+  --gray-text: #111827;
+
+  --green-100: #d1fae5;
+  --green-600: #059669;
+
+  --yellow-100: #fef3c7;
+  --yellow-600: #d97706;
+
+  --red-100: #fee2e2;
+  --red-600: #dc2626;
+
+  --blue-100: #dbeafe;
+  --blue-600: #2563eb;
+
+  --white: #ffffff;
+  --shadow: rgba(75, 0, 110, 0.1);
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+.table-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+/* =========================
+   BASE TABLE
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* =========================
+   TABLE HEADER
+========================= */
+.table thead {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--primary);
+}
+
+/* =========================
+   TABLE BODY
+========================= */
+.table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr:hover {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.6) 100%);
+  transform: translateX(4px);
+  box-shadow: 4px 0 12px rgba(75, 0, 110, 0.1);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table td {
+  padding: 16px 12px;
+  vertical-align: middle;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+/* =========================
+   AMOUNT STYLE
+========================= */
+.table .amount {
+  color: var(--green-600);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* =========================
+   SCROLLABLE TABLE WITH STICKY HEADER
+========================= */
+.table-scroll {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: var(--gray-50);
+  border-radius: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 8px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  gap: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: var(--green-600);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
+}
+
+.badge-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: var(--yellow-600);
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15);
+}
+
+.badge-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+}
+
+.badge-pending {
+  background: linear-gradient(135deg, var(--blue-100) 0%, #93c5fd 100%);
+  color: var(--blue-600);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.badge-pending:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, var(--red-100) 0%, #fca5a5 100%);
+  color: var(--red-600);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+}
+
+.badge-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+/* =========================
+   ACTION CELL
+========================= */
+.action-cell {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =========================
+   ICON BUTTONS
+========================= */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(75, 0, 110, 0.08) 0%, rgba(111, 26, 140, 0.06) 100%);
+  color: var(--primary);
+  border: 1px solid rgba(75, 0, 110, 0.15);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(75, 0, 110, 0.1);
+}
+
+.btn-icon:hover {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(75, 0, 110, 0.3);
+  border-color: var(--primary);
+}
+
+.btn-icon:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.2);
+}
+
+.btn-icon i {
+  font-size: 16px;
+}
+
+/* =========================
+   MAIN BUTTONS
+========================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: none;
+  padding: 8px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  gap: 6px;
+}
+
+/* Primary button */
+.btn-primary {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(75, 0, 110, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(75, 0, 110, 0.2);
+}
+
+/* Danger button */
+.btn-danger {
+  color: var(--white);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:disabled {
+  color: var(--gray-500);
+  background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Success button */
+.btn-success {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--green-600) 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+}
+
+/* Progress button */
+.btn-progress {
+  color: #713f12;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+}
+
+.btn-progress:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(217, 119, 6, 0.25);
+}
+
+/* Pending button */
+.btn-pending {
+  color: #1e40af;
+  background: linear-gradient(135deg, var(--blue-100) 0%, #93c5fd 100%);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.btn-pending:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+.btn-pending:disabled {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Complete button */
+.btn-complete {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--green-600) 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+}
+
+.btn-complete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35);
+}
+
+.btn-complete:disabled {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 120px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  transition: width 0.3s ease;
+}
+
+.progress-fill.low {
+  background: linear-gradient(90deg, #f59e0b 0%, #fb923c 100%);
+}
+
+.progress-fill.medium {
+  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+}
+
+.progress-fill.high {
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-500);
+}
+
+/* =========================
+   PROVIDERS PILLS
+========================= */
+.providers-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 180px;
+}
+
+.provider-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--gray-900);
+}
+
+.provider-pill i {
+  font-size: 0.7rem;
+  color: var(--primary);
+}
+
+/* =========================
+   TABLE ACTION BUTTONS
+========================= */
+.table-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(75, 0, 110, 0.2);
+}
+
+.table-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(75, 0, 110, 0.3);
+}
+
+.table-view-btn:active {
+  transform: translateY(0);
+}
+
+.table-view-btn i {
+  font-size: 12px;
+}
+
+/* =========================
+   UTILITIES (Tailwind-like)
+========================= */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+/* =========================
+   TABLE RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .table th,
+  .table td {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .btn-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .action-cell {
+    gap: 4px;
+  }
+
+  .table-scroll {
+    max-height: 450px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table th,
+  .table td {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .badge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}

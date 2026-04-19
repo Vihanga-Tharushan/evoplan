@@ -273,7 +273,7 @@
       flex-wrap: wrap;
   }
 
-  .priority-badge, .status-badge, .id-badge {
+    .status-badge, .id-badge {
       padding: 6px 12px;
       border-radius: 12px;
       font-size: 0.7rem;
@@ -283,33 +283,8 @@
       transition: all 0.3s ease;
   }
 
-  .priority-badge:hover, .status-badge:hover, .id-badge:hover {
+    .status-badge:hover, .id-badge:hover {
       transform: scale(1.05);
-  }
-
-  /* Priority Badges */
-  .priority-critical {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
-  }
-
-  .priority-high {
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-  }
-
-  .priority-medium {
-      background: #ede9fe;
-      color: #5b21b6;
-      border: 1px solid #c4b5fd;
-  }
-
-  .priority-low {
-      background: #dcfce7;
-      color: #15803d;
-      border: 1px solid #86efac;
   }
 
   /* Status Badges */
@@ -954,14 +929,14 @@
       border-color: var(--primary);
   }
 
-  /* Priority and Type Selection Sections */
-  .priority-section, .complaint-type-section {
+  /* Complaint Type Selection Section */
+  .complaint-type-section {
       margin-top: 20px;
       padding-top: 16px;
       border-top: 1px solid #e2e8f0;
   }
 
-  .priority-section h4, .complaint-type-section h4 {
+  .complaint-type-section h4 {
       font-size: 1rem;
       font-weight: 600;
       color: var(--text);
@@ -1287,7 +1262,7 @@
           display: none;
       }
 
-      .priority-badge, .status-badge {
+      .status-badge {
           font-size: 0.65rem;
           padding: 4px 8px;
       }
@@ -1329,11 +1304,7 @@
                     Service Provider Complaints
                     <span class="badge badge-warning" id="provider-count">0</span>
                 </button>
-                <button class="tab" data-tab="system" onclick="switchTab('system')">
-                    <i class="fa fa-cogs tab-icon"></i>
-                    System
-                    <span class="badge badge-secondary" id="system-count">0</span>
-                </button>
+                
                 <button class="tab" data-tab="solved" onclick="switchTab('solved')">
                     <i class="fa fa-check-circle tab-icon"></i>
                     Solved
@@ -1350,7 +1321,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Issue Type</th>
-                        <th>Priority</th>
                         <th>Status</th>
                         <th>Client Name</th>
                         <th>Service Provider</th>
@@ -1370,7 +1340,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Dispute Type</th>
-                        <th>Priority</th>
                         <th>Status</th>
                         <th>Service Provider</th>
                         <th>Client Name</th>
@@ -1384,40 +1353,23 @@
                 </tbody>
             </table>
 
-            <!-- System Complaints Table -->
-            <table id="system-complaints-table" class="complaints-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>System Issue</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Service Provider</th>
-                        <th>Affected Event</th>
-                        <th>Detected</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="system-complaints-tbody">
-                    <!-- Complaints will be dynamically inserted here -->
-                </tbody>
-            </table>
+            
 
-            <!-- Solved Complaints Table -->
+            <!-- Solved Complaints Table (All) -->
             <table id="solved-complaints-table" class="complaints-table" style="display: none;">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Issue Type</th>
-                        <th>Complainant</th>
-                        <th>Resolution Type</th>
-                        <th>Service Provider</th>
+                        <th>Complaint Came From</th>
+                        <th>Issue/Dispute</th>
+                        <th>Client Name</th>
+                        <th>Solution Type</th>
                         <th>Resolved Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="solved-complaints-tbody">
-                    <!-- Complaints will be dynamically inserted here -->
+                    <!-- Solved complaints will be dynamically inserted here -->
                 </tbody>
             </table>
         </div>
@@ -1442,7 +1394,6 @@
             <div class="modal-header">
                 <div class="modal-title-section">
                     <h2 id="modal-title">Complaint #</h2>
-                    <span id="modal-priority" class="priority-badge">MEDIUM</span>
                     <span id="modal-status" class="status-badge">OPEN</span>
                 </div>
                 <button class="close-btn" onclick="closeModal()">
@@ -1459,6 +1410,7 @@
                         <h3 id="modal-complaint-type">Complaint Type</h3>
                     </div>
                     <div class="description-box">
+                        <label>Description</label>
                         <p id="modal-description">Complaint description will appear here...</p>
                     </div>
                 </div>
@@ -1474,7 +1426,8 @@
                         <div class="detail-content">
                             <label>Name</label>
                             <p id="client-name">N/A</p>
-                            <label>Complaint Raised By</label>
+                            
+                            <label>Complainant Type</label>
                             <p id="complainant-type">N/A</p>
                         </div>
                     </div>
@@ -1545,31 +1498,19 @@
                         </select>
                     </div>
 
-                    <!-- Priority Level Selection -->
-                    <div class="priority-section">
-                        <h4>Update Priority Level</h4>
-                        <div class="form-group">
-                            <label for="priority-select">Priority Level</label>
-                            <select id="priority-select" class="form-select" onchange="updatePriority(this.value)">
-                                <option value="LOW">Low</option>
-                                <option value="MEDIUM">Medium</option>
-                                <option value="HIGH">High</option>
-                                <option value="CRITICAL">Critical</option>
-                            </select>
-                        </div>
-                    </div>
+                    
 
                     <div id="resolution-input" class="resolution-input" style="display: none;">
-                        <label>Resolution Type</label>
+                        <label>Solution Type</label>
                         <select id="resolution-type-select" class="form-select">
-                            <option value="">Select resolution type...</option>
+                            <option value="">Select solution type...</option>
                             <option value="PROVIDER_REPLACED">Provider Replaced</option>
                             <option value="REFUND_ISSUED">Refund Issued</option>
                             <option value="WARNING_GIVEN">Warning Given</option>
                             <option value="NO_ACTION">No Action</option>
                             <option value="OTHER">Other</option>
                         </select>
-                        <label>Resolution Note</label>
+                        <label>Resolved Note</label>
                         <textarea id="resolution-note-input" class="form-textarea" rows="4" placeholder="Enter resolution details..."></textarea>
                     </div>
                 </div>
@@ -1589,24 +1530,28 @@
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 <button class="btn btn-warning" onclick="escalateComplaint()">Escalate</button>
                 <button class="btn btn-save-changes" onclick="saveComplaintChanges()"><i class="fa fa-save"></i>Save Changes</button>
-                <button id="resolve-btn" class="btn btn-success" style="display: none;" onclick="resolveComplaint()">Mark as Resolved</button>
             </div>
         </div>
     </div>
 
     <script>
+    
       // Get Issue Coordinator ID from session
 const ISSUE_COORDINATOR_ID = <?php echo isset($_SESSION['ic_id']) ? (int)$_SESSION['ic_id'] : 'null'; ?>;
+const URLROOT = '<?php echo URLROOT; ?>';
 
 // Separate Complaints Data stores for each section
 let clientComplaints = [];
 let providerComplaints = [];
 let systemComplaints = [];
+let solvedClientComplaints = [];
+let solvedProviderComplaints = [];
 let solvedComplaints = [];
 
 // Load Service Provider Complaints
 function loadProviderComplaints() {
-    const URLROOT = '<?php echo URLROOT; ?>';
+
+    
     
     fetch(`${URLROOT}/IssueC/getServiceProviderComplaints`, {
         method: 'GET',
@@ -1631,21 +1576,30 @@ function loadProviderComplaints() {
 
 // Load Client Complaints (to be implemented)
 function loadClientComplaints() {
-    const URLROOT = '<?php echo URLROOT; ?>';
+   
+    fetch(`${URLROOT}/IssueC/getClientComplaints`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success && result.data) {
+            clientComplaints = result.data;
+            updateComplaintCounts();
+            renderComplaints();
+        } else {
+            console.error('Failed to load client complaints:', result.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching client complaints:', error);
+    });
     
-    // TODO: Implement client complaints API endpoint
-    // fetch(`${URLROOT}/IssueC/getClientComplaints`, ...)
 }
-
-// Load System Complaints (to be implemented)
-function loadSystemComplaints() {
-    const URLROOT = '<?php echo URLROOT; ?>';
-    
-    // TODO: Implement system complaints API endpoint
-    // fetch(`${URLROOT}/IssueC/getSystemComplaints`, ...)
-}
-
-// Load Solved Complaints (to be implemented)
+ 
+// Load Solved Complaints for service provider complaints
 function loadSolvedComplaints() {
     const URLROOT = '<?php echo URLROOT; ?>';
      
@@ -1654,9 +1608,8 @@ function loadSolvedComplaints() {
         if (xml.status === 200) {
             var result = JSON.parse(xml.responseText);
             if (result.success && result.data) {
-                solvedComplaints = result.data;
-                updateComplaintCounts();
-                renderComplaints();
+                solvedProviderComplaints = result.data;
+                refreshSolvedComplaints();
             } else {
                 console.error('Failed to load solved complaints:', result.error);
             }
@@ -1674,11 +1627,38 @@ function loadSolvedComplaints() {
     xml.send(stringifydata);
 }
 
+
+// Load Solved Complaints for client complaints
+function loadClientSolvedComplaints() {
+    const URLROOT = '<?php echo URLROOT; ?>';
+     
+    var xml = new XMLHttpRequest();
+    xml.onload = function() {
+        if (xml.status === 200) {
+            var result = JSON.parse(xml.responseText);
+            if (result.success && result.data) {
+                solvedClientComplaints = result.data;
+                refreshSolvedComplaints();
+            } else {
+                console.error('Failed to load solved client complaints:', result.error);
+            }
+        } else {
+            console.error('Error fetching solved client complaints:', xml.statusText);
+        }
+    };
+
+    data = {
+        ic_id: ISSUE_COORDINATOR_ID
+    };
+    stringifydata = JSON.stringify(data);
+    xml.open("POST", `${URLROOT}/IssueC/getSolvedClientComplaints`, true);
+    xml.setRequestHeader("Content-Type", "application/json");
+    xml.send(stringifydata);
+}
 // Global State
 let currentTab = 'client';
 let currentComplaint = null;
 let selectedStatus = null;
-let selectedPriority = null;
 let selectedComplaintType = null;
 
 // Helper function to format complaint type labels
@@ -1736,6 +1716,7 @@ function formatDate(dateString) {
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
+    loadClientComplaints();
     loadProviderComplaints();
 });
 
@@ -1765,7 +1746,8 @@ function switchTab(tab) {
             if (systemComplaints.length === 0) loadSystemComplaints();
             break;
         case 'solved':
-            if (solvedComplaints.length === 0) loadSolvedComplaints();
+            if (solvedProviderComplaints.length === 0) loadSolvedComplaints();
+            if (solvedClientComplaints.length === 0) loadClientSolvedComplaints();
             break;
     }
     
@@ -1777,14 +1759,34 @@ function updateComplaintCounts() {
     const counts = {
         client: clientComplaints.length,
         provider: providerComplaints.length,
-        system: systemComplaints.length,
         solved: solvedComplaints.length
     };
     
     document.getElementById('client-count').textContent = counts.client;
     document.getElementById('provider-count').textContent = counts.provider;
-    document.getElementById('system-count').textContent = counts.system;
     document.getElementById('solved-count').textContent = counts.solved;
+}
+
+function refreshSolvedComplaints() {
+    const clientSolved = solvedClientComplaints.map(complaint => ({
+        ...complaint,
+        complaint_source: 'CLIENT'
+    }));
+    const providerSolved = solvedProviderComplaints.map(complaint => ({
+        ...complaint,
+        complaint_source: 'SERVICE_PROVIDER'
+    }));
+
+    solvedComplaints = clientSolved
+        .concat(providerSolved)
+        .sort((a, b) => {
+            const aTime = a.resolved_at ? new Date(a.resolved_at).getTime() : 0;
+            const bTime = b.resolved_at ? new Date(b.resolved_at).getTime() : 0;
+            return bTime - aTime;
+        });
+
+    updateComplaintCounts();
+    renderComplaints();
 }
 
 // Filter Complaints by Tab
@@ -1797,7 +1799,7 @@ function getFilteredComplaints() {
         case 'system':
             return systemComplaints;
         case 'solved':
-            return solvedComplaints;
+            return []; // Handled separately by renderSolvedComplaints()
         default:
             return [];
     }
@@ -1806,67 +1808,84 @@ function getFilteredComplaints() {
 // Render Complaints
 function renderComplaints() {
     const emptyState = document.getElementById('empty-state');
-    const complaints = getFilteredComplaints();
     
-    // Hide all tables
+    if (currentTab === 'solved') {
+        // Handle solved tab separately (both client and provider)
+        renderSolvedComplaints();
+    } else {
+        const complaints = getFilteredComplaints();
+        
+        // Hide all tables
+        document.getElementById('client-complaints-table').style.display = 'none';
+        document.getElementById('provider-complaints-table').style.display = 'none';
+        document.getElementById('solved-complaints-table').style.display = 'none';
+        
+        // Select the appropriate table and tbody based on current tab
+        let tableId = 'client-complaints-table';
+        let tbodyId = 'client-complaints-tbody';
+        let renderFunction = createClientComplaintRow;
+        
+        switch(currentTab) {
+            case 'client':
+                tableId = 'client-complaints-table';
+                tbodyId = 'client-complaints-tbody';
+                renderFunction = createClientComplaintRow;
+                break;
+            case 'provider':
+                tableId = 'provider-complaints-table';
+                tbodyId = 'provider-complaints-tbody';
+                renderFunction = createProviderComplaintRow;
+                break;
+        }
+        
+        const table = document.getElementById(tableId);
+        const tbody = document.getElementById(tbodyId);
+        
+        if (complaints.length === 0) {
+            table.style.display = 'none';
+            emptyState.style.display = 'block';
+            if (emptyState) {
+                emptyState.textContent = 'All clear! No pending complaints in this category';
+            }
+        } else {
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+            tbody.innerHTML = complaints.map(complaint => renderFunction(complaint)).join('');
+        }
+    }
+}
+
+// Render Solved Complaints (both client and provider)
+function renderSolvedComplaints() {
+    const emptyState = document.getElementById('empty-state');
+    const solvedTable = document.getElementById('solved-complaints-table');
+    const solvedTbody = document.getElementById('solved-complaints-tbody');
+    
+    // Hide other tables
     document.getElementById('client-complaints-table').style.display = 'none';
     document.getElementById('provider-complaints-table').style.display = 'none';
-    document.getElementById('system-complaints-table').style.display = 'none';
-    document.getElementById('solved-complaints-table').style.display = 'none';
     
-    // Select the appropriate table and tbody based on current tab
-    let tableId = 'client-complaints-table';
-    let tbodyId = 'client-complaints-tbody';
-    let renderFunction = createClientComplaintRow;
+    const totalSolved = solvedComplaints.length;
     
-    switch(currentTab) {
-        case 'client':
-            tableId = 'client-complaints-table';
-            tbodyId = 'client-complaints-tbody';
-            renderFunction = createClientComplaintRow;
-            break;
-        case 'provider':
-            tableId = 'provider-complaints-table';
-            tbodyId = 'provider-complaints-tbody';
-            renderFunction = createProviderComplaintRow;
-            break;
-        case 'system':
-            tableId = 'system-complaints-table';
-            tbodyId = 'system-complaints-tbody';
-            renderFunction = createSystemComplaintRow;
-            break;
-        case 'solved':
-            tableId = 'solved-complaints-table';
-            tbodyId = 'solved-complaints-tbody';
-            renderFunction = createSolvedComplaintRow;
-            break;
-    }
-    
-    const table = document.getElementById(tableId);
-    const tbody = document.getElementById(tbodyId);
-    
-    if (complaints.length === 0) {
-        table.style.display = 'none';
+    if (totalSolved === 0) {
+        solvedTable.style.display = 'none';
         emptyState.style.display = 'block';
-        
         const emptyMessage = document.getElementById('empty-message');
-        emptyMessage.textContent = currentTab === 'solved' 
-            ? 'No resolved complaints to display'
-            : 'All clear! No pending complaints in this category';
+        if (emptyMessage) {
+            emptyMessage.textContent = 'No resolved complaints to display';
+        }
     } else {
-        table.style.display = 'table';
-        emptyState.style.display = 'none';
+        solvedTable.style.display = 'table';
+        solvedTbody.innerHTML = solvedComplaints.map(complaint => createSolvedComplaintRow(complaint)).join('');
         
-        // Render appropriate rows based on tab
-        tbody.innerHTML = complaints.map(complaint => renderFunction(complaint)).join('');
+        emptyState.style.display = 'none';
     }
 }
 
 // Create Client Complaint Table Row HTML
 function createClientComplaintRow(complaint) {
-    const priorityClass = `priority-${(complaint.priority || 'medium').toLowerCase()}`;
     const statusClass = `status-${(complaint.status || 'open').toLowerCase()}`;
-    const complaintTypeLabel = formatComplaintType(complaint.complaint_type || 'OTHER');
+    const complaintTypeLabel = formatComplaintType(complaint.issue_type || 'OTHER');
     const timeSince = getTimeSince(complaint.created_at);
     const createdDate = new Date(complaint.created_at).toLocaleDateString('en-US', {
         month: 'short',
@@ -1879,13 +1898,10 @@ function createClientComplaintRow(complaint) {
             <td class="table-id">#${complaint.complaint_id || 'N/A'}</td>
             <td class="table-type">${complaintTypeLabel}</td>
             <td>
-                <span class="priority-badge ${priorityClass}">${complaint.priority || 'MEDIUM'}</span>
-            </td>
-            <td>
                 <span class="status-badge ${statusClass}">${(complaint.status || 'OPEN').replace('_', ' ')}</span>
             </td>
             <td class="table-client" title="${complaint.client_name || 'N/A'}">${complaint.client_name || 'N/A'}</td>
-            <td class="table-provider" title="${complaint.provider_name || 'N/A'}">${complaint.provider_name || 'N/A'}</td>
+            <td class="table-provider" title="${complaint.service_provider_name || 'N/A'}">${complaint.service_provider_name || 'N/A'}</td>
             <td class="table-event" title="${complaint.event_name || 'N/A'}">${complaint.event_name || 'N/A'}</td>
             <td class="table-created">
                 <div style="font-weight: 600;">${timeSince}</div>
@@ -1903,7 +1919,6 @@ function createClientComplaintRow(complaint) {
 
 // Create Provider Complaint Table Row HTML
 function createProviderComplaintRow(complaint) {
-    const priorityClass = `priority-${(complaint.priority || 'medium').toLowerCase()}`;
     const statusClass = `status-${(complaint.status || 'open').toLowerCase()}`;
     const complaintTypeLabel = formatComplaintType(complaint.complaint_type || 'OTHER');
     const timeSince = getTimeSince(complaint.created_at);
@@ -1917,9 +1932,6 @@ function createProviderComplaintRow(complaint) {
         <tr class="complaint-row">
             <td class="table-id">#${complaint.complaint_id || 'N/A'}</td>
             <td class="table-type">${complaintTypeLabel}</td>
-            <td>
-                <span class="priority-badge ${priorityClass}">${complaint.priority || 'MEDIUM'}</span>
-            </td>
             <td>
                 <span class="status-badge ${statusClass}">${(complaint.status || 'OPEN').replace('_', ' ')}</span>
             </td>
@@ -1942,7 +1954,6 @@ function createProviderComplaintRow(complaint) {
 
 // Create System Complaint Table Row HTML
 function createSystemComplaintRow(complaint) {
-    const priorityClass = `priority-${(complaint.priority || 'medium').toLowerCase()}`;
     const statusClass = `status-${(complaint.status || 'open').toLowerCase()}`;
     const complaintTypeLabel = formatComplaintType(complaint.complaint_type || 'OTHER');
     const timeSince = getTimeSince(complaint.created_at);
@@ -1956,9 +1967,6 @@ function createSystemComplaintRow(complaint) {
         <tr class="complaint-row">
             <td class="table-id">#${complaint.complaint_id || 'N/A'}</td>
             <td class="table-type">${complaintTypeLabel}</td>
-            <td>
-                <span class="priority-badge ${priorityClass}">${complaint.priority || 'MEDIUM'}</span>
-            </td>
             <td>
                 <span class="status-badge ${statusClass}">${(complaint.status || 'OPEN').replace('_', ' ')}</span>
             </td>
@@ -1978,26 +1986,27 @@ function createSystemComplaintRow(complaint) {
     `;
 }
 
-// Create Solved Complaint Table Row HTML
+// Create Solved Client Complaint Table Row HTML
 function createSolvedComplaintRow(complaint) {
-    const statusClass = `status-${(complaint.status || 'open').toLowerCase()}`;
-    const complaintTypeLabel = formatComplaintType(complaint.complaint_type || 'OTHER');
     const resolutionTypeLabel = complaint.resolution_type ? formatComplaintType(complaint.resolution_type) : 'N/A';
     const resolvedDate = complaint.resolved_at ? new Date(complaint.resolved_at).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric'
     }) : 'N/A';
+    const complaintTypeLabel = formatComplaintType(complaint.issue_type || complaint.complaint_type || 'OTHER');
+    const complaintSource = complaint.complaint_source === 'CLIENT' ? 'Client' : 'Service Provider';
+    const clientName = complaint.client_name || 'N/A';
 
     return `
         <tr class="complaint-row">
             <td class="table-id">#${complaint.complaint_id || 'N/A'}</td>
+            <td>${complaintSource}</td>
             <td class="table-type">${complaintTypeLabel}</td>
-            <td class="table-client" title="${complaint.complainant_type || 'N/A'}">${complaint.complainant_type || 'N/A'}</td>
+            <td class="table-client" title="${clientName}">${clientName}</td>
             <td>
                 <span class="badge badge-success">${resolutionTypeLabel}</span>
             </td>
-            <td class="table-provider" title="${complaint.provider_name || 'N/A'}">${complaint.provider_name || 'N/A'}</td>
             <td class="table-created">
                 <div style="font-weight: 600;">${resolvedDate}</div>
             </td>
@@ -2013,7 +2022,6 @@ function createSolvedComplaintRow(complaint) {
 
 // Create Complaint Table Row HTML (Legacy - kept for backwards compatibility)
 function createComplaintRow(complaint) {
-    const priorityClass = `priority-${(complaint.priority || 'medium').toLowerCase()}`;
     const statusClass = `status-${(complaint.status || 'open').toLowerCase()}`;
     const complaintTypeLabel = formatComplaintType(complaint.complaint_type || 'OTHER');
     const timeSince = getTimeSince(complaint.created_at);
@@ -2027,9 +2035,6 @@ function createComplaintRow(complaint) {
         <tr class="complaint-row">
             <td class="table-id">#${complaint.complaint_id || 'N/A'}</td>
             <td class="table-type">${complaintTypeLabel}</td>
-            <td>
-                <span class="priority-badge ${priorityClass}">${complaint.priority || 'MEDIUM'}</span>
-            </td>
             <td>
                 <span class="status-badge ${statusClass}">${(complaint.status || 'OPEN').replace('_', ' ')}</span>
             </td>
@@ -2065,8 +2070,8 @@ function openComplaintModal(complaintId) {
     }
     
     selectedStatus = currentComplaint.status;
-    selectedPriority = currentComplaint.priority;
-    selectedComplaintType = currentComplaint.complaint_type;
+    // Handle both provider complaints (complaint_type) and client complaints (issue_type)
+    selectedComplaintType = currentComplaint.complaint_type || currentComplaint.issue_type;
     
     // Populate modal
     populateModal(currentComplaint);
@@ -2077,14 +2082,13 @@ function openComplaintModal(complaintId) {
 
 // Populate Modal with Complaint Data
 function populateModal(complaint) {
-    const priorityClass = `priority-${complaint.priority.toLowerCase()}`;
     const statusClass = `status-${complaint.status.toLowerCase()}`;
-    const complaintTypeLabel = formatComplaintType(complaint.complaint_type);
+    // Handle both provider complaints (complaint_type) and client complaints (issue_type)
+    const complaintType = complaint.complaint_type || complaint.issue_type;
+    const complaintTypeLabel = formatComplaintType(complaintType || 'OTHER');
     
     // Header
     document.getElementById('modal-title').textContent = `Complaint #${complaint.complaint_id}`;
-    document.getElementById('modal-priority').textContent = complaint.priority;
-    document.getElementById('modal-priority').className = `priority-badge ${priorityClass}`;
     document.getElementById('modal-status').textContent = complaint.status.replace('_', ' ');
     document.getElementById('modal-status').className = `status-badge ${statusClass}`;
     
@@ -2094,11 +2098,13 @@ function populateModal(complaint) {
     
     // Details
     document.getElementById('client-name').textContent = complaint.client_name || 'N/A';
-    document.getElementById('complainant-type').textContent = complaint.complainant_type;
-    document.getElementById('provider-name').textContent = complaint.provider_name || 'N/A';
-    document.getElementById('service-id').textContent = complaint.service_id;
+    document.getElementById('complainant-type').textContent = complaint.complainant_type || 'N/A';
+    // Handle both provider_name (from provider complaints) and service_provider_name (from client complaints)
+    const providerName = complaint.provider_name || complaint.service_provider_name || 'N/A';
+    document.getElementById('provider-name').textContent = providerName;
+    document.getElementById('service-id').textContent = complaint.service_id || 'N/A';
     document.getElementById('event-name').textContent = complaint.event_name || 'N/A';
-    document.getElementById('event-id').textContent = complaint.event_id;
+    document.getElementById('event-id').textContent = complaint.event_id || 'N/A';
     document.getElementById('created-at').textContent = formatDate(complaint.created_at);
     document.getElementById('updated-at').textContent = formatDate(complaint.updated_at);
     
@@ -2127,19 +2133,22 @@ function populateModal(complaint) {
         conversationSection.style.display = 'block';
         modalFooter.style.display = 'flex';
         
-        // Set the status and priority dropdowns to current values
-        document.getElementById('status-select').value = complaint.status;
-        document.getElementById('priority-select').value = complaint.priority;
+        // Set the status dropdown to a valid current value
+        const statusSelect = document.getElementById('status-select');
+        const rawStatus = (complaint.status || 'OPEN').toString().toUpperCase();
+        const normalizedStatus = rawStatus === 'SEND' ? 'OPEN' : rawStatus;
+        statusSelect.value = normalizedStatus;
+        selectedStatus = normalizedStatus;
         
         // Update status buttons
         updateStatusButtons(complaint.status);
         
-        // Update priority and complaint type buttons
-        updatePriorityButtons(complaint.priority);
+        // Update complaint type buttons
         updateComplaintTypeButtons(complaint.complaint_type);
         
-        // Set conversation text
-        const recipientType = complaint.complainant_type === 'CLIENT' ? 'Client' : 'Service Provider';
+        // Set conversation text based on complaint type
+        const isClientComplaint = !!complaint.issue_type;
+        const recipientType = isClientComplaint ? 'Client' : 'Service Provider';
         document.getElementById('conversation-text').textContent = `Start Conversation with ${recipientType}`;
     }
 }
@@ -2156,14 +2165,11 @@ function updateStatusButtons(status) {
     
     // Show/hide resolution input
     const resolutionInput = document.getElementById('resolution-input');
-    const resolveBtn = document.getElementById('resolve-btn');
     
     if (status === 'RESOLVED') {
         resolutionInput.style.display = 'block';
-        resolveBtn.style.display = 'inline-block';
     } else {
         resolutionInput.style.display = 'none';
-        resolveBtn.style.display = 'none';
     }
 }
 
@@ -2173,27 +2179,10 @@ function updateStatus(status) {
     updateStatusButtons(status);
 }
 
-// Update Priority
-function updatePriority(priority) {
-    selectedPriority = priority;
-    updatePriorityButtons(priority);
-}
-
 // Update Complaint Type
 function updateComplaintType(type) {
     selectedComplaintType = type;
     updateComplaintTypeButtons(type);
-}
-
-// Update Priority Buttons
-function updatePriorityButtons(priority) {
-    const buttons = document.querySelectorAll('.priority-btn');
-    buttons.forEach(btn => {
-        btn.classList.remove('active', 'priority-low', 'priority-medium', 'priority-high', 'priority-critical');
-        if (btn.getAttribute('data-priority') === priority) {
-            btn.classList.add('active', `priority-${priority.toLowerCase()}`);
-        }
-    });
 }
 
 // Update Complaint Type Buttons
@@ -2221,13 +2210,6 @@ function saveComplaintChanges() {
         changesSummary.push(`Status: ${selectedStatus.replace('_', ' ')}`);
     }
     
-    // Check for priority changes
-    if (selectedPriority && selectedPriority !== currentComplaint.priority) {
-        currentComplaint.priority = selectedPriority;
-        hasChanges = true;
-        changesSummary.push(`Priority: ${selectedPriority}`);
-    }
-    
     // Check for resolution if status is RESOLVED
     let resolutionType = '';
     let resolutionNote = '';
@@ -2253,20 +2235,22 @@ function saveComplaintChanges() {
     
     // Prepare data for API
     const finalStatus = selectedStatus || currentComplaint.status;
-    const finalPriority = selectedPriority || currentComplaint.priority;
+    const isClientComplaint = !!currentComplaint.issue_type;
     
     const updateData = {
         complaint_id: currentComplaint.complaint_id,
         status: finalStatus,
-        priority: finalPriority,
         resolution_type: resolutionType || null,
-        resolution_note: resolutionNote || null
+        resolution_note: resolutionNote || null,
+        assigned_ic_id: null
     };
     
     // Assign IC ID when status is or becomes IN_PROGRESS, OPEN, or RESOLVED and IC ID is set
     if ((finalStatus === 'IN_PROGRESS' || finalStatus === 'OPEN' || finalStatus === 'RESOLVED') && ISSUE_COORDINATOR_ID && ISSUE_COORDINATOR_ID !== null) {
         updateData.assigned_ic_id = ISSUE_COORDINATOR_ID;
         if (!currentComplaint.assigned_ic_id) {
+            currentComplaint.assigned_ic_id = ISSUE_COORDINATOR_ID;
+            hasChanges = true;
             changesSummary.push(`Assigned to Issue Coordinator #${ISSUE_COORDINATOR_ID}`);
         }
     }
@@ -2274,7 +2258,11 @@ function saveComplaintChanges() {
     // Send to server
     const URLROOT = '<?php echo URLROOT; ?>';
     
-    fetch(`${URLROOT}/IssueC/updateComplaintStatus`, {
+    const updateUrl = isClientComplaint
+        ? `${URLROOT}/IssueC/updateClientComplaintStatus`
+        : `${URLROOT}/IssueC/updateProviderComplaintStatus`;
+    
+    fetch(updateUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -2311,7 +2299,6 @@ function closeModal() {
     document.getElementById('complaint-modal').style.display = 'none';
     currentComplaint = null;
     selectedStatus = null;
-    selectedPriority = null;
     selectedComplaintType = null;
 }
 
@@ -2444,36 +2431,6 @@ function escalateComplaint() {
 }
 
 // Resolve Complaint
-function resolveComplaint() {
-    if (!currentComplaint) return;
-    
-    const resolutionTypeSelect = document.getElementById('resolution-type-select');
-    const resolutionNoteInput = document.getElementById('resolution-note-input');
-    
-    const resolutionType = resolutionTypeSelect.value;
-    const resolutionNote = resolutionNoteInput.value.trim();
-    
-    if (!resolutionType) {
-        alert('Please select a resolution type.');
-        return;
-    }
-    
-    if (!resolutionNote) {
-        alert('Please provide resolution details.');
-        return;
-    }
-    
-    currentComplaint.status = 'RESOLVED';
-    currentComplaint.resolution_type = resolutionType;
-    currentComplaint.resolution_note = resolutionNote;
-    currentComplaint.resolved_at = new Date().toISOString();
-    currentComplaint.updated_at = new Date().toISOString();
-    
-    alert('Complaint resolved successfully!');
-    closeModal();
-    updateComplaintCounts();
-    renderComplaints();
-}
 
 // Utility Functions
 function formatComplaintType(type) {

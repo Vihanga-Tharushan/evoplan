@@ -97,7 +97,7 @@
                         </div> 
                     </div>
                    <?php endforeach; ?>
-                  
+<!--                   
                     <div class="event-card upcoming" event-id="101">
                         <div class="event-card-header">
                             <span class="event-type business">
@@ -140,10 +140,10 @@
                                 <span style="font-weight: 600; color: var(--success);">In 22 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Event Card 3 -->
-                    <div class="event-card upcoming" event-id="102">
+                    <!-- <div class="event-card upcoming" event-id="102">
                         <div class="event-card-header">
                             <span class="event-type birthday">
                                 <i class="fas fa-birthday-cake"></i> Birthday Party
@@ -185,7 +185,7 @@
                                 <span style="font-weight: 600; color: var(--warning);">In 8 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             
@@ -259,7 +259,7 @@
                     
                     
                     <!-- Event Card 2 (Previous) -->
-                    <div class="event-card previous" event-id="201">
+                    <!-- <div class="event-card previous" event-id="201">
                         <div class="event-card-header">
                             <span class="event-type wedding">
                                 <i class="fas fa-ring"></i> Wedding Reception
@@ -301,9 +301,9 @@
                             </div>
                         </div>
                     </div>
-                    
+                     -->
                     <!-- Event Card 3 (Previous) -->
-                    <div class="event-card previous" event-id="202">
+                    <!-- <div class="event-card previous" event-id="202">
                         <div class="event-card-header">
                             <span class="event-type party">
                                 <i class="fas fa-glass-cheers"></i> Anniversary Party
@@ -344,7 +344,7 @@
                                 <span style="color: var(--muted); font-size: 0.9rem;">Completed on Oct 18, 2023</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Empty State for when there are no previous events -->
                      <div class="empty-state" style="display: none;">

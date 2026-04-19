@@ -100,5 +100,93 @@
             }
         }
 
+        // Get total events for coordinator
+        public function getTotalEvent($ic_id){
+            $this->db->query("SELECT COUNT(DISTINCT e.event_id) as total FROM events e 
+                             WHERE e.status = 'ON' 
+                             LIMIT 1");
+            $result = $this->db->single();
+            return $result->total ?? 0;
+        }
 
+        // Get total issues for coordinator
+        public function getTotalIssues($ic_id){
+            $this->db->query("SELECT COUNT(DISTINCT c.complaint_id) as total 
+                             FROM provider_complaints c 
+                             WHERE c.status != 'SEND' 
+                             AND c.assigned_ic_id = :ic_id 
+                             UNION ALL
+                             SELECT COUNT(DISTINCT c.complaint_id) as total 
+                             FROM client_complaints c 
+                             WHERE c.status != 'SEND' 
+                             AND c.assigned_ic_id = :ic_id");
+            $this->db->bind(':ic_id', $ic_id);
+            $results = $this->db->resultSet();
+            
+            $total = 0;
+            foreach($results as $row){
+                $total += $row->total;
+            }
+            return $total;
+        }
+
+        // Get total complaints for coordinator
+        public function getTotalComplaints($ic_id){
+            $this->db->query("SELECT COUNT(DISTINCT pc.complaint_id) as total 
+                     FROM provider_complaints pc
+                     WHERE pc.assigned_ic_id = :ic_id OR pc.assigned_ic_id IS NULL
+                     UNION ALL
+                     SELECT COUNT(DISTINCT cc.complaint_id) as total
+                     FROM client_complaints cc 
+                     WHERE cc.assigned_ic_id = :ic_id OR cc.assigned_ic_id IS NULL");
+            $this->db->bind(':ic_id', $ic_id);
+            $results = $this->db->resultSet();
+    
+            $total = 0;
+            foreach($results as $row){
+                $total += $row->total ?? 0;
+            }
+            return $total;
+        }
+
+        // Get total refunds for coordinator
+        
+        // Get coordinator by ID
+        public function getCoordinatorById($ic_id) {
+            $this->db->query("SELECT ic_id, ic_name, ic_email, ic_phone FROM coordinators WHERE ic_id = :ic_id");
+            $this->db->bind(':ic_id', $ic_id);
+            return $this->db->single();
+        }
+
+        // Update coordinator personal information
+        public function updateCoordinatorInfo($ic_id, $ic_name, $ic_email, $ic_phone) {
+            $this->db->query("UPDATE coordinators SET ic_name = :ic_name, ic_email = :ic_email, ic_phone = :ic_phone WHERE ic_id = :ic_id");
+            $this->db->bind(':ic_id', $ic_id);
+            $this->db->bind(':ic_name', $ic_name);
+            $this->db->bind(':ic_email', $ic_email);
+            $this->db->bind(':ic_phone', $ic_phone);
+            return $this->db->execute();
+        }
+
+        // Update coordinator password
+        public function updateCoordinatorPassword($ic_id, $new_password) {
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $this->db->query("UPDATE coordinators SET ic_password = :ic_password WHERE ic_id = :ic_id");
+            $this->db->bind(':ic_id', $ic_id);
+            $this->db->bind(':ic_password', $hashed_password);
+            return $this->db->execute();
+        }
+
+        // Verify coordinator's current password
+        public function verifyCoordinatorPassword($ic_id, $password) {
+            $this->db->query("SELECT ic_password FROM coordinators WHERE ic_id = :ic_id");
+            $this->db->bind(':ic_id', $ic_id);
+            $row = $this->db->single();
+            
+            if ($row && password_verify($password, $row->ic_password)) {
+                return true;
+            }
+            return false;
+        }
     }
+

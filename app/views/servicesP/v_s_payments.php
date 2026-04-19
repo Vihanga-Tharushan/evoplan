@@ -900,8 +900,8 @@ body {
 .kpi-icon.danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 
 .kpi-value {
-    font-size: 1.8rem;
-    font-weight: 800;
+    font-size: 1.25rem;
+    font-weight: 600;
     margin-bottom: 4px;
 }
 
@@ -1032,7 +1032,7 @@ body {
                                         <i class="fas fa-wallet"></i>
                                     </div>
                                 </div>
-                                <div class="kpi-value">RS.12,450</div>
+                                <div class="kpi-value">Rs. <?php echo $data['totalEarnings']; ?></div>
                                 <div class="kpi-change positive">
                                 </div>
                             </div>
@@ -1043,7 +1043,7 @@ body {
                                         <i class="fas fa-hourglass-half"></i>
                                     </div>
                                 </div>
-                                <div class="kpi-value">RS.8,000</div>
+                                <div class="kpi-value">Rs. <?php echo $data['pendingPayments']; ?></div>
                                 <div class="kpi-change positive">
                                 </div>
                             </div>
@@ -1054,7 +1054,7 @@ body {
                                         <i class="fas fa-money-bill-wave"></i>
                                     </div>
                                 </div>
-                                <div class="kpi-value">RS.4,800</div>
+                                <div class="kpi-value">Rs. <?php echo $data['paidoutPayments']; ?></div>
                                 <div class="kpi-change positive">
                                 </div>
                             </div>
@@ -1065,7 +1065,7 @@ body {
                                         <i class="fas fa-calendar-check"></i>
                                     </div>
                                 </div>
-                                <div class="kpi-value">42</div>
+                                <div class="kpi-value"><?php echo $data['totalEventCompleted']; ?></div>
                                 <div class="kpi-change positive">
                                 </div>
                             </div>
@@ -1110,7 +1110,7 @@ body {
                             </div>
                             <div>
                                 <h3>Bank Account Details</h3>
-                                <p>Update your bank information for payment transfers</p>
+                                <p>Manage your bank information for payment transfers</p>
                             </div>
                         </div>
                         
@@ -1124,100 +1124,77 @@ body {
                             </div>
                         </div>
 
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Bank Name *</label>
-                                <input type="text" id="bankName" placeholder="e.g., Commercial Bank, BOC, Sampath Bank" value="Commercial Bank">
+                        <!-- Display Mode -->
+                        <div id="bankDetailsDisplay" style="padding: 24px;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                                <div>
+                                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800;">Bank Name</label>
+                                    <p id="displayBankName" style="font-size: 1rem; font-weight: 600; color: var(--text); margin-top: 8px;">-</p>
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800;">Account Holder Name</label>
+                                    <p id="displayAccountHolder" style="font-size: 1rem; font-weight: 600; color: var(--text); margin-top: 8px;">-</p>
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800;">Account Number</label>
+                                    <p id="displayAccountNumber" style="font-size: 1rem; font-weight: 600; color: var(--text); margin-top: 8px;">-</p>
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 800;">Branch Name</label>
+                                    <p id="displayBranchName" style="font-size: 1rem; font-weight: 600; color: var(--text); margin-top: 8px;">-</p>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>Account Holder Name *</label>
-                                <input type="text" id="accountHolder" placeholder="Full name as per bank records" value="Rajesh Kumar Singh">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Account Number *</label>
-                                <input type="text" id="accountNumber" placeholder="Your account number" value="1234567890123456">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Branch Name *</label>
-                                <input type="text" id="branchName" placeholder="e.g., Colombo Main Branch" value="Colombo Main Branch">
-                            </div>
+                            <button class="btn btn-primary" onclick="toggleEditMode(true)" style="margin-top: 20px;">
+                                <i class="fas fa-edit"></i>
+                                Update Details
+                            </button>
                         </div>
 
-                        <button class="btn btn-primary" onclick="saveBankDetails()">
-                            <i class="fas fa-save"></i>
-                            Save Bank Details
-                        </button>
-                    </div>
+                        <!-- Edit Mode -->
+                        <div id="bankDetailsForm" style="display: none;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Bank Name *</label>
+                                   <select id="bankName">
+                                        <option value="">Select your bank...</option>
+                                        <option value="Bank of Ceylon" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Bank of Ceylon') ? 'selected' : ''; ?>>Bank of Ceylon</option>
+                                        <option value="Commercial Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Commercial Bank') ? 'selected' : ''; ?>>Commercial Bank</option>
+                                        <option value="Hatton National Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Hatton National Bank') ? 'selected' : ''; ?>>Hatton National Bank</option>
+                                        <option value="Sampath Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Sampath Bank') ? 'selected' : ''; ?>>Sampath Bank</option>
+                                        <option value="People's Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === "People's Bank") ? 'selected' : ''; ?>>People's Bank</option>
+                                        <option value="National Savings Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'National Savings Bank') ? 'selected' : ''; ?>>National Savings Bank</option>
+                                        <option value="Pan Asia Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Pan Asia Bank') ? 'selected' : ''; ?>>Pan Asia Bank</option>
+                                        <option value="NSB Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'NSB Bank') ? 'selected' : ''; ?>>NSB Bank</option>
+                                        <option value="Union Bank" <?php echo (isset($data['bankdetails']->bankName) && $data['bankdetails']->bankName === 'Union Bank') ? 'selected' : ''; ?>>Union Bank</option>
+                                   </select>
+                                </div>
 
-                    <!-- Payment History -->
-                    <div class="detail-card-large">
-                        <div class="card-header-large">
-                            <div class="kpi-icon primary">
-                            <i class="fas fa-history"></i>
-                            </div>
-                            <div>
-                                <h3>Recent Payments Received</h3>
-                                <p>Track your payout history and transfer confirmations</p>
-                            </div>
-                        </div>
+                                <div class="form-group">
+                                    <label>Account Holder Name *</label>
+                                    <input type="text" id="accountHolder" placeholder="Full name as per bank records" value="<?php echo $data['bankdetails']->accountHolderName ?? ''; ?>">
+                                </div>
 
-                        <div class="table-container">
-                            <table class="earnings-table">
-                                <thead>
-                                    <tr>
-                                        <th>Payment Date</th>
-                                        <th>Amount</th>
-                                        <th>Transaction ID</th>
-                                        <th>Bank</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Feb 5, 2026</td>
-                                        <td class="amount">Rs. 15,300</td>
-                                        <td class="transaction-id">#TXN-2026-001534</td>
-                                        <td>Commercial Bank</td>
-                                        <td><span class="status-badge status-completed">Success</span></td>
-                                        <td>
-                                            <button class="table-view-btn" onclick="viewPaymentDetails('Feb 5, 2026', '15300', '#TXN-2026-001534', 'Commercial Bank', 'Success')" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                                <span>View</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jan 28, 2026</td>
-                                        <td class="amount">Rs. 10,200</td>
-                                        <td class="transaction-id">#TXN-2026-001423</td>
-                                        <td>Commercial Bank</td>
-                                        <td><span class="status-badge status-completed">Success</span></td>
-                                        <td>
-                                            <button class="table-view-btn" onclick="viewPaymentDetails('Jan 28, 2026', '10200', '#TXN-2026-001423', 'Commercial Bank', 'Success')" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                                <span>View</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jan 15, 2026</td>
-                                        <td class="amount">Rs. 7,800</td>
-                                        <td class="transaction-id">#TXN-2026-001298</td>
-                                        <td>Commercial Bank</td>
-                                        <td><span class="status-badge status-completed">Success</span></td>
-                                        <td>
-                                            <button class="table-view-btn" onclick="viewPaymentDetails('Jan 15, 2026', '7800', '#TXN-2026-001298', 'Commercial Bank', 'Success')" title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                                <span>View</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <div class="form-group">
+                                    <label>Account Number *</label>
+                                    <input type="text" id="accountNumber" placeholder="Your account number" value="<?php echo $data['bankdetails']->accountNumber ?? ''; ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Branch Name *</label>
+                                    <input type="text" id="branchName" placeholder="e.g., Colombo Main Branch" value="<?php echo $data['bankdetails']->branchName ?? ''; ?>">
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; padding: 24px; padding-top: 0;">
+                                <button class="btn btn-primary" onclick="saveBankDetails()">
+                                    <i class="fas fa-save"></i>
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-secondary" onclick="toggleEditMode(false)">
+                                    <i class="fas fa-times"></i>
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1242,7 +1219,7 @@ body {
                             <i class="fas fa-exclamation-triangle"></i>
                             <div class="alert-content">
                                 <div class="alert-title">Important: PIN Requirement</div>
-                                <div class="alert-text">You must obtain a 4-digit PIN from the Client to process payment requests. This PIN prevents unauthorized payment requests and protects your account. Do not share this PIN with anyone.</div>
+                                <div class="alert-text">You must obtain a 6-digit PIN from the Client to process payment requests. This PIN prevents unauthorized payment requests and protects your account. Do not share this PIN with anyone.</div>
                             </div>
                         </div>
 
@@ -1253,8 +1230,10 @@ body {
                                 <input type="text" class="pin-input" maxlength="1" placeholder="0" data-pin="1">
                                 <input type="text" class="pin-input" maxlength="1" placeholder="0" data-pin="2">
                                 <input type="text" class="pin-input" maxlength="1" placeholder="0" data-pin="3">
+                                <input type="text" class="pin-input" maxlength="1" placeholder="0" data-pin="4">
+                                <input type="text" class="pin-input" maxlength="1" placeholder="0" data-pin="5">
                             </div>
-                            <p class="pin-helper">Enter the 4-digit PIN provided by your Client</p>
+                            <p class="pin-helper">Enter the 6-digit PIN provided by your Client</p>
                         </div>
 
                         <div id="pinAlert" style="display: none;"></div>
@@ -1272,13 +1251,6 @@ body {
                             </select>
                         </div>
 
-                        <!-- <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            <div class="alert-content">
-                                <div class="alert-title">PIN Source</div>
-                                <div class="alert-text">Contact your Client portal to request a payment PIN. This is a one-time security measure for your payment request.</div>
-                            </div>
-                        </div> -->
 
                         <div class="button-group">
                             <button class="btn btn-success" id="submitPaymentBtn" onclick="submitPaymentRequest()">
@@ -1312,7 +1284,7 @@ body {
                             <li>
                                 <div class="step-number">2</div>
                                 <div class="step-content">
-                                    <strong>Obtain PIN:</strong> After finishing the event, contact your Client to get your unique 4-digit payment PIN.
+                                    <strong>Obtain PIN:</strong> After finishing the event, contact your Client to get your unique 6-digit payment PIN.
                                 </div>
                             </li>
                             <li>
@@ -1405,72 +1377,52 @@ body {
         </div>
     </div>
 
-    <script>// Mock Earnings Data
-const earningsData = [
-    {
-        id: 1,
-        eventName: 'Smith Wedding Reception',
-        date: 'Feb 5, 2026',
-        eventType: 'Photography',
-        amount: 8000,
-        status: 'COMPLETED',
-        description: 'Full day wedding photography coverage including ceremony and reception'
-    },
-    {
-        id: 2,
-        eventName: 'Corporate Gala 2026',
-        date: 'Feb 4, 2026',
-        eventType: 'Catering',
-        amount: 12500,
-        status: 'PENDING',
-        description: 'Corporate event catering for 150 guests with premium menu selection'
-    },
-    {
-        id: 3,
-        eventName: 'Birthday Bash - Rohit',
-        date: 'Feb 2, 2026',
-        eventType: 'Decoration',
-        amount: 5800,
-        status: 'COMPLETED',
-        description: 'Birthday party decoration with custom theme and balloon arrangements'
-    },
-    {
-        id: 4,
-        eventName: 'Annual Company Dinner',
-        date: 'Jan 30, 2026',
-        eventType: 'Event Planning',
-        amount: 7500,
-        status: 'COMPLETED',
-        description: 'Full event planning and coordination for annual company dinner'
-    },
-    {
-        id: 5,
-        eventName: 'Johnson Family Anniversary',
-        date: 'Jan 28, 2026',
-        eventType: 'Florist Services',
-        amount: 4200,
-        status: 'COMPLETED',
-        description: 'Floral arrangements and decorations for anniversary celebration'
-    },
-    {
-        id: 6,
-        eventName: 'Charity Gala Event',
-        date: 'Jan 25, 2026',
-        eventType: 'Photography',
-        amount: 7800,
-        status: 'COMPLETED',
-        description: 'Professional photography coverage for charity gala event'
-    }
-];
+    <script>
+// Earnings Data Storage
+const URLROOT = "<?php echo URLROOT; ?>";
+const serviceId = "<?php echo $_SESSION['service_id'] ?? ''; ?>";
+let earningsData = [];
 
 // Global State
 let currentTab = 'earnings';
 let currentEvent = null;
 
+
+
+// Helper function to capitalize first letter
+function Capitalize(str) {
+    if (!str) return 'Not specified';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+
+function getAllpayments(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", URLROOT + "/Service/getAllPayments", true);
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            console.log(response);
+            // Store the fetched payments in earningsData
+            if (response.allPayments && Array.isArray(response.allPayments)) {
+                earningsData = response.allPayments;
+                renderEarnings();
+            }
+        } else {
+            console.error("Error fetching payments: " + xhr.status);
+        }
+    };
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({ serviceId: serviceId }));
+}
+
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
-    renderEarnings();
+    getAllpayments();
     initializePinInputs();
+    loadBankDetails();
 });
 
 // Switch Tab Function
@@ -1514,22 +1466,57 @@ function renderEarnings() {
     }
     
     container.innerHTML = earningsData.map(earning => createEarningRow(earning)).join('');
+    populateEventDropdown();
+}
+
+// Populate Event Dropdown dynamically
+function populateEventDropdown() {
+    const dropdown = document.getElementById('paymentEventSelect');
+    dropdown.innerHTML = '<option value="">Select an event...</option>';
+    
+    // Get unique events based on event_id
+    const uniqueEvents = new Map();
+    earningsData.forEach(payment => {
+        if (!uniqueEvents.has(payment.event_id)) {
+            uniqueEvents.set(payment.event_id, {
+                event_id: payment.event_id,
+                event_name: payment.event_name,
+                amount: payment.amount
+            });
+        }
+    });
+    
+    // Add options for each unique event
+    uniqueEvents.forEach(event => {
+        const amount = parseFloat(event.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const eventDisplay = event.event_name ? event.event_name : `Event #${event.event_id}`;
+        const option = document.createElement('option');
+        option.value = event.event_id;
+        option.textContent = `${eventDisplay} - Rs. ${amount}`;
+        dropdown.appendChild(option);
+    });
 }
 
 // Create Earning Table Row HTML
 function createEarningRow(earning) {
-    const statusClass = earning.status === 'COMPLETED' ? 'status-completed' : 'status-pending';
-    const statusText = earning.status === 'COMPLETED' ? 'Completed' : 'Pending';
+    const statusClass = earning.payment_status === 'COMPLETED' ? 'status-completed' : 'status-pending';
+    const statusText = earning.payment_status === 'COMPLETED' ? 'Completed' : 'Pending';
+    const createdDate = new Date(earning.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const amount = parseFloat(earning.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    // Use event_name if available, otherwise fallback to event_id
+    const eventDisplay = earning.event_name ? earning.event_name : `Event #${earning.event_id}`;
+    const eventType = Capitalize(earning.event_type || 'N/A');
     
     return `
         <tr class="earning-row">
-            <td><strong>${earning.eventName}</strong></td>
-            <td>${earning.date}</td>
-            <td>${earning.eventType}</td>
-            <td class="amount">Rs. ${earning.amount.toLocaleString()}</td>
+            <td><strong>${eventDisplay}</strong></td>
+            <td>${createdDate}</td>
+            <td>${eventType}</td>
+            <td class="amount">Rs. ${amount}</td>
             <td><span class="status-badge ${statusClass}">${statusText}</span></td>
             <td>
-                <button class="table-view-btn" onclick="openEventModal(${earning.id})" title="View Details">
+                <button class="table-view-btn" onclick="openEventModal(${earning.payment_id})" title="View Details">
                     <i class="fas fa-eye"></i>
                     <span>View</span>
                 </button>
@@ -1539,8 +1526,8 @@ function createEarningRow(earning) {
 }
 
 // Open Event Modal
-function openEventModal(eventId) {
-    currentEvent = earningsData.find(e => e.id === eventId);
+function openEventModal(paymentId) {
+    currentEvent = earningsData.find(e => e.payment_id === paymentId);
     if (!currentEvent) return;
     
     // Populate modal
@@ -1551,33 +1538,52 @@ function openEventModal(eventId) {
 }
 
 // Populate Modal with Event Data
-function populateModal(event) {
-    const statusClass = event.status === 'COMPLETED' ? 'status-completed' : 'status-pending';
-    const statusText = event.status === 'COMPLETED' ? 'Completed' : 'Pending';
+function populateModal(payment) {
+    const statusClass = payment.payment_status === 'COMPLETED' ? 'status-completed' : 'status-pending';
+    const statusText = payment.payment_status === 'COMPLETED' ? 'Completed' : 'Pending';
+    const createdDate = new Date(payment.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const amount = parseFloat(payment.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const paymentType = payment.payment_type === 'FULL_PAYMENT' ? 'Full Payment' : 'Refund';
     
-    document.getElementById('modal-title').textContent = 'Event Details';
+    // Event details
+    const eventName = payment.event_name ? payment.event_name : `Event #${payment.event_id}`;
+    const eventType = Capitalize(payment.event_type || 'Not specified');
+    const location = payment.venue_address || 'Not specified';
+    const guestCount = payment.guest_count || 'N/A';
+    
+    // Event date formatting
+    const eventDate = payment.start_datetime 
+        ? new Date(payment.start_datetime).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+        : 'N/A';
+    const eventTime = payment.start_datetime
+        ? new Date(payment.start_datetime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        : 'N/A';
+    
+    // Populate modal header
+    document.getElementById('modal-title').textContent = eventName;
     document.getElementById('modal-status').textContent = statusText;
     document.getElementById('modal-status').className = `status-badge ${statusClass}`;
     
-    document.getElementById('modal-event-name').textContent = event.eventName;
-    document.getElementById('modal-description').textContent = event.description;
-    document.getElementById('modal-amount').textContent = `Rs. ${event.amount.toLocaleString()}`;
+    // Populate modal event info
+    document.getElementById('modal-event-name').textContent = eventName;
+    document.getElementById('modal-description').innerHTML = `<strong>${eventType}</strong> | Payment Status: ${statusText}`;
+    document.getElementById('modal-amount').textContent = `Rs. ${amount}`;
     document.getElementById('modal-payment-status').textContent = statusText;
-    document.getElementById('modal-date').textContent = event.date;
+    document.getElementById('modal-date').textContent = createdDate;
     
-    const paymentDate = event.status === 'COMPLETED' ? calculatePaymentDate(event.date) : 'Pending';
-    document.getElementById('modal-payment-date').textContent = paymentDate;
+    // Payment date
+    const paidDate = payment.paid_at ? new Date(payment.paid_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Pending';
+    document.getElementById('modal-payment-date').textContent = paidDate;
+    
+    // Add event details to modal if they exist (you may need to add these elements to your modal HTML)
+    displayEventDetailsInModal(eventDate, eventTime, location, guestCount, payment.event_description);
 }
 
-// Calculate Payment Date (3-5 days after event)
-function calculatePaymentDate(eventDate) {
-    const date = new Date(eventDate);
-    date.setDate(date.getDate() + 4); // Add 4 days
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-    });
+// Helper function to display event details in modal (optional enhancement)
+function displayEventDetailsInModal(date, time, location, guests, description) {
+    // This function can be enhanced to populate additional DOM elements with event details
+    // For now, the main details are shown in the title and description
+    console.log('Event Details:', { date, time, location, guests });
 }
 
 // Close Modal
@@ -1594,22 +1600,144 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Save Bank Details
-function saveBankDetails() {
+// update bank details using AJAX
+
+function updateBankDetails() {
     const bankName = document.getElementById('bankName').value.trim();
     const accountHolder = document.getElementById('accountHolder').value.trim();
     const accountNumber = document.getElementById('accountNumber').value.trim();
     const branchName = document.getElementById('branchName').value.trim();
     
     if (!bankName || !accountHolder || !accountNumber || !branchName) {
-        alert('Please fill in all required fields');
+        alert('Please fill in all bank details fields');
         return;
     }
     
-    // Simulate API call
-    setTimeout(() => {
-        alert('Bank details saved successfully!');
-    }, 500);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", URLROOT + "/Service/updateBankDetails", true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                // Update display with new values
+                document.getElementById('displayBankName').textContent = bankName;
+                document.getElementById('displayAccountHolder').textContent = accountHolder;
+                document.getElementById('displayAccountNumber').textContent = accountNumber;
+                document.getElementById('displayBranchName').textContent = branchName;
+                
+                // Switch back to display mode
+                toggleEditMode(false);
+                
+                // Show success message
+                alert('Bank details updated successfully!');
+            } else {
+                alert('Failed to update bank details. Please try again.');
+            }
+        } else {
+            alert('Error updating bank details: ' + xhr.status);
+        }
+    };
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({
+        serviceId: serviceId,
+        bankName: bankName,
+        accountHolder: accountHolder,
+        accountNumber: accountNumber,
+        branchName: branchName
+    }));
+}
+
+// Save Bank Details with AJAX
+function saveBankDetails() {
+    const bankNameSelect = document.getElementById('bankName');
+    const bankName = bankNameSelect ? bankNameSelect.value.trim() : '';
+    const accountHolder = document.getElementById('accountHolder').value.trim();
+    const accountNumber = document.getElementById('accountNumber').value.trim();
+    const branchName = document.getElementById('branchName').value.trim();
+    
+    if (!bankName || !accountHolder || !accountNumber || !branchName) {
+        alert('Please fill in all bank details fields');
+        return;
+    }
+    
+    // Send AJAX request to update database
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', URLROOT + '/Service/updateBankDetails', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                // Update display with new values
+                document.getElementById('displayBankName').textContent = bankName;
+                document.getElementById('displayAccountHolder').textContent = accountHolder;
+                document.getElementById('displayAccountNumber').textContent = accountNumber;
+                document.getElementById('displayBranchName').textContent = branchName;
+                
+                // Switch back to display mode
+                toggleEditMode(false);
+                
+                // Show success message
+                alert('Bank details saved successfully!');
+            } else {
+                alert('Error: ' + (response.message || 'Failed to save bank details'));
+            }
+        } else {
+            alert('Error: Server error ' + xhr.status);
+        }
+    };
+    
+    xhr.onerror = function() {
+        alert('Network error while saving bank details');
+    };
+    
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        bankName: bankName,
+        accountHolder: accountHolder,
+        accountNumber: accountNumber,
+        branchName: branchName
+    }));
+}
+
+// Load Bank Details on Page Load
+function loadBankDetails() {
+    const bankNameSelect = document.getElementById('bankName');
+    const accountHolder = document.getElementById('accountHolder');
+    const accountNumber = document.getElementById('accountNumber');
+    const branchName = document.getElementById('branchName');
+    
+    // Get values from form fields
+    const bankName = bankNameSelect && bankNameSelect.value ? bankNameSelect.value.trim() : '';
+    const accountHolderText = accountHolder ? accountHolder.value.trim() : '';
+    const accountNumberText = accountNumber ? accountNumber.value.trim() : '';
+    const branchNameText = branchName ? branchName.value.trim() : '';
+    
+    // Display current bank details in read-only view
+    document.getElementById('displayBankName').textContent = bankName || 'Not set';
+    document.getElementById('displayAccountHolder').textContent = accountHolderText || 'Not set';
+    document.getElementById('displayAccountNumber').textContent = accountNumberText || 'Not set';
+    document.getElementById('displayBranchName').textContent = branchNameText || 'Not set';
+}
+
+// Toggle Between Display and Edit Mode
+function toggleEditMode(isEdit) {
+    const displayDiv = document.getElementById('bankDetailsDisplay');
+    const formDiv = document.getElementById('bankDetailsForm');
+    const bankNameSelect = document.getElementById('bankName');
+    
+    if (isEdit) {
+        displayDiv.style.display = 'none';
+        formDiv.style.display = 'block';
+        
+        // Pre-select the current bank in dropdown if it has a value
+        if (bankNameSelect && bankNameSelect.value) {
+            bankNameSelect.focus();
+        }
+    } else {
+        displayDiv.style.display = 'block';
+        formDiv.style.display = 'none';
+    }
 }
 
 // Initialize PIN Inputs
@@ -1639,7 +1767,7 @@ function initializePinInputs() {
         input.addEventListener('paste', (e) => {
             e.preventDefault();
             const pasteData = e.clipboardData.getData('text');
-            if (/^\d{4}$/.test(pasteData)) {
+            if (/^\d{6}$/.test(pasteData)) {
                 pasteData.split('').forEach((digit, i) => {
                     if (i < pinInputs.length) {
                         pinInputs[i].value = digit;
@@ -1674,8 +1802,8 @@ function submitPaymentRequest() {
     const selectedOption = selectedEvent.selectedOptions[0];
     
     // Validation
-    if (pin.length !== 4 || pin === '0000') {
-        showAlert('Please enter a valid 4-digit PIN', 'danger');
+    if (pin.length !== 6 || pin === '000000') {
+        showAlert('Please enter a valid 6-digit PIN', 'danger');
         return;
     }
     
@@ -1685,7 +1813,7 @@ function submitPaymentRequest() {
     }
     
     const eventId = parseInt(selectedOption.value);
-    const selectedEventData = earningsData.find(e => e.id === eventId);
+    const selectedEventData = earningsData.find(e => e.event_id === eventId);
     
     if (!selectedEventData) {
         showAlert('Invalid event selection', 'danger');
@@ -1702,21 +1830,56 @@ function submitPaymentRequest() {
         return;
     }
     
-    // Success message
-    showAlert(
-        `✅ Payment request submitted successfully!<br>` +
-        `Event: ${selectedEventData.eventName}<br>` +
-        `Amount: Rs. ${selectedEventData.amount.toLocaleString()}<br>` +
-        `Bank: ${bankName}<br>` +
-        `You will receive confirmation within 2-4 hours.`,
-        'success'
-    );
+    // Verify PIN via AJAX before proceeding
+    console.log('Verifying PIN for Event ID:', eventId, 'PIN:', pin);
+    verifyPaymentPin(eventId, pin, selectedEventData, bankName);
+}
+
+// Verify PIN via AJAX
+function verifyPaymentPin(eventId, pin, eventData, bankName) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', URLROOT + '/Service/verifyPaymentPin', true);
     
-    // Reset form
-    setTimeout(() => {
-        resetPin();
-        selectedEvent.value = '';
-    }, 2000);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            
+            if (response.success) {
+                // PIN verified successfully - update pin_confirmed in database
+                const amount = parseFloat(eventData.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                
+                showAlert(
+                    `✅ PIN verified successfully!<br>` +
+                    `Event ID: ${eventData.event_id}<br>` +
+                    `Amount: Rs. ${amount}<br>` +
+                    `Bank: ${bankName}<br>` +
+                    `Payment request has been confirmed.`,
+                    'success'
+                );
+                
+                // Reset form after success
+                setTimeout(() => {
+                    resetPin();
+                    document.getElementById('paymentEventSelect').value = '';
+                }, 2000);
+            } else {
+                // PIN verification failed
+                showAlert(response.message || 'PIN verification failed. Please try again.', 'danger');
+            }
+        } else {
+            showAlert('Error verifying PIN: Server error ' + xhr.status, 'danger');
+        }
+    };
+    
+    xhr.onerror = function() {
+        showAlert('Network error while verifying PIN', 'danger');
+    };
+    
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        eventId: eventId,
+        pin: pin
+    }));
 }
 
 // Show Alert

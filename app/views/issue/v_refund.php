@@ -923,25 +923,10 @@ body {
 
         <!-- Tab Navigation -->
         <div class="tabs">
-            <button class="tab-button active" data-tab="pending-issues">
-                <i class="fas fa-clock"></i>
-                Pending Issues
-                <span class="badge" id="pendingCount">0</span>
-            </button>
-            <button class="tab-button" data-tab="failed-transactions">
-                <i class="fas fa-times-circle"></i>
-                Failed Transactions
-                <span class="badge" id="failedCount">0</span>
-            </button>
-            <button class="tab-button" data-tab="refund-requests">
+            <button class="tab-button active" data-tab="refund-requests">
                 <i class="fas fa-money-bill-wave"></i>
                 Refund Requests
                 <span class="badge" id="refundsCount">0</span>
-            </button>
-            <button class="tab-button" data-tab="payment-mismatches">
-                <i class="fas fa-balance-scale"></i>
-                Payment Mismatches
-                <span class="badge" id="mismatchCount">0</span>
             </button>
             <button class="tab-button" data-tab="resolved-issues">
                 <i class="fas fa-check-circle"></i>
@@ -952,75 +937,11 @@ body {
 
         <!-- Tab Content -->
         <div class="tab-content">
-            <!-- Pending Issues Tab -->
-            <div id="pending-issues" class="tab-pane active">
-                <div class="content-header">
-                    <h2>All Pending Payment Issues</h2>
-                    <div class="filter-group">
-                        <input type="text" id="searchPending" class="search-input" placeholder="Search by event or client...">
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="complaints-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Event</th>
-                                <th>Client</th>
-                                <th>Issue Type</th>
-                                <th>Amount</th>
-                                <th>Priority</th>
-                                <th>Reported</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pendingTableBody">
-                            <!-- Dynamically populated -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Failed Transactions Tab -->
-            <div id="failed-transactions" class="tab-pane">
-                <div class="content-header">
-                    <h2>Failed Transactions</h2>
-                    <div class="filter-group">
-                        <input type="text" id="searchFailed" class="search-input" placeholder="Search...">
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="complaints-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Event</th>
-                                <th>Client</th>
-                                <th>Amount</th>
-                                <th>Failure Reason</th>
-                                <th>Attempts</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="failedTableBody">
-                            <!-- Dynamically populated -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- Refund Requests Tab -->
-            <div id="refund-requests" class="tab-pane">
+            <div id="refund-requests" class="tab-pane active">
                 <div class="content-header">
                     <h2>Refund Requests</h2>
                     <div class="filter-group">
-                        <select id="refundTypeFilter" class="filter-select">
-                            <option value="">All Types</option>
-                            <option value="last_minute">Last Minute Cancellation</option>
-                            <option value="full">Full Refund</option>
-                            <option value="partial">Partial Refund</option>
-                        </select>
                         <input type="text" id="searchRefunds" class="search-input" placeholder="Search...">
                     </div>
                 </div>
@@ -1037,43 +958,14 @@ body {
                                 <th>ID</th>
                                 <th>Event</th>
                                 <th>Client</th>
-                                <th>Original Amount</th>
-                                <th>Refund Type</th>
-                                <th>Refund Amount</th>
+                                <th>Total Amount</th>
+                                <th>Refund Amount (85%)</th>
+                                <th>Reason</th>
                                 <th>Requested</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="refundsTableBody">
-                            <!-- Dynamically populated -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Payment Mismatches Tab -->
-            <div id="payment-mismatches" class="tab-pane">
-                <div class="content-header">
-                    <h2>Payment Mismatches</h2>
-                    <div class="filter-group">
-                        <input type="text" id="searchMismatches" class="search-input" placeholder="Search...">
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="complaints-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Event</th>
-                                <th>Client</th>
-                                <th>Expected</th>
-                                <th>Received</th>
-                                <th>Difference</th>
-                                <th>Reason</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mismatchTableBody">
                             <!-- Dynamically populated -->
                         </tbody>
                     </table>
@@ -1113,25 +1005,7 @@ body {
         </div>
     </div>
 
-    <!-- Issue Details Modal -->
-    <div id="issueModal" class="modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modalTitle">Payment Issue Details</h2>
-                    <button class="close-btn" onclick="closeIssueModal()">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div id="modalContent">
-                        <!-- Dynamically populated based on issue type -->
-                    </div>
-                </div>
-                <div class="modal-footer" id="modalFooter">
-                    <!-- Dynamically populated -->
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Refund Processing Modal -->
     <div id="refundModal" class="modal">
@@ -1143,45 +1017,46 @@ body {
                 </div>
                 <div class="modal-body">
                     <div class="refund-summary-card">
-                        <h3>Refund Calculation</h3>
+                        <h3>Refund Calculation (85% Standard Rate)</h3>
                         <div class="refund-breakdown">
                             <div class="breakdown-row">
-                                <span class="breakdown-label">Original Payment:</span>
-                                <span class="breakdown-value" id="refundOriginal">$0.00</span>
+                                <span class="breakdown-label">Total Amount:</span>
+                                <span class="breakdown-value" id="refundOriginal">Rs. 0.00</span>
                             </div>
-                            <div class="breakdown-row highlight">
-                                <span class="breakdown-label">Refund Type:</span>
-                                <span class="breakdown-value" id="refundType">-</span>
-                            </div>
-                            <div class="breakdown-row" id="providerFeeRow" style="display: none;">
+                            <div class="breakdown-row">
                                 <span class="breakdown-label">Provider Compensation (15%):</span>
-                                <span class="breakdown-value warning" id="providerFee">-$0.00</span>
+                                <span class="breakdown-value warning" id="providerFee">-Rs. 0.00</span>
                             </div>
                             <div class="breakdown-row total">
-                                <span class="breakdown-label">Refund to Client:</span>
-                                <span class="breakdown-value success" id="refundAmount">$0.00</span>
+                                <span class="breakdown-label">Refund to Client (85%):</span>
+                                <span class="breakdown-value success" id="refundAmount">Rs. 0.00</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-section">
                         <div class="form-group">
-                            <label class="form-label">Refund Type</label>
-                            <select id="refundTypeSelect" class="form-select" onchange="updateRefundCalculation()">
-                                <option value="full">Full Refund (100%)</option>
-                                <option value="last_minute">Last Minute Cancellation (85%)</option>
-                                <option value="partial">Partial Refund (Custom)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="customAmountGroup" style="display: none;">
-                            <label class="form-label">Custom Refund Amount</label>
-                            <input type="number" id="customRefundAmount" class="form-input" step="0.01" placeholder="Enter custom amount">
+                            <label class="form-label">Refund Decision</label>
+                            <div style="display: flex; gap: 15px;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="refundDecision" value="approve" checked onchange="updateRefundDecision()">
+                                    <span style="font-weight: 600;">Approve Refund</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="refundDecision" value="reject" onchange="updateRefundDecision()">
+                                    <span style="font-weight: 600;">Reject Refund</span>
+                                </label>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Reason for Refund</label>
-                            <textarea id="refundReason" class="form-textarea" rows="4" placeholder="Explain the reason for this refund..."></textarea>
+                            <label class="form-label">Cancellation Reason</label>
+                            <textarea id="refundReason" class="form-textarea" rows="4" placeholder="Reason for cancellation and refund..."></textarea>
+                        </div>
+
+                        <div class="form-group" id="rejectionReasonGroup" style="display: none;">
+                            <label class="form-label">Rejection Reason</label>
+                            <textarea id="rejectionReason" class="form-textarea" rows="4" placeholder="Explain why this refund is being rejected..."></textarea>
                         </div>
 
                         <div class="form-group">
@@ -1191,7 +1066,7 @@ body {
                             </label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="compensateProvidersGroup">
                             <label class="form-label">
                                 <input type="checkbox" id="compensateProviders" checked> 
                                 Compensate service providers (for last-minute cancellations)
@@ -1201,53 +1076,78 @@ body {
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" onclick="closeRefundModal()">Cancel</button>
-                    <button class="btn btn-primary" onclick="processRefund()">
+                    <button class="btn btn-primary" id="processBtn" onclick="processRefund()">
                         <i class="fas fa-check"></i>
-                        Process Refund
+                        Approve Refund
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Verification Modal -->
-    <div id="verifyModal" class="modal">
-        <div class="modal-dialog modal-sm">
+
+    <!-- View Resolved Refund Modal -->
+    <div id="resolvedRefundModal" class="modal">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><i class="fas fa-shield-alt"></i> Verify Issue</h2>
-                    <button class="close-btn" onclick="closeVerifyModal()">&times;</button>
+                    <h2><i class="fas fa-eye"></i> Refund Details</h2>
+                    <button class="close-btn" onclick="closeResolvedModal()">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p class="info-text">Verify this payment issue before proceeding with resolution.</p>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Verification Status</label>
-                        <select id="verifyStatus" class="form-select">
-                            <option value="verified">Issue Verified</option>
-                            <option value="needs_info">Needs More Information</option>
-                            <option value="invalid">Invalid Issue</option>
-                        </select>
+                    <div class="issue-details-grid">
+                        <div class="detail-card">
+                            <h4>Event Name</h4>
+                            <p id="detailEventName">-</p>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Client Name</h4>
+                            <p id="detailClientName">-</p>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Original Amount</h4>
+                            <p id="detailOriginalAmount">LKR 0.00</p>
+                        </div>
+                        <div class="detail-card">
+                            <h4>Refund Status</h4>
+                            <p id="detailStatus">-</p>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Verification Notes</label>
-                        <textarea id="verifyNotes" class="form-textarea" rows="4" placeholder="Add your verification notes..."></textarea>
+                    <div class="form-section">
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">Refund Breakdown</h3>
+                        <div class="refund-breakdown">
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">Total Amount:</span>
+                                <span class="breakdown-value" id="detailRefundOriginal">LKR 0.00</span>
+                            </div>
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">Provider Compensation (15%):</span>
+                                <span class="breakdown-value warning" id="detailProviderFee">-LKR 0.00</span>
+                            </div>
+                            <div class="breakdown-row total">
+                                <span class="breakdown-label">Refund to Client (85%):</span>
+                                <span class="breakdown-value success" id="detailRefundAmount">LKR 0.00</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            <input type="checkbox" id="notifyAdmin" checked> 
-                            Notify admin team
-                        </label>
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-label">Cancellation Reason:</label>
+                            <p id="detailReason">-</p>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-label">Resolved Date:</label>
+                            <p id="detailResolvedDate">-</p>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeVerifyModal()">Cancel</button>
-                    <button class="btn btn-primary" onclick="submitVerification()">
-                        <i class="fas fa-check"></i>
-                        Submit Verification
-                    </button>
+                    <button class="btn btn-secondary" onclick="closeResolvedModal()">Close</button>
                 </div>
             </div>
         </div>
@@ -1259,220 +1159,91 @@ body {
         <span id="toastMessage">Action completed successfully!</span>
     </div>
 
-    <script>// Mock Data - Simulating payment issues
-const mockPendingIssues = [
-    {
-        id: 1,
-        event_id: 201,
-        event_name: "Corporate Annual Gala 2026",
-        client_name: "Sarah Williams",
-        client_email: "sarah.w@company.com",
-        issue_type: "refund_request",
-        amount: 45000.00,
-        priority: "high",
-        status: "pending",
-        reason: "Last minute cancellation - CEO unavailable",
-        reported_date: "2026-02-04T14:30:00",
-        cancellation_type: "last_minute"
-    },
-    {
-        id: 2,
-        event_id: 202,
-        event_name: "Wedding Reception - Miller",
-        client_name: "Michael Chen",
-        client_email: "m.chen@email.com",
-        issue_type: "payment_mismatch",
-        amount: 28000.00,
-        expected_amount: 28000.00,
-        received_amount: 25000.00,
-        priority: "medium",
-        status: "pending",
-        reason: "Provider replacement caused price change",
-        reported_date: "2026-02-03T10:15:00"
-    },
-    {
-        id: 3,
-        event_id: 203,
-        event_name: "Tech Conference 2026",
-        client_name: "Emily Johnson",
-        client_email: "emily.j@techconf.com",
-        issue_type: "failed_transaction",
-        amount: 75000.00,
-        priority: "high",
-        status: "pending",
-        reason: "Credit card declined - insufficient funds",
-        reported_date: "2026-02-02T16:45:00",
-        attempts: 3
-    }
-];
+    <script>// Fetch pending refunds from database
 
-const mockFailedTransactions = [
-    {
-        id: 4,
-        event_id: 204,
-        event_name: "Birthday Party - Anderson 50th",
-        client_name: "David Martinez",
-        client_email: "d.martinez@email.com",
-        amount: 8500.00,
-        failure_reason: "Card expired",
-        attempts: 2,
-        last_attempt: "2026-02-05T09:30:00",
-        status: "pending"
-    },
-    {
-        id: 5,
-        event_id: 205,
-        event_name: "Charity Fundraiser Gala",
-        client_name: "Jennifer Brown",
-        client_email: "jen.brown@charity.org",
-        amount: 32000.00,
-        failure_reason: "Payment gateway timeout",
-        attempts: 1,
-        last_attempt: "2026-02-04T15:20:00",
-        status: "pending"
-    },
-    {
-        id: 6,
-        event_id: 206,
-        event_name: "Product Launch Event",
-        client_name: "Robert Lee",
-        client_email: "r.lee@startup.com",
-        amount: 22000.00,
-        failure_reason: "Insufficient funds",
-        attempts: 4,
-        last_attempt: "2026-02-03T11:45:00",
-        status: "pending"
-    }
-];
-
-const mockRefundRequests = [
-    {
-        id: 7,
-        event_id: 207,
-        event_name: "University Graduation Ceremony",
-        client_name: "Amanda Garcia",
-        client_email: "a.garcia@university.edu",
-        original_amount: 55000.00,
-        refund_type: "last_minute",
-        refund_amount: 46750.00,
-        provider_fee: 8250.00,
-        requested_date: "2026-02-01T08:00:00",
-        reason: "Venue double-booked, event cancelled 3 days before",
-        status: "pending"
-    },
-    {
-        id: 8,
-        event_id: 208,
-        event_name: "Holiday Office Party",
-        client_name: "Thomas Wilson",
-        client_email: "t.wilson@corp.com",
-        original_amount: 15000.00,
-        refund_type: "full",
-        refund_amount: 15000.00,
-        provider_fee: 0,
-        requested_date: "2026-01-30T14:20:00",
-        reason: "Event cancelled 2 weeks in advance",
-        status: "pending"
-    },
-    {
-        id: 9,
-        event_id: 209,
-        event_name: "Art Gallery Opening",
-        client_name: "Lisa Anderson",
-        client_email: "lisa.a@gallery.com",
-        original_amount: 12000.00,
-        refund_type: "partial",
-        refund_amount: 6000.00,
-        provider_fee: 6000.00,
-        requested_date: "2026-02-02T16:00:00",
-        reason: "Reduced guest count, partial service cancellation",
-        status: "pending"
-    }
-];
-
-const mockPaymentMismatches = [
-    {
-        id: 10,
-        event_id: 210,
-        event_name: "Sports Awards Banquet",
-        client_name: "Kevin Taylor",
-        client_email: "k.taylor@sports.org",
-        expected_amount: 20000.00,
-        received_amount: 18500.00,
-        difference: -1500.00,
-        reason: "Provider replacement - new provider charged less",
-        reported_date: "2026-02-01T11:30:00",
-        status: "pending"
-    },
-    {
-        id: 11,
-        event_id: 211,
-        event_name: "Fashion Show Gala",
-        client_name: "Sophie Martin",
-        client_email: "sophie.m@fashion.com",
-        expected_amount: 38000.00,
-        received_amount: 42000.00,
-        difference: 4000.00,
-        reason: "Additional services added after quote",
-        reported_date: "2026-01-29T13:45:00",
-        status: "pending"
-    }
-];
-
-const mockResolvedIssues = [
-    {
-        id: 12,
-        event_id: 212,
-        event_name: "Business Conference 2026",
-        client_name: "Mark Johnson",
-        issue_type: "refund_request",
-        amount: 42000.00,
-        resolution: "Full refund processed",
-        resolved_by: "IC-001 (John Smith)",
-        resolved_date: "2026-01-28T16:00:00",
-        status: "resolved"
-    },
-    {
-        id: 13,
-        event_id: 213,
-        event_name: "Summer Festival",
-        client_name: "Rachel Green",
-        issue_type: "failed_transaction",
-        amount: 18500.00,
-        resolution: "Payment retried successfully with new card",
-        resolved_by: "IC-002 (Sarah Davis)",
-        resolved_date: "2026-01-27T10:30:00",
-        status: "resolved"
-    },
-    {
-        id: 14,
-        event_id: 214,
-        event_name: "Charity Auction Night",
-        client_name: "Daniel Brown",
-        issue_type: "payment_mismatch",
-        amount: 3500.00,
-        resolution: "Difference refunded to client",
-        resolved_by: "IC-001 (John Smith)",
-        resolved_date: "2026-01-26T14:15:00",
-        status: "resolved"
-    }
-];
 
 // State
 let currentIssue = null;
-let filteredPending = [...mockPendingIssues];
-let filteredFailed = [...mockFailedTransactions];
-let filteredRefunds = [...mockRefundRequests];
-let filteredMismatches = [...mockPaymentMismatches];
-let filteredResolved = [...mockResolvedIssues];
+let mockRefundRequests = [];
+let mockResolvedIssues = [];
+let filteredRefunds = [];
+let filteredResolved = [];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
-    renderAllTables();
-    updateStats();
+    loadPendingRefunds();
+    loadResolvedRefunds();
     setupFilters();
 });
+
+// Load Pending Refunds from Database
+async function loadPendingRefunds() {
+    try {
+        const response = await fetch('<?php echo URLROOT; ?>/IssueC/getPendingRefunds', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        if (result.success && result.data) {
+            mockRefundRequests = result.data.map(refund => ({
+                refund_id: refund.event_id,
+                event_id: refund.event_id,
+                event_name: refund.event_name,
+                client_name: refund.client_name,
+                total_amount: parseFloat(refund.total_cost || 0),
+                refund_amount: parseFloat(refund.total_cost || 0) * 0.85,
+                cancel_reason: refund.cancel_reason,
+                refund_status: 'PENDING',
+                created_at: refund.updated_at
+            }));
+            
+            filteredRefunds = [...mockRefundRequests];
+            renderAllTables();
+            updateStats();
+        }
+    } catch (error) {
+        console.error('Error loading refunds:', error);
+    }
+}
+
+// Load Resolved Refunds from Database
+async function loadResolvedRefunds() {
+    try {
+        const response = await fetch('<?php echo URLROOT; ?>/IssueC/getResolvedRefunds', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        if (result.success && result.data) {
+            mockResolvedIssues = result.data.map(refund => ({
+                id: refund.event_id,
+                event_id: refund.event_id,
+                event_name: refund.event_name,
+                client_name: refund.client_name,
+                amount: parseFloat(refund.refundAmount || 0),
+                original_amount: parseFloat(refund.total_cost || 0),
+                issue_type: refund.refundSTate === 'REFUNDED' ? 'REFUNDED' : 'REJECTED',
+                resolution: refund.refundSTate === 'REFUNDED' ? 'Refund Approved' : 'Refund Rejected',
+                resolved_by:'Issue Coordinator',
+                resolved_date: refund.updated_at,
+                reason: refund.cancel_reason
+            }));
+            
+            filteredResolved = [...mockResolvedIssues];
+            renderAllTables();
+            updateStats();
+        }
+    } catch (error) {
+        console.error('Error loading resolved refunds:', error);
+    }
+}
 
 // Tab Management
 function initializeTabs() {
@@ -1501,126 +1272,42 @@ function switchTab(tabName) {
 
 // Render All Tables
 function renderAllTables() {
-    renderPendingIssues();
-    renderFailedTransactions();
     renderRefundRequests();
-    renderPaymentMismatches();
     renderResolvedIssues();
-}
-
-// Render Pending Issues
-function renderPendingIssues() {
-    const tbody = document.getElementById('pendingTableBody');
-    
-    if (filteredPending.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8" class="empty-state">
-                    <i class="fas fa-check-circle"></i>
-                    <p>No pending payment issues</p>
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    tbody.innerHTML = filteredPending.map(issue => {
-        const issueTypeLabel = formatIssueType(issue.issue_type);
-        return `
-            <tr>
-                <td class="table-id">#${issue.id}</td>
-                <td class="table-event" title="${issue.event_name}">${issue.event_name}</td>
-                <td class="table-client" title="${issue.client_name}">${issue.client_name}</td>
-                <td><span class="type-badge ${issue.issue_type.replace('_', '-')}">${issueTypeLabel}</span></td>
-                <td class="table-amount">$${issue.amount.toLocaleString()}</td>
-                <td><span class="priority-badge ${issue.priority}">${issue.priority.toUpperCase()}</span></td>
-                <td class="table-created">
-                    <div style="font-weight: 600;">${getTimeSince(issue.reported_date)}</div>
-                    <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(issue.reported_date)}</div>
-                </td>
-                <td>
-                    <button class="table-view-btn" onclick="viewIssue(${issue.id}, 'pending')" title="View Details">
-                        <i class="fas fa-eye"></i>
-                        <span>View</span>
-                    </button>
-                </td>
-            </tr>
-        `;
-    }).join('');
-
-    document.getElementById('pendingCount').textContent = filteredPending.length;
-}
-
-// Render Failed Transactions
-function renderFailedTransactions() {
-    const tbody = document.getElementById('failedTableBody');
-    
-    if (filteredFailed.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8" class="empty-state">
-                    <i class="fas fa-check-circle"></i>
-                    <p>No failed transactions</p>
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    tbody.innerHTML = filteredFailed.map(issue => `
-        <tr>
-            <td class="table-id">#${issue.id}</td>
-            <td class="table-event" title="${issue.event_name}">${issue.event_name}</td>
-            <td class="table-client" title="${issue.client_name}">${issue.client_name}</td>
-            <td class="table-amount">$${issue.amount.toLocaleString()}</td>
-            <td class="table-type">${issue.failure_reason}</td>
-            <td><span class="priority-badge ${issue.attempts > 2 ? 'high' : 'medium'}">${issue.attempts}</span></td>
-            <td class="table-created">
-                <div style="font-weight: 600;">${getTimeSince(issue.last_attempt)}</div>
-                <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(issue.last_attempt)}</div>
-            </td>
-            <td>
-                <button class="table-view-btn" onclick="viewIssue(${issue.id}, 'failed')" title="View Details">
-                    <i class="fas fa-eye"></i>
-                    <span>Resolve</span>
-                </button>
-            </td>
-        </tr>
-    `).join('');
-
-    document.getElementById('failedCount').textContent = filteredFailed.length;
 }
 
 // Render Refund Requests
 function renderRefundRequests() {
     const tbody = document.getElementById('refundsTableBody');
     
-    if (filteredRefunds.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8" class="empty-state">
-                    <i class="fas fa-check-circle"></i>
-                    <p>No refund requests</p>
-                </td>
-            </tr>
-        `;
+    if (!tbody || filteredRefunds.length === 0) {
+        if (tbody) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="empty-state">
+                        <i class="fas fa-check-circle"></i>
+                        <p>No refund requests pending</p>
+                    </td>
+                </tr>
+            `;
+        }
         return;
     }
 
     tbody.innerHTML = filteredRefunds.map(issue => `
         <tr>
-            <td class="table-id">#${issue.id}</td>
-            <td class="table-event" title="${issue.event_name}">${issue.event_name}</td>
-            <td class="table-client" title="${issue.client_name}">${issue.client_name}</td>
-            <td class="table-amount">$${issue.original_amount.toLocaleString()}</td>
-            <td><span class="type-badge refund">${formatRefundType(issue.refund_type)}</span></td>
-            <td class="table-amount positive">$${issue.refund_amount.toLocaleString()}</td>
+            <td class="table-id">REF-${String(issue.event_id).padStart(5, '0')}</td>
+            <td class="table-event" title="${issue.event_name}">${truncateText(issue.event_name, 30)}</td>
+            <td class="table-client" title="${issue.client_name}">${truncateText(issue.client_name, 20)}</td>
+            <td class="table-amount">LKR ${issue.total_amount.toFixed(2)}</td>
+            <td class="table-amount positive">LKR ${issue.refund_amount.toFixed(2)}</td>
+            <td class="table-type" title="${issue.cancel_reason}">${truncateText(issue.cancel_reason, 50)}</td>
             <td class="table-created">
-                <div style="font-weight: 600;">${getTimeSince(issue.requested_date)}</div>
-                <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(issue.requested_date)}</div>
+                <div style="font-weight: 600;">${getTimeSince(issue.created_at)}</div>
+                <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(issue.created_at)}</div>
             </td>
             <td>
-                <button class="table-view-btn" onclick="viewRefund(${issue.id})" title="Process Refund">
+                <button class="table-view-btn" onclick="viewRefund(${issue.event_id})" title="Process Refund">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Process</span>
                 </button>
@@ -1628,47 +1315,9 @@ function renderRefundRequests() {
         </tr>
     `).join('');
 
-    document.getElementById('refundsCount').textContent = filteredRefunds.length;
-}
-
-// Render Payment Mismatches
-function renderPaymentMismatches() {
-    const tbody = document.getElementById('mismatchTableBody');
-    
-    if (filteredMismatches.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="8" class="empty-state">
-                    <i class="fas fa-check-circle"></i>
-                    <p>No payment mismatches</p>
-                </td>
-            </tr>
-        `;
-        return;
+    if (document.getElementById('refundsCount')) {
+        document.getElementById('refundsCount').textContent = filteredRefunds.length;
     }
-
-    tbody.innerHTML = filteredMismatches.map(issue => {
-        const diffClass = issue.difference > 0 ? 'positive' : 'negative';
-        return `
-            <tr>
-                <td class="table-id">#${issue.id}</td>
-                <td class="table-event" title="${issue.event_name}">${issue.event_name}</td>
-                <td class="table-client" title="${issue.client_name}">${issue.client_name}</td>
-                <td class="table-amount">$${issue.expected_amount.toLocaleString()}</td>
-                <td class="table-amount">$${issue.received_amount.toLocaleString()}</td>
-                <td class="table-amount ${diffClass}">${issue.difference > 0 ? '+' : ''}$${Math.abs(issue.difference).toLocaleString()}</td>
-                <td class="table-type">${issue.reason}</td>
-                <td>
-                    <button class="table-view-btn" onclick="viewIssue(${issue.id}, 'mismatch')" title="View Details">
-                        <i class="fas fa-eye"></i>
-                        <span>Resolve</span>
-                    </button>
-                </td>
-            </tr>
-        `;
-    }).join('');
-
-    document.getElementById('mismatchCount').textContent = filteredMismatches.length;
 }
 
 // Render Resolved Issues
@@ -1692,7 +1341,7 @@ function renderResolvedIssues() {
             <td class="table-id">#${issue.id}</td>
             <td class="table-event" title="${issue.event_name}">${issue.event_name}</td>
             <td><span class="type-badge">${formatIssueType(issue.issue_type)}</span></td>
-            <td class="table-amount">$${issue.amount.toLocaleString()}</td>
+            <td class="table-amount">Rs. ${issue.amount.toLocaleString()}</td>
             <td class="table-type">${issue.resolution}</td>
             <td class="table-client">${issue.resolved_by}</td>
             <td class="table-created">
@@ -1713,10 +1362,9 @@ function renderResolvedIssues() {
 
 // Update Stats
 function updateStats() {
-    const totalPending = mockPendingIssues.length + mockFailedTransactions.length + 
-                        mockRefundRequests.length + mockPaymentMismatches.length;
+    const totalPending = mockRefundRequests.length;
     const totalRefunds = mockRefundRequests.length;
-    const totalAmount = mockPendingIssues.reduce((sum, issue) => sum + issue.amount, 0);
+    const totalAmount = mockRefundRequests.reduce((sum, issue) => sum + issue.original_amount, 0);
 
     // document.getElementById('pendingIssues').textContent = totalPending;
     // document.getElementById('refundRequests').textContent = totalRefunds;
@@ -1725,11 +1373,7 @@ function updateStats() {
 
 // Setup Filters
 function setupFilters() {
-    document.getElementById('searchPending').addEventListener('input', () => applyFilter('pending'));
-    document.getElementById('searchFailed').addEventListener('input', () => applyFilter('failed'));
     document.getElementById('searchRefunds').addEventListener('input', () => applyFilter('refunds'));
-    document.getElementById('refundTypeFilter').addEventListener('change', () => applyFilter('refunds'));
-    document.getElementById('searchMismatches').addEventListener('input', () => applyFilter('mismatches'));
     document.getElementById('searchResolved').addEventListener('input', () => applyFilter('resolved'));
     document.getElementById('resolvedFromDate').addEventListener('change', () => applyFilter('resolved'));
     document.getElementById('resolvedToDate').addEventListener('change', () => applyFilter('resolved'));
@@ -1739,33 +1383,13 @@ function setupFilters() {
 function applyFilter(type) {
     const searchTerm = document.getElementById(`search${type.charAt(0).toUpperCase() + type.slice(1)}`).value.toLowerCase();
     
-    if (type === 'pending') {
-        filteredPending = mockPendingIssues.filter(issue => 
-            issue.event_name.toLowerCase().includes(searchTerm) ||
-            issue.client_name.toLowerCase().includes(searchTerm)
-        );
-        renderPendingIssues();
-    } else if (type === 'failed') {
-        filteredFailed = mockFailedTransactions.filter(issue => 
-            issue.event_name.toLowerCase().includes(searchTerm) ||
-            issue.client_name.toLowerCase().includes(searchTerm)
-        );
-        renderFailedTransactions();
-    } else if (type === 'refunds') {
-        const refundType = document.getElementById('refundTypeFilter').value;
+    if (type === 'refunds') {
         filteredRefunds = mockRefundRequests.filter(issue => {
             const matchesSearch = issue.event_name.toLowerCase().includes(searchTerm) ||
                                  issue.client_name.toLowerCase().includes(searchTerm);
-            const matchesType = !refundType || issue.refund_type === refundType;
-            return matchesSearch && matchesType;
+            return matchesSearch;
         });
         renderRefundRequests();
-    } else if (type === 'mismatches') {
-        filteredMismatches = mockPaymentMismatches.filter(issue => 
-            issue.event_name.toLowerCase().includes(searchTerm) ||
-            issue.client_name.toLowerCase().includes(searchTerm)
-        );
-        renderPaymentMismatches();
     } else if (type === 'resolved') {
         const dateFrom = document.getElementById('resolvedFromDate').value;
         const dateTo = document.getElementById('resolvedToDate').value;
@@ -1785,13 +1409,7 @@ function applyFilter(type) {
 // View Issue
 function viewIssue(id, type) {
     let issue;
-    if (type === 'pending') {
-        issue = mockPendingIssues.find(i => i.id === id);
-    } else if (type === 'failed') {
-        issue = mockFailedTransactions.find(i => i.id === id);
-    } else if (type === 'mismatch') {
-        issue = mockPaymentMismatches.find(i => i.id === id);
-    } else if (type === 'resolved') {
+    if (type === 'resolved') {
         issue = mockResolvedIssues.find(i => i.id === id);
     }
 
@@ -1799,149 +1417,133 @@ function viewIssue(id, type) {
 
     currentIssue = { ...issue, type };
     
-    document.getElementById('modalTitle').textContent = `Payment Issue #${id}`;
+    // Populate detail fields
+    document.getElementById('detailEventName').textContent = issue.event_name || '-';
+    document.getElementById('detailClientName').textContent = issue.client_name || '-';
+    document.getElementById('detailOriginalAmount').textContent = `LKR ${parseFloat(issue.original_amount || 0).toFixed(2)}`;
+    document.getElementById('detailReason').textContent = issue.reason || '-';
+    document.getElementById('detailResolvedDate').textContent = formatDate(issue.resolved_date) + ' at ' + formatTime(issue.resolved_date);
     
-    let content = `
-        <div class="issue-details-grid">
-            <div class="detail-card">
-                <h4>Event Name</h4>
-                <p>${issue.event_name}</p>
-            </div>
-            <div class="detail-card">
-                <h4>Client</h4>
-                <p>${issue.client_name}</p>
-            </div>
-            <div class="detail-card">
-                <h4>Amount</h4>
-                <p>$${issue.amount?.toLocaleString() || issue.original_amount?.toLocaleString()}</p>
-            </div>
-            <div class="detail-card">
-                <h4>Status</h4>
-                <p><span class="status-badge ${issue.status}">${issue.status}</span></p>
-            </div>
-        </div>
-        <div class="form-section">
-            <div class="form-group">
-                <label class="form-label">Reason</label>
-                <p>${issue.reason || issue.resolution || 'N/A'}</p>
-            </div>
-        </div>
-    `;
-
-    document.getElementById('modalContent').innerHTML = content;
-    
-    let footer = '';
-    if (type !== 'resolved') {
-        footer = `
-            <button class="btn btn-secondary" onclick="closeIssueModal()">Close</button>
-            <button class="btn btn-primary" onclick="openVerifyModal()">
-                <i class="fas fa-shield-alt"></i>
-                Verify & Resolve
-            </button>
-        `;
+    // Set status badge
+    const statusElement = document.getElementById('detailStatus');
+    if (issue.issue_type === 'REFUNDED') {
+        statusElement.innerHTML = '<span class="status-badge resolved">REFUNDED</span>';
     } else {
-        footer = `<button class="btn btn-secondary" onclick="closeIssueModal()">Close</button>`;
+        statusElement.innerHTML = '<span class="status-badge">REJECTED</span>';
     }
     
-    document.getElementById('modalFooter').innerHTML = footer;
-    document.getElementById('issueModal').classList.add('active');
+    // Calculate and display refund breakdown
+    const totalAmount = parseFloat(issue.original_amount || 0);
+    const providerFee = totalAmount * 0.15;
+    const refundAmount = totalAmount * 0.85;
+    
+    document.getElementById('detailRefundOriginal').textContent = `LKR ${totalAmount.toFixed(2)}`;
+    document.getElementById('detailProviderFee').textContent = `-LKR ${providerFee.toFixed(2)}`;
+    document.getElementById('detailRefundAmount').textContent = `LKR ${refundAmount.toFixed(2)}`;
+    
+    document.getElementById('resolvedRefundModal').classList.add('active');
 }
 
 // View Refund
 function viewRefund(id) {
-    const refund = mockRefundRequests.find(r => r.id === id);
+    const refund = mockRefundRequests.find(r => r.event_id === id);
     if (!refund) return;
 
     currentIssue = refund;
+    const providerFee = refund.total_amount - refund.refund_amount;
     
     // Populate refund modal
-    document.getElementById('refundOriginal').textContent = `$${refund.original_amount.toLocaleString()}`;
-    document.getElementById('refundType').textContent = formatRefundType(refund.refund_type);
-    document.getElementById('providerFee').textContent = `-$${refund.provider_fee.toLocaleString()}`;
-    document.getElementById('refundAmount').textContent = `$${refund.refund_amount.toLocaleString()}`;
+    document.getElementById('refundOriginal').textContent = `LKR ${refund.total_amount.toFixed(2)}`;
+    const serviceFee = refund.total_amount * 0.15; // 15% fee
+    document.getElementById('providerFee').textContent = `-LKR ${serviceFee.toFixed(2)}`;
+    document.getElementById('refundAmount').textContent = `LKR ${refund.refund_amount.toFixed(2)}`;
     
-    // Set refund type
-    document.getElementById('refundTypeSelect').value = refund.refund_type;
+    document.getElementById('refundReason').value = refund.cancel_reason;
     
-    // Show/hide provider fee row
-    if (refund.refund_type === 'last_minute') {
-        document.getElementById('providerFeeRow').style.display = 'flex';
-    } else {
-        document.getElementById('providerFeeRow').style.display = 'none';
-    }
-    
-    document.getElementById('refundReason').value = refund.reason;
+    // Reset decision options
+    document.querySelector('input[name="refundDecision"][value="approve"]').checked = true;
+    updateRefundDecision();
     
     document.getElementById('refundModal').classList.add('active');
 }
 
-// Update Refund Calculation
-function updateRefundCalculation() {
-    if (!currentIssue) return;
+
+
+// Update Refund Decision
+function updateRefundDecision() {
+    const decision = document.querySelector('input[name="refundDecision"]:checked').value;
+    const rejectionGroup = document.getElementById('rejectionReasonGroup');
+    const compensateGroup = document.getElementById('compensateProvidersGroup');
+    const processBtn = document.getElementById('processBtn');
     
-    const refundType = document.getElementById('refundTypeSelect').value;
-    const originalAmount = currentIssue.original_amount;
-    let refundAmount, providerFee;
-    
-    if (refundType === 'full') {
-        refundAmount = originalAmount;
-        providerFee = 0;
-        document.getElementById('providerFeeRow').style.display = 'none';
-        document.getElementById('customAmountGroup').style.display = 'none';
-    } else if (refundType === 'last_minute') {
-        refundAmount = originalAmount * 0.85;
-        providerFee = originalAmount * 0.15;
-        document.getElementById('providerFeeRow').style.display = 'flex';
-        document.getElementById('customAmountGroup').style.display = 'none';
-    } else if (refundType === 'partial') {
-        document.getElementById('providerFeeRow').style.display = 'none';
-        document.getElementById('customAmountGroup').style.display = 'block';
-        refundAmount = parseFloat(document.getElementById('customRefundAmount').value) || 0;
-        providerFee = originalAmount - refundAmount;
+    if (decision === 'reject') {
+        rejectionGroup.style.display = 'block';
+        compensateGroup.style.display = 'none';
+        processBtn.innerHTML = '<i class="fas fa-times"></i> Reject Refund';
+        processBtn.className = 'btn btn-danger';
+    } else {
+        rejectionGroup.style.display = 'none';
+        compensateGroup.style.display = 'block';
+        processBtn.innerHTML = '<i class="fas fa-check"></i> Approve Refund';
+        processBtn.className = 'btn btn-primary';
     }
-    
-    document.getElementById('refundType').textContent = formatRefundType(refundType);
-    document.getElementById('providerFee').textContent = `-$${providerFee.toLocaleString()}`;
-    document.getElementById('refundAmount').textContent = `$${refundAmount.toLocaleString()}`;
 }
 
 // Process Refund
-function processRefund() {
-    const reason = document.getElementById('refundReason').value;
-    const notifyClient = document.getElementById('notifyClient').checked;
-    const compensateProviders = document.getElementById('compensateProviders').checked;
+async function processRefund() {
+    const decision = document.querySelector('input[name="refundDecision"]:checked').value;
+    const cancellationReason = document.getElementById('refundReason').value;
+    const rejectionReason = document.getElementById('rejectionReason')?.value || '';
     
-    if (!reason.trim()) {
-        alert('Please provide a reason for the refund');
+    if (!cancellationReason.trim()) {
+        alert('Please provide the cancellation reason');
         return;
     }
     
-    // Simulate refund processing
-    showToast('Refund processed successfully!');
-    
-    // Move to resolved
-    const index = mockRefundRequests.findIndex(r => r.id === currentIssue.id);
-    if (index > -1) {
-        const resolved = {
-            id: currentIssue.id,
-            event_id: currentIssue.event_id,
-            event_name: currentIssue.event_name,
-            client_name: currentIssue.client_name,
-            issue_type: 'refund_request',
-            amount: currentIssue.refund_amount,
-            resolution: `Refund processed: $${currentIssue.refund_amount.toLocaleString()}`,
-            resolved_by: 'IC-001 (Current User)',
-            resolved_date: new Date().toISOString(),
-            status: 'resolved'
-        };
-        
-        mockRefundRequests.splice(index, 1);
-        mockResolvedIssues.unshift(resolved);
+    if (decision === 'reject' && !rejectionReason.trim()) {
+        alert('Please provide a rejection reason');
+        return;
     }
-    
-    closeRefundModal();
-    renderAllTables();
-    updateStats();
+
+    const processBtn = document.getElementById('processBtn');
+    const originalText = processBtn?.innerHTML;
+    if (processBtn) {
+        processBtn.disabled = true;
+        processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    }
+
+    try {
+        const response = await fetch('<?php echo URLROOT; ?>/IssueC/processRefund', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                event_id: currentIssue.event_id,
+                refund_decision: decision === 'approve' ? 'REFUNDED' : 'REJECTED',
+                refund_amount: currentIssue.refund_amount, // 85% of total_cost
+                reject_reason: rejectionReason
+            })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            closeRefundModal();
+            showToast(result.message || 'Refund processed successfully!');
+            await loadPendingRefunds();
+            await loadResolvedRefunds();
+        } else {
+            alert('Error: ' + (result.error || 'Failed to process refund'));
+        }
+    } catch (error) {
+        console.error('Error processing refund:', error);
+        alert('Failed to process refund. Please try again.');
+    } finally {
+        if (processBtn) {
+            processBtn.disabled = false;
+            processBtn.innerHTML = originalText;
+        }
+    }
 }
 
 // Open Verify Modal
@@ -1962,28 +1564,6 @@ function submitVerification() {
     
     if (status === 'verified') {
         showToast('Issue verified and marked as resolved!');
-        
-        // Move to resolved
-        if (currentIssue.type === 'pending') {
-            const index = mockPendingIssues.findIndex(i => i.id === currentIssue.id);
-            if (index > -1) {
-                const resolved = {
-                    id: currentIssue.id,
-                    event_id: currentIssue.event_id,
-                    event_name: currentIssue.event_name,
-                    client_name: currentIssue.client_name,
-                    issue_type: currentIssue.issue_type,
-                    amount: currentIssue.amount,
-                    resolution: notes,
-                    resolved_by: 'IC-001 (Current User)',
-                    resolved_date: new Date().toISOString(),
-                    status: 'resolved'
-                };
-                
-                mockPendingIssues.splice(index, 1);
-                mockResolvedIssues.unshift(resolved);
-            }
-        }
     } else {
         showToast('Verification status updated!');
     }
@@ -2001,6 +1581,11 @@ function closeIssueModal() {
 
 function closeRefundModal() {
     document.getElementById('refundModal').classList.remove('active');
+    currentIssue = null;
+}
+
+function closeResolvedModal() {
+    document.getElementById('resolvedRefundModal').classList.remove('active');
     currentIssue = null;
 }
 
@@ -2022,6 +1607,8 @@ function showToast(message) {
 // Utility Functions
 function formatIssueType(type) {
     const types = {
+        'REFUNDED': 'Refund Approved',
+        'REJECTED': 'Refund Rejected',
         'refund_request': 'Refund Request',
         'failed_transaction': 'Failed Transaction',
         'payment_mismatch': 'Payment Mismatch',
@@ -2030,13 +1617,9 @@ function formatIssueType(type) {
     return types[type] || type;
 }
 
-function formatRefundType(type) {
-    const types = {
-        'full': 'Full Refund (100%)',
-        'last_minute': 'Last Minute (85%)',
-        'partial': 'Partial Refund'
-    };
-    return types[type] || type;
+function truncateText(text, length) {
+    if (!text) return '';
+    return text.length > length ? text.substring(0, length) + '...' : text;
 }
 
 function formatDate(dateString) {
@@ -2073,11 +1656,9 @@ function getTimeSince(dateString) {
 document.addEventListener('click', (e) => {
     if (e.target.id === 'issueModal') closeIssueModal();
     if (e.target.id === 'refundModal') closeRefundModal();
+    if (e.target.id === 'resolvedRefundModal') closeResolvedModal();
     if (e.target.id === 'verifyModal') closeVerifyModal();
 });
-
-// Custom amount input listener
-document.getElementById('customRefundAmount').addEventListener('input', updateRefundCalculation);
 </script>
 </body>
 </html>

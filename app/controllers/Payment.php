@@ -10,7 +10,7 @@
             $this->eventModel = $this->model('M_Event');
         }
 
-        public function success() {
+        public function successClientToSytem() {
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Get JSON input
                 $inputData = json_decode(file_get_contents('php://input'), true);
@@ -23,17 +23,23 @@
                 
                 $data = [
                     'event_id' => $inputData['event_id'],
-                    'client_id' => $inputData['client_id'],
+                    'sender_id' => $inputData['client_id'],
+                    'sender_type' => 'CLIENT',
+                    'receiver_id' => 1,
+                    'receiver_type' => 'SYSTEM',
                     'total_amount' => $inputData['total_amount'],
-                    'payment_method' => $inputData['payment_method'] ?? 'CARD', // PayHere uses card payments
+                    'payment_method' => $inputData['payment_method'] ?? 'CARD',
                     'payment_status' => $inputData['payment_status'] ?? 'PAID',
                     'gateway_reference' => $inputData['gateway_reference'] ?? 'PayHere_' . time(),
                     'paid_at' => $inputData['paid_at'] ?? date('Y-m-d H:i:s')
                 ];
 
                 if($this->paymentModel->makePayment($data)) {
+
+                    $eventpin = $this->generateEventpin($data['event_id']);
                     // Update event status to paid
-                    $this->eventModel->updateEventPaymentStatus($data['event_id'], 'STEP_3_PAYMENT');
+                    $this->eventModel->updateEventPaymentStatus($data['event_id'], 'STEP_3_PAYMENT', $eventpin, $totalAmount = $data['total_amount']);
+                
                     
                     echo json_encode(['success' => true, 'message' => 'Payment recorded successfully']);
                 } else {
@@ -43,6 +49,12 @@
                 // If not POST request, show error page
                 $this->view('clients/payment/payment_error');
             }
+        }
+
+        public function generateEventpin($eventId) {
+            $eventId = (int)$eventId;
+            $numeric = hexdec(substr(hash('sha256', 'EVOPLAN_PIN_' . $eventId), 0, 8)) % 1000000;
+            return str_pad((string)$numeric, 6, '0', STR_PAD_LEFT);
         }
 
         public function successPage($eventId) {

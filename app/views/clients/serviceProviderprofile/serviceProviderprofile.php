@@ -1,7 +1,8 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
+<?php $finalBackUrl = URLROOT . '/Clients/profiles'; ?>
 <?php require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbarBack.php'; ?>
-
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_profile.css">
+
 <style>
   .packages-horizontal-scroll {
     overflow-x: auto;
@@ -436,6 +437,54 @@
   .comments-panel-open {
     overflow: hidden;
   }
+
+  /* Message Button Styles */
+  
+
+  .sp-message-btn:hover {
+    background-color: var(--secondary, #1976D2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  }
+
+  .sp-message-btn:active {
+    transform: translateY(0);
+  }
+
+  .sp-profilebar {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+  }
+
+  .sp-profilebar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .sp-id {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-top: 60px;
+  }
+
+
+  .sp-message-btn {
+    background-color: var(--primary, #2196F3);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    
+    margin-left: 40px;  }
 </style>
 
 <main class="sp-page" aria-label="Service provider profile" service-id = "<?php echo $data['profile']->service_id; ?>">
@@ -473,27 +522,33 @@
 
     <!-- Profile bar -->
     <div class="sp-profilebar">
-      <figure class="sp-avatar">
-        <img src="<?php echo URLROOT; ?>/public/img/profilePics/<?php echo $data['profile']->profile_pic; ?>" alt="Profile photo">
-        <!-- <a class="sp-avatar__edit" href="#edit-photo" aria-label="Change profile photo">✎</a> -->
-      </figure>
+      <div class="sp-profilebar-left">
+        <figure class="sp-avatar">
+          <img src="<?php echo URLROOT; ?>/public/img/profilePics/<?php echo $data['profile']->profile_pic; ?>" alt="Profile photo">
+          <!-- <a class="sp-avatar__edit" href="#edit-photo" aria-label="Change profile photo">✎</a> -->
+        </figure>
 
-      <div class="sp-id">
-        <div class="sp-name"><?php echo $data['profileV']->business_name;?></div>
+        <div class="sp-id">
+          <div class="sp-name"><?php echo $data['profileV']->business_name;?></div>
+          <button class="sp-message-btn" onclick="window.location.href='<?php echo URLROOT; ?>/Clients/message/<?php echo $data['profile']->service_id; ?>'">
+            <i class="fas fa-envelope"></i>  Message
+          </button>
+        </div>
       </div>
-
-     
     </div>
   </header>
+
+  <div>
+    
+  </div>
+
 
   <div class="sp-frame">
     <!-- INTRO -->
     <section class="card">
       <header class="card__head">
         <h2 class="card__title">Intro</h2>
-        <!-- <div class="row-actions">
-          <a class="btn btn--chip" >Edit Bio</a>
-        </div> -->
+        
       </header>
 
       <div class="intro">
@@ -907,6 +962,7 @@ function getPackages(){
     xml.send();
 }
 </script>
+
 <script src="<?php echo URLROOT; ?>/js/profile/profile.js"></script>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>

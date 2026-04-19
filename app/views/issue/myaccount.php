@@ -16,6 +16,9 @@
                     <p>Manage your account settings and monitor your performance</p>
                 </div>
             </div>
+            <button class="btn btn-danger" id="logoutBtn" style="margin-left: auto;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
         </div>
 
         <!-- Settings Sections -->
@@ -129,30 +132,7 @@
                 </form>
             </div>
 
-            <!-- Income & Performance -->
-            <div class="settings-card" data-section="income">
-                <div class="card-header">
-                    <h2>Monthly Income</h2>
-                    <p class="card-description">Track your earnings over the last 6 months</p>
-                </div>
-                <div class="income-chart-wrapper">
-                    <canvas id="incomeChart"></canvas>
-                </div>
-                <div class="income-summary">
-                    <div class="summary-stat">
-                        <span class="summary-label">Total Income (6 months)</span>
-                        <span class="summary-value" id="totalIncome">LKR 0.00</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span class="summary-label">Average Monthly</span>
-                        <span class="summary-value" id="averageIncome">LKR 0.00</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span class="summary-label">Highest Month</span>
-                        <span class="summary-value" id="highestIncome">LKR 0.00</span>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
@@ -179,6 +159,22 @@
     </div>
 </div>
 
+<!-- Logout Confirmation Modal -->
+<div class="modal" id="logoutModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Logout</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to logout? You will need to login again to access your account.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="hideLogoutModal()">Cancel</button>
+            <button class="btn btn-danger" id="confirmLogout">Logout</button>
+        </div>
+    </div>
+</div>
+
 <script>
 const URLROOT = "<?php echo URLROOT; ?>";
 
@@ -188,24 +184,58 @@ let originalPersonalData = {};
 document.addEventListener('DOMContentLoaded', function() {
     initializeData();
     attachEventListeners();
-    loadIncomeChart();
 });
 
 // Initialize data
 function initializeData() {
-    // Store original personal info (including disabled fields)
-    const personalForm = document.getElementById('personalInfoForm');
-    const personalInputs = personalForm.querySelectorAll('input, select, textarea');
-  
-    personalInputs.forEach(input => {
-        // Set dummy data if empty
-        if (!input.value) {
-            if (input.id === 'ic_id') input.value = 'IC-2024-001';
-            else if (input.id === 'ic_name') input.value = 'Kumara Silva';
-            else if (input.id === 'ic_email') input.value = 'kumara.silva@evoplan.com';
-            else if (input.id === 'ic_phone') input.value = '+94 771 234567';
+    // Load coordinator data from backend
+    const coordinatorData = {
+        ic_id: '<?php echo isset($_SESSION['ic_id']) ? $_SESSION['ic_id'] : ''; ?>',
+        ic_name: '<?php echo isset($_SESSION['ic_name']) ? $_SESSION['ic_name'] : ''; ?>',
+        ic_email: '<?php echo isset($_SESSION['ic_email']) ? $_SESSION['ic_email'] : ''; ?>'
+    };
+    
+    // Fetch full coordinator data from database
+    fetch(URLROOT + '/IssueC/getCoordinatorData', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        originalPersonalData[input.id] = input.value;
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success && result.data) {
+            const coordinator = result.data;
+            document.getElementById('ic_id').value = coordinator.ic_id || '';
+            document.getElementById('ic_name').value = coordinator.ic_name || '';
+            document.getElementById('ic_email').value = coordinator.ic_email || '';
+            document.getElementById('ic_phone').value = coordinator.ic_phone || '';
+        } else {
+            // Use session data as fallback
+            document.getElementById('ic_id').value = coordinatorData.ic_id;
+            document.getElementById('ic_name').value = coordinatorData.ic_name;
+            document.getElementById('ic_email').value = coordinatorData.ic_email;
+        }
+        
+        // Store original data for reset functionality
+        const personalForm = document.getElementById('personalInfoForm');
+        const personalInputs = personalForm.querySelectorAll('input, select, textarea');
+        personalInputs.forEach(input => {
+            originalPersonalData[input.id] = input.value;
+        });
+    })
+    .catch(error => {
+        console.error('Error loading coordinator data:', error);
+        // Fallback: Use session data
+        document.getElementById('ic_id').value = coordinatorData.ic_id;
+        document.getElementById('ic_name').value = coordinatorData.ic_name;
+        document.getElementById('ic_email').value = coordinatorData.ic_email;
+        
+        const personalForm = document.getElementById('personalInfoForm');
+        const personalInputs = personalForm.querySelectorAll('input, select, textarea');
+        personalInputs.forEach(input => {
+            originalPersonalData[input.id] = input.value;
+        });
     });
 }
 
@@ -225,6 +255,10 @@ function attachEventListeners() {
 
     // Modal buttons
     document.getElementById('modalCancel')?.addEventListener('click', hideModal);
+    
+    // Logout button
+    document.getElementById('logoutBtn')?.addEventListener('click', showLogoutModal);
+    document.getElementById('confirmLogout')?.addEventListener('click', handleLogout);
 }
 
 // Toggle edit mode for forms
@@ -423,129 +457,7 @@ function handlePasswordSubmit(e) {
     xml.send(stringifiedData);
 }
 
-// Dummy data for income chart
-function getDummyIncomeData() {
-    const currentDate = new Date();
-    const months = [];
-    const incomes = [];
-    
-    // Generate last 6 months
-    for (let i = 5; i >= 0; i--) {
-        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
-        months.push(date.toLocaleString('default', { month: 'short', year: '2-digit' }));
-    }
-    
-    // Dummy income data (realistic values for issue coordinator)
-    incomes.push(12500, 15800, 14200, 18500, 16700, 19200);
-    
-    return { months, incomes };
-}
 
-// Load income chart
-function loadIncomeChart() {
-    var xml = new XMLHttpRequest();
-    
-    xml.onload = function(){
-        if(this.readyState == 4 && this.status == 200){
-            try {
-                const response = JSON.parse(this.responseText);
-                if(response.success) {
-                    renderIncomeChart(response.data);
-                    updateIncomeSummary(response.data);
-                } else {
-                    // Fallback to dummy data
-                    const dummyData = getDummyIncomeData();
-                    renderIncomeChart(dummyData);
-                    updateIncomeSummary(dummyData);
-                }
-            } catch(e) {
-                console.error('Error parsing income data, using dummy data', e);
-                // Fallback to dummy data
-                const dummyData = getDummyIncomeData();
-                renderIncomeChart(dummyData);
-                updateIncomeSummary(dummyData);
-            }
-        }
-    }
-    
-    xml.onerror = function(){
-        console.error('Error loading income data, using dummy data');
-        // Fallback to dummy data
-        const dummyData = getDummyIncomeData();
-        renderIncomeChart(dummyData);
-        updateIncomeSummary(dummyData);
-    }
-    
-    xml.open("GET", URLROOT + "/IssueC/getMonthlyIncome", true);
-    xml.send();
-}
-
-// Render income chart
-function renderIncomeChart(data) {
-    const ctx = document.getElementById('incomeChart').getContext('2d');
-    
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: data.months,
-            datasets: [{
-                label: 'Monthly Income (LKR)',
-                data: data.incomes,
-                backgroundColor: '#4B006E',
-                borderRadius: 6,
-                borderSkipped: false,
-                hoverBackgroundColor: '#6F1A8C'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        font: { size: 14, weight: '600' },
-                        padding: 20,
-                        color: '#111827'
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Income (LKR)',
-                        font: { size: 14, weight: 'bold' }
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return 'LKR ' + value.toLocaleString();
-                        }
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Month',
-                        font: { size: 14, weight: 'bold' }
-                    }
-                }
-            }
-        }
-    });
-}
-
-// Update income summary
-function updateIncomeSummary(data) {
-    const total = data.incomes.reduce((a, b) => a + b, 0);
-    const average = Math.round(total / data.incomes.length);
-    const highest = Math.max(...data.incomes);
-    
-    document.getElementById('totalIncome').textContent = 'LKR ' + total.toLocaleString();
-    document.getElementById('averageIncome').textContent = 'LKR ' + average.toLocaleString();
-    document.getElementById('highestIncome').textContent = 'LKR ' + highest.toLocaleString();
-}
 
 // Reset form
 function resetForm(formId, originalData) {
@@ -628,11 +540,34 @@ function hideModal() {
     modal.classList.remove('show');
 }
 
+// Show logout modal
+function showLogoutModal() {
+    const modal = document.getElementById('logoutModal');
+    modal.classList.add('show');
+}
+
+// Hide logout modal
+function hideLogoutModal() {
+    const modal = document.getElementById('logoutModal');
+    modal.classList.remove('show');
+}
+
+// Handle logout
+function handleLogout() {
+    // Redirect to logout endpoint
+    window.location.href = URLROOT + '/IssueC/logout';
+}
+
 // Close modal when clicking outside
 document.addEventListener('click', (e) => {
     const modal = document.getElementById('confirmModal');
+    const logoutModal = document.getElementById('logoutModal');
+    
     if (e.target === modal) {
         hideModal();
+    }
+    if (e.target === logoutModal) {
+        hideLogoutModal();
     }
 });
 

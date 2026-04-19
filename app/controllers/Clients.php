@@ -1,4 +1,4 @@
-<?php
+ <?php
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -24,6 +24,8 @@
 
         private $complaintModel;
 
+        private $paymentModel;
+
         public function __construct(){
 
             $this->clientModel = $this->model('M_Client');
@@ -36,6 +38,7 @@
             $this->eventModel = $this->model('M_Event');
             $this->notificationModel = $this->model('M_notification');
             $this->complaintModel = $this->model('M_Complaints');
+            $this->paymentModel = $this->model('M_Payment');
 
 
         }
@@ -77,6 +80,8 @@
         }
 
         public function home(){
+
+            $this->isloggedIn();
 
             $this->view('clients/v_home');
 
@@ -263,9 +268,15 @@
             session_destroy();
 
             // Redirect to login
-            redirect('Clients/login');
+            redirect('Evo/Evoplan');
         }
         
+
+        public function isloggedIn(){
+            if(!isset($_SESSION['client_id'])){
+                redirect('Evo/Evoplan');
+            }
+        }
         public function allevents(){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -290,6 +301,8 @@
         }
         public function packages(){
 
+            $this->isloggedIn();
+
             $packages = $this->packageModel->getAllPackages();
             $data = [
                 'packages' => $packages
@@ -298,6 +311,8 @@
             $this->view('clients/v_packages', $data);
         }
         public function payments(){
+
+            $this->isloggedIn();
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
@@ -310,6 +325,8 @@
         }
 
         public function previewEvent($event_id){
+
+            $this->isloggedIn();
             
             $data = [
                 'event_id' => $event_id
@@ -320,6 +337,7 @@
         }
 
         public function getSessionSelectedPackages(){
+
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -554,15 +572,31 @@
 
         public function analytics(){
 
+            if(!isset($_SESSION['client_id'])){
+                redirect('users/login');
+            }
+
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
                 redirect('clients/analytics');
             }
             else{
                 // Load the analytics view
-                $this->view('clients/v_analytics');
+                $clientId = (int)$_SESSION['client_id'];
+                $financialOverview = $this->paymentModel->getFinancialOverviewByClient($clientId);
+
+                $data = [
+                    'total_events' => $this->eventModel->getTotalEventsByClient($clientId),
+                    'upcoming_events' => $this->eventModel->getUpcomingEventsCountByClient($clientId),
+                    'total_payments' => $this->paymentModel->getTotalPaidAmountByClient($clientId),
+                    'financial_overview' => $financialOverview
+                ];
+
+                $this->view('clients/v_analytics', $data);
             }
         }
+
+
         public function findServices($eventId){
 
             $data = [
@@ -644,28 +678,7 @@
             }
            
         }
-        public function allvenues(){
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/allvenues');
-            }
-            else{
-                // Load the allvenues view
-                $this->view('clients/v_allvenue');
-            }
-        }
-        public function allmusic(){
-
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/allmusic');
-            }
-            else{
-                // Load the allmusic view
-                $this->view('clients/v_allmusic');
-            }
-        }
+        
         public function allcakedesigners(){
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -949,6 +962,7 @@
             );            
         }
 
+        
         public function notifications(){
             
             $notifications = $this->notificationModel->getAllByUser('CLIENT', $_SESSION['client_id']);
@@ -963,16 +977,233 @@
         
         }
 
-        public function feedback(){
-            if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                // Process form data
-                redirect('clients/feedback');
-            }
-            else{
-                // Load the feedback view
-                $this->view('clients/v_feedback');
+        public function getUnreadNotificationCount(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                $clientId = $_SESSION['client_id'] ?? null;
+
+                if (!$clientId) {
+                    echo json_encode(['success' => false, 'count' => 0]);
+                    return;
+                }
+
+                $stats = $this->notificationModel->getNotificationStats('CLIENT', $clientId);
+                $unread = (int)($stats->unread ?? 0);
+                echo json_encode(['success' => true, 'count' => $unread]);
             }
         }
+
+        public function markNotificationAsRead(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $notificationId = $inputdata['notificationId'] ?? null;
+
+                if (empty($notificationId)) {
+                    echo json_encode(['success' => false, 'error' => 'Notification id is required']);
+                    return;
+                }
+
+                if($this->notificationModel->markAsRead($notificationId)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to mark as read']);
+                }
+            }
+        }
+
+        public function markAllNotificationsAsRead(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if($this->notificationModel->markAllAsRead('CLIENT', $_SESSION['client_id'])){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to mark all as read']);
+                }
+            }
+        }
+
+        public function deleteNotification(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $notificationId = $inputdata['notificationId'] ?? null;
+
+                if (empty($notificationId)) {
+                    echo json_encode(['success' => false, 'error' => 'Notification id is required']);
+                    return;
+                }
+
+                if($this->notificationModel->deleteNotification($notificationId)){
+                    echo json_encode(['success' => true]);
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'Failed to delete notification']);
+                }
+            }
+        }
+
+
+
+
+        
+        public function feedback($event_id = null) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            // detect AJAX
+            $isAjax = false;
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                $isAjax = true;
+            }
+            if (!$isAjax && !empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+                $isAjax = true;
+            }
+
+            if (!empty($_POST['feedback_id'])) {
+                // Update existing feedback
+                $data = [
+                    'feedback_id' => $_POST['feedback_id'],
+                    'rating' => $_POST['rating'] ?? 0,
+                    'feedback_text' => $_POST['feedback_text'] ?? '',
+                    'status' => $_POST['action'] ?? 'draft'
+                ];
+                $this->clientModel->updateFeedback($data);
+
+                if ($isAjax) {
+                    $fb = $this->clientModel->getFeedbackById($_POST['feedback_id']);
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'feedback' => $fb]);
+                    exit;
+                }
+
+            } else {
+                // Add new feedback
+                $data = [
+                    'client_id' => $_SESSION['client_id'],
+                    'provider_name' => $_POST['provider_name'] ?? '',
+                    'category' => $_POST['category'] ?? '',
+                    'rating' => $_POST['rating'] ?? 0,
+                    'feedback_text' => $_POST['feedback_text'] ?? '',
+                    'status' => $_POST['action'] ?? 'draft'
+                ];
+
+                $newFb = $this->clientModel->addFeedback($data);
+
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    if ($newFb) {
+                        // attach profile pic if available
+                        if (!empty($newFb->provider_name)) {
+                            require_once APPROOT . '/libraries/Database.php';
+                            $db = new Database();
+                            $db->query("SELECT profile_pic FROM provider_profiles pp JOIN service_providers sp ON pp.service_id = sp.service_id WHERE CONCAT(sp.fname, ' ', sp.lname) = :name LIMIT 1");
+                            $db->bind(':name', trim($newFb->provider_name));
+                            $row = $db->single();
+                            $newFb->profile_pic = ($row && isset($row->profile_pic)) ? $row->profile_pic : '';
+                        } else {
+                            $newFb->profile_pic = '';
+                        }
+
+                        echo json_encode(['success' => true, 'feedback' => $newFb]);
+                    } else {
+                        echo json_encode(['success' => false, 'message' => 'Failed to save feedback']);
+                    }
+                    exit;
+                }
+            }
+
+            redirect('clients/feedback');
+
+    } else {
+        // GET request — load all feedbacks or providers for an event
+        $feedbacks = $this->clientModel->getClientFeedbacks($_SESSION['client_id']);
+
+        // Attach provider profile pictures to feedbacks when available
+        if (!empty($feedbacks)) {
+            require_once APPROOT . '/libraries/Database.php';
+            $db = new Database();
+            foreach ($feedbacks as $f) {
+                $f->profile_pic = '';
+                $name = trim($f->provider_name ?? '');
+                if ($name !== '') {
+                    $db->query("SELECT pp.profile_pic FROM service_providers sp JOIN provider_profiles pp ON sp.service_id = pp.service_id WHERE CONCAT(sp.fname, ' ', sp.lname) = :name LIMIT 1");
+                    $db->bind(':name', $name);
+                    $row = $db->single();
+                    if ($row && isset($row->profile_pic)) {
+                        $f->profile_pic = $row->profile_pic;
+                    }
+                }
+            }
+        }
+
+        $viewData = ['feedbacks' => $feedbacks];
+
+        if (!empty($event_id)) {
+            // Load providers/packages selected for this event to allow rating
+            $providers = $this->eventModel->getSelectedPackages($event_id);
+
+            // Attach provider profile pictures when available
+            if (!empty($providers)) {
+                require_once APPROOT . '/libraries/Database.php';
+                $db = new Database();
+                foreach ($providers as $p) {
+                    $p->profile_pic = '';
+                    if (!empty($p->service_id)) {
+                        $db->query("SELECT profile_pic FROM provider_profiles WHERE service_id = :id LIMIT 1");
+                        $db->bind(':id', $p->service_id);
+                        $row = $db->single();
+                        if ($row && isset($row->profile_pic)) {
+                            $p->profile_pic = $row->profile_pic;
+                        }
+                    }
+                }
+            }
+
+            $viewData['providers'] = $providers;
+            $viewData['event_id'] = $event_id;
+        }
+
+        $this->view('clients/v_feedback', $viewData);
+    }
+}
+
+
+           public function editFeedback($id)
+{
+    // get feedback by id
+    $feedback = $this->clientModel->getFeedbackById($id);
+
+    // load all feedbacks for submitted tab
+    $feedbacks = $this->clientModel->getClientFeedbacks($_SESSION['client_id']);
+
+    // Attach provider profile pictures to feedbacks when available
+    if (!empty($feedbacks)) {
+        require_once APPROOT . '/libraries/Database.php';
+        $db = new Database();
+        foreach ($feedbacks as $f) {
+            $f->profile_pic = '';
+            $name = trim($f->provider_name ?? '');
+            if ($name !== '') {
+                $db->query("SELECT pp.profile_pic FROM service_providers sp JOIN provider_profiles pp ON sp.service_id = pp.service_id WHERE CONCAT(sp.fname, ' ', sp.lname) = :name LIMIT 1");
+                $db->bind(':name', $name);
+                $row = $db->single();
+                if ($row && isset($row->profile_pic)) {
+                    $f->profile_pic = $row->profile_pic;
+                }
+            }
+        }
+    }
+
+    // send data to view
+    $this->view('clients/v_feedback', [
+        'editFeedback' => $feedback,
+        'feedbacks' => $feedbacks
+    ]);
+}
+
+        
+
+          public function deleteFeedback($id) {
+            $this->clientModel->deleteFeedback($id);
+            redirect('clients/feedback');
+        }
+
+
         public function complains(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
@@ -981,6 +1212,28 @@
             else{
                 // Load the complains view
                 $this->view('clients/v_complains');
+            }
+        }
+
+        public function getComplaintDetails(){
+            if($_SERVER['REQUEST_METHOD'] == 'GET'){
+                $complaintId = isset($_GET['complaintId']) ? intval($_GET['complaintId']) : null;
+                
+                if (!$complaintId) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'error' => 'Complaint ID required']);
+                    return;
+                }
+                
+                // Fetch complaint details
+                $complaintDetails = $this->complaintModel->getClientComplaintById($complaintId);
+                
+                if ($complaintDetails) {
+                    echo json_encode(['success' => true, 'complaint' => $complaintDetails]);
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['success' => false, 'error' => 'Complaint not found']);
+                }
             }
         }
 
@@ -1045,6 +1298,8 @@
 
             // Submit complaint using the model
             if ($this->complaintModel->submitClientComplaint($complaintData)) {
+
+                $this->notificationModel->ClientcreateComplaintNotification($complaintData['client_id'], $complaintData['event_id']);
                 echo json_encode([
                     'success' => true,
                     'message' => 'Complaint submitted successfully'
@@ -1133,6 +1388,7 @@
 
         public function chats(){
 
+            // Get provider conversations
             $conversationsList = $this->messageModel->getConversationProfiles($_SESSION['client_id']);
 
             $data = [
@@ -1144,6 +1400,9 @@
 
         public function myevents(){
     
+            if(!isset($_SESSION['client_id'])){
+                redirect('Clients/login');
+            }
             $upcomingEvents = $this->eventModel->getUpcomingEventsByClientId($_SESSION['client_id']);
             $previousEvents = $this->eventModel->getPreviousEventsByClientId($_SESSION['client_id']);
             
@@ -1152,6 +1411,112 @@
                 'previousEvents' => $previousEvents
             ];
             $this->view('clients/v_myevents', $data);
+        }
+
+        
+        public function postpayment($eventId = null){
+            if(!isset($_SESSION['client_id'])){
+                redirect('users/login');
+            }
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if ($eventId) {
+                    redirect('clients/postpayment/' . $eventId);
+                }
+                redirect('clients/myevents');
+            }
+
+            if (empty($eventId)) {
+                redirect('clients/myevents');
+            }
+
+            $clientId = $_SESSION['client_id'];
+            $eventDetails = $this->eventModel->getEventById($eventId);
+
+            if (!$eventDetails || (int)$eventDetails->client_id !== (int)$clientId) {
+                redirect('clients/myevents');
+            }
+
+            $selectedPackages = $this->eventModel->getSelectedPackages($eventId) ?: [];
+            $clientDetails = $this->clientModel->getClientById($clientId);
+            $payment = $this->paymentModel->getPaymentByEventId($eventId);
+
+            $isPaid = $payment && strtoupper((string)($payment->payment_status ?? '')) === 'PAID';
+            if (!$isPaid) {
+                redirect('clients/previewEvent/' . $eventId);
+            }
+
+            $totalAmount = 0.0;
+            foreach($selectedPackages as $package) {
+                $totalAmount += (float)($package->package_price ?? 0);
+            }
+
+            $data = [
+                'event_id' => $eventId,
+                'event_details' => $eventDetails,
+                'packages' => $selectedPackages,
+                'total_amount' => $totalAmount,
+                'client_name' => $clientDetails->name ?? '',
+                'client_email' => $clientDetails->email ?? '',
+                'payment' => $payment,
+                'event_pin' => $this->paymentModel->getEventPinForPaidEvent($eventId)
+            ];
+
+            $this->view('clients/v_postpayment', $data);
+        }
+
+        
+        public function previouseventview($eventId = null){
+            if(!isset($_SESSION['client_id'])){
+                redirect('users/login');
+            }
+
+            if (empty($eventId) || !is_numeric($eventId)) {
+                redirect('clients/myevents');
+            }
+
+            $clientId = (int)$_SESSION['client_id'];
+            $eventId = (int)$eventId;
+
+            $eventDetails = $this->eventModel->getEventById($eventId);
+            if (!$eventDetails || (int)$eventDetails->client_id !== $clientId) {
+                redirect('clients/myevents');
+            }
+
+            $endTs = !empty($eventDetails->end_datetime) ? strtotime($eventDetails->end_datetime) : null;
+            $isCancelled = strtoupper((string)($eventDetails->progress_step ?? '')) === 'CANCELLED';
+            $isPreviousEvent = $isCancelled || ($endTs && $endTs < time());
+            if (!$isPreviousEvent) {
+                $progressPercent = (int)($eventDetails->progress_precent ?? 0);
+                $progressStep = strtoupper((string)($eventDetails->progress_step ?? ''));
+
+                if ($progressPercent >= 100 || $progressStep === 'STEP_3_PAYMENT') {
+                    redirect('clients/postpayment/' . $eventId);
+                }
+                redirect('clients/previewEvent/' . $eventId);
+            }
+
+            $selectedPackages = $this->eventModel->getSelectedPackages($eventId) ?: [];
+            $clientDetails = $this->clientModel->getClientById($clientId);
+            $payment = $this->paymentModel->getPaymentByEventId($eventId);
+
+            $totalAmount = 0.0;
+            foreach($selectedPackages as $package) {
+                $totalAmount += (float)($package->package_price ?? 0);
+            }
+
+            $data = [
+                'event_id' => $eventId,
+                'event_details' => $eventDetails,
+                'packages' => $selectedPackages,
+                'total_amount' => $totalAmount,
+                'client_name' => $clientDetails->name ?? '',
+                'client_email' => $clientDetails->email ?? '',
+                'payment' => $payment,
+                'event_pin' => $this->paymentModel->getEventPinForPaidEvent($eventId)
+            ];
+
+            $this->view('clients/v_previouseventviewdetails', $data);
         }
 
         public function message($service_id){
@@ -1343,7 +1708,98 @@
             
             $this->view('clients/payment/makepayment', $data);
         }
+
+        public function completeEvent($eventId) {
+                        
+            if(!isset($_SESSION['client_id'])){
+                redirect('users/login');
+            }
+            if (empty($eventId)) {
+                redirect('clients/myevents');
+            }
+
+            $clientId = $_SESSION['client_id'];
+            $eventDetails = $this->eventModel->getEventById($eventId);
+
+            if (!$eventDetails || (int)$eventDetails->client_id !== (int)$clientId) {
+                redirect('clients/myevents');
+            }
+
+            $selectedPackages = $this->eventModel->getSelectedPackages($eventId) ?: [];
+            $clientDetails = $this->clientModel->getClientById($clientId);
+
+            $totalAmount = 0.0;
+            foreach($selectedPackages as $package) {
+                $totalAmount += (float)($package->package_price ?? 0);
+            }
+
+            $data = [
+                'event_id' => $eventId,
+                'event_details' => $eventDetails,
+                'packages' => $selectedPackages,
+                'total_amount' => $totalAmount,
+                'client_name' => $clientDetails->name ?? '',
+                'client_email' => $clientDetails->email ?? '',
+                'payment' => $this->paymentModel->getPaymentByEventId($eventId),
+                'event_pin' => $this->paymentModel->getEventPinForPaidEvent($eventId)
+            ];
+
+            $this->view('clients/event/v_completeEvent', $data);
+
+        }
+
+        public function cancelEvent($eventId) {
+            // Check if user is logged in
+            if(!isset($_SESSION['client_id'])){
+                echo json_encode(['success' => false, 'message' => 'You must be logged in']);
+                return;
+            }
+
+            // Only accept POST requests
+            if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+                return;
+            }
+
+            // Validate event ID
+            if (empty($eventId) || !is_numeric($eventId)) {
+                echo json_encode(['success' => false, 'message' => 'Invalid event ID']);
+                return;
+            }
+
+            $clientId = $_SESSION['client_id'];
+            $eventId = (int)$eventId;
+
+            // Get event details to verify ownership
+            $eventDetails = $this->eventModel->getEventById($eventId);
+            if (!$eventDetails || (int)$eventDetails->client_id !== (int)$clientId) {
+                echo json_encode(['success' => false, 'message' => 'You are not authorized to cancel this event']);
+                return;
+            }
+
+            // Get cancellation reason from request
+            $inputData = json_decode(file_get_contents("php://input"), true);
+            $cancelReason = isset($inputData['reason']) ? trim($inputData['reason']) : '';
+
+            if (empty($cancelReason)) {
+                echo json_encode(['success' => false, 'message' => 'Please provide a cancellation reason']);
+                return;
+            }
+
+            // Update event with cancellation
+            if ($this->eventModel->cancelEvent($eventId, $cancelReason)) {
+                
+                sendEventCancellationNotification($eventId, $cancelReason);
+                
+                echo json_encode(['success' => true, 'message' => 'Event cancelled successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to cancel event. Please try again']);
+            }
+        }
         
         
     }
+
+    
 ?>

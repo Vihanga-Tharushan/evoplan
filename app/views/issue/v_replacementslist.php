@@ -192,33 +192,7 @@ body {
 }
 
 /* Filters */
-.filters {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
 
-.filter-select,
-.filter-input,
-.search-input {
-    padding: 10px 15px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    background: var(--white);
-}
-
-.filter-select:focus,
-.filter-input:focus,
-.search-input:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-.search-input {
-    min-width: 250px;
-}
 
 /* Complaints List */
 .complaints-list {
@@ -818,39 +792,38 @@ body {
 
 /* Filter Card */
 .filter-card {
-    background: linear-gradient(135deg, #f9f3fb 0%, #f5ecf8 100%);
-    border: 1px solid #e9d5ff;
+    background: linear-gradient(135deg, #f0f4ff 0%, #f5f0ff 100%);
+    border: 2px solid #e0d4f7;
     border-radius: 12px;
     padding: 28px;
-    box-shadow: 0 2px 16px rgba(111, 26, 140, 0.08);
+    box-shadow: 0 2px 12px rgba(75, 0, 110, 0.08);
+    transition: all 0.3s ease;
 }
 
 .filter-header {
     display: flex;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 24px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e9d5ff;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e0d4f7;
 }
 
 .filter-icon {
-    font-size: 28px;
+    font-size: 24px;
     color: var(--primary);
-    margin-top: 2px;
 }
 
 .filter-header h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text);
-    margin: 0 0 8px 0;
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--primary);
 }
 
 .filter-subtitle {
-    color: var(--muted);
-    font-size: 0.9rem;
     margin: 0;
+    font-size: 0.85rem;
+    color: var(--lightSecondary);
 }
 
 .filter-controls {
@@ -862,38 +835,34 @@ body {
 .filter-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .filter-group label {
-    font-size: 0.875rem;
     font-weight: 600;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--dark);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
 }
 
 .filter-select {
-    padding: 12px 16px;
-    border: 2px solid #e9d5ff;
-    background: white;
+    padding: 10px 12px;
+    border: 2px solid #e0d4f7;
     border-radius: 8px;
-    font-size: 0.9rem;
+    background: white;
+    color: var(--dark);
     font-weight: 500;
-    color: var(--text);
     cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.filter-select:hover {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(75, 0, 110, 0.1);
 }
 
 .filter-select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(75, 0, 110, 0.1);
+}
+
+.filter-select:hover {
+    border-color: var(--primary);
 }
 
 /* Providers List */
@@ -1200,25 +1169,6 @@ body {
         <div class="tab-content">
             <!-- Tab 1: Needs Replacement -->
             <div id="needs-replacement" class="tab-pane active">
-                <div class="content-header">
-                    <div class="filters">
-                        <select id="priorityFilter" class="filter-select">
-                            <option value="">All Priorities</option>
-                            <option value="CRITICAL">Critical</option>
-                            <option value="HIGH">High</option>
-                            <option value="MEDIUM">Medium</option>
-                            <option value="LOW">Low</option>
-                        </select>
-                        <select id="complaintTypeFilter" class="filter-select">
-                            <option value="">All Types</option>
-                            <option value="NO_SHOW">No Show</option>
-                            <option value="POOR_SERVICE">Poor Service</option>
-                            <option value="UNPROFESSIONAL">Unprofessional</option>
-                            <option value="EQUIPMENT_ISSUE">Equipment Issue</option>
-                        </select>
-                        <input type="text" id="searchInput" class="search-input" placeholder="Search by event or provider...">
-                    </div>
-                </div>
 
                 <div class="table-container">
                     <table id="needs-replacement-table" class="complaints-table">
@@ -1227,9 +1177,8 @@ body {
                                 <th>ID</th>
                                 <th>Event</th>
                                 <th>Provider</th>
-                                <th>Priority</th>
-                                <th>Status</th>
-                                <th>Type</th>
+                                <th>Client Name</th>
+                                <th>Event Date</th>
                                 <th>Submitted</th>
                                 <th>Actions</th>
                             </tr>
@@ -1334,20 +1283,6 @@ body {
 
             <!-- Tab 3: Replacement History -->
             <div id="replacement-history" class="tab-pane">
-                <div class="content-header">
-                    <h2>Replacement History</h2>
-                    <div class="filters">
-                        <input type="date" id="dateFromFilter" class="filter-input">
-                        <input type="date" id="dateToFilter" class="filter-input">
-                        <select id="resolutionFilter" class="filter-select">
-                            <option value="">All Resolutions</option>
-                            <option value="PROVIDER_REPLACED">Provider Replaced</option>
-                            <option value="REFUND_ISSUED">Refund Issued</option>
-                            <option value="WARNING_GIVEN">Warning Given</option>
-                            <option value="NO_ACTION">No Action</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="table-container">
                     <table id="replacement-history-table" class="complaints-table">
@@ -1357,8 +1292,8 @@ body {
                                 <th>Event</th>
                                 <th>Original Provider</th>
                                 <th>Replacement Provider</th>
-                                <th>Priority</th>
-                                <th>Type</th>
+                                <th>Client Name</th>
+                                <th>Event Date</th>
                                 <th>Resolved</th>
                             </tr>
                         </thead>
@@ -1389,154 +1324,77 @@ body {
     </div>
 
     <script>
-      // Mock Data - Simulating database records
-const mockComplaints = [
-    {
-        complaint_id: 1,
-        service_id: 101,
-        event_id: 201,
-        provider_name: "John Smith",
-        event_name: "Corporate Annual Gala 2026",
-        event_date: "2026-02-15",
-        complainant_type: "CLIENT",
-        complaint_type: "NO_SHOW",
-        description: "Provider did not show up for the event. Client had to find last-minute replacement.",
-        priority: "CRITICAL",
-        status: "OPEN",
-        assigned_ic_id: 1,
-        resolution_type: null,
-        resolution_note: null,
-        resolved_at: null,
-        created_at: "2026-02-03T08:30:00",
-        updated_at: "2026-02-03T08:30:00"
-    },
-    {
-        complaint_id: 2,
-        service_id: 102,
-        event_id: 202,
-        provider_name: "Sarah Johnson",
-        event_name: "Wedding Reception - Miller",
-        event_date: "2026-02-20",
-        complainant_type: "IC",
-        complaint_type: "LATE_CANCELLATION",
-        description: "Provider cancelled 2 days before the event due to family emergency. Need urgent replacement.",
-        priority: "HIGH",
-        status: "IN_PROGRESS",
-        assigned_ic_id: 1,
-        resolution_type: null,
-        resolution_note: null,
-        resolved_at: null,
-        created_at: "2026-02-01T14:20:00",
-        updated_at: "2026-02-02T10:15:00"
-    },
-    {
-        complaint_id: 3,
-        service_id: 103,
-        event_id: 203,
-        provider_name: "Michael Chen",
-        event_name: "Tech Conference 2026",
-        event_date: "2026-02-25",
-        complainant_type: "SYSTEM",
-        complaint_type: "OTHER",
-        description: "Provider marked event as 'need replacement' due to scheduling conflict with another commitment.",
-        priority: "MEDIUM",
-        status: "OPEN",
-        assigned_ic_id: 2,
-        resolution_type: null,
-        resolution_note: null,
-        resolved_at: null,
-        created_at: "2026-01-30T16:45:00",
-        updated_at: "2026-01-30T16:45:00"
-    },
-    {
-        complaint_id: 4,
-        service_id: 104,
-        event_id: 204,
-        provider_name: "Emily Davis",
-        event_name: "Birthday Party - Anderson",
-        event_date: "2026-02-10",
-        complainant_type: "CLIENT",
-        complaint_type: "QUALITY_ISSUE",
-        description: "Provider's equipment malfunctioned. Client requests different provider for future events.",
-        priority: "LOW",
-        status: "OPEN",
-        assigned_ic_id: 1,
-        resolution_type: null,
-        resolution_note: null,
-        resolved_at: null,
-        created_at: "2026-01-28T11:00:00",
-        updated_at: "2026-01-28T11:00:00"
-    }
-];
+// Database Records
+let pendingReplacements = [];
+let replacementHistory = [];
+const URLROOT = '<?php echo URLROOT; ?>';
+const ISSUE_COORDINATOR_ID = <?php echo isset($_SESSION['ic_id']) ? (int)$_SESSION['ic_id'] : 'null'; ?>;
 
-const mockResolvedComplaints = [
-    {
-        complaint_id: 5,
-        service_id: 105,
-        event_id: 205,
-        provider_name: "David Wilson",
-        event_name: "Corporate Team Building",
-        event_date: "2026-01-25",
-        complainant_type: "IC",
-        complaint_type: "NO_SHOW",
-        description: "Provider had transportation issues and couldn't attend.",
-        priority: "HIGH",
-        status: "RESOLVED",
-        assigned_ic_id: 1,
-        resolution_type: "PROVIDER_REPLACED",
-        resolution_note: "Replaced with Maria Garcia. Event completed successfully.",
-        resolved_at: "2026-01-24T15:30:00",
-        replacement_provider: "Maria Garcia",
-        created_at: "2026-01-24T09:00:00",
-        updated_at: "2026-01-24T15:30:00"
-    },
-    {
-        complaint_id: 6,
-        service_id: 106,
-        event_id: 206,
-        provider_name: "Lisa Anderson",
-        event_name: "Charity Fundraiser",
-        event_date: "2026-01-20",
-        complainant_type: "CLIENT",
-        complaint_type: "LATE_CANCELLATION",
-        description: "Provider cancelled due to illness.",
-        priority: "MEDIUM",
-        status: "RESOLVED",
-        assigned_ic_id: 2,
-        resolution_type: "PROVIDER_REPLACED",
-        resolution_note: "Replaced with Tom Jackson. Client satisfied with replacement.",
-        resolved_at: "2026-01-19T12:00:00",
-        replacement_provider: "Tom Jackson",
-        created_at: "2026-01-18T16:00:00",
-        updated_at: "2026-01-19T12:00:00"
-    },
-    {
-        complaint_id: 7,
-        service_id: 107,
-        event_id: 207,
-        provider_name: "Robert Lee",
-        event_name: "Product Launch Event",
-        event_date: "2026-01-15",
-        complainant_type: "IC",
-        complaint_type: "QUALITY_ISSUE",
-        description: "Previous performance did not meet standards.",
-        priority: "LOW",
-        status: "RESOLVED",
-        assigned_ic_id: 1,
-        resolution_type: "WARNING_GIVEN",
-        resolution_note: "Issued warning to provider. Training provided. No replacement needed.",
-        resolved_at: "2026-01-16T10:00:00",
-        created_at: "2026-01-15T14:00:00",
-        updated_at: "2026-01-16T10:00:00"
-    }
-];
 
 // State Management
 let currentTab = 'needs-replacement';
 let selectedComplaint = null;
 let selectedProvider = null;
-let filteredComplaints = [...mockComplaints];
-let filteredHistory = [...mockResolvedComplaints];
+
+// Load pending replacements from backend
+function loadPendingReplacements() {
+    var xml = new XMLHttpRequest();
+    xml.onload = function(){
+        try{
+            var response = JSON.parse(this.responseText);
+            console.log("Received replacement data:", response);
+            
+            if (response.success && response.data) {
+                // Populate pending replacements from backend
+                pendingReplacements = response.data;
+                renderNeedsReplacementList();
+                updateReplacementStats();
+            } else {
+                console.error("Error fetching pending replacements:", response.error || "Unknown error");
+            }
+        }
+        catch(err){
+            console.error("Error parsing replacement data:", err);
+        }
+    }
+
+    xml.onerror = function(){
+        console.error("Error fetching replacement data");
+    }
+
+    xml.open("GET", URLROOT + "/IssueC/getPendingReplacements", true);
+    xml.send();
+}
+
+// Load replacement history from backend
+function loadReplacementHistory() {
+    var xml = new XMLHttpRequest();
+    xml.onload = function(){
+        try{
+            var response = JSON.parse(this.responseText);
+            console.log("Received replacement history:", response);
+            
+            if (response.success && response.data) {
+                // Populate replacement history from backend
+                replacementHistory = response.data;
+                renderReplacementHistory();
+                updateReplacementStats();
+            } else {
+                console.error("Error fetching replacement history:", response.error || "Unknown error");
+            }
+        }
+        catch(err){
+            console.error("Error parsing replacement history:", err);
+        }
+    }
+
+    xml.onerror = function(){
+        console.error("Error fetching replacement history");
+    }
+
+    xml.open("GET", URLROOT + "/IssueC/getReplacementHistory", true);
+    xml.send();
+}
 
 // Tab Management
 function initializeTabs() {
@@ -1569,8 +1427,8 @@ function switchTab(tabName) {
 
 // Update replacement statistics
 function updateReplacementStats() {
-    const needsCount = mockComplaints.filter(c => c.status !== 'PROVIDER_REPLACED').length;
-    const historyCount = mockResolvedComplaints.filter(c => c.status === 'PROVIDER_REPLACED').length;
+    const needsCount = pendingReplacements.length;
+    const historyCount = replacementHistory.length;
     
     document.getElementById('needs-count').textContent = needsCount;
     document.getElementById('history-count').textContent = historyCount;
@@ -1580,7 +1438,7 @@ function updateReplacementStats() {
 function renderNeedsReplacementList() {
     const tableBody = document.getElementById('needs-replacement-container');
     
-    if (filteredComplaints.length === 0) {
+    if (pendingReplacements.length === 0) {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="8" style="padding: 0;">
@@ -1595,40 +1453,41 @@ function renderNeedsReplacementList() {
         return;
     }
 
-    tableBody.innerHTML = filteredComplaints.map(complaint => `
+    tableBody.innerHTML = pendingReplacements.map(complaint => `
         <tr class="complaint-row">
-            <td class="table-id">#${complaint.complaint_id}</td>
+            <td class="table-id">#${complaint.replacement_id}</td>
             <td class="table-event" title="${complaint.event_name}">${complaint.event_name}</td>
             <td class="table-provider" title="${complaint.provider_name}">${complaint.provider_name}</td>
-            <td>
-                <span class="priority-badge ${complaint.priority}">${complaint.priority}</span>
-            </td>
-            <td>
-                <span class="status-badge">${complaint.status.replace('_', ' ')}</span>
-            </td>
-            <td class="table-type">${formatComplaintType(complaint.complaint_type)}</td>
+            <td class="table-client" title="${complaint.client_name || 'N/A'}">${complaint.client_name || 'N/A'}</td>
             <td class="table-created">
-                <div style="font-weight: 600;">${getTimeSince(complaint.created_at)}</div>
-                <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(complaint.event_date)}</div>
+                <div style="font-weight: 600;">${formatDate(complaint.event_date)}</div>
             </td>
-            <td>
-                <button class="table-view-btn" onclick="selectForReplacement(${complaint.complaint_id})" title="Select for Replacement">
+            <td class="table-created">
+                <div style="font-weight: 600;">${getTimeSince(complaint.submitted_at)}</div>
+                <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(complaint.submitted_at)}</div>
+            </td>
+            <td style="display: flex; gap: 8px;">
+                <button class="table-view-btn" onclick="selectForReplacement(${complaint.replacement_id})" title="Select for Replacement">
                     <i class="fa fa-exchange"></i>
                     <span>Replace</span>
+                </button>
+                <button class="table-view-btn" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); flex: 1;" onclick="removeProviderPackageFromList(${complaint.replacement_id})" title="Remove Package">
+                    <i class="fa fa-trash"></i>
+                    <span>Remove</span>
                 </button>
             </td>
         </tr>
     `).join('');
 
     // Update badge count
-    document.getElementById('needs-count').textContent = filteredComplaints.length;
+    document.getElementById('needs-count').textContent = pendingReplacements.length;
 }
 
 // Render Replacement History
 function renderReplacementHistory() {
     const tableBody = document.getElementById('replacement-history-container');
     
-    if (filteredHistory.length === 0) {
+    if (replacementHistory.length === 0) {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="7" style="padding: 0;">
@@ -1643,16 +1502,16 @@ function renderReplacementHistory() {
         return;
     }
 
-    tableBody.innerHTML = filteredHistory.map(complaint => `
+    tableBody.innerHTML = replacementHistory.map(complaint => `
         <tr class="complaint-row">
-            <td class="table-id">#${complaint.complaint_id}</td>
+            <td class="table-id">#${complaint.replacement_id}</td>
             <td class="table-event" title="${complaint.event_name}">${complaint.event_name}</td>
             <td class="table-provider" title="${complaint.provider_name}">${complaint.provider_name}</td>
             <td class="table-provider" title="${complaint.replacement_provider || 'N/A'}">${complaint.replacement_provider || 'N/A'}</td>
-            <td>
-                <span class="priority-badge ${complaint.priority}">${complaint.priority}</span>
+            <td class="table-client" title="${complaint.client_name || 'N/A'}">${complaint.client_name || 'N/A'}</td>
+            <td class="table-created">
+                <div style="font-weight: 600;">${formatDate(complaint.event_date)}</div>
             </td>
-            <td class="table-type">${formatComplaintType(complaint.complaint_type)}</td>
             <td class="table-created">
                 <div style="font-weight: 600;">${getTimeSince(complaint.resolved_at)}</div>
                 <div style="color: var(--muted); font-size: 0.75rem;">${formatDate(complaint.resolved_at)}</div>
@@ -1661,12 +1520,12 @@ function renderReplacementHistory() {
     `).join('');
 
     // Update badge count
-    document.getElementById('history-count').textContent = filteredHistory.length;
+    document.getElementById('history-count').textContent = replacementHistory.length;
 }
 
 // Select Complaint for Replacement
-function selectForReplacement(complaintId) {
-    selectedComplaint = mockComplaints.find(c => c.complaint_id === complaintId);
+function selectForReplacement(replacementId) {
+    selectedComplaint = pendingReplacements.find(c => c.replacement_id === replacementId);
     if (selectedComplaint) {
         switchTab('replace-provider');
         renderReplacementForm();
@@ -1691,9 +1550,9 @@ function renderReplacementForm() {
     document.getElementById('filterSection').style.display = 'block';
     document.getElementById('providersSection').style.display = 'block';
 
-    // Populate current provider details
+    // Populate current provider details from database
     document.getElementById('currentProviderName').textContent = selectedComplaint.provider_name || 'N/A';
-    document.getElementById('currentServiceType').textContent = formatComplaintType(selectedComplaint.complaint_type);
+    document.getElementById('currentServiceType').textContent = selectedComplaint.service_type || 'N/A';
     document.getElementById('currentEventName').textContent = selectedComplaint.event_name || 'N/A';
     document.getElementById('currentEventDate').textContent = formatDate(selectedComplaint.event_date);
 
@@ -1702,137 +1561,114 @@ function renderReplacementForm() {
     document.getElementById('availabilityFilter').value = '';
     document.getElementById('priceFilter').value = '';
 
-    // Load and display available providers
-    applyProviderFilters();
+    // Load and display available packages
+    loadPackagesByServiceType();
 }
 
-// Mock available providers database
-const mockAvailableProviders = [
-    {
-        provider_id: 201,
-        provider_name: 'Elite Service Providers',
-        rating: 4.8,
-        reviews: 245,
-        availability: 'available',
-        price_range: 'premium',
-        specialization: 'NO_SHOW'
-    },
-    {
-        provider_id: 202,
-        provider_name: 'Quality Events Co',
-        rating: 4.6,
-        reviews: 180,
-        availability: 'available',
-        price_range: 'moderate',
-        specialization: 'QUALITY_ISSUE'
-    },
-    {
-        provider_id: 203,
-        provider_name: 'Professional Services',
-        rating: 4.9,
-        reviews: 320,
-        availability: 'soon',
-        price_range: 'premium',
-        specialization: 'NO_SHOW'
-    },
-    {
-        provider_id: 204,
-        provider_name: 'Budget Friendly Events',
-        rating: 4.2,
-        reviews: 95,
-        availability: 'available',
-        price_range: 'budget',
-        specialization: 'QUALITY_ISSUE'
-    },
-    {
-        provider_id: 205,
-        provider_name: 'Premium Event Solutions',
-        rating: 4.7,
-        reviews: 210,
-        availability: 'available',
-        price_range: 'premium',
-        specialization: 'MISCONDUCT'
-    },
-    {
-        provider_id: 206,
-        provider_name: 'Reliable Services Ltd',
-        rating: 4.5,
-        reviews: 150,
-        availability: 'soon',
-        price_range: 'moderate',
-        specialization: 'PAYMENT_DISPUTE'
+// Load Packages by Service Type from API
+function loadPackagesByServiceType() {
+    if (!selectedComplaint || !selectedComplaint.service_type) {
+        console.error("Service type not found");
+        alert('Error: Service type not found');
+        return;
     }
-];
+
+    var xml = new XMLHttpRequest();
+    xml.onload = function(){
+        try{
+            var response = JSON.parse(this.responseText);
+            console.log("Received packages:", response);
+            
+            if (response.success && response.data) {
+                renderPackagesList(response.data);
+            } else {
+                console.error("Error fetching packages:", response.error || "Unknown error");
+                alert('Error fetching packages: ' + (response.error || "Unknown error"));
+            }
+        }
+        catch(err){
+            console.error("Error parsing packages data:", err);
+            alert('Error parsing packages data');
+        }
+    }
+
+    xml.onerror = function(){
+        console.error("Error fetching packages");
+        alert('Error fetching packages');
+    }
+
+    const serviceType = selectedComplaint.service_type;
+    const excludeServiceId = selectedComplaint.old_service_id;
+    xml.open("GET", URLROOT + "/IssueC/getPackagesByServiceType?serviceType=" + encodeURIComponent(serviceType) + "&excludeServiceId=" + excludeServiceId, true);
+    xml.send();
+}
 
 // Apply provider filters
 function applyProviderFilters() {
     const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
-    const availabilityFilter = document.getElementById('availabilityFilter').value;
-    const priceFilter = document.getElementById('priceFilter').value;
-
-    let filtered = mockAvailableProviders.filter(provider => {
-        const matchesRating = provider.rating >= ratingFilter;
-        const matchesAvailability = !availabilityFilter || provider.availability === availabilityFilter;
-        const matchesPrice = !priceFilter || provider.price_range === priceFilter;
-
-        return matchesRating && matchesAvailability && matchesPrice;
+    
+    // Filter packages by rating
+    let filtered = [].filter(provider => {
+        const matchesRating = provider.avg_rating >= ratingFilter;
+        return matchesRating;
     });
 
-    renderProvidersList(filtered);
+    renderPackagesList(filtered);
 }
 
-// Render providers list
-function renderProvidersList(providers) {
+// Render packages list
+function renderPackagesList(packages) {
     const container = document.getElementById('providersList');
     const countBadge = document.getElementById('providerCount');
 
-    countBadge.textContent = providers.length;
-
-    if (providers.length === 0) {
+    if (!packages || packages.length === 0) {
+        countBadge.textContent = '0';
         container.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1; padding: 60px 40px;">
                 <i class="fa fa-search empty-icon"></i>
-                <h3>No Providers Found</h3>
-                <p>Try adjusting your filters to find available replacement providers</p>
+                <h3>No Packages Available</h3>
+                <p>No alternative packages found for ${selectedComplaint.service_type}</p>
             </div>
         `;
         return;
     }
 
-    container.innerHTML = providers.map(provider => `
-        <div class="provider-card">
+    countBadge.textContent = packages.length;
+
+    container.innerHTML = packages.map(pkg => `
+        <div class="provider-card" data-package-id="${pkg.package_id}" data-service-id="${pkg.service_id}">
             <div class="provider-card-header">
                 <div class="provider-avatar">
-                    <i class="fa fa-briefcase"></i>
+                    ${pkg.profile_pic ? `<img src="${URLROOT}/public/img/profilePics/${pkg.profile_pic}" alt="${pkg.provider_name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` : `<i class="fa fa-briefcase"></i>`}
                 </div>
                 <div class="provider-info">
-                    <h4>${provider.provider_name}</h4>
-                    <p>${formatComplaintType(provider.specialization)}</p>
+                    <h4>${pkg.provider_name || 'N/A'}</h4>
+                    <p>${pkg.businessName || 'N/A'}</p>
                     <div class="provider-rating">
                         <i class="fa fa-star"></i>
-                        <span>${provider.rating.toFixed(1)}</span>
-                        <span style="color: var(--muted); font-weight: normal;">(${provider.reviews} reviews)</span>
+                        <span>${parseFloat(pkg.avg_rating || 0).toFixed(1)}</span>
+                        <span style="color: var(--muted); font-weight: normal;">(${pkg.total_reviews || 0} reviews)</span>
                     </div>
                 </div>
             </div>
 
             <div class="provider-card-body">
                 <div class="provider-stat">
-                    <span class="provider-stat-label">Price Range</span>
-                    <span class="provider-stat-value">${formatPriceRange(provider.price_range)}</span>
+                    <span class="provider-stat-label">Package</span>
+                    <span class="provider-stat-value">${pkg.title || 'N/A'}</span>
                 </div>
                 <div class="provider-stat">
-                    <span class="provider-stat-label">Availability</span>
-                    <span class="availability-badge ${provider.availability}">${formatAvailability(provider.availability)}</span>
+                    <span class="provider-stat-label">Price</span>
+                    <span class="provider-stat-value">Rs. ${formatPrice(pkg.price)}</span>
                 </div>
                 <div class="provider-stat">
-                    <span class="provider-stat-label">Specialization</span>
-                    <span class="provider-stat-value">${formatComplaintType(provider.specialization)}</span>
+                    <span class="provider-stat-label">Location</span>
+                    <span class="provider-stat-value">${pkg.district || 'N/A'}</span>
                 </div>
             </div>
 
             <div class="provider-card-footer">
-                <button class="select-provider-btn" onclick="confirmProviderReplacement(${provider.provider_id}, '${provider.provider_name}')">
+                <button class="select-provider-btn" onclick="selectPackage(${pkg.package_id}, ${pkg.service_id}, '${pkg.provider_name}')">
                     <i class="fa fa-check" style="margin-right: 6px;"></i>
                     Select
                 </button>
@@ -1841,117 +1677,131 @@ function renderProvidersList(providers) {
     `).join('');
 }
 
-// Helper functions for formatting
-function formatPriceRange(range) {
-    const ranges = {
-        'budget': '💰 Budget Friendly',
-        'moderate': '💰💰 Moderate',
-        'premium': '💰💰💰 Premium'
-    };
-    return ranges[range] || 'N/A';
+// Format price with commas
+function formatPrice(price) {
+    return parseFloat(price).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 }
 
-function formatAvailability(availability) {
-    const statuses = {
-        'available': 'Available Now',
-        'soon': 'Available Soon'
-    };
-    return statuses[availability] || 'N/A';
-}
+// Select Package and Assign to Event
+function selectPackage(packageId, serviceId, providerName) {
+    if (!selectedComplaint) {
+        alert('No replacement selected');
+        return;
+    }
 
-// Confirm provider replacement
-function confirmProviderReplacement(providerId, providerName) {
-    if (confirm(`Replace "${selectedComplaint.provider_name}" with "${providerName}"?`)) {
-        // Update complaint with replacement
-        selectedComplaint.replacement_provider = providerName;
-        selectedComplaint.replacement_provider_id = providerId;
-        selectedComplaint.status = 'PROVIDER_REPLACED';
-        selectedComplaint.updated_at = new Date().toISOString();
+    if (confirm(`Replace "${selectedComplaint.provider_name}" with package from "${providerName}"?`)) {
+        var xml = new XMLHttpRequest();
+        xml.onload = function(){
+            try{
+                var response = JSON.parse(this.responseText);
+                console.log("Assignment response:", response);
+                
+                if (response.success) {
+                    alert('✓ Package assigned successfully!');
+                    
+                    // Update pending replacements list
+                    const index = pendingReplacements.findIndex(r => r.replacement_id === selectedComplaint.replacement_id);
+                    if (index > -1) {
+                        pendingReplacements[index].status = 'ASSIGNED';
+                        pendingReplacements[index].replacement_provider = providerName;
+                    }
+                    
+                    // Refresh UI
+                    loadPendingReplacements();
+                    renderNeedsReplacementList();
+                    renderReplacementHistory();
+                    updateReplacementStats();
+                    
+                    // Switch to history tab
+                    switchTab('replacement-history');
+                    
+                    // Clear selected complaint
+                    selectedComplaint = null;
+                } else {
+                    alert('Error: ' + (response.error || 'Failed to assign package'));
+                }
+            }
+            catch(err){
+                
+                console.error("Error parsing response:", err);
+                alert('Error processing request');
+            }
+        }
 
-        alert(`✓ ${providerName} has been selected as the replacement provider!`);
-        
-        // Switch to history tab and refresh
-        switchTab('replacement-history');
-        renderReplacementHistory();
-        updateReplacementStats();
+        xml.onerror = function(){
+            console.error("Error assigning package");
+            alert('Error assigning package');
+        }
+
+        xml.open("POST", URLROOT + "/IssueC/assignProviderPackageToEvent", true);
+        xml.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xml.send('replacement_id=' + selectedComplaint.replacement_id + 
+                 '&event_id=' + selectedComplaint.event_id + 
+                 '&package_id=' + packageId + 
+                 '&new_service_id=' + serviceId +
+                 '&client_id=' + selectedComplaint.client_id);
     }
 }
 
-// Select Provider
+// Select Provider (deprecated - kept for compatibility)
 function selectProvider(providerId) {
-    selectedProvider = mockAvailableProviders.find(p => p.service_id === providerId);
+    selectedProvider = [].find(p => p.service_id === providerId);
     
     // Update UI
     document.querySelectorAll('.provider-card').forEach(card => {
         card.classList.remove('selected');
-        if (card.getAttribute('data-provider-id') == providerId) {
+        if (card.getAttribute('data-service-id') == providerId) {
             card.classList.add('selected');
         }
     });
 }
 
-// Submit Replacement
+// Submit Replacement (deprecated - package selection is now direct)
 function submitReplacement() {
-    if (!selectedProvider) {
-        alert('Please select a replacement provider');
-        return;
-    }
-
-    const resolutionType = document.getElementById('resolutionType').value;
-    const resolutionNotes = document.getElementById('resolutionNotes').value;
-
-    if (!resolutionNotes.trim()) {
-        alert('Please provide resolution notes');
-        return;
-    }
-
-    const message = `
-        <strong>Confirm Replacement</strong><br><br>
-        <strong>Event:</strong> ${selectedComplaint.event_name}<br>
-        <strong>Original Provider:</strong> ${selectedComplaint.provider_name}<br>
-        <strong>New Provider:</strong> ${selectedProvider.name}<br>
-        <strong>Resolution:</strong> ${formatResolutionType(resolutionType)}<br><br>
-        Are you sure you want to proceed with this replacement?
-    `;
-
-    showConfirmModal(message, () => {
-        processReplacement(resolutionType, resolutionNotes);
-    });
+    alert('Please select a package to proceed with the replacement');
 }
 
-// Process Replacement
+// Process Replacement (deprecated - replaced with API call)
 function processReplacement(resolutionType, resolutionNotes) {
-    // Remove from needs list
-    const index = mockComplaints.findIndex(c => c.complaint_id === selectedComplaint.complaint_id);
-    if (index > -1) {
-        const resolved = {
-            ...mockComplaints[index],
-            status: 'RESOLVED',
-            resolution_type: resolutionType,
-            resolution_note: resolutionNotes,
-            resolved_at: new Date().toISOString(),
-            replacement_provider: selectedProvider ? selectedProvider.name : null
-        };
-        
-        mockComplaints.splice(index, 1);
-        mockResolvedComplaints.unshift(resolved);
+    alert('Package assignment is now done through the API. Please select a package from the Replace Provider tab.');
+}
+
+// Remove provider package from event (from Needs Replacement tab)
+function removeProviderPackageFromList(replacementId) {
+    const complaint = pendingReplacements.find(c => c.replacement_id === replacementId);
+    if (!complaint) {
+        alert('Replacement not found');
+        return;
     }
 
-    // Reset state
-    selectedComplaint = null;
-    selectedProvider = null;
+    if (confirm(`Are you sure you want to remove ${complaint.provider_name}'s package from this event?`)) {
+        var xml = new XMLHttpRequest();
+        xml.onload = function() {
+            try {
+                var response = JSON.parse(this.responseText);
+                if (response.success) {
+                    alert('✓ Provider package has been removed successfully!');
+                    // Refresh the list
+                    loadPendingReplacements();
+                    renderNeedsReplacementList();
+                } else {
+                    alert('Error: ' + (response.error || 'Failed to remove package'));
+                }
+            } catch (err) {
+                console.error("Error parsing response:", err);
+                alert('Error processing request');
+            }
+        };
 
-    // Update UI
-    filteredComplaints = [...mockComplaints];
-    filteredHistory = [...mockResolvedComplaints];
-    renderNeedsReplacementList();
-    renderReplacementHistory();
+        xml.onerror = function() {
+            console.error("Error removing provider package");
+            alert('Error removing provider package');
+        };
 
-    // Switch to history tab
-    switchTab('replacement-history');
-
-    // Show success message
-    alert('Replacement processed successfully!');
+        xml.open("POST", URLROOT + "/IssueC/removeProviderPackage", true);
+        xml.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xml.send('event_id=' + complaint.event_id + '&service_id=' + complaint.old_service_id + '&replacement_id=' + complaint.replacement_id);
+    }
 }
 
 // Cancel Replacement
@@ -1995,41 +1845,7 @@ function closeModal() {
     document.getElementById('confirmModal').classList.remove('active');
 }
 
-// Filter Functions
-function applyFilters() {
-    const priority = document.getElementById('priorityFilter').value;
-    const complaintType = document.getElementById('complaintTypeFilter').value;
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
-    filteredComplaints = mockComplaints.filter(complaint => {
-        const matchesPriority = !priority || complaint.priority === priority;
-        const matchesType = !complaintType || complaint.complaint_type === complaintType;
-        const matchesSearch = !searchTerm || 
-            complaint.event_name.toLowerCase().includes(searchTerm) ||
-            complaint.provider_name.toLowerCase().includes(searchTerm) ||
-            complaint.description.toLowerCase().includes(searchTerm);
-
-        return matchesPriority && matchesType && matchesSearch;
-    });
-
-    renderNeedsReplacementList();
-}
-
-function applyHistoryFilters() {
-    const dateFrom = document.getElementById('dateFromFilter').value;
-    const dateTo = document.getElementById('dateToFilter').value;
-    const resolution = document.getElementById('resolutionFilter').value;
-
-    filteredHistory = mockResolvedComplaints.filter(complaint => {
-        const matchesDateFrom = !dateFrom || new Date(complaint.resolved_at) >= new Date(dateFrom);
-        const matchesDateTo = !dateTo || new Date(complaint.resolved_at) <= new Date(dateTo);
-        const matchesResolution = !resolution || complaint.resolution_type === resolution;
-
-        return matchesDateFrom && matchesDateTo && matchesResolution;
-    });
-
-    renderReplacementHistory();
-}
 
 // Utility Functions
 function formatDate(dateString) {
@@ -2085,15 +1901,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     renderNeedsReplacementList();
     renderReplacementHistory();
-
-    // Setup filter listeners
-    document.getElementById('priorityFilter').addEventListener('change', applyFilters);
-    document.getElementById('complaintTypeFilter').addEventListener('change', applyFilters);
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    
-    document.getElementById('dateFromFilter').addEventListener('change', applyHistoryFilters);
-    document.getElementById('dateToFilter').addEventListener('change', applyHistoryFilters);
-    document.getElementById('resolutionFilter').addEventListener('change', applyHistoryFilters);
+    loadPendingReplacements();
+    loadReplacementHistory();
 
     // Close modal on background click
     document.getElementById('confirmModal').addEventListener('click', (e) => {

@@ -66,9 +66,9 @@
     /* Dashboard grid */
     .dashboard-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         gap: 24px;
-        padding: 24px 32px;
+        padding: 24px;
     }
 
     /* Cards */
@@ -78,6 +78,7 @@
         box-shadow: var(--card-shadow);
         transition: var(--transition);
         overflow: hidden;
+       
     }
 
     .card:hover {
@@ -171,6 +172,7 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 16px;
         margin-bottom: 24px;
+       
     }
 
     .kpi-card {
@@ -240,6 +242,23 @@
     .chart-container {
         height: 280px;
         position: relative;
+    }
+
+    /* Chart and Legend Layout */
+    .chart-legend-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+    }
+
+    .chart-legend-wrapper .chart-container {
+        flex: 0 0 300px;
+        max-width: 300px;
+    }
+
+    .chart-legend-wrapper .legend-section {
+        flex: 1;
+        min-width: 0;
     }
 
     /* Chart Legend */
@@ -472,6 +491,12 @@
         }
     }
 
+    @media (max-width: 1200px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
         .dashboard-grid {
             grid-template-columns: 1fr;
@@ -487,6 +512,21 @@
         
         .dashboard-container {
             flex-direction: column;
+        }
+
+        .chart-legend-wrapper {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chart-legend-wrapper .chart-container {
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .chart-legend-wrapper .legend-section {
+            width: 100%;
         }
     }
 

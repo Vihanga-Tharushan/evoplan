@@ -133,6 +133,22 @@
                 alert('Please select both start and end dates');
                 return;
             }
+
+            // enforce start >= minStart (7 days rule)
+            const selectedStart = new Date(startDateInput.value);
+            if (selectedStart < minStart) {
+                alert('Start date must be at least 7 days from today.');
+                startDateInput.focus();
+                return;
+            }
+
+            // enforce end >= start
+            const selectedEnd = new Date(endDateInput.value);
+            if (selectedEnd <= selectedStart) {
+                alert('End date/time must be after the start date/time.');
+                endDateInput.focus();
+                return;
+            }
             
             if (!guestCountInput.value || parseInt(guestCountInput.value) < 1) {
                 alert('Please enter a valid number of guests');
@@ -155,16 +171,48 @@
         
         // Initialize with current date/time for date inputs
         const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        
-        // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+        // Rule B: Start date must be at least 7 days from today
+        const minStart = new Date(now);
+        minStart.setDate(minStart.getDate() + 7);
+
+        // helper: Format for datetime-local input (YYYY-MM-DDTHH:MM)
         const formatForInput = (date) => {
-            return date.toISOString().slice(0, 16);
+            // ensure local timezone iso string without seconds
+            const tzOffset = date.getTimezoneOffset() * 60000; // offset in ms
+            const localISO = new Date(date - tzOffset).toISOString().slice(0,16);
+            return localISO;
         };
-        
+
+        // set minimums and initial values
+        startDateInput.min = formatForInput(minStart);
+        // show today's date to user, but keep min at today+7 (validation enforces the rule)
         startDateInput.value = formatForInput(now);
-        endDateInput.value = formatForInput(tomorrow);
+
+        // default end date = minStart + 1 day
+        const defaultEnd = new Date(minStart);
+        defaultEnd.setDate(defaultEnd.getDate() + 1);
+        endDateInput.min = formatForInput(minStart);
+        endDateInput.value = formatForInput(defaultEnd);
+
+        // When start changes, update endDate.min to selected start (can't end before start)
+        startDateInput.addEventListener('change', function() {
+            if (!this.value) return;
+            const selectedStart = new Date(this.value);
+            // ensure selectedStart is at least minStart; if not, reset to minStart
+            if (selectedStart < minStart) {
+                this.value = formatForInput(minStart);
+            }
+            const newMin = new Date(this.value);
+            endDateInput.min = formatForInput(newMin);
+            // if end is before new min, set end to newMin + 1 hour
+            const currentEnd = new Date(endDateInput.value);
+            if (currentEnd < newMin) {
+                const fallback = new Date(newMin);
+                fallback.setHours(fallback.getHours() + 1);
+                endDateInput.value = formatForInput(fallback);
+            }
+            updateSummary();
+        });
         
         // Initialize summary
         updateSummary();
@@ -179,8 +227,7 @@
                 if (this.status == 200 || this.readyState == 4) {
                     var response = JSON.parse(this.responseText);
                     console.log(response);
-                    alert(response.error || 'Event created successfully!');
-
+                   
                     //redirect to find services page
                     if(response.eventId == undefined){
                         window.location.href = URLROOT + "/Clients/createEvent";

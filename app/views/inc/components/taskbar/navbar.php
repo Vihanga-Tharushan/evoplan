@@ -147,16 +147,9 @@ $finalBackUrl = $rawBack;
       </div>
 
       <div class="nav-right flex">
-        <div class="notif-container" style="position: relative;">
-          <button id="notif-btn" class="btn-icon notify" title="Notifications">
-            <i class="fa-solid fa-bell"></i>
-          </button>
-          <span class="notif-badge" id="notif-count">3</span>
-        </div>
+        
 
-        <span class="nav_image">
-          <img src="<?php echo URLROOT; ?>/public/img/taskbar/profile.jpg" alt="profile" />
-        </span>
+        
       </div>
     </nav>
 

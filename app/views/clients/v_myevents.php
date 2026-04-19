@@ -34,7 +34,7 @@
                     
                     <div class="create-event-card" id="createEventBtn">
                         <div class="create-event-icon">
-                            <i class="fas fa-plus">+</i>
+                            <i class="fas fa-plus"></i>
                         </div>
                         <h3>Create New Event</h3>
                         <p>Start planning your next event by adding details, selecting service providers, and managing everything in one place.</p>
@@ -45,6 +45,18 @@
                    
                     <!-- Event Card 1 -->
                 <?php foreach($data['upcomingEvents'] as $event): ?>
+                    <?php
+                        $progressPercent = (int)($event->progress_precent ?? 0);
+                        $progressStep = strtoupper((string)($event->progress_step ?? ''));
+                        $isPostPaymentStage = $progressPercent >= 100 || $progressStep === 'STEP_3_PAYMENT';
+                        if ($isPostPaymentStage) {
+                            $viewUrl = URLROOT . '/Clients/postpayment/' . $event->event_id;
+                        } elseif ($progressPercent === 33) {
+                            $viewUrl = URLROOT . '/Clients/findServices/' . $event->event_id;
+                        } else {
+                            $viewUrl = URLROOT . '/Clients/previewEvent/' . $event->event_id;
+                        }
+                    ?>
                     <div class="event-card upcoming" event-id="<?php echo $event->event_id ?>">
                         <div class="event-card-header">
                             <span class="event-type <?php echo strtolower($event->event_type); ?>">
@@ -96,12 +108,10 @@
                         </div>
                         <div class="event-card-footer">
                             <div class="event-actions">
-                                <button class="action-btn">
+                                <a class="action-btn" href="<?php echo $viewUrl; ?>" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
                                     <i class="fas fa-eye"></i> View
-                                </button>
-                                <button class="action-btn">
-                                    <i class="fas fa-delete"></i> Delete
-                                </button>
+                                </a>
+                               
                                
                             </div>
                             <div class="days-left">
@@ -125,7 +135,7 @@
                     </div>
                 <?php endforeach; ?>  
                     <!-- Event Card 2 -->
-                    <div class="event-card upcoming">
+                    <!-- <div class="event-card upcoming">
                         <div class="event-card-header">
                             <span class="event-type business">
                                 <i class="fas fa-briefcase"></i> Business Conference
@@ -167,10 +177,10 @@
                                 <span style="font-weight: 600; color: var(--success);">In 22 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <!-- Event Card 3 -->
-                    <div class="event-card upcoming">
+                    <!-- <div class="event-card upcoming">
                         <div class="event-card-header">
                             <span class="event-type birthday">
                                 <i class="fas fa-birthday-cake"></i> Birthday Party
@@ -212,7 +222,7 @@
                                 <span style="font-weight: 600; color: var(--warning);">In 8 days</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             
@@ -227,8 +237,11 @@
                             <span class="event-type conference">
                                 <i class="fas fa-users"></i> <?php echo $event->event_type; ?>
                             </span>
-                            <span class="event-status status-completed"><?php echo ($event->is_completed)=== "YES" ? "Completed" : "Not Completed"; ?></span>
-                        </div>
+<span class="event-status status-completed">
+    <?php echo (isset($event->is_completed) && $event->is_completed === "YES") 
+        ? "Completed" 
+        : "Not Completed"; ?>
+</span>                        </div>
                         <div class="event-card-body">
                             <h3 class="event-name"><?php echo $event->event_name; ?></h3>
                             <div class="event-details">
@@ -252,12 +265,14 @@
                         </div>
                         <div class="event-card-footer">
                             <div class="event-actions">
-                                <button class="action-btn">
+                               
+                                <a href="<?php echo URLROOT; ?>/Clients/previouseventview/<?php echo $event->event_id; ?>" class="action-btn" style="text-decoration: none;">
                                     <i class="fas fa-eye"></i> View Details
-                                </button>
-                                <button class="action-btn">
+                                </a>
+                            
+                                <a href="<?php echo URLROOT; ?>/Clients/feedback/<?php echo $event->event_id; ?>" class="action-btn" style="text-decoration: none;">
                                     <i class="fas fa-star"></i> Rate Providers
-                                </button>
+                                </a>
                             </div>
                         
                             <div class="event-date">
@@ -266,99 +281,7 @@
                         </div>
                     </div>
                     <?php endforeach; ?>
-                    
-                    <!-- Event Card 2 (Previous) -->
-                    <div class="event-card previous">
-                        <div class="event-card-header">
-                            <span class="event-type wedding">
-                                <i class="fas fa-ring"></i> Wedding Reception
-                            </span>
-                            <span class="event-status status-completed"><?php echo ($event->is_completed)=== "YES" ? "Completed" : "Not Completed"; ?></span>
-                        </div>
-                        <div class="event-card-body">
-                            <h3 class="event-name">Michael & Sarah's Wedding Reception</h3>
-                            <div class="event-details">
-                                <div class="event-detail">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Location:</strong> Oceanview Banquet Hall</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-calendar-day"></i>
-                                    <span><strong>Date:</strong> November 5, 2023</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-clock"></i>
-                                    <span><strong>Time:</strong> 5:00 PM - 1:00 AM</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span><strong>Guests:</strong> 300 attendees</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="event-card-footer">
-                            <div class="event-actions">
-                                <button class="action-btn">
-                                    <i class="fas fa-eye"></i> View Details
-                                </button>
-                                <button class="action-btn">
-                                    <i class="fas fa-star"></i> Rate Providers
-                                </button>
-                                
-                            </div>
-                            <div class="event-date">
-                                <span style="color: var(--muted); font-size: 0.9rem;">Completed on Nov 5, 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Event Card 3 (Previous) -->
-                    <div class="event-card previous">
-                        <div class="event-card-header">
-                            <span class="event-type party">
-                                <i class="fas fa-glass-cheers"></i> Anniversary Party
-                            </span>
-                            <span class="event-status status-completed">Completed</span>
-                        </div>
-                        <div class="event-card-body">
-                            <h3 class="event-name">10th Anniversary Celebration</h3>
-                            <div class="event-details">
-                                <div class="event-detail">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Location:</strong> The Garden Terrace</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-calendar-day"></i>
-                                    <span><strong>Date:</strong> October 18, 2023</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-clock"></i>
-                                    <span><strong>Time:</strong> 6:30 PM - 11:00 PM</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span><strong>Guests:</strong> 60 attendees</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="event-card-footer">
-                            <div class="event-actions">
-                                <button class="action-btn">
-                                    <i class="fas fa-eye"></i> View Details
-                                </button>
-                                <button class="action-btn">
-                                    <i class="fas fa-star"></i> Rate Providers
-                                </button>
-                                <button class="action-btn">
-                                    <i class="fas fa-redo"></i> Repeat Event
-                                </button>
-                            </div>
-                            <div class="event-date">
-                                <span style="color: var(--muted); font-size: 0.9rem;">Completed on Oct 18, 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                    
+                   
                     <!-- Empty State for when there are no previous events -->
                      <div class="empty-state" style="display: none;">
                         <div class="empty-state-icon">
@@ -417,46 +340,6 @@
             });
         }
 
-        // Action buttons on event cards
-        const viewButtons = document.querySelectorAll('.action-btn');
-        viewButtons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const action = this.textContent.trim();
-                const eventId = this.closest('.event-card').getAttribute('event-id');
-                const precentage = this.closest('.event-card').querySelector('.progress-label') ? this.closest('.event-card').querySelector('.progress-label').textContent.trim() : null;
-                
-                if (action.includes('View')) {
-
-                    alert(precentage);
-                    if(precentage == "33%"){
-                        alert('Event is 33% completed. Redirecting to service selection page...');
-                        window.location.href = `${URLROOT}/Clients/findServices/${eventId}`;
-                        return;
-                    }
-                    else if(precentage == "66%"){
-                    
-                        alert('Event is 66% completed. Redirecting to event overview page...');
-                        window.location.href =`${URLROOT}/Clients/previewEvent/${eventId}`;
-                        return;
-                    }
-                    else if(precentage == "100%")
-                    {
-                        alert('Event is completed. Redirecting to event summary page...');
-                        window.location.href = `/events/${eventId}/summary`;
-                        return;
-                    }
-                    
-                } else if (action.includes('Delete')) {
-                    alert('Opening event editor...');
-                    window.location.href = `/events/${eventId}/edit`;
-
-                } else if (action.includes('Rate')) {
-                    alert('Redirecting to provider rating page...');
-                }
-            });
-        });
-        
         // Event card click (excluding buttons)
         const eventCards = document.querySelectorAll('.event-card:not(.create-event-card)');
         eventCards.forEach(card => {

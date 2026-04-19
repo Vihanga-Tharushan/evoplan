@@ -439,12 +439,10 @@
           <button id="notif-btn" class="btn-icon" title="Notifications">
             <i class="fa-solid fa-bell"></i>
           </button>
-          <span class="notif-badge" id="notif-count">3</span>
+          <span class="notif-badge" id="notif-count">0</span>
         </div>
 
-        <span class="nav_image">
-          <img src="<?php echo URLROOT; ?>/public/img/profilePics/" />
-        </span>
+        
       </div>
     </nav>
   </body>
@@ -464,6 +462,43 @@ links.forEach(link => {
   }
 });
 
+// Fetch unread notification count on page load
+function fetchUnreadNotificationCount() {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    if(this.status === 200) {
+      try {
+        const response = JSON.parse(this.responseText);
+        if(response.success) {
+          const notifCount = document.getElementById('notif-count');
+          if(notifCount) {
+            notifCount.textContent = response.unreadCount;
+            // Hide badge if count is 0
+            if(response.unreadCount === 0) {
+              notifCount.style.display = 'none';
+            } else {
+              notifCount.style.display = 'block';
+            }
+          }
+        }
+      } catch(e) {
+        console.error('Error parsing notification response:', e);
+      }
+    }
+  };
+  xhr.onerror = function() {
+    console.error('Error fetching unread notification count');
+  };
+  
+  xhr.open('POST', '<?php echo URLROOT; ?>/IssueC/getUnreadNotificationCount', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send();
+}
+
+// Load notification count when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  fetchUnreadNotificationCount();
+});
 
 // Function to toggle the lock state of the sidebar
 const toggleLock = () => {

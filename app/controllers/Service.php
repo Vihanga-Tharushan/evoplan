@@ -18,6 +18,8 @@
         
         private $complaintsModel;
 
+        private $paymentModel;
+
         public function __construct(){
 
             $this->serviceModel = $this->model('M_ServiceP');
@@ -30,6 +32,7 @@
             $this->eventModel = $this->model('M_Event');
             $this->notificationModel = $this->model('M_notification');
             $this->complaintsModel = $this->model('M_Complaints');
+            $this->paymentModel = $this->model('M_Payment');
 
         }
         public function register(){
@@ -437,6 +440,15 @@
 
         }
 
+        public function getPackagePerformanceData(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['service_id'];
+                $performanceData = $this->packageModel->getPackagePerformanceData($serviceId);
+                echo json_encode($performanceData);
+            }
+        }
+
         //this is for analyzing financial data and generating reports, not for regular page view
         public function getEventStatus(){
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -449,8 +461,139 @@
 
         public function payment(){
 
-            $this->view('servicesP/v_s_payments');
+            $totalEarnings = $this->paymentModel->getTotalEarningsByServiceProvider($_SESSION['service_id']);
+            $pendingPayments = $this->paymentModel->getTotalPendingPaymentAmountByServiceProvider($_SESSION['service_id']);
+            $paidoutPayments = $this->paymentModel->getTotalPaidOutPaymentsAmountByServiceProvider($_SESSION['service_id']);
+            $totalEventCompleted = $this->eventModel->getTotalEventsByProvider($_SESSION['service_id']);
+            $bankdetails = $this->paymentModel->getBankDetailsByServiceProvider($_SESSION['service_id']);
 
+           
+
+            $data = [
+                'totalEarnings' => $totalEarnings,
+                'pendingPayments' => $pendingPayments,
+                'paidoutPayments' => $paidoutPayments,
+                'totalEventCompleted' => $totalEventCompleted,
+                'bankdetails' => $bankdetails
+            ];
+
+
+
+            $this->view('servicesP/v_s_payments', $data);
+
+        }
+
+
+        public function getPaymentDetails(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $paymentId = $inputdata['paymentId'];
+                $paymentDetails = $this->paymentModel->getPaymentById($paymentId);
+                echo json_encode(['paymentDetails' => $paymentDetails]);
+            }
+
+        }
+
+        public function getAllPayments(){
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['serviceId'];
+                $allPayments = $this->paymentModel->getAllPaymentsByServiceProvider($serviceId);
+                
+                // Extract unique event IDs for event details
+                $eventIds = [];
+                foreach ($allPayments as $payment) {
+                    if (!in_array($payment->event_id, $eventIds)) {
+                        $eventIds[] = $payment->event_id;
+                    }
+                }
+                
+                // Fetch event details for all unique event IDs
+                $eventsMap = [];
+                if (!empty($eventIds)) {
+                    $events = $this->paymentModel->getEventDetailsForPayments($eventIds);
+                    foreach ($events as $event) {
+                        $eventsMap[$event->event_id] = $event;
+                    }
+                }
+                
+                // Enhance payment data with event details
+                foreach ($allPayments as $payment) {
+                    if (isset($eventsMap[$payment->event_id])) {
+                        $event = $eventsMap[$payment->event_id];
+                        $payment->event_name = $event->event_name;
+                        $payment->event_type = $event->event_type;
+                        $payment->event_description = $event->event_description;
+                        $payment->start_datetime = $event->start_datetime;
+                        $payment->end_datetime = $event->end_datetime;
+                        $payment->guest_count = $event->guest_count;
+                        $payment->venue_address = $event->venue_address;
+                        $payment->venue_type = $event->venue_type;
+                    }
+                }
+                
+                echo json_encode(['allPayments' => $allPayments]);
+            }
+
+        }
+
+        // update bank details
+
+        public function updateBankDetails(){
+                $this->isloggedIn(); 
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $data = [
+                    'bankName' => $inputdata['bankName'] ?? '',
+                    'accountHolderName' => $inputdata['accountHolder'] ?? '',
+                    'accountNumber' => $inputdata['accountNumber'] ?? '',
+                    'branchName' => $inputdata['branchName'] ?? ''
+                ];
+
+                if($this->paymentModel->updateBankDetails($data)){
+                    echo json_encode(['success' => true, 'message' => 'Bank details updated successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update bank details']);
+                }
+            }
+        }
+
+        // Verify PIN and confirm payment
+        public function verifyPaymentPin(){
+            $this->isloggedIn();
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $eventId = $inputdata['eventId'] ?? null;
+                $pin = $inputdata['pin'] ?? null;
+
+                if (!$eventId || !$pin) {
+                    echo json_encode(['success' => false, 'message' => 'Invalid request data']);
+                    return;
+                }
+
+                $result = $this->eventModel->verifyAndConfirmEventPin($eventId, $pin);
+                $service_id = $_SESSION['service_id'];
+
+                if($result['success']){
+                   // mark as pin verified and update payment status in service_provider_payments table
+                   $pinConfirmed = $this->paymentModel->markAsPinConfirmed($eventId, $service_id);
+                   if($pinConfirmed['success']){
+                        echo json_encode(['success' => true, 'message' => 'PIN verified and payment confirmed successfully']);
+                   } else {
+                        echo json_encode(['success' => false, 'message' => 'PIN verified but failed to update payment confirmation']);
+                   }
+                } else {
+                    // PIN verification failed - send error response
+                    echo json_encode(['success' => false, 'message' => $result['message']]);
+                }
+            }
         }
 
         public function profile(){
@@ -480,6 +623,26 @@
                 $serviceId = $inputdata['service_id'];
                 $ratingsSummary = $this->ratingModel->getRatingsforServiceProvider($serviceId);
                 echo json_encode($ratingsSummary);
+            }
+        }
+
+
+        public function getReviewData(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['service_id'];
+                $reviewCounts = $this->ratingModel->getReviewCountByRating($serviceId);
+                echo json_encode($reviewCounts);
+            }
+        }
+
+        public function getFinancialData(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $inputdata = json_decode(file_get_contents("php://input"), true);
+                $serviceId = $inputdata['service_id'];
+                $year = $inputdata['year'];
+                $financialData = $this->paymentModel->getFinancialOverviewByServiceProvider($serviceId, $year);
+                echo json_encode($financialData);
             }
         }
 
@@ -644,6 +807,7 @@
 
 
         public function submitComplaint(){
+            $this->isloggedIn();
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -653,7 +817,7 @@
                     'event_id' => $_POST['event_id'] ?? null,
                     'complainant_type' => $_POST['complainant_type'] ?? null,
                     'complaint_type' => $_POST['complaint_type'] ?? null,
-                    'description_text' => $_POST['description'] ?? null,
+                    'description_text' => $_POST['description_text'] ?? null,
                     'event_name' => $_POST['event_name'] ?? null
                 ];
             
@@ -663,7 +827,9 @@
                     return;
                 }
 
-                if($this->complaintsModel->submitComplaint($data)){
+                if($this->complaintsModel->submitServicePComplaint($data)){
+                    $this->notificationModel->ProvidercreateComplaintNotification($data['service_id'], $data['event_id']);
+
                     echo json_encode(['success' => true, 'message' => 'Complaint submitted successfully']);
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Failed to submit complaint. Please try again.']);
@@ -676,8 +842,9 @@
         public function chat(){
             $this->isloggedIn();
 
+            // Get client conversations
             $conversationList = $this->messageModel->getConversationProfilesForProvider($_SESSION['service_id']);
-
+            
             $data = [
                 'conversationsList' => $conversationList
             ];
@@ -696,7 +863,8 @@
                 'upcomingEventsCount' => $this->eventModel->getUpcomingEventsCountByServiceProvider($_SESSION['service_id']),
                 'previousEvents' => $this->eventModel->getPreviousEventsByServiceProvider($_SESSION['service_id']),
                 'totalPackages' => $this->packageModel->getTotalPackagesByProvider($_SESSION['service_id']),
-                'Rating' => $this->ratingModel->getRatingsSummary($_SESSION['service_id'])
+                'Rating' => $this->ratingModel->getRatingsSummary($_SESSION['service_id']),
+                'totalEarnings' => $this->paymentModel->getTotalEarningsByServiceProvider($_SESSION['service_id']),
             ];
             $this->view('servicesP/v_s_dashboard', $data);
 
@@ -826,6 +994,16 @@
                 } else {
                     echo json_encode(['success' => false, 'error' => 'Failed to mark as read']);
                 }
+            }
+        }
+
+        public function getUnreadNotificationCount(){
+            $this->isloggedIn();
+            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $unreadNotifications = $this->notificationModel->getUnreadByUser('PROVIDER', $_SESSION['service_id']);
+                $unreadCount = count($unreadNotifications);
+                echo json_encode(['unreadCount' => $unreadCount, 'success' => true]);
             }
         }
 

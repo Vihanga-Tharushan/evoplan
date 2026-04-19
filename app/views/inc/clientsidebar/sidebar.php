@@ -441,7 +441,7 @@
             <li class="item">
               <a href="<?php echo URLROOT; ?>/Clients/profiles" class="link flex">
                 <i class="fas fa-user"></i>
-                <span>Profiles</span>
+                <span>Service Providers</span>
               </a>
             </li>
 
@@ -506,9 +506,9 @@
         <button id="sidebar-open" class="btn-icon" title="Open Sidebar" style="display: none;">
           <i class="fa-solid fa-bars"></i>
         </button>
-        <!-- <button id="back-btn" class="btn-icon" title="Go Back">
+        <button id="back-btn" class="btn-icon" title="Go Back">
           <i class="fa-solid fa-arrow-left"></i>
-        </button> -->
+        </button>
       </div>
 
       <div class="nav-right flex">
@@ -516,7 +516,7 @@
           <button id="notif-btn" class="btn-icon" title="Notifications">
             <i class="fa-solid fa-bell"></i>
           </button>
-          <span class="notif-badge" id="notif-count">3</span>
+          <span class="notif-badge" id="notif-count" style="display:none;"></span>
         </div>
 
         <div class="profile-dropdown-container">
@@ -607,15 +607,53 @@ sidebarOpenBtn.addEventListener("click", toggleSidebar);
 // Notification button handler
 const notifBtn = document.getElementById('notif-btn');
 const notifCount = document.getElementById('notif-count');
+const backBtn = document.getElementById('back-btn');
+
+function renderClientNotifBadge(count) {
+  if (!notifCount) return;
+  const safeCount = Number.parseInt(count, 10) || 0;
+  if (safeCount > 0) {
+    notifCount.textContent = String(safeCount);
+    notifCount.style.display = 'inline-block';
+    notifCount.style.opacity = '1';
+  } else {
+    notifCount.textContent = '';
+    notifCount.style.display = 'none';
+  }
+}
+
+function fetchClientUnreadNotificationCount() {
+  fetch('<?php echo URLROOT; ?>/Clients/getUnreadNotificationCount')
+    .then((response) => response.json())
+    .then((data) => {
+      if (data && data.success) {
+        renderClientNotifBadge(data.count);
+      } else {
+        renderClientNotifBadge(0);
+      }
+    })
+    .catch(() => {
+      renderClientNotifBadge(0);
+    });
+}
+
+fetchClientUnreadNotificationCount();
+setInterval(fetchClientUnreadNotificationCount, 30000);
+
 if (notifBtn) {
   notifBtn.addEventListener('click', () => {
-    console.log('Notification button clicked');
-    // Optionally, reduce badge opacity if count is not 0
-    if (notifCount && notifCount.textContent !== '0') {
-      notifCount.style.opacity = '0.5';
-    }
     // Redirect to notifications page
     window.location.href = '<?php echo URLROOT; ?>/Clients/notifications';
+  });
+}
+
+if (backBtn) {
+  backBtn.addEventListener('click', () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '<?php echo URLROOT; ?>/Clients/home';
+    }
   });
 }
 

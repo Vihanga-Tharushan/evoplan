@@ -136,4 +136,100 @@ class M_Client {
         return $this->db->execute();
     }
     
+
+    // Add feedback (submit or draft)
+    public function addFeedback($data) {
+        // Insert into `reviews` table (new schema)
+        // Ensure we provide `service_id` if the reviews table requires it
+        $serviceId = isset($data['service_id']) ? $data['service_id'] : null;
+
+        if (empty($serviceId) && !empty($data['provider_name'])) {
+            // Try to resolve service_id by provider name (match businessName or "fname lname")
+            $this->db->query("SELECT service_id FROM service_providers WHERE businessName = :name LIMIT 1");
+            $this->db->bind(':name', $data['provider_name']);
+            $row = $this->db->single();
+            if ($row && isset($row->service_id)) {
+                $serviceId = $row->service_id;
+            } else {
+                // try matching by full name
+                $this->db->query("SELECT service_id FROM service_providers WHERE CONCAT(fname, ' ', lname) = :name LIMIT 1");
+                $this->db->bind(':name', $data['provider_name']);
+                $row2 = $this->db->single();
+                if ($row2 && isset($row2->service_id)) {
+                    $serviceId = $row2->service_id;
+                }
+            }
+        }
+
+        
+        // Insert including service_id into reviews table
+        $this->db->query(
+            "INSERT INTO reviews (client_id, service_id, provider_name, rating, review_text, created_at) VALUES (:client_id, :service_id, :provider_name, :rating, :review_text, NOW())"
+        );
+
+        $this->db->bind(':client_id', $data['client_id']);
+        $this->db->bind(':service_id', $serviceId);
+        $this->db->bind(':provider_name', $data['provider_name']);
+        $this->db->bind(':rating', $data['rating']);
+        $this->db->bind(':review_text', $data['feedback_text']);
+
+        if (!$this->db->execute()) return false;
+        $id = $this->db->lastInsertId();
+
+        // return inserted row in the legacy shape used by views
+        $this->db->query("SELECT review_id AS feedback_id, client_id, provider_name, rating, review_text AS feedback_text, created_at FROM reviews WHERE review_id = :id LIMIT 1");
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
+
+    // Get all feedback by logged client
+    public function getClientFeedbacks($client_id) {
+        $this->db->query(
+            "SELECT review_id AS feedback_id, client_id, provider_name, rating, review_text AS feedback_text 
+             FROM reviews 
+             WHERE client_id = :client_id 
+             ORDER BY review_id DESC"
+        );
+
+        $this->db->bind(':client_id', $client_id);
+        return $this->db->resultSet();
+    }
+
+    // Get single feedback (for edit)
+    public function getFeedbackById($feedback_id) {
+        $this->db->query(
+            "SELECT review_id AS feedback_id, client_id, provider_name, rating, review_text AS feedback_text 
+             FROM reviews 
+             WHERE review_id = :feedback_id LIMIT 1"
+        );
+        $this->db->bind(':feedback_id', $feedback_id);
+        return $this->db->single();
+    }
+
+    // Update feedback (edit / save draft)
+    public function updateFeedback($data) {
+        // Update `reviews` table only
+        $this->db->query(
+            "UPDATE reviews 
+             SET rating = :rating,
+                 review_text = :feedback_text
+             WHERE review_id = :feedback_id"
+        );
+
+        $this->db->bind(':rating', $data['rating']);
+        $this->db->bind(':feedback_text', $data['feedback_text']);
+        $this->db->bind(':feedback_id', $data['feedback_id']);
+
+        return $this->db->execute();
+    }
+
+    // Delete feedback
+    public function deleteFeedback($feedback_id) {
+        $this->db->query(
+            "DELETE FROM reviews WHERE review_id = :feedback_id"
+        );
+
+        $this->db->bind(':feedback_id', $feedback_id);
+        return $this->db->execute();
+    }
 }

@@ -3,6 +3,23 @@
 <link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_dashboard.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<?php
+$totalEvents = (int)($data['total_events'] ?? 0);
+$upcomingEvents = (int)($data['upcoming_events'] ?? 0);
+$totalPayments = (float)($data['total_payments'] ?? 0);
+$financialOverview = $data['financial_overview'] ?? ['years' => [], 'series' => [], 'growth' => []];
+$financialYears = $financialOverview['years'] ?? [];
+$financialSeries = $financialOverview['series'] ?? [];
+$financialGrowth = $financialOverview['growth'] ?? [];
+
+if (empty($financialYears)) {
+    $fallbackYear = date('Y');
+    $financialYears = [$fallbackYear];
+    $financialSeries = [$fallbackYear => array_fill(0, 12, 0)];
+    $financialGrowth = [$fallbackYear => '0%'];
+}
+?>
+
 <div class="dashboard-container">
     
     <!-- Main Content -->
@@ -15,9 +32,7 @@
             <div class="card" style="grid-column: span 4; height: fit-content;">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fas fa-bolt"></i> Business Overview</h2>
-                    <div class="status-indicator green">
-                        <i class="fas fa-circle"></i> All systems normal
-                    </div>
+
                 </div>
                 <div class="card-body">
                     <div class="kpi-grid">
@@ -28,9 +43,9 @@
                                     <i class="fas fa-calendar-check"></i>
                                 </div>
                             </div>
-                            <div class="kpi-value"></div>
-                            <div class="kpi-change positive">
-                                <i class="fas fa-arrow-up"></i> 12% from last month
+                            <div class="kpi-value"><?php echo $totalEvents; ?></div>
+                            <div class="kpi-change">
+                                <i class="fas fa-database"></i> From event records
                             </div>
                         </div>
                         <div class="kpi-card">
@@ -40,12 +55,12 @@
                                     <i class="fas fa-clock"></i>
                                 </div>
                             </div>
-                            <div class="kpi-value"></div>
-                            <div class="kpi-change positive">
-                                <i class="fas fa-arrow-up"></i> 3 new this week
+                            <div class="kpi-value"><?php echo $upcomingEvents; ?></div>
+                            <div class="kpi-change">
+                                <i class="fas fa-calendar"></i> Upcoming from now
                             </div>
                         </div>
-                        <div class="kpi-card">
+                        <!--<div class="kpi-card">
                             <div class="kpi-header">
                                 <div class="kpi-title">Average Rating</div>
                                 <div class="kpi-icon success">
@@ -56,17 +71,17 @@
                             <div class="kpi-change positive">
                                 <i class="fas fa-arrow-up"></i> 0.2 increase
                             </div>
-                        </div>
+                        </div>-->
                         <div class="kpi-card">
                             <div class="kpi-header">
-                                <div class="kpi-title">Total Earnings</div>
+                                <div class="kpi-title">Total Payments</div>
                                 <div class="kpi-icon primary">
                                     <i class="fas fa-wallet"></i>
                                 </div>
                             </div>
-                            <div class="kpi-value">RS.12,450</div>
-                            <div class="kpi-change positive">
-                                <i class="fas fa-arrow-up"></i> 18% growth
+                            <div class="kpi-value">LKR <?php echo number_format($totalPayments, 2); ?></div>
+                            <div class="kpi-change">
+                                <i class="fas fa-credit-card"></i> Sum of paid payments
                             </div>
                         </div>
                     </div>
@@ -74,15 +89,14 @@
             </div>
             
             <!-- Financial Overview -->
-            <div class="card" style="grid-column: span 2; height: fit-content;">
+            <div class="card financial-overview-card" style="grid-column: span 4;">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fas fa-chart-bar"></i> Financial Overview</h2>
                     <div class="year-selector">
                         <select id="yearSelector" class="year-dropdown">
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
+                            <?php foreach ($financialYears as $year): ?>
+                                <option value="<?php echo htmlspecialchars((string)$year); ?>"><?php echo htmlspecialchars((string)$year); ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
@@ -92,10 +106,7 @@
                     </div>
                     <div class="flex justify-between items-center mt-16">
                        
-                        <div>
-                            <div class="text-lg font-bold text-success" id="growthRate">+15%</div>
-                            <div class="text-muted">Growth</div>
-                        </div>
+                        
                         
                     </div>
                 </div>
@@ -103,7 +114,7 @@
             </div>
 
             <!-- Event Status Chart -->
-            <div class="card" style="grid-column: span 2; height: fit-content;">
+            <!--<div class="card" style="grid-column: span 2; height: fit-content;">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fas fa-chart-pie"></i> Event Status</h2>
                     <span class="status-indicator yellow">
@@ -142,10 +153,10 @@
                     </div>
                 </div>
                 
-            </div>
+            </div>-->
 
             <!-- Event Reviews Chart -->
-            <div class="card" style="grid-column: span 2; height: fit-content;">
+            <!--<div class="card" style="grid-column: span 2; height: fit-content;">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fas fa-star"></i> Event Reviews</h2>
                     <span class="status-indicator green">
@@ -189,12 +200,12 @@
                     </div>
                 </div>
                 
-            </div>
+            </div>-->
 
             
 
             <!-- Package Performance -->
-            <div class="card" style="grid-column: span 2; height: fit-content;">
+            <!--<div class="card" style="grid-column: span 2; height: fit-content;">
                 <div class="card-header">
                     <h2 class="card-title"><i class="fas fa-box-open"></i> Package Performance</h2>
                 </div>
@@ -204,95 +215,26 @@
                     </div>
                 </div>
                    
-            </div>
+            </div>-->
             
         </main>
     </div>
 </div>
-<Script>const serviceId = <?php echo $_SESSION['service_id']; ?>;</Script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            //fetch event status data and render chart
-            fetchEventData(serviceId);
-
-            //fetch review data and render chart
-            updateReviewsChart(serviceId);
-            
-            
-            // Package Performance Chart
-            const packageCtx = document.getElementById('packageChart').getContext('2d');
-            new Chart(packageCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Premium', 'Standard', 'Basic', 'Add-ons'],
-                    datasets: [{
-                        label: 'Revenue (RS.)',
-                        data: [5200, 3700, 1850, 1700],
-                        backgroundColor: 'rgba(75, 0, 110, 0.7)',
-                        borderColor: 'rgba(75, 0, 110, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(11, 16, 38, 0.9)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: 'rgba(255,255,255,0.1)',
-                            borderWidth: 1
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            
-
-            // Financial Chart Data by Year
-            const financialData = {
-                '2026': {
-                    data: [4200, 5100, 00, 00, 00, 0, 0, 0, 0, 0, 0, 0],
-                    growth: '+15%'
-                },
-                '2025': {
-                    data: [3800, 4500, 4200, 5800, 6900, 8100, 8600, 8200, 8800, 9500, 10200, 11500],
-                    growth: '+12%'
-                },
-                '2024': {
-                    data: [3200, 3800, 3600, 4800, 5500, 6700, 7200, 6800, 7400, 8200, 8900, 9800],
-                    growth: '+18%'
-                },
-                '2023': {
-                    data: [2800, 3200, 3000, 4100, 4700, 5800, 6200, 5900, 6500, 7100, 7600, 8200],
-                    growth: '+22%'
-                }
-            };
+            const financialData = <?php echo json_encode([
+                'series' => $financialSeries,
+                'growth' => $financialGrowth,
+                'years' => $financialYears
+            ]); ?>;
 
             let financialChart;
             const financialCtx = document.getElementById('financialChart').getContext('2d');
 
             function createFinancialChart(year) {
-                const yearData = financialData[year];
+                const yearSeries = financialData.series[year] || Array(12).fill(0);
+                const yearGrowth = financialData.growth[year] || '0%';
                 
                 if (financialChart) {
                     financialChart.destroy();
@@ -304,7 +246,7 @@
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                         datasets: [{
                             label: 'Earnings (RS.)',
-                            data: yearData.data,
+                            data: yearSeries,
                             fill: true,
                             backgroundColor: '#4B006E',
                             borderColor: '#4B006E',
@@ -335,11 +277,29 @@
                                 beginAtZero: false,
                                 grid: {
                                     color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Spend (LKR)',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    color: '#4B006E'
                                 }
                             },
                             x: {
                                 grid: {
                                     display: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Month',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    color: '#4B006E'
                                 }
                             }
                         }
@@ -347,11 +307,12 @@
                 });
 
                 // Update growth rate display
-                document.getElementById('growthRate').textContent = yearData.growth;
+                document.getElementById('growthRate').textContent = yearGrowth;
             }
 
-            // Initialize chart with current year (2026)
-            createFinancialChart('2026');
+            const defaultYear = String(financialData.years[0] || new Date().getFullYear());
+            document.getElementById('yearSelector').value = defaultYear;
+            createFinancialChart(defaultYear);
 
             // Year selector functionality
             document.getElementById('yearSelector').addEventListener('change', function() {

@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (selectedCount > 0) {
                 checkoutBtn.disabled = false;
                 checkoutBtn.style.opacity = 1;
-                alert(selectedPackageIds);
+               
             }
             
             // Add remove functionality
@@ -539,7 +539,7 @@ function proceedToCheckout(data){
     xml.onload = function(){
         if(this.readyState == 4 && this.status == 200){
             var response = JSON.parse(this.responseText);
-            alert(response.status);
+            
             window.location.href = URLROOT + "/clients/previewEvent/" + encodeURIComponent(EVENT_ID);
         }
     };

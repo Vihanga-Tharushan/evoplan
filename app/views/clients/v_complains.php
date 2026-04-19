@@ -52,7 +52,6 @@
                         <label class="form-label">Complainant Type</label>
                         <select class="form-input" name="complainant_type" id="complainant-type-select" onchange="onComplainantTypeChanged(this.value)">
                             <option value="" class="fade">Select Type</option>
-                            <option value="CLIENT">Client</option>
                             <option value="SERVICEP">Service Provider</option>
                             <option value="IC">Issue Coordinator</option>
                             <option value="SYSTEM">System</option>
@@ -162,9 +161,13 @@
                         <span class="detail-label">Date Submitted:</span>
                         <span class="detail-value" id="complaint-date">Jan 10, 2026</span>
                     </div>
-                    <div class="detail-row" id="complainant-row">
-                        <span class="detail-label">Complainant:</span>
-                        <span class="detail-value" id="complaint-complainant">John Doe</span>
+                    <div class="detail-row" id="complainant-type-row">
+                        <span class="detail-label">Complainant Type:</span>
+                        <span class="detail-value" id="complaint-complainant-type">Client</span>
+                    </div>
+                    <div class="detail-row" id="service-provider-row" style="display: none;">
+                        <span class="detail-label">Service Provider:</span>
+                        <span class="detail-value" id="complaint-service-provider">Provider Name</span>
                     </div>
                     <div class="detail-row" id="event-row">
                         <span class="detail-label">Related Event:</span>
@@ -382,63 +385,70 @@ const popupCloseBottom = document.getElementById('popup-close-bottom');
 function openComplaintPopup(complaintInput){
     if (!complaintInput) return;
 
-    // If input is a string ID, look it up in dummy data
     let complaint = complaintInput;
-    if (typeof complaintInput === 'string') {
-        complaint = dummyComplaints[complaintInput];
-        if (!complaint) {
-            console.error('Complaint not found:', complaintInput);
-            return;
-        }
-    }
 
     // Populate popup with complaint data
-    document.getElementById('complaint-id').textContent = '#' + complaint.complaint_id;
-    document.getElementById('complaint-type').textContent = complaint.complaint_type;
-    document.getElementById('complaint-type').className = 'detail-value complaint-type-badge ' + complaint.complainant_type.toLowerCase();
+    document.getElementById('complaint-id').textContent = '#' + (complaint.complaint_id || 'N/A');
+    document.getElementById('complaint-type').textContent = complaint.issue_type || 'Unknown';
+    document.getElementById('complaint-type').className = 'detail-value complaint-type-badge ' + (complaint.complainant_type || '').toLowerCase();
     
     // Format status with proper class name (in_progress becomes in-progress)
-    const statusClass = complaint.status.toLowerCase().replace(/_/g, '-');
-    document.getElementById('complaint-status').textContent = complaint.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const statusClass = (complaint.status || '').toLowerCase().replace(/_/g, '-');
+    const statusText = (complaint.status || 'Unknown').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    document.getElementById('complaint-status').textContent = statusText;
     document.getElementById('complaint-status').className = 'detail-value status-badge status-' + statusClass;
     
-    // // Format priority with proper class name
-    // const priorityClass = complaint.priority.toLowerCase().replace(/_/g, '-');
-    // document.getElementById('complaint-priority').textContent = complaint.priority.charAt(0).toUpperCase() + complaint.priority.slice(1).toLowerCase();
-    // document.getElementById('complaint-priority').className = 'detail-value priority-badge priority-' + priorityClass;
+    // Format date
+    const dateText = complaint.created_at ? new Date(complaint.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }) : 'Unknown Date';
+    document.getElementById('complaint-date').textContent = dateText;
     
-    document.getElementById('complaint-date').textContent = complaint.created_at;
-    document.getElementById('complaint-description').textContent = complaint.description_text;
-    document.getElementById('complaint-complainant').textContent = complaint.complainant_type.charAt(0).toUpperCase() + complaint.complainant_type.slice(1).toLowerCase();
-    document.getElementById('complaint-event').textContent = complaint.event_name;
+    // Set description - use 'description' field from DB, not 'description_text'
+    document.getElementById('complaint-description').textContent = complaint.description || 'No description provided';
     
+    // Set complainant type with proper formatting
+    const complainantTypeText = (complaint.complainant_type || 'Unknown').charAt(0).toUpperCase() + (complaint.complainant_type || 'Unknown').slice(1).toLowerCase();
+    document.getElementById('complaint-complainant-type').textContent = complainantTypeText;
+    
+    // Handle service provider display if complaint is about a provider
+    const serviceProviderRow = document.getElementById('service-provider-row');
+    if (complaint.service_provider_name && complaint.service_id) {
+        serviceProviderRow.style.display = 'flex';
+        document.getElementById('complaint-service-provider').textContent = complaint.service_provider_name;
+    } else {
+        serviceProviderRow.style.display = 'none';
+    }
+    
+    document.getElementById('complaint-event').textContent = complaint.event_name || 'N/A';
 
     // Handle conditional fields
-    const complainantRow = document.getElementById('complainant-row');
+    const complaintTypeRow = document.getElementById('complainant-type-row');
     const eventRow = document.getElementById('event-row');
     const resolutionSection = document.getElementById('resolution-section');
     const assignmentSection = document.getElementById('assignment-section');
 
-    if (complaint.type === 'provider') {
-        complainantRow.style.display = 'none';
-        eventRow.style.display = 'none';
-    } else {
-        complainantRow.style.display = 'flex';
-        eventRow.style.display = 'flex';
-    }
+    complaintTypeRow.style.display = 'flex';
+    eventRow.style.display = 'flex';
 
-    if (complaint.resolution) {
+    if (complaint.resolution_note && complaint.status === 'RESOLVED') {
         resolutionSection.style.display = 'block';
-        document.getElementById('resolution-type').textContent = complaint.resolution.typeLabel;
-        document.getElementById('resolution-note').textContent = complaint.resolution.note;
-        document.getElementById('resolved-at').textContent = complaint.resolution.resolvedAt;
+        document.getElementById('resolution-type').textContent = complaint.resolution_type || 'Unknown';
+        document.getElementById('resolution-note').textContent = complaint.resolution_note || 'No notes';
+        document.getElementById('resolved-at').textContent = complaint.resolved_at ? new Date(complaint.resolved_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }) : 'Unknown';
     } else {
         resolutionSection.style.display = 'none';
     }
 
-    if (complaint.assignedIC) {
+    if (complaint.assigned_ic_id) {
         assignmentSection.style.display = 'block';
-        document.getElementById('assigned-ic').textContent = complaint.assignedIC;
+        document.getElementById('assigned-ic').textContent = complaint.assigned_ic_id || 'Not assigned';
     } else {
         assignmentSection.style.display = 'none';
     }
@@ -456,30 +466,13 @@ function generateActionButtons(complaint) {
     const actionButtons = document.getElementById('action-buttons');
     actionButtons.innerHTML = '';
 
-    if (complaint.type === 'provider') {
-        // My complaints - view only actions
-        if (complaint.status === 'open' || complaint.status === 'in_progress') {
-            actionButtons.innerHTML = `
-                <button class="btn btn-primary" onclick="updateComplaint('${complaint.id}', 'request_update')">
-                    Request Update
-                </button>
-            `;
-        }
-    } else {
-        // Complaints for me - provider actions
-        if (complaint.status === 'open') {
-            actionButtons.innerHTML = `
-                <button class="btn btn-primary" onclick="respondToComplaint('${complaint.id}')">
-                    Respond
-                </button>
-            `;
-        } else if (complaint.status === 'in_progress') {
-            actionButtons.innerHTML = `
-                <button class="btn btn-success" onclick="resolveComplaint('${complaint.id}')">
-                    Mark Resolved
-                </button>
-            `;
-        }
+    // For client complaints - show update request button if open or in progress
+    if (complaint.status === 'OPEN' || complaint.status === 'IN_PROGRESS' || complaint.status === 'SEND') {
+        actionButtons.innerHTML = `
+            <button class="btn btn-primary" onclick="updateComplaint('${complaint.complaint_id}', 'request_update')">
+                Request Update
+            </button>
+        `;
     }
 }
 
@@ -728,7 +721,7 @@ function displayComplaints() {
             complaintsHTML += `
                 <tr>
                     <td><span class="id-badge">#${complaint.complaint_id || 'N/A'}</span></td>
-                    <td><span class="table-type">${complaint.complaint_type || 'Unknown'}</span></td>
+                    <td><span class="table-type">${complaint.issue_type || 'Unknown'}</span></td>
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     <td class="table-event">${complaint.event_name || 'N/A'}</td>
                     <td class="table-created">${dateText}</td>
@@ -780,7 +773,8 @@ function viewMyComplaintDetails(complaintId) {
         alert('Network error: Failed to fetch complaint details');
     };
 
-    xml.open("GET", "<?php echo URLROOT; ?>/Service/getComplaintDetails?complaintId=" + encodeURIComponent(complaintId), true);
+    
+    xml.open("GET", "<?php echo URLROOT; ?>/Clients/getComplaintDetails?complaintId=" + encodeURIComponent(complaintId), true);
     xml.send();
 }
 
@@ -788,6 +782,7 @@ function viewMyComplaintDetails(complaintId) {
 document.addEventListener('DOMContentLoaded', function() {
     loadClientEvents();
 });
+
 </script>
 </body>
 </html>

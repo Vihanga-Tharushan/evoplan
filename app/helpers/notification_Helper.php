@@ -112,5 +112,58 @@ function getNotificationContext($notification) {
         return 'System';
     }
 }
-    
+
+    //for service providers
+    function sendEventCancellationNotification($eventId, $cancelReason) {
+        $notificationModel = new M_notification();
+        $eventModel = new M_event();
+        
+        // Get event details
+        $eventData = $eventModel->getEventById($eventId);
+        if (!$eventData) {
+            return false; // Event not found
+        }
+
+        // Get all service providers assigned to this event
+        $serviceProviders = $eventModel->getServiceProvidersForEvent($eventId);
+
+        // Send notification to client
+        $clientMessage = "Your event '{$eventData->event_name}' has been cancelled. Reason: {$cancelReason}";
+        $clientNotification = [
+            'sender_type' => 'ADMIN',
+            'sender_id' => 1, // Assuming admin user ID is 1
+            'receiver_type' => 'CLIENT',
+            'receiver_id' => $eventData->client_id,
+            'title' => 'Event Cancellation',
+            'message' => $clientMessage,
+            'event_id' => $eventId,
+            'package_id' => null,
+            'is_read' => 'OFF',
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $notificationModel->createNotification($clientNotification);
+
+        // Send notification to each service provider
+        if (!empty($serviceProviders)) {
+            foreach ($serviceProviders as $provider) {
+                $providerMessage = "The event '{$eventData->event_name}' that you were assigned to has been cancelled by the client. Reason: {$cancelReason}";
+                $providerNotification = [
+                    'sender_type' => 'ADMIN',
+                    'sender_id' => 1,
+                    'receiver_type' => 'PROVIDER',
+                    'receiver_id' => $provider->service_id,
+                    'title' => 'Event Cancellation - Your Assignment',
+                    'message' => $providerMessage,
+                    'event_id' => $eventId,
+                    'package_id' => null,
+                    'is_read' => 'OFF',
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                $notificationModel->createNotification($providerNotification);
+            }
+        }
+
+        return true;
+    }
+
 ?>

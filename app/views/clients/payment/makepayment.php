@@ -94,7 +94,7 @@
     payhere.onCompleted = function onCompleted(orderId) {
             console.log("Payment completed. EventID:" + eventId + " OrderID:" + orderId);
             // Send payment success to backend
-            fetch(`${URLROOT}/Payment/success`, {
+            fetch(`${URLROOT}/Payment/successClientToSytem`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

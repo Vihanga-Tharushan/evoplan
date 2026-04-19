@@ -80,4 +80,75 @@
 
        }
 
+       // Get count of reviews for each rating (1-5 stars)
+       public function getReviewCountByRating($service_id){
+            $this->db->query("SELECT 
+                                1 AS rating,
+                                COUNT(CASE WHEN r.rating = 1 THEN 1 END) AS count
+                            FROM reviews r
+                            WHERE r.service_id = :service_id
+                            UNION ALL
+                            SELECT 
+                                2 AS rating,
+                                COUNT(CASE WHEN r.rating = 2 THEN 1 END)
+                            FROM reviews r
+                            WHERE r.service_id = :service_id
+                            UNION ALL
+                            SELECT 
+                                3 AS rating,
+                                COUNT(CASE WHEN r.rating = 3 THEN 1 END)
+                            FROM reviews r
+                            WHERE r.service_id = :service_id
+                            UNION ALL
+                            SELECT 
+                                4 AS rating,
+                                COUNT(CASE WHEN r.rating = 4 THEN 1 END)
+                            FROM reviews r
+                            WHERE r.service_id = :service_id
+                            UNION ALL
+                            SELECT 
+                                5 AS rating,
+                                COUNT(CASE WHEN r.rating = 5 THEN 1 END)
+                            FROM reviews r
+                            WHERE r.service_id = :service_id
+                            ORDER BY rating");
+            $this->db->bind(':service_id', $service_id);
+            $results = $this->db->resultSet();
+            
+            // Format as array with rating as key
+            $formatted = [];
+            foreach($results as $row){
+                $formatted[(string)$row->rating] = (int)$row->count;
+            }
+            return $formatted;
+       }
+
+
+        
+
+       //this is for analystics
+
+       public function getAllRatingsToAdmin(){
+            
+        $this->db->query("SELECT 
+                                 r.review_id,
+                                 u.name AS reviewer_name,
+                                 u.profile_pic,
+                                 CONCAT(sp.fname, ' ', sp.lname) AS provider_name,
+                                 r.rating,
+                                 r.review_text,
+                                 r.created_at
+                                FROM reviews r
+                                JOIN clients u ON r.client_id = u.client_id
+                                JOIN service_providers sp ON r.service_id = sp.service_id
+                                ORDER BY r.created_at DESC;");
+        return $this->db->resultSet();
+       }
+
+       public function deleteRating($rating_id){
+            $this->db->query("DELETE FROM reviews WHERE review_id = :rating_id");
+            $this->db->bind(':rating_id', $rating_id);
+            return $this->db->execute();
+       }
     }
+

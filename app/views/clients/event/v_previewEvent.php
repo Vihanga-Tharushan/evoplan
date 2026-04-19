@@ -93,6 +93,36 @@
 <script>
     const eventId = '<?php echo $data['event_id']; ?>';
     const URLROOT = '<?php echo URLROOT; ?>';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+
+            [step1, step2, step3].forEach((step) => {
+                if (step) {
+                    step.style.cursor = 'pointer';
+                }
+            });
+
+            if (step1) {
+                step1.addEventListener('click', function () {
+                    window.location.href = `${URLROOT}/Clients/createEvent`;
+                });
+            }
+
+            if (step2) {
+                step2.addEventListener('click', function () {
+                    window.location.href = `${URLROOT}/Clients/findServices/${eventId}`;
+                });
+            }
+
+            if (step3) {
+                step3.addEventListener('click', function () {
+                    window.location.href = `${URLROOT}/Clients/previewEvent/${eventId}`;
+                });
+            }
+        });
     
 </script>
 

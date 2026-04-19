@@ -61,9 +61,7 @@
 
     <!-- Category Navigation -->
     <div class="category-nav">
-        <button class="category-btn active" data-category="recommendation">Recommendation</button>
-        <button class="category-btn" data-category="all">All Services</button>
-        <button class="category-btn" data-category="your-favourites">Your Favourites</button>
+        <button class="category-btn active" data-category="all">All Services</button>
         <button class="category-btn" data-category="catering">Catering</button>
         <button class="category-btn" data-category="photography">Photography</button>
         <button class="category-btn" data-category="music">Music</button>
