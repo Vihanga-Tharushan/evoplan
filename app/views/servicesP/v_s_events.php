@@ -31,7 +31,7 @@
                     <!-- Event Card 2 -->
 
                   <?php foreach($data['events'] as $event) : ?>
-                   <div class="event-card upcoming" event-id="<?php echo $event->event_id; ?>">
+                   <div class="event-card upcoming <?php echo ($event->is_completed === 'CANCELED') ? 'canceled' : ''; ?>" event-id="<?php echo $event->event_id; ?>">
                         <div class="event-card-header">
                             <span class="event-type <?php echo strtolower(str_replace(' ', '-', $event->event_type)); ?>">
                                 <?php
@@ -52,7 +52,9 @@
                                 ?>
                                 <i class="<?php echo  $iconClass; ?>"></i> <?php echo htmlspecialchars($event->event_type); ?>
                             </span>
-                            <span class="event-status status-upcoming">Upcoming</span>
+                            <span class="event-status <?php echo ($event->is_completed === 'CANCELED') ? 'status-canceled' : 'status-upcoming'; ?>">
+                                <?php echo ($event->is_completed === 'CANCELED') ? 'Canceled' : 'Upcoming'; ?>
+                            </span>
                         </div>  
                         <div class="event-card-body">
                             <h3 class="event-name"><?php echo htmlspecialchars($event->event_name); ?></h3>

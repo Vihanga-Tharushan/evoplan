@@ -164,7 +164,7 @@
 
           <div class="complaint-main">
             <div class="complaint-user">
-              <img class="complaint-avatar" src="${complaint.avatar}" alt="${complaint.name}" />
+              <!-- <img class="complaint-avatar" src="${complaint.avatar}" alt="${complaint.name}" /> -->
               <div class="complaint-info">
                 <h3>${complaint.name}</h3>
                 <p class="complaint-company">${complaint.company}</p>

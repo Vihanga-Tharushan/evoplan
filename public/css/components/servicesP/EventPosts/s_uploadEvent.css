@@ -83,7 +83,7 @@ label {
     color: var(--primary);
 }
 
-input, textarea {
+input, textarea ,select{
     width: 100%;
     padding: 12px;
     border: var(--border);

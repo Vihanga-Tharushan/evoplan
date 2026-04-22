@@ -109,26 +109,29 @@
 </div>
 
 <script>
+  // Initialize variables
+  let activeTab = 'all-transactions';
+  
   // Fetch client and provider payments data from database
   const paymentsData = [
     <?php 
       if (!empty($data['allTransactions'])) {
         foreach ($data['allTransactions'] as $transaction) {
           echo "{
-            id: '#{$transaction->transaction_id}',
+            id: " . json_encode('#' . $transaction->transaction_id) . ",
             type: 'all-transactions',
-            eventName: '" . ucwords(strtolower($transaction->event_name ?? 'N/A')) . "',
-            fromName: '" . ucwords(strtolower($transaction->sender_name ?? 'System')) . "',
-            fromType: '{$transaction->sender_type}',
-            toName: '" . ucwords(strtolower($transaction->receiver_name ?? 'System')) . "',
-            toType: '{$transaction->receiver_type}',
+            eventName: " . json_encode(ucwords(strtolower($transaction->event_name ?? 'N/A'))) . ",
+            fromName: " . json_encode(ucwords(strtolower($transaction->sender_name ?? 'System'))) . ",
+            fromType: " . json_encode($transaction->sender_type) . ",
+            toName: " . json_encode(ucwords(strtolower($transaction->receiver_name ?? 'System'))) . ",
+            toType: " . json_encode($transaction->receiver_type) . ",
             amount: 'Rs. " . number_format($transaction->total_amount, 2) . "',
             amountNum: {$transaction->total_amount},
-            paymentMethod: '" . ucwords(strtolower(str_replace('_', ' ', $transaction->payment_method))) . "',
-            date: '" . date('M d, Y H:i', strtotime($transaction->created_at)) . "',
-            status: '" . strtolower($transaction->payment_status) . "',
-            senderType: '{$transaction->sender_type}',
-            receiverType: '{$transaction->receiver_type}',
+            paymentMethod: " . json_encode(ucwords(strtolower(str_replace('_', ' ', $transaction->payment_method)))) . ",
+            date: " . json_encode(date('M d, Y H:i', strtotime($transaction->created_at))) . ",
+            status: " . json_encode(strtolower($transaction->payment_status)) . ",
+            senderType: " . json_encode($transaction->sender_type) . ",
+            receiverType: " . json_encode($transaction->receiver_type) . ",
             description: 'Transaction record'
           },\n";
         }
@@ -137,16 +140,16 @@
         foreach ($data['clientPayments'] as $payment) {
           $statusLabel = strtolower($payment->payment_status) === 'paid' ? 'completed' : 'pending';
           echo "{
-            id: '#{$payment->transaction_id}',
+            id: " . json_encode('#' . $payment->transaction_id) . ",
             type: 'client-payment',
-            eventName: '" . ucwords(strtolower($payment->event_name)) . "',
-            clientId: 'C-{$payment->sender_id}',
-            clientName: '" . ucwords(strtolower($payment->client_name)) . "',
-            eventCategory: '" . ucwords(strtolower($payment->event_type)) . "',
+            eventName: " . json_encode(ucwords(strtolower($payment->event_name))) . ",
+            clientId: " . json_encode('C-' . $payment->sender_id) . ",
+            clientName: " . json_encode(ucwords(strtolower($payment->client_name))) . ",
+            eventCategory: " . json_encode(ucwords(strtolower($payment->event_type))) . ",
             amount: 'Rs. " . number_format($payment->total_amount, 2) . "',
             amountNum: {$payment->total_amount},
-            date: '" . date('M d, Y', strtotime($payment->event_created_at)) . "',
-            status: '{$statusLabel}',
+            date: " . json_encode(date('M d, Y', strtotime($payment->event_created_at))) . ",
+            status: " . json_encode($statusLabel) . ",
             description: 'Client payment transaction'
           },\n";
         }
@@ -155,15 +158,15 @@
         foreach ($data['providerPayments'] as $request) {
           $statusLabel = strtolower($request->payment_status) === 'pending' ? 'pending' : 'completed';
           echo "{
-            id: 'PREQ-{$request->payment_id}',
+            id: " . json_encode('PREQ-' . $request->payment_id) . ",
             type: 'provider-payment',
-            eventId: '" . ucwords(strtolower($request->event_name)) . "',
-            providerName: '" . ucwords(strtolower($request->businessName)) . "',
-            serviceType: '" . ucwords(strtolower($request->serviceType)) . "',
+            eventId: " . json_encode(ucwords(strtolower($request->event_name))) . ",
+            providerName: " . json_encode(ucwords(strtolower($request->businessName))) . ",
+            serviceType: " . json_encode(ucwords(strtolower($request->serviceType))) . ",
             amount: 'Rs. " . number_format($request->amount, 2) . "',
             amountNum: {$request->amount},
-            date: '" . date('M d, Y', strtotime($request->created_at)) . "',
-            status: '{$statusLabel}',
+            date: " . json_encode(date('M d, Y', strtotime($request->created_at))) . ",
+            status: " . json_encode($statusLabel) . ",
             description: 'Payment request from service provider'
           },\n";
         }
