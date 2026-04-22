@@ -487,6 +487,17 @@
             $this->view('servicesP/v_s_sample');
         }
 
+        public function filterPackages(){
+            $this->isloggedIn();
+
+            $packages = $this->packageModel->getPackagesByProvider($_SESSION['service_id']);
+            $data = [
+                'packages' => $packages
+            ];
+            $this->view('servicesP/filterPackages', $data);
+
+        }
+
 
         public function getPaymentDetails(){
 

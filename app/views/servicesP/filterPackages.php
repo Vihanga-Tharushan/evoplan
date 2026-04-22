@@ -1,6 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php require_once APPROOT . '/views/inc/components/sidebar/sidebar1.php'; ?>
-<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_packages.css">
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/filter_packages.css">
 
 <section class="packages">
   <div class="packages-header">
@@ -10,8 +10,25 @@
     </button>
   </div>
 
-  <div class="packages-grid">
-    <?php foreach($data['packages'] as $package): ?>    <article class="package-card">
+  <!-- Filter Section -->
+  <div class="packages-filter">
+    <div class="filter-group">
+      <label for="filterSelect">Sort by:</label>
+      <select id="filterSelect" class="filter-select">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="price-low-to-high">Price: Low to High</option>
+        <option value="price-high-to-low">Price: High to Low</option>
+      </select>
+    </div>
+    <button id="resetFilterBtn" class="filter-reset-btn">
+      <i class="fas fa-redo"></i> Reset
+    </button>
+  </div>
+
+  <div class="packages-grid" id="packagesGrid">
+    <?php foreach($data['packages'] as $package): ?>
+    <article class="package-card" data-package-id="<?php echo $package->package_id; ?>" data-price="<?php echo $package->price; ?>" data-created="<?php echo strtotime($package->created_at ?? date('Y-m-d H:i:s')); ?>">
       <div class="card-image">
         <img src="<?php echo URLROOT; ?>/Public/img/packageImg/<?php echo $package->bg_image_name; ?>" alt="<?php echo $package->title; ?>">
       </div>
@@ -247,8 +264,59 @@
 <script>
 const URLROOT = '<?php echo URLROOT; ?>';
 
+// Package filtering functionality
 document.addEventListener('DOMContentLoaded', function() {
-  const viewButtons = document.querySelectorAll('.view-package-btn');
+  const filterSelect = document.getElementById('filterSelect');
+  const resetFilterBtn = document.getElementById('resetFilterBtn');
+  const packagesGrid = document.getElementById('packagesGrid');
+  const packageCards = document.querySelectorAll('.package-card');
+
+  // Apply filter when selection changes
+  filterSelect.addEventListener('change', function() {
+    applyFilter(this.value);
+  });
+
+  // Reset filter
+  resetFilterBtn.addEventListener('click', function() {
+    filterSelect.value = 'newest';
+    applyFilter('newest');
+  });
+
+  function applyFilter(filterType) {
+    const cardsArray = Array.from(packageCards);
+
+    switch(filterType) {
+      case 'newest':
+        cardsArray.sort((a, b) => {
+          return parseInt(b.dataset.created) - parseInt(a.dataset.created);
+        });
+        break;
+      case 'oldest':
+        cardsArray.sort((a, b) => {
+          return parseInt(a.dataset.created) - parseInt(b.dataset.created);
+        });
+        break;
+      case 'price-low-to-high':
+        cardsArray.sort((a, b) => {
+          return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+        });
+        break;
+      case 'price-high-to-low':
+        cardsArray.sort((a, b) => {
+          return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+        });
+        break;
+      default:
+        break;
+    }
+
+    // Re-render cards in sorted order
+    cardsArray.forEach(card => {
+      packagesGrid.appendChild(card);
+    });
+  }
+
+  // Initialize view popup on button click
   const popup = document.querySelector('.view-package-popup');
   const closeBtn = document.querySelector('.close-popup-btn');
   const deleteBtn = document.getElementById('delete-package-btn');

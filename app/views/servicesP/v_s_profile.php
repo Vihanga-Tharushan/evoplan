@@ -169,12 +169,17 @@
             <div class="post__name"><?php echo $_SESSION['service_name']; ?></div>
             
             <div class="post__meta"><?php echo date('j F Y \a\t H:i', strtotime($post->created_at)); ?></div>
+
           </div>
         </div>
         <button class="btn btn--icon" aria-label="More"><b>...</b></button>
       </header>
 
       <h3 class="post__title"><?php echo $post->title; ?></h3>
+      <h3 class="post__title"><?php if($post->guestCount == '11') echo "silver" ?></h3>
+      <h3 class="post__title"><?php if($post->guestCount == '51') echo "Gold" ?></h3>
+      <h3 class="post__title"><?php if($post->guestCount == '101') echo "Platinum" ?></h3>
+
 
       <p class="post__description"><?php echo $post->description; ?></p>
 

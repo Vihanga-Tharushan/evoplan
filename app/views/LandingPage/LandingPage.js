@@ -1,9 +1,3 @@
-// Button click handlers
-document.querySelectorAll(".btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    alert("This will be connected to authentication later 🚀");
-  });
-});
 
 // Card icon rotation function
 function rotateIcon(element) {

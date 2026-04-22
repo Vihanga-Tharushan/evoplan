@@ -399,22 +399,13 @@
     </nav>
     Navbar <nav class="navbar flex">
       <div class="nav-left flex">
-        <button id="back-btn" class="btn-icon" title="Go Back">
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
       </div>
 
       <div class="nav-right flex">
-        <!-- <div style="position:relative;">
-          <button id="notif-btn" class="btn-icon" title="Notifications">
-            <i class="fa-solid fa-bell"></i>
-          </button>
-          <span class="notif-badge" id="notif-count">3</span>
-        </div>
-
-        <span class="nav_image">
-          <img src="<?php echo URLROOT; ?>/public/img/sidebar/profile.jpg" alt="profile" />
-        </span> -->
+        <a href="<?php echo URLROOT; ?>/Evo/evoplan" class="btn-icon" title="Logout">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span style="margin-left: 8px;">Logout</span>
+        </a>
       </div>
     </nav>
   </body>
@@ -472,27 +463,13 @@ if (window.innerWidth < 800) {
   sidebar.classList.remove("locked");
   sidebar.classList.remove("hoverable");
 }
-// Back button handler
-const backBtn = document.querySelector('#back-btn');
-if (backBtn) {
-  backBtn.addEventListener('click', () => {
-    window.history.back();
-  });
-}
-
-// Notification button handler
-const notifBtn = document.querySelector('#notif-btn');
-const notifCount = document.querySelector('#notif-count');
-if (notifBtn) {
-  notifBtn.addEventListener('click', () => {
-    // Toggle notification panel or navigate to notifications page
-    console.log('Notifications clicked');
-    // Example: hide badge after click
-    if (notifCount && notifCount.textContent !== '0') {
-      notifCount.style.opacity = '0.5';
-    }
-    // Add your notification panel logic here
-    // window.location.href = '<?php echo URLROOT; ?>/notifications';
+// Logout handler - navigate to landing page
+const logoutBtn = document.querySelector('.nav-right .btn-icon');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', (e) => {
+    // Optional: Add any logout logic here (e.g., clear session, etc.)
+    // Then redirect to landing page
+    window.location.href = '<?php echo URLROOT; ?>/Evo/evoplan';
   });
 }
   </script>

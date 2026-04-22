@@ -383,7 +383,7 @@
             <li class="item">
               <a href="<?php echo URLROOT; ?>/IssueC/payments" class="link flex">
                 <i class="fas fa-credit-card"></i>
-                <span>Payments</span>
+                <span>Refund</span>
               </a>
             </li>
 

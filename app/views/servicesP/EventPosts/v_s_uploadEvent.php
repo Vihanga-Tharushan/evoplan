@@ -30,7 +30,17 @@ require_once APPROOT . '/views/inc/components/taskbar/navbar.php'; ?>
                     <span class="error"><?php echo $data['location_err']; ?></span>
                 </div>
 
+                
                 <div class="form-group">
+                    <label for="guestCount">Number of Guest</label>
+                    <select id="guestCount" name="guestCount">
+                        <option value="11" <?php echo ($data['guestCount'] == 11) ? 'selected' : ''; ?>>0-50 Guest</option>
+                        <option value="51" <?php echo ($data['guestCount'] == 51) ? 'selected' : ''; ?>>51-100 Guest</option>
+                        <option value="101" <?php echo ($data['guestCount'] == 101) ? 'selected' : ''; ?>>101 or more</option>
+                    </select>
+                </div>
+
+                <div class="form-group">                    
                     <label for="description">Description</label>
                     <textarea id="description" name="description" placeholder="Describe your event..."><?php echo $data['description']; ?></textarea>
                     <span class="error"><?php echo $data['description_err']; ?></span>

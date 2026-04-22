@@ -165,7 +165,7 @@
     container.innerHTML = profiles.map(profile => `
       <div class="profile-item" data-searchable="${(profile.name + ' ' + profile.email).toLowerCase()}">
         <div class="profile-main">
-          <img class="profile-avatar" src="${profile.avatar}" alt="${profile.name}" onerror="this.src='../public/img/Admin/default-profile.jpg'" />
+          <!-- <img class="profile-avatar" src="${profile.avatar}" alt="${profile.name}" onerror="this.src='../public/img/Admin/default-profile.jpg'" /> -->
           <div class="profile-info">
             <h3>${profile.name}</h3>
             <p class="profile-id">${profile.id}</p>
@@ -178,9 +178,9 @@
           <span class="profile-date">${profile.joinDate}</span>
         </div>
         <div class="profile-actions">
-          <button class="btn-icon" title="View Details">
+          <!-- <button class="btn-icon" title="View Details">
             <i class="fas fa-eye"></i>
-          </button>
+          </button> -->
           <button class="btn-icon danger" title="Deactivate" onclick="confirmDeleteProfile('${profile.id}', '${profile.category}')">
             <i class="fas fa-ban"></i>
           </button>

@@ -92,7 +92,7 @@
         <div class="feedback-item" data-searchable="${(feedback.name + ' ' + feedback.feedback).toLowerCase()}">
           <div class="feedback-header">
             <div class="feedback-user">
-              <img class="feedback-avatar" src="${feedback.avatar}" alt="${feedback.name}" />
+              <!-- <img class="feedback-avatar" src="${feedback.avatar}" alt="${feedback.name}" /> -->
               <div class="feedback-info">
                 <h3>${feedback.name}</h3>
                 <p class="feedback-meta">For: ${feedback.providerName} • ${feedback.date}</p>

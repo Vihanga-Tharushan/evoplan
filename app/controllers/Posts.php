@@ -21,6 +21,7 @@
                         'event_date' => trim($_POST['event_date']),
                         'location' => trim($_POST['location']),
                         'description' => trim($_POST['description']),
+                        'guestCount' => trim($_POST['guestCount']),
                         'service_id' => $_SESSION['service_id'],
 
                         'title_err' => '',
@@ -67,6 +68,7 @@
                     'event_date' => '',
                     'location' => '',
                     'description' => '',
+                    'guestCount' => '',
 
                     'title_err' => '',
                     'event_date_err' => '',

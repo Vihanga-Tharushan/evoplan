@@ -294,6 +294,21 @@ body {
     border: 1px solid rgba(107, 114, 128, 0.2);
 }
 
+.status-canceled {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(156, 163, 175, 0.2));
+    color: #d03931;
+    border: 1px solid rgba(107, 114, 128, 0.4);
+}
+
+.event-card.canceled {
+    background: linear-gradient(135deg, #f6f4f3 0%, #ffffff 100%) !important;
+}
+
+.event-card.canceled:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
 .event-card-body {
     padding: 1.25rem 1.5rem;
     flex-grow: 1;
