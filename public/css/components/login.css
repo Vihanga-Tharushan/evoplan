@@ -135,6 +135,11 @@ body {
     align-items: center;
 }
 
+.form__row--between {
+    justify-content: space-between;
+    gap: 16px;
+}
+
 .checkbox {
     display: inline-flex;
     gap: 10px;

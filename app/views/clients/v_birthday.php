@@ -1,143 +1,814 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php
-$backUrl = URLROOT . '/Clients/allevents';
-require_once APPROOT . '/views/inc/clientTaskbar/clientTaskbarBack.php'; ?>
-<link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/packages.css">
-<link rel="stylesheet" href="<?php echo URLROOT; ?>/css/components/client/allservpro.css">
+<?php require_once APPROOT . '/views/inc/clientsidebar/sidebar.php'; ?>
+<!-- <?php //require_once APPROOT . '/views/inc/components/taskbar/taskbar.php'; ?> -->
+<link rel="stylesheet" href="<?php echo URLROOT; ?>/public/css/components/servicesP/s_complaints.css">
 
-<form method="POST" action="<?php echo URLROOT; ?>/Clients/packages">
-
-<!-- Packages Grid -->
-    <section class="packages">
-        <h1 style="text-align: center; font-size: 30px; margin-top: 70px;">Birthday Parties</h1>
-        <h1>Past Successful Events</h1>
-        <div class="packages-grid">
-            <!-- Package Card 1 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/OIP.jpeg?height=200&width=300');" onclick="location.href='<?php echo URLROOT; ?>/clients/pawani';">
-                </div>
-                <h1 style="text-align: center; font-size: 20px;">Pawani's birthday</h1>
-            </div>
-
-            <!-- Package Card 2 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/OIP.jpeg?height=200&width=300');" onclick="location.href='<?php echo URLROOT; ?>/clients/dummy';">
-                </div>
-                <h1 style="text-align: center; font-size: 20px;">Anusha's birthday</h1>
-            </div>
-            <!-- Package Card 3 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/OIP (1).jpeg')" onclick="location.href='<?php echo URLROOT; ?>/clients/dummy';">
-                </div>
-                        <h1 style="text-align: center; font-size: 20px;">jami's birthday</h1>
-            </div>
-</section>
-
-            <section class="container section-block">
-      <h1 class="section-title">Available Service Providers</h1>
-
-      <div class="card-grid">
-        <!-- Card 1 -->
-        <article class="provider-card" style="--img:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop');">
-          <button class="plus" aria-label="Add to list">+</button>
-          <div class="card-overlay">
-            <a href="#" class="btn ghost" onclick="location.href='<?php echo URLROOT; ?>/clients/spro';">View Portfolio</a>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="provider-card" style="--img:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop');">
-          <button class="plus" aria-label="Add to list">+</button>
-          <div class="card-overlay">
-            <a href="#" class="btn ghost" onclick="location.href='<?php echo URLROOT; ?>/clients/spro';">View Portfolio</a>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="provider-card" style="--img:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop');">
-          <button class="plus" aria-label="Add to list">+</button>
-          <div class="card-overlay">
-            <a href="#" class="btn ghost" onclick="location.href='<?php echo URLROOT; ?>/clients/spro';">View Portfolio</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="section-cta">
-        <a href="#" class="btn outline" onclick="location.href='<?php echo URLROOT; ?>/clients/allservpro';">See All<span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-<section class="packages">
-        <h1>Our Packages</h1>
-        <div class="packages-grid">
-            <!-- Package Card 1 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/image 12.svg?height=200&width=300');">
-                    
-                    <div class="package-overlay">
-                        <h3>Golden Package</h3>
-                        <ul>
-                            <li>Two Albums</li>
-                        </ul>
-                        <div class="price">200,000/=</div>
-                    </div>
-                </div>
-                <div class="package-footer">
-                    <div class="provider">
-                        <img src="<?php echo URLROOT; ?>/img/home/profile.svg?height=32&width=32" alt="sujith liyanage">
-                        <div>
-                            <div class="provider-name">sujith liyanage</div>
-                        </div>
-                    </div>
-                    <button type="button" class="view-package" onclick="location.href='<?php echo URLROOT; ?>/clients/viewpackage';">View Package →</button>
-                </div>
-            </div>
-
-            <!-- Package Card 2 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/image 12.svg?height=200&width=300');">
-                    
-                    <div class="package-overlay">
-                        <h3>Diamond Package</h3>
-                        <ul>
-                            <li>Two Albums</li>
-                        </ul>
-                        <div class="price">250,000/=</div>
-                    </div>
-                </div>
-                <div class="package-footer">
-                    <div class="provider">
-                        <img src="<?php echo URLROOT; ?>/img/home/profile.svg?height=32&width=32" alt="Jenna Sullivan">
-                        <div>
-                            <div class="provider-name">Jenna Sullivan</div>
-                        </div>
-                    </div>
-                    <button type="button" class="view-package" onclick="location.href='<?php echo URLROOT; ?>/clients/viewpackage';">View Package →</button>
-                </div>
-            </div>
-            <!-- Package Card 3 -->
-            <div class="package-card">
-                <div class="package-image" style="background-image: url('<?php echo URLROOT; ?>/img/home/image 12.svg?height=200&width=300');">
-                    
-                    <div class="package-overlay">
-                        <h3>Silver Package</h3>
-                        <ul>
-                            <li>Two Albums</li>
-                        </ul>
-                        <div class="price">100,000/=</div>
-                    </div>
-                </div>
-                <div class="package-footer">
-                    <div class="provider">
-                        <img src="<?php echo URLROOT; ?>/img/home/profile.svg?height=32&width=32" alt="sudaraka gallage">
-                        <div>
-                            <div class="provider-name">sudaraka gallage</div>
-                        </div>
-                    </div>
-                    <button type="button" class="view-package" onclick="location.href='<?php echo URLROOT; ?>/clients/viewpackage';">View Package →</button>
-                </div>
-            </div>
-</section>
-        
+<div class="complaint-container">
     
-    </form>
-    <?php require APPROOT . '/views/inc/footer.php';?>
+
+    <!-- Tab Navigation -->
+    <div class="tabs-container">
+        <div class="tabs">
+           
+            <button class="tab active" data-tab="create-complaint">
+                <i class="fa fa-plus"></i>
+                Create Complaint
+            </button>
+            <button class="tab" data-tab="my-complaints">
+                <i class="fa fa-list"></i>
+                My Submitted Complaints
+            </button>
+        </div>
+    </div>
+
+    
+
+    <!-- Create Complaint Section -->
+    <div class="complaint-section active" id="create-complaint">
+        <div class="complaint-form-container">
+            <!-- Left image / illustration -->
+            <div class="form-image">
+                <div class="image-placeholder">
+                    <img src="<?php echo URLROOT; ?>/public/img/ServiceP/complaints/complaints.jpg" alt="Complaints illustration">
+                </div>
+            </div>
+
+            <!-- Right: form panel -->
+            <div class="complaint-form-panel">
+                <div class="section-header">
+                    <span>Submit New Complaint</span>
+                </div>
+
+                <form class="complaint-form">
+                    <div class="form-group">
+                        <label class="form-label">Related Event</label>
+                        <select class="form-input" name="event_id" id="event-select" onchange="onEventSelected(this.value)">
+                            <option value="" class="fade">Select Event</option>
+                        </select>
+                        <br><span class="error" id="event-name-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Complainant Type</label>
+                        <select class="form-input" name="complainant_type" id="complainant-type-select" onchange="onComplainantTypeChanged(this.value)">
+                            <option value="" class="fade">Select Type</option>
+                            <option value="SERVICEP">Service Provider</option>
+                            <option value="IC">Issue Coordinator</option>
+                            <option value="SYSTEM">System</option>
+                        </select>
+                        <br><span class="error" id="complainant-type-error"></span>
+                    </div>
+
+                    <div class="form-group" style="display:none;" id="service-provider-group">
+                        <label class="form-label">Service Provider</label>
+                        <select class="form-input" name="service_id" id="service-provider-select">
+                            <option value="" class="fade">Select Service Provider</option>
+                        </select>
+                        <br><span class="error" id="service-provider-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Issue Type</label>
+                        <select class="form-input" name="issue_type">
+                            <option value="" class="fade">Select Issue Type</option>
+                            <option value="SERVICE_QUALITY">Service Quality</option>
+                            <option value="NO_RESPONSE">No Response</option>
+                            <option value="MISCONDUCT">Misconduct</option>
+                            <option value="PAYMENT_ISSUE">Payment Issue</option>
+                            <option value="REFUND_REQUEST">Refund Request</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <br><span class="error" id="issue-type-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Complaint Description</label>
+                        <textarea id="complaint-desc-input" class="form-textarea" name="description" placeholder="Please provide detailed information about your complaint..."></textarea>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                            <span><br><span class="error" id="description-error"></span></span>
+                            <small id="complaint-wordcount" style="color:var(--muted);font-size:0.9rem;">0 / 500 words</small>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit">Submit Complaint</button>
+                        <button class="btn btn-outline" type="cancel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Complaints Section -->
+    <div class="complaint-section" id="my-complaints">
+        <div class="section-header">
+            <span>My Submitted Complaints</span>
+        </div>
+
+        <div class="complaint-filter">
+            <label class="form-label" for="complaint-type-filter">Filter by Issue Type</label>
+            <select class="form-input" id="complaint-type-filter">
+                <option value="">All Types</option>
+                <option value="SERVICE_QUALITY">Service Quality</option>
+                <option value="NO_RESPONSE">No Response</option>
+                <option value="MISCONDUCT">Misconduct</option>
+                <option value="PAYMENT_ISSUE">Payment Issue</option>
+                <option value="REFUND_REQUEST">Refund Request</option>
+                <option value="OTHER">Other</option>
+            </select>
+        </div>
+
+        <!-- My Complaints Table -->
+        <div class="table-container">
+            <table class="complaints-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Event</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="my-complaints-list">
+                    <!-- Complaints will be loaded dynamically via AJAX -->
+                    <tr class="loading-row">
+                        <td colspan="7" style="text-align: center; padding: 20px;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading complaints...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="complaint-popup">
+    <div class="popup-overlay"></div>
+    <div class="popup-content">
+        <div class="popup-header">
+            <h3 class="popup-title">Complaint Details</h3>
+            <button class="popup-close-btn">&times;</button>
+        </div>
+        
+        <div class="popup-body">
+            <div class="complaint-detail-grid">
+                <div class="detail-section">
+                    <h4>Complaint Information</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Complaint ID:</span>
+                        <span class="detail-value" id="complaint-id">#CP-001</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Type:</span>
+                        <span class="detail-value complaint-type-badge" id="complaint-type">Client Complaint</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value status-badge" id="complaint-status">Open</span>
+                    </div>
+    
+                    <div class="detail-row">
+                        <span class="detail-label">Date Submitted:</span>
+                        <span class="detail-value" id="complaint-date">Jan 10, 2026</span>
+                    </div>
+                    <div class="detail-row" id="complainant-type-row">
+                        <span class="detail-label">Complainant Type:</span>
+                        <span class="detail-value" id="complaint-complainant-type">Client</span>
+                    </div>
+                    <div class="detail-row" id="service-provider-row" style="display: none;">
+                        <span class="detail-label">Service Provider:</span>
+                        <span class="detail-value" id="complaint-service-provider">Provider Name</span>
+                    </div>
+                    <div class="detail-row" id="event-row">
+                        <span class="detail-label">Related Event:</span>
+                        <span class="detail-value" id="complaint-event">Wedding Reception - John Doe</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>Description</h4>
+                    <div class="complaint-description" id="complaint-description">
+                        The technician arrived 2 hours later than scheduled without any prior notification. This caused significant inconvenience and disrupted the entire event timeline.
+                    </div>
+                </div>
+                
+                <div class="detail-section" id="resolution-section" style="display: none;">
+                    <h4>Resolution</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Resolution Type:</span>
+                        <span class="detail-value" id="resolution-type">Refund Issued</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Resolution Note:</span>
+                        <span class="detail-value" id="resolution-note">Partial refund of 50% issued to client</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Resolved At:</span>
+                        <span class="detail-value" id="resolved-at">Jan 15, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section" id="assignment-section" style="display: none;">
+                    <h4>Assignment</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Assigned IC:</span>
+                        <span class="detail-value" id="assigned-ic">Issue Coordinator Name</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="popup-actions">
+            <!-- Dynamic buttons based on complaint type and status -->
+            <div class="action-buttons" id="action-buttons">
+                <!-- Buttons will be dynamically added here -->
+            </div>
+            <button class="btn btn-outline" id="popup-close-bottom">Close</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+// Tab switching functionality with smooth transitions
+function showSection(section){
+    section.style.display = 'block';
+    // Force reflow to ensure display change takes effect
+    section.offsetHeight;
+    section.classList.add('active');
+}
+
+function hideSection(section) {
+    section.classList.remove('active');
+    setTimeout(() => {
+        section.style.display = 'none';
+    }, 300); // Match transition duration
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const currentActiveSection = document.querySelector('.complaint-section.active');
+        const tabId = tab.getAttribute('data-tab');
+        const newSection = document.getElementById(tabId);
+        
+        if (currentActiveSection && currentActiveSection !== newSection) {
+            // Hide current section with transition
+            hideSection(currentActiveSection);
+            
+            // After current section fades out, show new section
+            setTimeout(() => {
+                // Update tab states
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show new section
+                showSection(newSection);
+                
+                // Load complaints if switching to "My Complaints" tab
+                if (tabId === 'my-complaints') {
+                    displayComplaints();
+                }
+            }, 300);
+
+        } else if (!currentActiveSection) {
+
+            // No active section, just show the new one
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            showSection(newSection);
+            
+            // Load complaints if "My Complaints" tab is active
+            if (tabId === 'my-complaints') {
+                displayComplaints();
+            }
+        }
+    });
+});
+
+// Load events for the client
+function loadClientEvents() {
+    const URLROOT = '<?php echo URLROOT; ?>';
+    let xml = new XMLHttpRequest();
+
+    xml.onload = function(){
+        if(this.status === 200){
+            try {
+                let response = JSON.parse(this.responseText);
+                if(response.success && response.events){
+                    const eventSelect = document.getElementById('event-select');
+                    eventSelect.innerHTML = '<option value="" class="fade">Select Event</option>';
+                    
+                    response.events.forEach(event => {
+                        const option = document.createElement('option');
+                        option.value = event.event_id;
+                        option.textContent = event.event_name;
+                        option.setAttribute('data-event-id', event.event_id);
+                        eventSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Failed to load events:', response.error);
+                }
+            } catch(e) {
+                console.error('Error parsing response:', e);
+            }
+        } else {
+            console.error('Server error:', this.status);
+        }
+    };
+
+    xml.onerror = function(){
+        console.error('Network error: Failed to fetch events');
+    };
+
+    xml.open("GET", `${URLROOT}/Clients/getClientEvents`, true);
+    xml.send();
+}
+
+// Handle event selection
+function onEventSelected(eventId) {
+    if (!eventId) {
+        document.getElementById('service-provider-select').innerHTML = '<option value="">Select Service Provider</option>';
+        return;
+    }
+
+    loadServiceProvidersForEvent(eventId);
+}
+
+// Load service providers for a specific event
+function loadServiceProvidersForEvent(eventId) {
+    const URLROOT = '<?php echo URLROOT; ?>';
+    let xml = new XMLHttpRequest();
+
+    xml.onload = function(){
+        if(this.status === 200){
+            try {
+                let response = JSON.parse(this.responseText);
+                if(response.success && response.providers){
+                    const serviceSelect = document.getElementById('service-provider-select');
+                    serviceSelect.innerHTML = '<option value="">Select Service Provider</option>';
+                    
+                    response.providers.forEach(provider => {
+                        const option = document.createElement('option');
+                        option.value = provider.service_id;
+                        option.textContent = provider.businessName;
+                        serviceSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Failed to load providers:', response.error);
+                }
+            } catch(e) {
+                console.error('Error parsing response:', e);
+            }
+        } else {
+            console.error('Server error:', this.status);
+        }
+    };
+
+    xml.onerror = function(){
+        console.error('Network error: Failed to fetch providers');
+    };
+
+    xml.open("GET", `${URLROOT}/Clients/getEventServiceProviders?eventId=` + encodeURIComponent(eventId), true);
+    xml.send();
+}
+
+// Handle complainant type change
+function onComplainantTypeChanged(complainantType) {
+    const serviceProviderGroup = document.getElementById('service-provider-group');
+    
+    if (complainantType === 'SERVICEP') {
+        serviceProviderGroup.style.display = 'block';
+    } else {
+        serviceProviderGroup.style.display = 'none';
+        document.getElementById('service-provider-select').value = '';
+    }
+}
+
+// Complaint Popup Functionality
+const complaintPopup = document.querySelector('.complaint-popup');
+const popupCloseBtn = document.querySelector('.popup-close-btn');
+const popupCloseBottom = document.getElementById('popup-close-bottom');
+
+
+// Open complaint popup and populate data
+function openComplaintPopup(complaintInput){
+    if (!complaintInput) return;
+
+    let complaint = complaintInput;
+
+    // Populate popup with complaint data
+    document.getElementById('complaint-id').textContent = '#' + (complaint.complaint_id || 'N/A');
+    document.getElementById('complaint-type').textContent = complaint.issue_type || 'Unknown';
+    document.getElementById('complaint-type').className = 'detail-value complaint-type-badge ' + (complaint.complainant_type || '').toLowerCase();
+    
+    // Format status with proper class name (in_progress becomes in-progress)
+    const statusClass = (complaint.status || '').toLowerCase().replace(/_/g, '-');
+    const statusText = (complaint.status || 'Unknown').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    document.getElementById('complaint-status').textContent = statusText;
+    document.getElementById('complaint-status').className = 'detail-value status-badge status-' + statusClass;
+    
+    // Format date
+    const dateText = complaint.created_at ? new Date(complaint.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }) : 'Unknown Date';
+    document.getElementById('complaint-date').textContent = dateText;
+    
+    // Set description - use 'description' field from DB, not 'description_text'
+    document.getElementById('complaint-description').textContent = complaint.description || 'No description provided';
+    
+    // Set complainant type with proper formatting
+    const complainantTypeText = (complaint.complainant_type || 'Unknown').charAt(0).toUpperCase() + (complaint.complainant_type || 'Unknown').slice(1).toLowerCase();
+    document.getElementById('complaint-complainant-type').textContent = complainantTypeText;
+    
+    // Handle service provider display if complaint is about a provider
+    const serviceProviderRow = document.getElementById('service-provider-row');
+    if (complaint.service_provider_name && complaint.service_id) {
+        serviceProviderRow.style.display = 'flex';
+        document.getElementById('complaint-service-provider').textContent = complaint.service_provider_name;
+    } else {
+        serviceProviderRow.style.display = 'none';
+    }
+    
+    document.getElementById('complaint-event').textContent = complaint.event_name || 'N/A';
+
+    // Handle conditional fields
+    const complaintTypeRow = document.getElementById('complainant-type-row');
+    const eventRow = document.getElementById('event-row');
+    const resolutionSection = document.getElementById('resolution-section');
+    const assignmentSection = document.getElementById('assignment-section');
+
+    complaintTypeRow.style.display = 'flex';
+    eventRow.style.display = 'flex';
+
+    if (complaint.resolution_note && complaint.status === 'RESOLVED') {
+        resolutionSection.style.display = 'block';
+        document.getElementById('resolution-type').textContent = complaint.resolution_type || 'Unknown';
+        document.getElementById('resolution-note').textContent = complaint.resolution_note || 'No notes';
+        document.getElementById('resolved-at').textContent = complaint.resolved_at ? new Date(complaint.resolved_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }) : 'Unknown';
+    } else {
+        resolutionSection.style.display = 'none';
+    }
+
+    if (complaint.assigned_ic_id) {
+        assignmentSection.style.display = 'block';
+        document.getElementById('assigned-ic').textContent = complaint.assigned_ic_id || 'Not assigned';
+    } else {
+        assignmentSection.style.display = 'none';
+    }
+
+    // Generate action buttons based on complaint type and status
+    generateActionButtons(complaint);
+
+    // Show popup
+    complaintPopup.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+// Generate action buttons based on complaint context
+function generateActionButtons(complaint) {
+    const actionButtons = document.getElementById('action-buttons');
+    actionButtons.innerHTML = '';
+
+    // For client complaints - show update request button if open or in progress
+    if (complaint.status === 'OPEN' || complaint.status === 'IN_PROGRESS' || complaint.status === 'SEND') {
+        actionButtons.innerHTML = `
+            <button class="btn btn-primary" onclick="updateComplaint('${complaint.complaint_id}', 'request_update')">
+                Request Update
+            </button>
+        `;
+    }
+}
+
+// Action functions (placeholders - implement actual functionality)
+function respondToComplaint(complaintId) {
+    alert('Respond to complaint: ' + complaintId);
+    // Implement response functionality
+}
+
+function resolveComplaint(complaintId) {
+    if (confirm('Mark this complaint as resolved?')) {
+        alert('Complaint resolved: ' + complaintId);
+        // Implement resolution functionality
+    }
+}
+
+function updateComplaint(complaintId, action) {
+    alert('Requesting update for complaint: ' + complaintId);
+    // Implement update request functionality
+}
+
+// Close popup functions
+function closeComplaintPopup(){
+    complaintPopup.classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+// Event listeners for closing popup
+popupCloseBtn.addEventListener('click', closeComplaintPopup);
+popupCloseBottom.addEventListener('click', closeComplaintPopup);
+complaintPopup.addEventListener('click', function(e) {
+    if (e.target === complaintPopup) {
+        closeComplaintPopup();
+    }
+});
+
+// Add click listeners to "View Details" buttons (only in complaint lists, not form buttons)
+document.querySelectorAll('.complaints-table .table-view-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const row = this.closest('tr');
+        const complaintIndex = Array.from(row.parentElement.children).indexOf(row) + 1;
+        const complaintId = 'complaint-' + complaintIndex;
+        openComplaintPopup(complaintId);
+    });
+});
+
+// Close popup on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && complaintPopup.classList.contains('show')) {
+        closeComplaintPopup();
+    }
+});
+
+
+//complaint form submission handler
+// Word limit enforcement: 500 words for complaint description
+(function(){
+    const textarea = document.getElementById('complaint-desc-input');
+    const counter = document.getElementById('complaint-wordcount');
+    const MAX_WORDS = 500;
+
+    if (textarea && counter) {
+        const updateCount = () => {
+            const text = textarea.value.trim();
+            const words = text.length ? text.split(/\s+/).filter(Boolean) : [];
+            if (words.length > MAX_WORDS) {
+                // Trim to first MAX_WORDS words
+                textarea.value = words.slice(0, MAX_WORDS).join(' ');
+            }
+            const current = textarea.value.trim().length ? textarea.value.trim().split(/\s+/).filter(Boolean).length : 0;
+            counter.textContent = current + ' / ' + MAX_WORDS + ' words';
+        };
+
+        textarea.addEventListener('input', updateCount);
+        // Initialize counter on load
+        updateCount();
+    }
+})();
+
+document.querySelector('.complaint-form').addEventListener('submit', function(e) {
+
+    e.preventDefault();
+    
+    // Gather form data
+    const formData = new FormData(this);
+    // Enforce 500-word limit server-side check (in case input event didn't trim)
+    const desc = formData.get('description') ? String(formData.get('description')).trim() : '';
+    const descWords = desc.length ? desc.split(/\s+/).filter(Boolean) : [];
+    if (descWords.length > 500) {
+        document.getElementById('description-error').textContent = 'Description exceeds 500-word limit. It has been trimmed in the input.';
+        // Trim the textarea value to first 500 words to keep consistent
+        const trimmed = descWords.slice(0,500).join(' ');
+        const ta = document.getElementById('complaint-desc-input');
+        if (ta) ta.value = trimmed;
+        return;
+    }
+    
+    //handle form validation here
+    let hasError = false;
+    document.querySelectorAll('.complaint-form .error').forEach(span => span.textContent = '');
+    if (!formData.get('event_id')) {
+        document.getElementById('event-name-error').textContent = 'Please select an event';
+        hasError = true;
+    }
+    if (!formData.get('complainant_type')) {
+        document.getElementById('complainant-type-error').textContent = 'Please select complainant type';
+        hasError = true;
+    }
+    
+    // If complainant type is service provider, require service provider selection
+    if (formData.get('complainant_type') === 'SERVICEP' && !formData.get('service_id')) {
+        document.getElementById('service-provider-error').textContent = 'Please select a service provider';
+        hasError = true;
+    }
+    
+    if (!formData.get('issue_type')) {
+        document.getElementById('issue-type-error').textContent = 'Please select issue type';
+        hasError = true;
+    }
+    if (!formData.get('description')) {
+        document.getElementById('description-error').textContent = 'Please enter complaint description';
+        hasError = true;
+    }
+    if (hasError) return;
+    //do the submission via AJAX
+    submitComplaint(formData);
+
+    //reget the complaints list
+    displayComplaints();
+
+});
+
+function submitComplaint(formData) {
+    // Prepare data for client_complaints table
+    const mappedData = {
+        event_id: formData.get('event_id'),
+        complainant_type: formData.get('complainant_type'),
+        issue_type: formData.get('issue_type'),
+        description: formData.get('description')
+    };
+    
+    // Add service_id only if complainant type is SERVICE PROVIDER
+    if (formData.get('complainant_type') === 'SERVICEP') {
+        mappedData.service_id = formData.get('service_id');
+    }
+
+    var xml = new XMLHttpRequest();
+
+    xml.onload = function(){
+        if(this.status === 200){
+            try {
+                var response = JSON.parse(this.responseText);
+                if(response.success){
+                    alert('Complaint submitted successfully');
+                    document.querySelector('.complaint-form').reset();
+                    clearFormErrors();
+                    displayComplaints();
+                } else {
+                    alert('Failed to submit complaint: ' + (response.message || 'Unknown error'));
+                }
+            } catch(e) {
+                console.error('Error parsing response:', e);
+                alert('Error processing response from server');
+            }
+        } else {
+            alert('Server error: ' + this.status);
+        }
+    };
+
+    xml.onerror = function(){
+        alert('Network error: Failed to submit complaint');
+    };
+
+    xml.open("POST", "<?php echo URLROOT; ?>/Clients/submitComplaint", true);
+    xml.setRequestHeader('Content-Type', 'application/json');
+    xml.send(JSON.stringify(mappedData));
+}
+
+//cancel button handler
+document.querySelector('.complaint-form .btn-outline').addEventListener('click', function(e) {
+    e.preventDefault();
+    //clear form fields
+    document.querySelector('.complaint-form').reset();
+    //clear error messages
+    clearFormErrors();
+});
+
+function clearFormErrors() {
+    document.querySelectorAll('.complaint-form .error').forEach(span => span.textContent = '');
+}
+
+
+function getAllComplaints() {
+   let complaints = [];
+   let xml = new XMLHttpRequest();
+
+   xml.onload = function(){
+        if(this.status === 200){
+            try {
+                let response = JSON.parse(this.responseText);
+                if(response.success && response.complaints){
+                    complaints = response.complaints;
+                } else {
+                    console.error('No complaints data in response');
+                }
+            } catch(e) {
+                console.error('Error parsing response:', e);
+            }
+        } else {
+            console.error('Server error:', this.status);
+        }
+   };
+
+    xml.onerror = function(){
+        console.error('Network error: Failed to fetch complaints');
+    };
+
+    xml.open("GET", "<?php echo URLROOT; ?>/Clients/getClientComplaints", false);
+    xml.send();
+    
+    return complaints;
+}
+
+function displayComplaints() {
+    const complaintsList = document.getElementById('my-complaints-list');
+    var complaints = getAllComplaints();
+    const selectedType = document.getElementById('complaint-type-filter')
+        ? document.getElementById('complaint-type-filter').value
+        : '';
+    if (selectedType) {
+        complaints = complaints.filter(complaint => complaint.issue_type === selectedType);
+    }
+    console.log('Fetched complaints:', complaints);
+    // Clear existing table
+    complaintsList.innerHTML = '';
+
+    if (complaints && complaints.length > 0) {
+        let complaintsHTML = '';
+        complaints.forEach(function(complaint, index) {
+            const statusText = complaint.status ? complaint.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Unknown';
+            const priorityText = complaint.priority ? complaint.priority.charAt(0).toUpperCase() + complaint.priority.slice(1).toLowerCase() : 'Unknown';
+            const dateText = complaint.created_at ? new Date(complaint.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }) : 'Unknown Date';
+            
+            const statusClass = complaint.status ? complaint.status.toLowerCase().replace(/ /g, '-') : '';
+            const priorityClass = complaint.priority ? 'priority-' + complaint.priority.toLowerCase() : '';
+
+            complaintsHTML += `
+                <tr>
+                    <td><span class="id-badge">#${complaint.complaint_id || 'N/A'}</span></td>
+                    <td><span class="table-type">${complaint.issue_type || 'Unknown'}</span></td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="table-event">${complaint.event_name || 'N/A'}</td>
+                    <td class="table-created">${dateText}</td>
+                    <td><button class="table-view-btn" onclick="viewMyComplaintDetails('${complaint.complaint_id}')"><i class="fas fa-eye"></i> View</button></td>
+                </tr>
+            `;
+        });
+        complaintsList.innerHTML = complaintsHTML;
+    } else {
+        complaintsList.innerHTML = `
+            <tr class="empty-row">
+                <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                    <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                    No complaints found for the selected type.
+                </td>
+            </tr>
+        `;
+    }
+}
+
+
+    
+// Function to view details of my complaint
+function viewMyComplaintDetails(complaintId) {
+    let xml = new XMLHttpRequest();
+    
+    xml.onload = function(){
+        if(this.status === 200){
+            try {
+                let response = JSON.parse(this.responseText);
+                if(response.success && response.complaint){
+                    // Transform database complaint to popup format
+                    let complaint = response.complaint;
+                    
+                    openComplaintPopup(complaint);
+                } else {
+                    alert('Error: ' + (response.error || 'Could not load complaint details'));
+                }
+            } catch(e) {
+                console.error('Error parsing response:', e);
+                alert('Error processing response from server');
+            }
+        } else {
+            alert('Server error: ' + this.status);
+        }
+    };
+    
+    xml.onerror = function(){
+        alert('Network error: Failed to fetch complaint details');
+    };
+
+    
+    xml.open("GET", "<?php echo URLROOT; ?>/Clients/getComplaintDetails?complaintId=" + encodeURIComponent(complaintId), true);
+    xml.send();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadClientEvents();
+    const typeFilter = document.getElementById('complaint-type-filter');
+    if (typeFilter) {
+        typeFilter.addEventListener('change', displayComplaints);
+    }
+});
+
+</script>
+</body>
+</html>
+<?php require_once APPROOT . '/views/inc/footer.php'; ?>
+
+<!--filter the type of complaints-->

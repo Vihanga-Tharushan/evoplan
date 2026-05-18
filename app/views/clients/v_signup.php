@@ -35,6 +35,13 @@
           <span><?php echo $data['address_err']; ?></span>
         </div>
 
+        <div class="form-group">
+          <label for="contact">Phone Number</label>
+          <input type="tel" id="contact" name="contact" class="form-input" placeholder="0771234567 or +94771234567" autocomplete="tel" pattern="^(?:\+94|0)\d{9}$" title="Use 0771234567 or +94771234567" value="<?php echo $data['contact']; ?>" required>
+          <span><?php echo $data['contact_err']; ?></span>
+        </div>
+
+    
         <div class="form-group span-2">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" autocomplete="email" value="<?php echo $data['email']; ?>">

@@ -46,6 +46,11 @@ class IssueC extends Controller{
 
         }
 
+    // Provide default index method so router can call controller root
+    public function index(){
+        $this->dashboard();
+    }
+
     
     public function coordinator_login(){
       if($_SERVER['REQUEST_METHOD'] == 'POST') {

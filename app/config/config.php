@@ -3,7 +3,7 @@
     // database configuration
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
-    define('DB_PASSWORD', '');
+    define('DB_PASSWORD', 'new_password');
     define('DB_NAME', 'evoplan_db');
 
     // Define the root directory of the application

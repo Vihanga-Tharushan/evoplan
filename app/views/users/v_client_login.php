@@ -22,10 +22,11 @@
 					<span class="error"></span>
 				</div>
 
-				<div class="form__row">
+				<div class="form__row form__row--between">
 					<label class="checkbox">
 						<input type="checkbox" name="remember"> <span>Remember Password</span>
 					</label>
+					<a class="login__link" href="<?php echo URLROOT; ?>/Clients/forgotPassword">Forgot password?</a>
 				</div>
 
 				<button type="submit" class="btn btn--primary">Login</button>

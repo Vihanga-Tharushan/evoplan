@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="EvoPlan_name">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/public/img/sidebar/EvoPlan_name.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

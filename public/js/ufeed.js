@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Submitted feedback priority filter
 document.addEventListener('DOMContentLoaded', function() {
-    const filter = document.getElementById('feedback-priority-filter');
+    const filter = document.getElementById('priority-filter');
     if (!filter) return;
 
     const applyFilter = () => {

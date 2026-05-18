@@ -9,9 +9,9 @@ class M_Complaints {
 
     public function submitClientComplaint($data) {
         $this->db->query("INSERT INTO client_complaints 
-            (client_id, event_id, service_id, complainant_type, issue_type, description, status) 
+            (client_id, event_id, service_id, complainant_type, priority, issue_type, description, status) 
             VALUES 
-            (:client_id, :event_id, :service_id, :complainant_type, :issue_type, :description, 'SEND')
+            (:client_id, :event_id, :service_id, :complainant_type, :priority, :issue_type, :description, 'SEND')
         ");
         
         // Bind values
@@ -19,6 +19,7 @@ class M_Complaints {
         $this->db->bind(':event_id', $data['event_id']);
         $this->db->bind(':service_id', isset($data['service_id']) && !empty($data['service_id']) ? $data['service_id'] : NULL);
         $this->db->bind(':complainant_type', $data['complainant_type']);
+        $this->db->bind(':priority', $data['priority']);
         $this->db->bind(':issue_type', $data['issue_type']);
         $this->db->bind(':description', $data['description']);
 

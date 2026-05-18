@@ -82,6 +82,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-input" name="priority">
+                            <option value="" class="fade">Select Priority</option>
+                            <option value="HIGH">High</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LOW">Low</option>
+                        </select>
+                        <br><span class="error" id="priority-error"></span>
+                    </div>
+
+                   <!--<div class="form-group">
+                        <label class="form-label">priority</label>
+                        <input type="text" class="form-input" name="priority" placeholder="Enter priority" required>
+                        <br><span class="error" id="priority-error"></span>
+                    </div>-->
+
+
+                    <div class="form-group">
                         <label class="form-label">Complaint Description</label>
                         <textarea id="complaint-desc-input" class="form-textarea" name="description" placeholder="Please provide detailed information about your complaint..."></textarea>
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
@@ -105,6 +123,18 @@
             <span>My Submitted Complaints</span>
         </div>
 
+        <div class="form-group" style="max-width: 260px; margin: 10px 0 16px;">
+            <label class="form-label" for="priority-filter">Filter by Priority</label>
+            <select class="form-input" id="priority-filter">
+                <option value="">All Priorities</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+            </select>
+        </div>
+
+        
+
         <!-- My Complaints Table -->
         <div class="table-container">
             <table class="complaints-table">
@@ -112,6 +142,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Type</th>
+                        <th>Priority</th>
                         <th>Status</th>
                         <th>Event</th>
                         <th>Created</th>
@@ -313,6 +344,23 @@ function loadClientEvents() {
 
     xml.open("GET", `${URLROOT}/Clients/getClientEvents`, true);
     xml.send();
+}
+
+function calculatetotalhighlight(){
+    const priorityFilter = document.getElementById('priority-filter');
+    const selectedPriority = priorityFilter.value;
+
+    document.querySelectorAll('.complaints-table tbody tr').forEach(row => {
+        const priorityCell = row.querySelector('td:nth-child(3)');
+        if (priorityCell) {
+            const priority = priorityCell.textContent.trim();
+            if (selectedPriority === '' || priority === selectedPriority) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
 }
 
 // Handle event selection
@@ -593,6 +641,10 @@ document.querySelector('.complaint-form').addEventListener('submit', function(e)
         document.getElementById('issue-type-error').textContent = 'Please select issue type';
         hasError = true;
     }
+    if (!formData.get('priority')) {
+        document.getElementById('priority-error').textContent = 'Please select priority';
+        hasError = true;
+    }
     if (!formData.get('description')) {
         document.getElementById('description-error').textContent = 'Please enter complaint description';
         hasError = true;
@@ -612,6 +664,7 @@ function submitComplaint(formData) {
         event_id: formData.get('event_id'),
         complainant_type: formData.get('complainant_type'),
         issue_type: formData.get('issue_type'),
+        priority: formData.get('priority'),
         description: formData.get('description')
     };
     
@@ -700,7 +753,12 @@ function getAllComplaints() {
 function displayComplaints() {
     const complaintsList = document.getElementById('my-complaints-list');
     var complaints = getAllComplaints();
-    console.log('Fetched complaints:', complaints);
+    const priorityFilter = document.getElementById('priority-filter');
+    const priorityValue = priorityFilter ? priorityFilter.value : '';
+
+    if (priorityValue) {
+        complaints = complaints.filter(c => (c.priority || '').toUpperCase() === priorityValue);
+    }
     // Clear existing table
     complaintsList.innerHTML = '';
 
@@ -722,6 +780,7 @@ function displayComplaints() {
                 <tr>
                     <td><span class="id-badge">#${complaint.complaint_id || 'N/A'}</span></td>
                     <td><span class="table-type">${complaint.issue_type || 'Unknown'}</span></td>
+                    <td><span class="priority-badge ${priorityClass}">${priorityText}</span></td>
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     <td class="table-event">${complaint.event_name || 'N/A'}</td>
                     <td class="table-created">${dateText}</td>
@@ -733,7 +792,7 @@ function displayComplaints() {
     } else {
         complaintsList.innerHTML = `
             <tr class="empty-row">
-                <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">
                     <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
                     You have not submitted any complaints yet.
                 </td>
@@ -781,9 +840,16 @@ function viewMyComplaintDetails(complaintId) {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     loadClientEvents();
+    const priorityFilter = document.getElementById('priority-filter');
+    if (priorityFilter) {
+        priorityFilter.addEventListener('change', displayComplaints);
+    }
 });
 
 </script>
 </body>
 </html>
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
+
+
+<!-- only change clients.php submitcomplain M_complaint.php submitclientcomplaint-->

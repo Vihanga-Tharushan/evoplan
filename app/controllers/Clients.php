@@ -79,6 +79,39 @@
     }
         }
 
+        private function sendPasswordResetEmail($email, $token){
+            $mail = new PHPMailer(true);
+
+            try {
+                $resetLink = URLROOT . '/Clients/resetPassword/' . $token;
+
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = '2023cs023@stu.ucsc.cmb.ac.lk';
+                $mail->Password   = 'wsec epbh hyxg tzte';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
+
+                $mail->setFrom('chathusha15@gmail.com', 'EvoPlan');
+                $mail->addAddress($email);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'EvoPlan Password Reset';
+                $mail->Body    = "
+                    <h2>Password Reset</h2>
+                    <p>Click the link below to reset your password. This link expires in 1 hour.</p>
+                    <p><a href=\"$resetLink\">Reset Password</a></p>
+                    <p>If you did not request this, you can ignore this email.</p>
+                ";
+
+                $mail->send();
+                return true;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+
         public function home(){
 
             $this->isloggedIn();
@@ -93,20 +126,26 @@
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 // Process form data
                 //input data
-                $data =[
-                        'name' => trim($_POST['name']),
-                        'address' => trim($_POST['address']),
-                        'email' => trim($_POST['email']),
-                        'password' => trim($_POST['password']),
-                        'confirm_password' => trim($_POST['confirm_password']),
-                        'terms' => isset($_POST['terms']) ? true : false,
+                $rawContact = isset($_POST['contact']) ? trim($_POST['contact']) : '';
+                $normalizedContact = preg_replace('/[\s-]/', '', $rawContact);
 
-                        'name_err' => '',
-                        'address_err' => '',
-                        'email_err' => '',
-                        'password_err' => '',
-                        'confirm_password_err' => '',
-                        'terms_err' => ''
+                $data =[
+                    'name' => trim($_POST['name']),
+                    'address' => trim($_POST['address']),
+                    'contact' => $normalizedContact,
+                    
+                    'email' => trim($_POST['email']),
+                    'password' => trim($_POST['password']),
+                    'confirm_password' => trim($_POST['confirm_password']),
+                    'terms' => isset($_POST['terms']) ? true : false,
+
+                    'name_err' => '',
+                    'address_err' => '',
+                    'contact_err' => '',
+                    'email_err' => '',
+                    'password_err' => '',
+                    'confirm_password_err' => '',
+                    'terms_err' => ''
                 ];
 
                 // Validate Name
@@ -116,6 +155,12 @@
                 // Validate Address
                 if(empty($data['address'])){
                     $data['address_err'] = 'Please enter your address';
+                }
+                // Validate Contact
+                if(empty($data['contact'])){
+                    $data['contact_err'] = 'Please enter your phone number';
+                } elseif(!preg_match('/^(?:\+94|0)\d{9}$/', $data['contact'])){
+                    $data['contact_err'] = 'Enter a valid phone number (e.g., 0771234567 or +94771234567)';
                 }
                 // Validate Email
                 if(empty($data['email'])){
@@ -148,7 +193,7 @@
                 }
 
                 // Make sure errors are empty
-                if(empty($data['name_err']) && empty($data['address_err']) && empty($data['email_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['terms_err'])){
+                if(empty($data['name_err']) && empty($data['address_err']) && empty($data['contact_err']) &&  empty($data['email_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['terms_err'])){
                     // Validated
                     // Register Client
                     if($this->clientModel->register($data)){
@@ -169,6 +214,8 @@
                 $data =[
                     'name' => '',
                     'address' => '',
+                    'contact' => '',
+                    
                     'email' => '',
                     'password' => '',
                     'confirm_password' => '',
@@ -176,6 +223,8 @@
 
                     'name_err' => '',
                     'address_err' => '',
+                    'contact_err' => '',
+                    
                     'email_err' => '',
                     'password_err' => '',
                     'confirm_password_err' => '',
@@ -254,6 +303,104 @@
                     'password_err' => ''
                 ];
                 $this->view('Users/v_client_login', $data);
+            }
+        }
+
+        public function forgotPassword(){
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $data = [
+                    'email' => trim($_POST['email']),
+                    'email_err' => ''
+                ];
+
+                if(empty($data['email'])){
+                    $data['email_err'] = 'Please enter your email';
+                }
+
+                if(empty($data['email_err'])){
+                    $client = $this->clientModel->getClientByEmail($data['email']);
+
+                    if($client){
+                        $token = bin2hex(random_bytes(32));
+                        $tokenHash = hash('sha256', $token);
+
+                        if($this->clientModel->setPasswordResetToken($client->client_id, $tokenHash)){
+                            $this->sendPasswordResetEmail($data['email'], $token);
+                        }
+                    }
+
+                    flash('reset_link_sent', 'If that email exists, a reset link has been sent.');
+                    redirect('Clients/forgotPassword');
+                } else {
+                    $this->view('Users/v_client_forgot_password', $data);
+                }
+            } else {
+                $data = [
+                    'email' => '',
+                    'email_err' => ''
+                ];
+                $this->view('Users/v_client_forgot_password', $data);
+            }
+        }
+
+        public function resetPassword($token = null){
+            if(!$token){
+                redirect('Clients/forgotPassword');
+            }
+
+            $tokenHash = hash('sha256', $token);
+            $client = $this->clientModel->getClientByResetToken($tokenHash);
+
+            if(!$client){
+                $data = [
+                    'token' => $token,
+                    'password' => '',
+                    'confirm_password' => '',
+                    'password_err' => 'Reset link is invalid or expired',
+                    'confirm_password_err' => ''
+                ];
+                $this->view('Users/v_client_reset_password', $data);
+                return;
+            }
+
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                $data = [
+                    'token' => $token,
+                    'password' => trim($_POST['password']),
+                    'confirm_password' => trim($_POST['confirm_password']),
+                    'password_err' => '',
+                    'confirm_password_err' => ''
+                ];
+
+                if(empty($data['password'])){
+                    $data['password_err'] = 'Please enter a new password';
+                } elseif(strlen($data['password']) < 6){
+                    $data['password_err'] = 'Password must be at least 6 characters';
+                }
+
+                if(empty($data['confirm_password'])){
+                    $data['confirm_password_err'] = 'Please confirm your password';
+                } elseif($data['password'] !== $data['confirm_password']){
+                    $data['confirm_password_err'] = 'Passwords do not match';
+                }
+
+                if(empty($data['password_err']) && empty($data['confirm_password_err'])){
+                    $this->clientModel->updatePassword($client->client_id, $data['password']);
+                    $this->clientModel->clearPasswordResetToken($client->client_id);
+                    flash('reset_success', 'Password updated. You can log in now.');
+                    redirect('Clients/login');
+                } else {
+                    $this->view('Users/v_client_reset_password', $data);
+                }
+            } else {
+                $data = [
+                    'token' => $token,
+                    'password' => '',
+                    'confirm_password' => '',
+                    'password_err' => '',
+                    'confirm_password_err' => ''
+                ];
+                $this->view('Users/v_client_reset_password', $data);
             }
         }
 
@@ -1038,9 +1185,6 @@
             }
         }
 
-
-
-
         
         public function feedback($event_id = null) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -1060,6 +1204,7 @@
                     'feedback_id' => $_POST['feedback_id'],
                     'rating' => $_POST['rating'] ?? 0,
                     'feedback_text' => $_POST['feedback_text'] ?? '',
+                    'priority' => $_POST['priority'] ?? 'MEDIUM',
                     'status' => $_POST['action'] ?? 'draft'
                 ];
                 $this->clientModel->updateFeedback($data);
@@ -1079,6 +1224,7 @@
                     'category' => $_POST['category'] ?? '',
                     'rating' => $_POST['rating'] ?? 0,
                     'feedback_text' => $_POST['feedback_text'] ?? '',
+                    'priority' => $_POST['priority'] ?? 'MEDIUM',
                     'status' => $_POST['action'] ?? 'draft'
                 ];
 
@@ -1252,6 +1398,7 @@
             // Validate required fields
             if (!isset($data['event_id']) || empty($data['event_id']) ||
                 !isset($data['complainant_type']) || empty($data['complainant_type']) ||
+                !isset($data['priority']) || empty($data['priority']) ||
                 !isset($data['issue_type']) || empty($data['issue_type']) ||
                 !isset($data['description']) || empty($data['description'])) {
                 
@@ -1278,6 +1425,7 @@
                 'client_id' => $_SESSION['client_id'] ?? null,
                 'event_id' => $data['event_id'],
                 'complainant_type' => $data['complainant_type'],
+                'priority' => $data['priority'],
                 'issue_type' => $data['issue_type'],
                 'description' => $data['description']
             ];

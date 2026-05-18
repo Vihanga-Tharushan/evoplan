@@ -8,10 +8,11 @@ class M_Client {
     }
 
     public function register($data) {
-        $this->db->query("INSERT INTO clients (name, address, email, password) VALUES (:name, :address, :email, :password)");
+        $this->db->query("INSERT INTO clients (name, address, contact, email, password) VALUES (:name, :address, :contact, :email, :password)");
         // Bind values
         $this->db->bind(':name', $data['name']);
         $this->db->bind(':address', $data['address']);
+        $this->db->bind(':contact', $data['contact']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', password_hash($data['password'], PASSWORD_DEFAULT));
 
@@ -78,6 +79,36 @@ class M_Client {
         } else {
             return false;
         }
+    }
+
+    public function getClientByEmail($email) {
+        $this->db->query("SELECT * FROM clients WHERE email = :email");
+        $this->db->bind(':email', $email);
+
+        return $this->db->single();
+    }
+
+    public function setPasswordResetToken($email, $tokenHash, $expiresAt) {
+        $this->db->query("UPDATE clients SET reset_token = :token, reset_token_expires_at = :expires WHERE email = :email");
+        $this->db->bind(':token', $tokenHash);
+        $this->db->bind(':expires', $expiresAt);
+        $this->db->bind(':email', $email);
+
+        return $this->db->execute();
+    }
+
+    public function getClientByResetToken($tokenHash) {
+        $this->db->query("SELECT * FROM clients WHERE reset_token = :token AND reset_token_expires_at >= NOW()");
+        $this->db->bind(':token', $tokenHash);
+
+        return $this->db->single();
+    }
+
+    public function clearPasswordResetToken($client_id) {
+        $this->db->query("UPDATE clients SET reset_token = NULL, reset_token_expires_at = NULL WHERE client_id = :client_id");
+        $this->db->bind(':client_id', $client_id);
+
+        return $this->db->execute();
     }
 
     public function getClientById($id) {
